@@ -13,7 +13,7 @@ const Login: NextPage = ()=>{
             <div>
                 SNS 계정으로 로그인하기
             </div>
-
+            
         </main>
 
     </div>

@@ -28,7 +28,7 @@ const User: NextPage = ()=>{
                 사용하실 대원명을 입력해주세요
             </div>
             <Box>
-                <TextField id="standard-required" label="닉네임을 작성해 주세요" reuired variant="standard" />  
+                <TextField id="standard-required" label="닉네임을 작성해 주세요" required variant="standard" />  
                 <Button variant="contained">중복확인</Button>
            </Box>
             {/* <TextField error helperText="10자 이내로 작성해 주세요!" /> */}
