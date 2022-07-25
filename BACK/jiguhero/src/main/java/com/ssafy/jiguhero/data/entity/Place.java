@@ -44,4 +44,8 @@ public class Place {
 
     @Column(nullable = false)
     private String category_code;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_code")
+    private Category category;
 }

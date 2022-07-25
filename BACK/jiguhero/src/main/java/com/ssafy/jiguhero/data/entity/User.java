@@ -5,10 +5,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -34,4 +33,10 @@ public class User {
 
     @Column(nullable = false)
     private int point;
+
+    @OneToMany(mappedBy = "user")
+    List<Ground> ground = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    List<Report> report = new ArrayList<>();
 }

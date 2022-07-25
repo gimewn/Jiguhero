@@ -12,29 +12,24 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Entity
-@Table(name = "Report")
-public class Report {
+@Table(name = "Conn_Ground")
+public class Conn_Ground {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long report_id;
+    private long conn_ground_id;
 
     @Column(nullable = false)
-    private int category;
+    private long ground_id;
 
-    @Column(nullable = true)
-    private String content;
-
-    @Column(nullable = true)
+    @Column(nullable = false)
     private long place_id;
 
-    @Column(nullable = true)
-    private long user_id;
-
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
+    @JoinColumn(name = "ground_id")
+    private Ground ground;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "place_id")
     private Place place;
+
 }
