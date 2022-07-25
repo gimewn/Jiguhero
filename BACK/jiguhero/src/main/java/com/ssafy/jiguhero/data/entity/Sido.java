@@ -17,9 +17,10 @@ import java.util.List;
 @Table(name = "Sido")
 public class Sido {
     @Id
-    private String sido_code;
+    @Column(name = "sido_code")
+    private String sidoCode;
 
-    @Column(nullable = false)
-    private String sido_name;
+    @Column(nullable = false, name = "sido_name")
+    private String sidoName;
 
 }

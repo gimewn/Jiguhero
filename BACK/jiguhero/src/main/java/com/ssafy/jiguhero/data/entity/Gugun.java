@@ -17,12 +17,13 @@ import java.util.List;
 @Table(name = "Gugun")
 public class Gugun {
     @Id
-    private String gugun_code;
+    @Column(name = "gugun_code")
+    private String gugunCode;
 
-    @Column(nullable = false)
-    private String gugun_name;
+    @Column(nullable = false, name = "gugun_name")
+    private String gugunName;
 
-    @Column(nullable = false)
-    private String sido_code;
+    @Column(nullable = false, name = "sido_code")
+    private String sidoCode;
 
 }

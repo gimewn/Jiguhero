@@ -17,7 +17,8 @@ import java.util.List;
 @Table(name = "User")
 public class User {
     @Id
-    private long user_id;
+    @Column(name = "user_id")
+    private long userId;
 
     @Column(nullable = false)
     private String email;

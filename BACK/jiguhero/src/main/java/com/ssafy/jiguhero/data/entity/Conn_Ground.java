@@ -15,21 +15,22 @@ import javax.persistence.*;
 @Table(name = "Conn_Ground")
 public class Conn_Ground {
     @Id
+    @Column(name = "conn_ground_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long conn_ground_id;
+    private long connGroundId;
 
-    @Column(nullable = false)
-    private long ground_id;
-
-    @Column(nullable = false)
-    private long place_id;
+//    @Column(nullable = false)
+//    private long ground_id;
+//
+//    @Column(nullable = false)
+//    private long place_id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ground_id")
+    @JoinColumn(name = "groundId")
     private Ground ground;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "place_id")
+    @JoinColumn(name = "placeId")
     private Place place;
 
 }

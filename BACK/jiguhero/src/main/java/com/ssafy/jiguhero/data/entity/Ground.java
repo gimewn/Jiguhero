@@ -16,8 +16,9 @@ import java.time.LocalDateTime;
 @Table(name = "Ground")
 public class Ground {
     @Id
+    @Column(name = "ground_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long ground_id;
+    private long groundId;
 
     @Column(nullable = false)
     private String title;
@@ -26,10 +27,10 @@ public class Ground {
     private String icon;
 
     @Column(nullable = false)
-    private String desc;
+    private String content;
 
     @Column(nullable = false)
-    private int like;
+    private int likes;
 
     @Column(nullable = false)
     private int hits;
@@ -37,12 +38,11 @@ public class Ground {
     @Column(nullable = true)
     private LocalDateTime regtime;
 
-    @Column(nullable = false)
-    private long user_id;
+//    @Column(nullable = false)
+//    private long user_id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "userId")
     private User user;
-
 
 }

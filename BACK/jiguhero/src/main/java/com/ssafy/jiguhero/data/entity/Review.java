@@ -15,19 +15,20 @@ import javax.persistence.*;
 @Table(name = "Review")
 public class Review {
     @Id
+    @Column(name = "review_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long review_id;
+    private long reviewId;
 
     @Column(nullable = false)
     private int score;
 
     @Column(nullable = false)
-    private String desc;
+    private String content;
 
-    @Column(nullable = false)
-    private long user_id;
+    @Column(nullable = false, name = "user_id")
+    private long userId;
 
-    @Column(nullable = false)
-    private long place_id;
+    @Column(nullable = false, name = "place_id")
+    private long placeId;
 
 }

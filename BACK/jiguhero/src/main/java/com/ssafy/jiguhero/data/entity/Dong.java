@@ -15,15 +15,16 @@ import javax.persistence.*;
 @Table(name = "Dong")
 public class Dong {
     @Id
-    private String dong_code;
+    @Column(name = "dong_code")
+    private String dongCode;
 
-    @Column(nullable = false)
-    private String dong_name;
+    @Column(nullable = false, name = "dong_name")
+    private String dongName;
 
-    @Column(nullable = false)
-    private String sido_code;
+    @Column(nullable = false, name = "sido_code")
+    private String sidoCode;
 
-    @Column(nullable = false)
-    private String gugun_code;
+    @Column(nullable = false, name = "gugun_code")
+    private String gugunCode;
 
 }

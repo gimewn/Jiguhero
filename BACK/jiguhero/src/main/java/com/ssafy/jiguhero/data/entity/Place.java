@@ -15,23 +15,24 @@ import javax.persistence.*;
 @Table(name = "Place")
 public class Place {
     @Id
+    @Column(name = "place_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long place_id;
+    private long placeId;
 
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = true)
-    private String road_address;
+    @Column(nullable = true, name = "road_address")
+    private String roadAddress;
 
-    @Column(nullable = true)
-    private String jibun_address;
+    @Column(nullable = true, name = "jibun_address")
+    private String jibunAddress;
 
     @Column(nullable = true)
     private String phone;
 
     @Column(nullable = false)
-    private String desc;
+    private String content;
 
     @Column(nullable = true)
     private String url;
@@ -42,8 +43,8 @@ public class Place {
     @Column(nullable = true)
     private long lng;
 
-    @Column(nullable = false)
-    private String category_code;
+//    @Column(nullable = false)
+//    private String category_code;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_code")

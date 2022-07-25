@@ -20,14 +20,14 @@ public class Baseaddress {
     @Id
     private long no;
 
-    @Column(nullable = false)
-    private String sido_name;
+    @Column(nullable = false, name = "sido_name")
+    private String sidoName;
 
-    @Column(nullable = false)
-    private String gugun_name;
+    @Column(nullable = false, name = "gugun_name")
+    private String gugunName;
 
-    @Column(nullable = false)
-    private String dong_name;
+    @Column(nullable = false, name = "dung_name")
+    private String dongName;
 
     @Column(nullable = true)
     private long lat;
