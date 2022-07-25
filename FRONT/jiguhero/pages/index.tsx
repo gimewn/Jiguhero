@@ -6,7 +6,7 @@ import MenuForDesk from '../component/MenuBarDesktop';
 import MenuForMobile from '../component/MenuBarMobile';
 import styled from 'styled-components';
 import { makeStyles } from '@material-ui/core';
-import {createTheme, ThemeProvider} from '@mui/material';
+import { createTheme, ThemeProvider } from '@mui/material';
 
 const Header = styled('div')`
   margin:30px;
@@ -26,12 +26,12 @@ const theme = createTheme({
 
 const responStyles = makeStyles(theme => ({
   desktop: {
-    [theme.breakpoints.down('sm')]:{
+    [theme.breakpoints.down('sm')]: {
       display: 'none'
     }
   },
-  mobile:{
-    [theme.breakpoints.up('md')]:{
+  mobile: {
+    [theme.breakpoints.up('md')]: {
       display: 'none'
     }
   }
