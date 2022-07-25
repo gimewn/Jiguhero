@@ -29,6 +29,4 @@ public class Sido {
     @OneToMany(mappedBy = "sido")
     List<Dong> dong = new ArrayList<>();
 
-    @OneToMany(mappedBy = "sido")
-    List<Baseaddress> baseaddress = new ArrayList<>();
 }

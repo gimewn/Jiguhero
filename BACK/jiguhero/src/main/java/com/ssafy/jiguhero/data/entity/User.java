@@ -40,4 +40,7 @@ public class User {
 
     @OneToMany(mappedBy = "user")
     List<Report> report = new ArrayList<>();
+
+    @OneToOne(mappedBy = "user")
+    private Image_User image_user;
 }

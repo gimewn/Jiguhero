@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -47,6 +49,9 @@ public class Place {
 //    private String category_code;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "category_code")
+    @JoinColumn(name = "code")
     private Category category;
+
+    @OneToMany(mappedBy = "place")
+    List<Review> review = new ArrayList<>();
 }

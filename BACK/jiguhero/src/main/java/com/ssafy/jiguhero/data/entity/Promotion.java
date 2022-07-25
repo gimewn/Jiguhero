@@ -27,4 +27,7 @@ public class Promotion {
 
     @Column(nullable = true)
     private String content;
+
+    @OneToOne(mappedBy = "promotion")
+    private Image_Promotion image_promotion;
 }

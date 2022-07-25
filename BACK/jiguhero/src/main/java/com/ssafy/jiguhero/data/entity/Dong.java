@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -34,4 +36,7 @@ public class Dong {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "sidoCode")
     private Sido sido;
+
+    @OneToMany(mappedBy = "dong")
+    List<Baseaddress> baseaddress = new ArrayList<>();
 }
