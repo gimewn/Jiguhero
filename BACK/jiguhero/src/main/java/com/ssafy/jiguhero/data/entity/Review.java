@@ -25,10 +25,13 @@ public class Review {
     @Column(nullable = false)
     private String content;
 
-    @Column(nullable = false, name = "user_id")
-    private long userId;
+    //@Column(nullable = false, name = "user_id")
+    //private long userId;
 
     @Column(nullable = false, name = "place_id")
     private long placeId;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "userId")
+    private User user;
 }

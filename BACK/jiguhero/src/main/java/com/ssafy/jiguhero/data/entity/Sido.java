@@ -23,4 +23,12 @@ public class Sido {
     @Column(nullable = false, name = "sido_name")
     private String sidoName;
 
+    @OneToMany(mappedBy = "sido")
+    List<Gugun> gugun = new ArrayList<>();
+
+    @OneToMany(mappedBy = "sido")
+    List<Dong> dong = new ArrayList<>();
+
+    @OneToMany(mappedBy = "sido")
+    List<Baseaddress> baseaddress = new ArrayList<>();
 }

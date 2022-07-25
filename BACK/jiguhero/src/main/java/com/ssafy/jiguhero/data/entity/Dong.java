@@ -21,10 +21,17 @@ public class Dong {
     @Column(nullable = false, name = "dong_name")
     private String dongName;
 
-    @Column(nullable = false, name = "sido_code")
-    private String sidoCode;
+    //@Column(nullable = false, name = "sido_code")
+    //private String sidoCode;
 
-    @Column(nullable = false, name = "gugun_code")
-    private String gugunCode;
+    //@Column(nullable = false, name = "gugun_code")
+    //private String gugunCode;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "gugunCode")
+    private Gugun gugun;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "sidoCode")
+    private Sido sido;
 }

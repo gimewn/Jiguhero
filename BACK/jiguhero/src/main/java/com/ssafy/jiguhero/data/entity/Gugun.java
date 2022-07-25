@@ -23,7 +23,13 @@ public class Gugun {
     @Column(nullable = false, name = "gugun_name")
     private String gugunName;
 
-    @Column(nullable = false, name = "sido_code")
-    private String sidoCode;
+    //Column(nullable = false, name = "sido_code")
+    //private String sidoCode;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "sidoCode")
+    private Sido sido;
+
+    @OneToMany(mappedBy = "gugun")
+    List<Dong> dong = new ArrayList<>();
 }
