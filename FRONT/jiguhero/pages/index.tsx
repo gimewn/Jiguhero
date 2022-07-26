@@ -7,6 +7,7 @@ import styles from '../styles/Home.module.css'
 export default function Home(){
   return (
     <div>
+      메인입니다!
     </div>
   )
 }
