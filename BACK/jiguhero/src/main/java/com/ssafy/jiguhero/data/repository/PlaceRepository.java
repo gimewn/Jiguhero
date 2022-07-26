@@ -7,11 +7,11 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
- interface PlaceRepository extends JpaRepository<Place, Long> {
+public interface PlaceRepository extends JpaRepository<Place, Long> {
 
-//    // 모든 친환경 가게 가져오기
-//    List<Place> findAll();
-//
-//    // 해당 카테고리 코드와 일치하는 가게만 가져오기
-//    List<Place> findAllByCode(String code);
+    // 모든 친환경 가게 가져오기
+    List<Place> findAll();
+
+    // 해당 카테고리 코드와 일치하는 가게만 가져오기
+//    List<Place> findAllByCode(String categoryCode);
 }

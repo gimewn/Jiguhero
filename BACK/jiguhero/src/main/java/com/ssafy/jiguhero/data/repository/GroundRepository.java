@@ -8,11 +8,11 @@ import java.util.List;
 
 @Repository
 public interface GroundRepository extends JpaRepository<Ground, Long> {
-//
-//    // 활동구역 Top5 조회순
-//    List<Ground> findTop5OrderByHitsDesc();
-//
-//    // 활동구역 Top5 좋아요순
-//    List<Ground> findTop5OrderByLikesDesc();
+
+    // 활동구역 Top5 조회순
+    List<Ground> findTop5ByOrderByHitsDesc();
+
+    // 활동구역 Top5 좋아요순
+    List<Ground> findTop5ByOrderByLikesDesc();
 
 }

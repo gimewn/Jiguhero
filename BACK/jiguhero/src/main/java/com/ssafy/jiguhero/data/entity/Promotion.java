@@ -29,5 +29,5 @@ public class Promotion {
     private String content;
 
     @OneToOne(mappedBy = "promotion")
-    private Image_Promotion image_promotion;
+    private Image_Promotion imagePromotion;
 }

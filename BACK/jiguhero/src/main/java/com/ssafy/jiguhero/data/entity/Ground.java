@@ -1,5 +1,7 @@
 package com.ssafy.jiguhero.data.entity;
 
+import com.ssafy.jiguhero.data.dto.GroundDto;
+import com.ssafy.jiguhero.util.ModelMapperUtils;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -44,5 +46,11 @@ public class Ground {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userId")
     private User user;
+
+    public static Ground of(GroundDto groundDto) {
+        Ground groundEntity = ModelMapperUtils.getModelMapper().map(groundDto, Ground.class);
+
+        return groundEntity;
+    }
 
 }

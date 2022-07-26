@@ -9,6 +9,6 @@ import java.util.List;
 @Repository
 public interface MissionRepository extends JpaRepository<Mission, Long> {
 
-//    // 임무 Top3 참여자순
-//    List<Mission> findTop3OrderByNowPersonDesc();
+    // 임무 Top3 참여자순
+    List<Mission> findTop3ByOrderByNowPersonDesc();
 }

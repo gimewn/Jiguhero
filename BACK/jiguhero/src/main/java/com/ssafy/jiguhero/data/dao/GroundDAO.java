@@ -4,7 +4,7 @@ import com.ssafy.jiguhero.data.entity.Ground;
 
 import java.util.List;
 
-public interface GroundDAO {
+public interface GroundDao {
 
     // 활동구역 Top5 조회순
     List<Ground> selectTop5OrderByHits();
