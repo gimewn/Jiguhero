@@ -4,7 +4,7 @@ import Avatar from "@mui/material/Avatar";
 import Grid from "@mui/material/Grid";
 import styled from "styled-components";
 import ArrowForwardIosRoundedIcon from "@mui/icons-material/ArrowForwardIosRounded";
-import { Button, ButtonGroup, Fab, Stack, Paper } from "@mui/material";
+import {  ButtonGroup, Fab, Stack, Paper } from "@mui/material";
 
 
 function Profilee() {
@@ -118,3 +118,4 @@ const Mypage = () => {
 };
 
 export default Mypage;
+
