@@ -18,14 +18,8 @@ public class GroundDaoImpl implements GroundDao {
     }
 
     @Override
-    public List<Ground> selectTop5ByOrderByHits() {
-        List<Ground> selectedGrounds = groundRepository.findTop5ByOrderByHitsDesc();
-        return selectedGrounds;
-    }
-
-    @Override
-    public List<Ground> selectTop5ByOrderByLikes() {
-        List<Ground> selectedGrounds = groundRepository.findTop5ByOrderByLikesDesc();
+    public List<Ground> selectTop5HitsLikes() {
+        List<Ground> selectedGrounds = groundRepository.findTop5ByOrderByHitsDescLikesDesc();
         return selectedGrounds;
     }
 }

@@ -6,10 +6,7 @@ import java.util.List;
 
 public interface GroundDao {
 
-    // 활동구역 Top5 조회순
-    List<Ground> selectTop5ByOrderByHits();
-
-    // 활동구역 Top5 좋아요순
-    List<Ground> selectTop5ByOrderByLikes();
+    // 활동구역 Top5 조회순, 조회수가 같으면 좋아요순
+    List<Ground> selectTop5HitsLikes();
 
 }
