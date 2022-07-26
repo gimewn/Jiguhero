@@ -22,12 +22,12 @@
 @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
 
 * { 
-font-family: Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', sans-serif;
+font-family: 'PyeongChang-Regular', 'PyeongChang-Bold', 'PyeongChangPeace-Bold', Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', sans-serif;
 }
 
 html,
 body {
-  padding: 0;
+  padding: 15px 20px;
   margin: 0;
   font-family: 'PyeongChang-Regular', 'PyeongChang-Bold', 'PyeongChangPeace-Bold', 'Pretendard', -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
@@ -43,18 +43,19 @@ a {
 }
 
 .MuiBottomNavigation-root .MuiButtonBase-root svg {
+  font-size:30px;
   color: #98C064;
 }
 
 .MuiBottomNavigation-root .Mui-selected svg{
-  font-size:30px;
+  font-size:35px;
   color: #65ACE2;
 }
 
 .css-1cx4pt4-MuiBottomNavigationAction-label.Mui-selected {
   color:#98C064;
   font-family: 'PyeongChang-Regular';
-  font-size: 15px;
+  font-size: 13px;
 }
 
 .MuiBottomNavigation-root {

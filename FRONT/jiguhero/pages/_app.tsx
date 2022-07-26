@@ -4,20 +4,21 @@ import { RecoilRoot } from 'recoil'
 import MenuForDesk from '../component/MenuBarDesktop';
 import MenuForMobile from '../component/MenuBarMobile';
 import styled from 'styled-components';
-import {createTheme, Menu, ThemeProvider} from '@mui/material';
 import logo from '../public/logo.png';
 import Image from 'next/image';
+import { useRouter } from "next/router";
 
 const Header = styled('div')`
-  margin:30px;
   display:flex;
   justify-content:space-between;
+  margin-bottom:30px;
 `
 
 const DeskMenu = styled('div')`
   @media only screen and (max-width: 900px) {
     display:none;
   }
+  margin: auto 0;
 `
 
 const MobileMenu = styled('div')`
@@ -29,38 +30,19 @@ const MobileMenu = styled('div')`
 const Footer = styled('div')`
   position: fixed;
   bottom:0;
-  width:100%;
-
+  left:0;
+  right:0;
 `
-
-const theme = createTheme({
-  typography: {
-    fontFamily: "'PyeongChang-Bold', 'PyeongChangPeace-Bold'"
-  }
-})
-
-// const responStyles = makeStyles(theme => ({
-//   desktop: {
-//     [theme.breakpoints.down('md')]:{
-//       display: 'hidden'
-//     }
-//   },
-//   mobile:{
-//     [theme.breakpoints.up('md')]:{
-//       display: 'hidden'
-//     }
-//   }
-// }))
-
-function MyApp({ Component, pageProps }: AppProps) {
-
-  // const responsive = responStyles();
   
+function MyApp({ Component, pageProps }: AppProps) {
+  const router = useRouter();
+  const onLink = (href) => {
+    router.push(href);
+  };
   return (
     <RecoilRoot>
-      <ThemeProvider theme={theme}>
         <Header>
-          <Image src={logo} width={160} height={40}/>
+          <Image src={logo} width={160} height={40} onClick={() => onLink("/")}/>
           <DeskMenu>
             <MenuForDesk />
           </DeskMenu>
@@ -71,7 +53,7 @@ function MyApp({ Component, pageProps }: AppProps) {
             <MenuForMobile />
           </MobileMenu>
         </Footer>
-      </ThemeProvider>
+
     </RecoilRoot>
 
   );
