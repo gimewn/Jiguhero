@@ -11,24 +11,28 @@ import { useRouter } from "next/router";
 const Header = styled('div')`
   display:flex;
   justify-content:space-between;
-  margin-bottom:30px;
+  margin: 20px;
+`
+
+const Container = styled('div')`
+  margin: 30px;
 `
 
 const DeskMenu = styled('div')`
-  @media only screen and (max-width: 600px) {
+  @media only screen and (max-width: 650px) {
     display:none;
   }
   margin: auto 0;
 `
 
 const MobileMenu = styled('div')`
-  @media only screen and (min-width: 600px) {
+  @media only screen and (min-width: 650px) {
     display:none;
   }
 `
 
 const Footer = styled('div')`
-  position: fixed;
+  position: absolute;
   bottom:0;
   left:0;
   right:0;
@@ -37,18 +41,6 @@ const Footer = styled('div')`
 function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter();
   const onLink = (href) => {
-    if (process.browser){
-      var navContainer = document.getElementById("NavBar");
-      var menus = navContainer.getElementsByClassName("navMenu");
-      if(!menus[0].classList.contains('active')){
-        var current = document.getElementsByClassName("active"); 
-        if (current.length > 0) {
-          current[0].className = current[0].className.replace(" active", "");
-          console.log(menus)
-          menus[0].className += ' active';
-        }
-        };  
-        }
         router.push(href);  
         };
   return (
@@ -59,13 +51,14 @@ function MyApp({ Component, pageProps }: AppProps) {
             <MenuForDesk />
           </DeskMenu>
         </Header>
-        <Component {...pageProps} />
+        <Container>
+          <Component {...pageProps} />
+        </Container>
         <Footer>
           <MobileMenu>
             <MenuForMobile />
           </MobileMenu>
         </Footer>
-
     </RecoilRoot>
 
   );

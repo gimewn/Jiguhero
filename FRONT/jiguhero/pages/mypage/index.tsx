@@ -1,7 +1,9 @@
+import BackTitle from 'component/back';
+
 export default function Mypage(){
     return(
         <div>
-            마이페이지
+            <BackTitle name="마이페이지" />
         </div>
     )
 }
