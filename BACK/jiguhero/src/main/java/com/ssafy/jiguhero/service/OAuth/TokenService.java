@@ -12,7 +12,7 @@ import java.util.Date;
 
 @Service
 public class TokenService {
-    private String secretKey = "token-secret-key";
+    private String secretKey = "youcantrevealthesecretkey1234012300040";
 
     @PostConstruct
     protected void init() {
