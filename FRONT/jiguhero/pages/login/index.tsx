@@ -53,7 +53,7 @@ const Login: NextPage = () => {
             SNS 계정으로 로그인하기
           </SnsLoginText>
           <SnsLoginKakao>
-            <Image src={KakaoImg} />
+
           </SnsLoginKakao>
         </main>
       </LoginWrapper>
