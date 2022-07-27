@@ -15,14 +15,14 @@ const Header = styled('div')`
 `
 
 const DeskMenu = styled('div')`
-  @media only screen and (max-width: 900px) {
+  @media only screen and (max-width: 600px) {
     display:none;
   }
   margin: auto 0;
 `
 
 const MobileMenu = styled('div')`
-  @media only screen and (min-width: 900px) {
+  @media only screen and (min-width: 600px) {
     display:none;
   }
 `
@@ -37,12 +37,24 @@ const Footer = styled('div')`
 function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter();
   const onLink = (href) => {
-    router.push(href);
-  };
+    if (process.browser){
+      var navContainer = document.getElementById("NavBar");
+      var menus = navContainer.getElementsByClassName("navMenu");
+      if(!menus[0].classList.contains('active')){
+        var current = document.getElementsByClassName("active"); 
+        if (current.length > 0) {
+          current[0].className = current[0].className.replace(" active", "");
+          console.log(menus)
+          menus[0].className += ' active';
+        }
+        };  
+        }
+        router.push(href);  
+        };
   return (
     <RecoilRoot>
         <Header>
-          <Image src={logo} width={160} height={40} onClick={() => onLink("/")}/>
+          <Image src={logo} width={160} height={40} onClick={() => onLink("/")} layout='fixed' />
           <DeskMenu>
             <MenuForDesk />
           </DeskMenu>

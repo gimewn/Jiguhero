@@ -38,7 +38,7 @@ export default function UnderlineLink() {
   return (
     <Menu id="NavBar">
       <Link href="/" className="navMenu">
-        <a className="navMenu">메인</a>
+        <a className="navMenu active">메인</a>
       </Link>
       <Link href="/ground" className="navMenu">
         <a className="navMenu">활동구역</a>
