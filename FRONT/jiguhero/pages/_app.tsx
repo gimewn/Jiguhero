@@ -4,8 +4,8 @@ import { RecoilRoot } from 'recoil'
 import MenuForDesk from '../component/MenuBarDesktop';
 import MenuForMobile from '../component/MenuBarMobile';
 import styled from 'styled-components';
-import logo from '../public/logo.png';
 import Image from 'next/image';
+import logo from '../public/logo.png';
 import { useRouter } from "next/router";
 
 const Header = styled('div')`
@@ -33,7 +33,7 @@ const Footer = styled('div')`
   left:0;
   right:0;
 `
-  
+
 function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter();
   const onLink = (href) => {
@@ -41,18 +41,18 @@ function MyApp({ Component, pageProps }: AppProps) {
   };
   return (
     <RecoilRoot>
-        <Header>
-          <Image src={logo} width={160} height={40} onClick={() => onLink("/")}/>
-          <DeskMenu>
-            <MenuForDesk />
-          </DeskMenu>
-        </Header>
-        <Component {...pageProps} />
-        <Footer>
-          <MobileMenu>
-            <MenuForMobile />
-          </MobileMenu>
-        </Footer>
+      <Header>
+        <Image src={logo} width={160} height={40} onClick={() => onLink("/")} />
+        <DeskMenu>
+          <MenuForDesk />
+        </DeskMenu>
+      </Header>
+      <Component {...pageProps} />
+      <Footer>
+        <MobileMenu>
+          <MenuForMobile />
+        </MobileMenu>
+      </Footer>
 
     </RecoilRoot>
 
