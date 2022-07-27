@@ -18,16 +18,11 @@ public class GroundServiceImpl implements GroundService {
     }
 
     @Override
-    public List<GroundDto> getTop5Hits() {
-        List<Ground> entityList = groundDao.selectTop5OrderByHits();
+    public List<GroundDto> getTop5HitsLikes() {
+        List<Ground> entitiyList = groundDao.selectTop5HitsLikes();
 
-        List<GroundDto> dtoList = entityList.stream().map(entity -> GroundDto.of(entity)).collect(Collectors.toList());
+        List<GroundDto> dtoList = entitiyList.stream().map(entity -> GroundDto.of(entity)).collect(Collectors.toList());
 
         return dtoList;
-    }
-
-    @Override
-    public List<GroundDto> getTop5Likes() {
-        return null;
     }
 }

@@ -25,11 +25,12 @@ public class HomeController {
         this.groundService = groundService;
     }
 
-    @ApiOperation(value = "조회수가 많은 활동구역 Top5 목록을 반환한다.", response = List.class)
+    @ApiOperation(value = "조회수가 많은 활동구역 Top5 목록을 반환한다. (조회수가 같으면 좋아요순)", response = List.class)
     @GetMapping("/ground")
-    public ResponseEntity<List<GroundDto>> getTop5Hits() {
-        List<GroundDto> list = groundService.getTop5Hits();
+    public ResponseEntity<List<GroundDto>> getTop5HitsLikes() {
+        List<GroundDto> list = groundService.getTop5HitsLikes();
 
         return ResponseEntity.status(HttpStatus.OK).body(list);
     }
+
 }

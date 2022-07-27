@@ -1,0 +1,17 @@
+spring:
+  datasource:
+    username: admin
+    url: jdbc:mariadb://jiguhero-webservice-db.ccqinedppsob.ap-northeast-2.rds.amazonaws.com:3306/jiguhero_webservice_db?serverTimezone=Asia/Seoul
+    driverClassName: org.mariadb.jdbc.Driver
+    password: dlrpehlsp105!
+  sql:
+    init:
+      mode: always
+  jpa:
+    properties:
+      hibernate:
+        format_sql: 'true'
+    defer-datasource-initialization: 'true'
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: 'true'
