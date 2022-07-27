@@ -1,10 +1,10 @@
 import '../styles/globals.css'
 import type { AppProps } from 'next/app'
 import { RecoilRoot } from 'recoil'
-import MenuForDesk from '../component/MenuBarDesktop';
-import MenuForMobile from '../component/MenuBarMobile';
+import MenuForDesk from 'components/MenuBarDesktop'
+import MenuForMobile from 'components/MenuBarMobile';
 import styled from 'styled-components';
-import logo from '../public/logo.png';
+import logo from 'public/logo.png';
 import Image from 'next/image';
 import { useRouter } from "next/router";
 

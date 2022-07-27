@@ -78,3 +78,8 @@ a {
 * :hover{
   cursor: pointer;
 }
+
+.slick-dots{
+  position:static;
+  margin: 20px auto;
+}
