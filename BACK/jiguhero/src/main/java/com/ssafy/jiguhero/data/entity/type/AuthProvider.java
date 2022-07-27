@@ -1,4 +1,4 @@
-package com.ssafy.jiguhero.data.entity;
+package com.ssafy.jiguhero.data.entity.type;
 
 public enum  AuthProvider {
 

@@ -1,27 +1,32 @@
 package com.ssafy.jiguhero.data.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.ssafy.jiguhero.data.entity.type.AuthProvider;
+import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-@AllArgsConstructor
-@NoArgsConstructor
+@ToString(exclude = "socialAuth")
 @Getter
-@Setter
+@Builder
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-@Table(name = "User")
+@Table(name = "User", uniqueConstraints = {
+        @UniqueConstraint(columnNames = "email")
+})
+@SecondaryTables({
+        @SecondaryTable(name = "social_auth", pkJoinColumns = @PrimaryKeyJoinColumn(name = "user_id"))
+})
 public class User {
     @Id
     @Column(name = "user_id")
     private long userId;
 
-    @Column(nullable = false)
+    @Column(name = "email")
     private String email;
 
     @Column(nullable = false)
@@ -45,23 +50,23 @@ public class User {
     @OneToOne(mappedBy = "user")
     private Image_User image_user;
 
+    private String password;
+
     @NotNull
     @Enumerated(EnumType.STRING)
     private AuthProvider provider;
 
     private String providerId;
 
-    public User(long userId, String email, String nickname, String name, int grade, int point, List<Ground> ground, List<Report> report, Image_User image_user, AuthProvider provider, String providerId) {
-        this.userId = userId;
-        this.email = email;
-        this.nickname = nickname;
-        this.name = name;
-        this.grade = grade;
-        this.point = point;
-        this.ground = ground;
-        this.report = report;
-        this.image_user = image_user;
-        this.provider = provider;
-        this.providerId = providerId;
-    }
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "providerId", column = @Column(table = "social_auth", name = "provider_id")),
+            @AttributeOverride(name = "provider", column = @Column(table = "social_auth", name = "provider")),
+            @AttributeOverride(name = "email", column = @Column(table = "social_auth", name = "email", length = 100, nullable = false)),
+            @AttributeOverride(name = "name", column = @Column(table = "social_auth", name = "name", length = 100, nullable = false)),
+            @AttributeOverride(name = "imageUrl", column = @Column(table = "social_auth", name = "image_url", columnDefinition = "TEXT")),
+            @AttributeOverride(name = "attributes", column = @Column(table = "social_auth", name = "attributes", columnDefinition = "TEXT")),
+            @AttributeOverride(name = "ip", column = @Column(table = "social_auth", name = "ip", length = 30, nullable = false)),
+    })
+    private SocialAuth socialAuth;
 }
