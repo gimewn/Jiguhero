@@ -155,7 +155,7 @@ const Mypage = () => {
               setTab(true);
             }}
             color={tab ? "yeondoo" : "hanle"}
-            style={{border: `${tab ? "null": "10px #65ACE2"}`, boxShadow:'0px'}}
+            style={{border: `${tab ? "null": "10px #65ACE2"}`, boxshadow:'0px'}}
             
           >
             활동구역
