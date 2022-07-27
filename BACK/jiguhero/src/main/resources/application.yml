@@ -21,15 +21,13 @@ spring:
       client:
         registration:
           kakao:
-            client-id: <your id>
-            client-secret: <your secret>
-            redirect-uri: <your url>/login/oauth2/code/kakao
+            client-id: a6793fe9736ab7eead17ba1149daab8f
+            client-secret: E4kOwneDlYLOSMeviE0OD1yUkEBHOjUZ
+            redirect-uri: http://localhost:8080/login/oauth2/code/kakao
             authorization-grant-type: authorization_code
             client-authentication-method: POST
             client-name: Kakao
-            scope:
-              - profile
-              - account_email
+            scope: profile_nickname, profile_image, account_email
           naver:
             client-id: 61No1qNDaGEXDwKNQ4Th
             client-secret: QLL0txFJOr
