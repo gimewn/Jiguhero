@@ -1,5 +1,7 @@
 package com.ssafy.jiguhero.data.entity;
 
+import com.ssafy.jiguhero.data.dto.UserDto;
+import com.ssafy.jiguhero.util.ModelMapperUtils;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -43,4 +45,10 @@ public class User {
 
     @OneToOne(mappedBy = "user")
     private Image_User imageUser;
+
+    public static User of(UserDto userDto) {
+        User userEntity = ModelMapperUtils.getModelMapper().map(userDto, User.class);
+
+        return userEntity;
+    }
 }
