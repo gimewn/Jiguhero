@@ -39,8 +39,8 @@ spring:
               - name
               - email
           google:
-            client-id: <your id>
-            client-secret: your secret>
+            client-id: 414960384621-98vliumf1q9u2qqgsfctdcl52lpcocsj.apps.googleusercontent.com
+            client-secret: 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
             scope:
               - profile
               - email
