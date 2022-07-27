@@ -2,6 +2,7 @@
 import * as React from 'react';
 import Link from 'next/link';
 import styled from 'styled-components';
+import { useRouter } from 'next/router';
 
 const Menu = styled('div')`
   display: flex;
@@ -20,37 +21,38 @@ const Menu = styled('div')`
     color:#65ACE2;
   }
 `
-if (process.browser){
-  var navContainer = document.getElementById("NavBar");
-  var menus = navContainer.getElementsByClassName("navMenu");
-  for (var i = 0; i < menus.length; i++) {  
-    menus[i].addEventListener("click", function() {  
-    var current = document.getElementsByClassName("active");  
-    if (current.length > 0) {
-      current[0].className = current[0].className.replace(" active", "");  
-    }  
-    this.className += " active";  
-    });  
-  }  
-}
+// if (process.browser){
+//   var navContainer = document.getElementById("NavBar");
+//   var menus = navContainer.getElementsByClassName("navMenu");
+//   for (var i = 0; i < menus.length; i++) {  
+//     menus[i].addEventListener("click", function() {  
+//     var current = document.getElementsByClassName("active");  
+//     if (current.length > 0) {
+//       current[0].className = current[0].className.replace(" active", "");  
+//     }  
+//     this.className += " active";  
+//     });  
+//   }  
+// }
 
 export default function UnderlineLink() {
+  const router = useRouter();
   return (
     <Menu id="NavBar">
       <Link href="/" className="navMenu">
-        <a className="navMenu">메인</a>
+        <a className={router.pathname == "/" ? "active" : ""}>메인</a>
       </Link>
       <Link href="/ground" className="navMenu">
-        <a className="navMenu">활동구역</a>
+        <a className={router.pathname == "/ground" ? "active" : ""}>활동구역</a>
       </Link>
       <Link href="/mission" className="navMenu">
-        <a className="navMenu">대원들의 임무</a>
+        <a className={router.pathname == "/mission" ? "active" : ""}>대원들의 임무</a>
       </Link>
       <Link href="/mission/nowjoin" className="navMenu">
-        <a className="navMenu">임무 인증</a>
+        <a className={router.pathname == "/mission/nowjoin" ? "active" : ""}>임무 인증</a>
       </Link>
       <Link href="/mypage" className="navMenu">
-        <a className="navMenu">마이페이지</a>
+        <a className={router.pathname == "/mypage" ? "active" : ""}>마이페이지</a>
       </Link>
     </Menu>
   );

@@ -24,11 +24,11 @@ export default function SimpleBottomNavigation() {
           setValue(newValue);
         }}
       >
-        <BottomNavigationAction label="메인" icon={<HomeRoundedIcon />} onClick={() => onLink("/")} />
-        <BottomNavigationAction label="활동구역" icon={<MapRoundedIcon />} onClick={() => onLink("/ground")} />
-        <BottomNavigationAction label="대원들의 임무" icon={<PeopleAltRoundedIcon />} onClick={() => onLink("/mission")} />
-        <BottomNavigationAction label="임무 인증" icon={<CameraAltRoundedIcon />} onClick={() => onLink("/mission/nowjoin")} />
-        <BottomNavigationAction label="마이페이지" icon={<PersonRoundedIcon />} onClick={() => onLink("/mypage")} />
+        <BottomNavigationAction sx={{p:0, minWidth:0}} label="메인" icon={<HomeRoundedIcon />} onClick={() => onLink("/")} />
+        <BottomNavigationAction sx={{p:0, minWidth:0}} label="활동구역" icon={<MapRoundedIcon />} onClick={() => onLink("/ground")} />
+        <BottomNavigationAction sx={{p:0, minWidth:0}} label="대원들의 임무" icon={<PeopleAltRoundedIcon />} onClick={() => onLink("/mission")} />
+        <BottomNavigationAction sx={{p:0, minWidth:0}} label="임무 인증" icon={<CameraAltRoundedIcon />} onClick={() => onLink("/mission/nowjoin")} />
+        <BottomNavigationAction sx={{p:0, minWidth:0}} label="마이페이지" icon={<PersonRoundedIcon />} onClick={() => onLink("/mypage")} />
       </BottomNavigation>
   );
 }
