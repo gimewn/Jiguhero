@@ -65,3 +65,8 @@ a {
   font-family: 'PyeongChang-Regular';
   font-size:13px;
 }
+
+.MuiButtonBase-root {
+  font-family: 'PyeongChang-Regular';
+  font-size: 13px;
+}
