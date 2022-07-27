@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.Arrays;
 
+
 @RequiredArgsConstructor
 public class JwtAuthFilter extends GenericFilterBean {
     private final TokenService tokenService;
@@ -25,10 +26,18 @@ public class JwtAuthFilter extends GenericFilterBean {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         String token = ((HttpServletRequest)request).getHeader("Auth");
 
-        System.out.println(token);
+        // debugging
+        token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJraWFuNjM2NUBuYXZlci5jb20iLCJyb2xlIjoiVVNFUiIsImlhdCI6MTY1ODkwODMyOSwiZXhwIjoxNjU4OTExOTI5fQ.p-lo4OiCUpOJlxUZTR_F9I8YaZnMrnO-p9qtIsG32CA";
+        System.out.println("프론트에서 헤더에 넣어서 보낼 Access token : " + token);
+        System.out.println("토큰 검증 결과 : " + tokenService.verifyToken(token));
+        // debugging
 
         if (token != null && tokenService.verifyToken(token)) {
             String email = tokenService.getUid(token);
+
+            // debugging
+            System.out.println("토큰에서 빼낸 email : " + email);60-----------------------------------------------------------------------------------
+            // debugging
 
             UserDto userDto = UserDto.builder()
                     .email(email)

@@ -1,5 +1,6 @@
 package com.ssafy.jiguhero.config;
 
+
 import com.ssafy.jiguhero.service.OAuth.CustomOAuth2UserService;
 import com.ssafy.jiguhero.service.OAuth.TokenService;
 import lombok.RequiredArgsConstructor;
@@ -23,10 +24,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
+                .antMatchers("/token/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
-                .oauth2Login()
+                .oauth2Login().loginPage("/token/expired")
                 .successHandler(successHandler)
                 .userInfoEndpoint().userService(oAuth2UserService);
+
+        http.addFilterBefore(new JwtAuthFilter(tokenService), UsernamePasswordAuthenticationFilter.class);
     }
 }

@@ -27,6 +27,7 @@ public class TokenService {
         claims.put("role", role);
 
         Date now = new Date();
+
         return new Token(
                 Jwts.builder()
                         .setClaims(claims)
