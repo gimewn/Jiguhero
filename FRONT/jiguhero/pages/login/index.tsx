@@ -1,5 +1,4 @@
 import Head from "next/head"
-import Link from "next/link"
 import styled from "styled-components"
 import KakaoImg from '/public/kakao_login.png';
 import Image from 'next/image';
@@ -35,7 +34,6 @@ export default function Login() {
   return (
     <>
       <IndexText>
-        <ArrowBackIosNewRoundedIcon />
       </IndexText>
 
       <LoginWrapper>
@@ -49,10 +47,12 @@ export default function Login() {
           <SnsLoginText>
             SNS 계정으로 로그인하기
           </SnsLoginText>
+          {/* 카카오 로그인 */}
           <SnsLoginKakao>
             <Image src={KakaoImg} />
           </SnsLoginKakao>
-
+          {/* 네이버 로그인 */}
+          {/* 구글 로그인 */}
         </main>
       </LoginWrapper>
     </>

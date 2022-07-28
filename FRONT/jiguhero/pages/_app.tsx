@@ -1,12 +1,23 @@
 import '../styles/globals.css'
 import type { AppProps } from 'next/app'
 import { RecoilRoot } from 'recoil'
-import MenuForDesk from '../component/MenuBarDesktop';
-import MenuForMobile from '../component/MenuBarMobile';
+import MenuForDesk from '../components/MenuBarDesktop';
+import MenuForMobile from '../components/MenuBarMobile';
 import styled from 'styled-components';
 import Image from 'next/image';
 import logo from '../public/logo.png';
 import { useRouter } from "next/router";
+import { createTheme, ThemeProvider } from '@mui/material';
+
+//MUI component에 font 적용을 위함
+const theme = createTheme({
+  typography: {
+    fontFamily: [
+      'PyeongChang',
+    ].join(','),
+  },
+});
+
 
 const Header = styled('div')`
   display:flex;
@@ -41,25 +52,11 @@ const Footer = styled('div')`
 function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter();
   const onLink = (href) => {
-        router.push(href);  
-        };
+    router.push(href);
+  };
   return (
-    <RecoilRoot>
-<<<<<<< HEAD
-      <Header>
-        <Image src={logo} width={160} height={40} onClick={() => onLink("/")} />
-        <DeskMenu>
-          <MenuForDesk />
-        </DeskMenu>
-      </Header>
-      <Component {...pageProps} />
-      <Footer>
-        <MobileMenu>
-          <MenuForMobile />
-        </MobileMenu>
-      </Footer>
-
-=======
+    <ThemeProvider theme={theme}>
+      <RecoilRoot>
         <Header>
           <Image src={logo} width={160} height={40} onClick={() => onLink("/")} layout='fixed' />
           <DeskMenu>
@@ -74,9 +71,8 @@ function MyApp({ Component, pageProps }: AppProps) {
             <MenuForMobile />
           </MobileMenu>
         </Footer>
->>>>>>> cfd66de83be0735700ab22e78a816208ea2935fb
-    </RecoilRoot>
-
+      </RecoilRoot>
+    </ThemeProvider>
   );
 };
 
