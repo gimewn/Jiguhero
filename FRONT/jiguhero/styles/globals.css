@@ -75,6 +75,7 @@ a {
   color:#98C064;
 }
 
-* :hover{
+button :hover{
   cursor: pointer;
 }
+

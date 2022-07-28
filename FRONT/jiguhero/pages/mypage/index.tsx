@@ -1,95 +1,119 @@
-import { Box, Container } from "@mui/system";
+import { border, Box, color, Container } from "@mui/system";
 import { useState } from "react";
 import Avatar from "@mui/material/Avatar";
 import Grid from "@mui/material/Grid";
 import styled from "styled-components";
 import ArrowForwardIosRoundedIcon from "@mui/icons-material/ArrowForwardIosRounded";
-import { ButtonGroup, Fab, Stack, Paper } from "@mui/material";
-
-import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { BorderColorOutlined } from "@mui/icons-material";
-
-const theme = createTheme({
-  palette: {
-    action: {
-      hover: "#FF4848"
-    },
-    yeondoo: {
-      main: '#98C064',
-      contrastText: '#fff',
-    },
-    hanle: {
-      main: 'white',
-      contrastText: '#65ACE2',
-    },
-    dahong: {
-      main: '#FF4848',
-      contrastText: '#fff',
-    }
-  },
-});
-console.log(theme)
-
-
-declare module '@mui/material/styles' {
-  interface Palette {
-    yeondoo: Palette['primary'],
-    hanle: Palette['primary'];
-    dahong: Palette['primary']
-  }
-
-  // allow configuration using `createTheme`
-  interface PaletteOptions {
-    yeondoo?: PaletteOptions['primary'],
-    hanle?: PaletteOptions['primary'];
-    dahong?: PaletteOptions['primary'];
-  }
-}
-
-// Update the Button's color prop options
-declare module '@mui/material/Button' {
-  interface ButtonPropsColorOverrides {
-    yeondoo: true,
-    hanle: true;
-    dahong: true;
-  }
-}
-
-
+import Link from "next/link";
+import { ButtonBorder, ButtonFull } from "styles/styled";
+import { theme } from "pages/theme";
 
 const Profile = styled("div")`
   display: flex;
+  h2 {
+    font-family: "PyeongChangPeace-Bold";
+    font-size: 28px;
+    margin: 10px 60px 20px 20px;
+  }
+  box {
+    margin: 30px;
+  }
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
-const ContainerStyle = styled(Container)`
+const BgImg = styled("div")`
+  position: relative;
+  width: 65px;
+  height: 65px;
+
+  border: 2px solid transparent;
+  border-radius: 50%;
+  background-image: linear-gradient(to bottom, #ff4848, #ffd362);
+  background-origin: border-box;
+  background-clip: content-box, border-box;
+  img {
+    display: flex;
+    align-items: center;
+    left: 2.5px;
+    top: 2.4px;
+    justify-content: center;
+    position: relative;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+  }
+`;
+
+const EntireContainer = styled("div")`
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   max-width: sm;
 `;
-const Item = styled(Paper)(({ theme }) => ({
-  textAlign: "center",
-}));
+
+const TextGroup = styled("div")`
+  text-align: start;
+  line-height: 2;
+`;
+
+const ButtonGroup = styled("div")`
+  button {
+    margin: 5px;
+  }
+`;
+
+const Play = styled("div")`
+  border-radius: 20px;
+  border: solid 1px #65ace2;
+  margin: 15px auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  width: 250px;
+  height: 80px;
+  font-size: 15px;
+
+  &:hover {
+    cursor: pointer;
+  }
+`;
+const Mis = styled("div")`
+  border-radius: 20px;
+  border: solid 1px #65ace2;
+  margin: 15px auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  width: 250px;
+  height: 80px;
+  font-size: 15px;
+
+  &:hover {
+    cursor: pointer;
+  }
+`;
 
 const Mypage = () => {
   // 탭 전환
   const [tab, setTab] = useState(true);
 
   // 프로필
-  function Profilee() {
+  function ProfileDiv() {
     return (
       <Profile>
-        <Avatar
-          variant="circular"
-          alt="nitz"
-          src="IMG_1008.JPG"
-          sx={{ width: 56, height: 56 }}
-        >
-          Knit
-        </Avatar>
-        <h2 style={{ margin: "20px" }}>니츠</h2>
-        <ArrowForwardIosRoundedIcon />
+        <BgImg>
+          <img alt="nitz" src="IMG_1008.JPG" />
+        </BgImg>
+
+        <h2>니츠</h2>
+        <Box margin="14px 0 0 0">
+          <ArrowForwardIosRoundedIcon />
+        </Box>
       </Profile>
     );
   }
@@ -99,11 +123,15 @@ const Mypage = () => {
     const MissionList = ["하나", "둘", "셋"];
 
     return (
-      <Stack spacing={1}>
+      <>
         {MissionList.map((num) => (
-          <Item key={num}>{num}</Item>
+          <Link href="/" key={num}>
+            <a>
+              <Mis>{num}</Mis>
+            </a>
+          </Link>
         ))}
-      </Stack>
+      </>
     );
   }
 
@@ -116,14 +144,19 @@ const Mypage = () => {
     ];
 
     return (
-      <Stack spacing={1}>
+      <>
         {PlayedArea.map((dic) => (
-          <Item key={dic.title}>
-            {dic.icon}
-            {dic.title}
-          </Item>
+          <Link href="/" key={dic.title}>
+            <a>
+              <Play key={dic.title}>
+                {dic.icon}
+                <br />
+                {dic.title}
+              </Play>
+            </a>
+          </Link>
         ))}
-      </Stack>
+      </>
     );
   }
 
@@ -133,52 +166,67 @@ const Mypage = () => {
   };
 
   return (
-    <ContainerStyle>
+    <EntireContainer>
       <Box onClick={onClickBox}>
         <Grid container>
           <Grid item xs={12}>
-            <Profilee />
+            <ProfileDiv />
           </Grid>
         </Grid>
       </Box>
+      <TextGroup>
+        <h3>현재 보유 포인트: 500</h3>
+        <p>👀내가 좋아요한 활동구역 & 임무</p>
+      </TextGroup>
 
-      <h3>현재 보유 포인트: 500</h3>
-      <p>👀내가 좋아요한 활동구역 & 임무</p>
-
-      <ThemeProvider theme={theme}>
-        <ButtonGroup variant="outlined">
-          <Fab
-            size="medium"
-            variant="extended"
-
+      <ButtonGroup>
+        {tab ? (
+          <ButtonFull
+            dColor={"#98C064"}
+            hColor={"#65ACE2"}
             onClick={() => {
               setTab(true);
             }}
-            color={tab ? "yeondoo" : "hanle"}
-            style={{border: `${tab ? "null": "10px #65ACE2"}`, boxshadow:'0px'}}
-            
           >
             활동구역
-          </Fab>
-          <Fab
-            size="medium"
-            variant="extended"
+          </ButtonFull>
+        ) : (
+          <ButtonBorder
+            dColor={"#65ACE2"}
+            onClick={() => {
+              setTab(true);
+            }}
+          >
+            활동구역
+          </ButtonBorder>
+        )}
+        {tab ? (
+          <ButtonBorder
+            dColor={"#65ACE2"}
             onClick={() => {
               setTab(false);
             }}
             color={tab ? "hanle" : "yeondoo"}
-            style={{border: `${tab ? "null": "10px #65ACE2"}`}}
-            
           >
             임무
-          </Fab>
-        </ButtonGroup>
+          </ButtonBorder>
+        ) : (
+          <ButtonFull
+            dColor={"#98C064"}
+            hColor={"#65ACE2"}
+            onClick={() => {
+              setTab(false);
+            }}
+          >
+            임무
+          </ButtonFull>
+        )}
+      </ButtonGroup>
       <Box>{tab ? <PlayingArea /> : <Mission />}</Box>
-      <Fab size="medium" variant="extended" color="dahong" >
+      <ButtonFull dColor={"#FF4848"} hColor={"#FF4848"}>
         로그아웃
-      </Fab>
-      </ThemeProvider>
-    </ContainerStyle>
+      </ButtonFull>
+    </EntireContainer>
   );
 };
 
