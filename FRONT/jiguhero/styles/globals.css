@@ -60,14 +60,6 @@ a {
 }
 .MuiBottomNavigationAction-label {
   font-family: 'PyeongChang-Regular';
-<<<<<<< HEAD
-  font-size:13px;
-}
-
-.MuiButtonBase-root {
-  font-family: 'PyeongChang-Regular';
-  font-size: 13px;
-=======
   font-size:0.7em;
 }
 
@@ -85,5 +77,4 @@ a {
 
 * :hover{
   cursor: pointer;
->>>>>>> cfd66de83be0735700ab22e78a816208ea2935fb
 }
