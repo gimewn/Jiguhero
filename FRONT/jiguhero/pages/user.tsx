@@ -1,19 +1,16 @@
 import Head from "next/head"
 import React, { useState } from "react";
-import TextField from "@mui/material/TextField";
 import IconButton from '@mui/material/IconButton';
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
-import Stack from '@mui/material/Stack';
-import Box from '@mui/material/Box'
 import styled from "styled-components"
 import { useRouter } from 'next/router';
-import Button from '@mui/material/button'
 import { ButtonFull } from 'styles/styled';
-import ValidateInput from "../components/validationInput";
+import ValidationInput from "../components/validationInput";
 import regex from "../components/regex";
 
 
 export default function User() {
+  const router = useRouter();
   const [nickInput, setNickInput] = useState("");
   return (
     <SignUpWrapper>
@@ -36,17 +33,16 @@ export default function User() {
 
       {/* 대원명 입력 */}
 
-      <ValidateInput
+      <ValidationInput
         value={nickInput}
         setValue={setNickInput}
-        maxValue={15}
+        maxValue={16}
         regexCheck={regex.nickname}
-        defaultText="15자 이내로 작성해주게!"
-        successText="굿!"
-        errorText="15자 이내로 작성해주게!"
+        defaultText="필수값입니다!"
+        successText="Good!"
+        errorText="15자 이내로 작성해주세요!"
       />
 
-      {/* <TextField error helperText="10자 이내로 작성해 주세요!" /> */}
       <ButtonStack>
         <CheckButton>
           <ButtonFull
