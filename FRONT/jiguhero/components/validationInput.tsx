@@ -64,7 +64,6 @@ export default function ConfirmValidationInput({
       <HeroTextField
         label="대원명을 입력해주세요"
         error={isError}
-        required
         id="nicknameInput"
         helperText={helperText}
         variant="standard"
@@ -109,7 +108,7 @@ const HeroTextField = styled(TextField)`
   width: 15rem;
   height: 7vw;
   :hover{
-    color: #4aa0e2;
+    color: #65ACE2;
   }
   input {
     width: calc(100% - 10px);
@@ -117,12 +116,14 @@ const HeroTextField = styled(TextField)`
 
 `
 const CheckBnt = styled(Button)`
-  position: relative;
+  position: absolute;
+  right: 0rem;
+  width: 5rem;
   height: 40px;
   background-color: white;
   border: ${({ isOnCheck }) => (isOnCheck ? "1px solid #98C064;" : "1px solid #d9d9d9")};
   color: ${({ isOnCheck }) => (isOnCheck ? "#98C064" : "#3C3C3C")};
-  font-size: 16px;
+  font-size: 15px;
   border-radius: 15px;
     :hover, .active{
       border-color: #65ACE2;

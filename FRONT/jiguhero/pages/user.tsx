@@ -33,6 +33,7 @@ export default function User() {
       </CameraBtn>
 
       {/* 대원명 입력 및 중복확인*/}
+
       <ConfirmValidationInput
         value={nickInput}
         setValue={setNickInput}
@@ -48,6 +49,8 @@ export default function User() {
         successText="Good!"
         errorText="15자 이내로 작성해주세요!"
       />
+
+
       {/* 가입완료 버튼 */}
       <ButtonStack>
         <ButtonFull
