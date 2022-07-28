@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
@@ -30,26 +31,22 @@ public class ImageController {
         this.imageService = imageService;
     }
 
-    @PostMapping("/upload")
-    public ResponseEntity<String> uploadImage(@RequestParam("file") MultipartFile file) {
+    @PostMapping("/user")
+    public ResponseEntity<String> uploadUserImage(@RequestParam("file") MultipartFile file, @RequestParam("userId") Long userId) {
         if(file.isEmpty()) {
-            // 이미지를 업로드 하지 않았을 경우 처리
             return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
         }
-        String fileName = imageService.saveImage(file);
-        String fileURI = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/image/download/")
-                .path(fileName)
-                .toUriString();
+        imageService.saveUserImage(file, userId);
 
-        return new ResponseEntity<String>(fileURI, HttpStatus.OK);
+        return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
     }
 
-    @GetMapping("/download/{file_name:.+}")
-    public ResponseEntity<Resource> downloadImage(@PathVariable("file_name") String fileName, HttpServletRequest request) {
+    @GetMapping("/{file_name:.+}")
+    public ResponseEntity<Resource> downloadImage(@PathVariable("file_name") String fileName, @RequestParam("target") String target, @RequestParam("date") String date, HttpServletRequest request) {
         Resource resource = null;
+        String saveFolder = File.separator + target + File.separator + date;
         try {
-            resource = imageService.loadImage(fileName);
+            resource = imageService.loadImage(fileName, saveFolder);
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController
@@ -33,5 +34,13 @@ public class UserController {
         UserDto result = userService.getUserById(userId);
 
         return ResponseEntity.status(HttpStatus.OK).body(result);
+    }
+
+    @ApiOperation(value = "user_id로 유저의 프로필 이미지 URL를 조회해 반환한다.", response = String.class)
+    @GetMapping("/profile/{user_id}")
+    public ResponseEntity<String> getProfileImageURL(@PathVariable("user_id") Long userId, HttpServletRequest request) {
+        String url = userService.getProfileImageURL(userId, request);
+
+        return ResponseEntity.status(HttpStatus.OK).body(url);
     }
 }
