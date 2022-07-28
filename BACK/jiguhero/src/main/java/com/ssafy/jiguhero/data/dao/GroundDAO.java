@@ -4,12 +4,9 @@ import com.ssafy.jiguhero.data.entity.Ground;
 
 import java.util.List;
 
-public interface GroundDAO {
+public interface GroundDao {
 
-    // 활동구역 Top5 조회순
-    List<Ground> selectTop5OrderByHits();
-
-    // 활동구역 Top5 좋아요순
-    List<Ground> selectTop5OrderByLikes();
+    // 활동구역 Top5 조회순, 조회수가 같으면 좋아요순
+    List<Ground> selectTop5HitsLikes();
 
 }

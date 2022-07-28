@@ -1,9 +1,6 @@
 package com.ssafy.jiguhero.security;
 
-
 import com.ssafy.jiguhero.data.entity.User;
-import com.ssafy.jiguhero.data.entity.type.UserRole;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
@@ -17,25 +14,30 @@ import java.util.List;
 import java.util.Map;
 
 @Getter
-@AllArgsConstructor
 public class UserPrincipal implements OAuth2User, UserDetails {
-
-    private long id;
+    private Long id;
     private String email;
     private String password;
     private Collection<? extends GrantedAuthority> authorities;
     @Setter
     private Map<String, Object> attributes;
 
+    public UserPrincipal(Long id, String email, String password, Collection<? extends GrantedAuthority> authorities) {
+        this.id = id;
+        this.email = email;
+        this.password = password;
+        this.authorities = authorities;
+    }
+
     public static UserPrincipal create(User user) {
-        List<GrantedAuthority> authorities =
-                Collections.singletonList(new SimpleGrantedAuthority("" + UserRole.CLIENT));
+        List<GrantedAuthority> authorities = Collections.
+                singletonList(new SimpleGrantedAuthority("ROLE_USER"));
+
         return new UserPrincipal(
-                user.getUserId(),
+                user.getUserId(), ////////////////////////////////////////////////////////////////////////// 원래 getId()
                 user.getEmail(),
                 user.getPassword(),
-                authorities,
-                null
+                authorities
         );
     }
 
@@ -43,6 +45,16 @@ public class UserPrincipal implements OAuth2User, UserDetails {
         UserPrincipal userPrincipal = UserPrincipal.create(user);
         userPrincipal.setAttributes(attributes);
         return userPrincipal;
+    }
+
+    @Override
+    public String getPassword() {
+        return password;
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
     }
 
     @Override
@@ -66,13 +78,17 @@ public class UserPrincipal implements OAuth2User, UserDetails {
     }
 
     @Override
-    public String getName() {
-        return String.valueOf(id);
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return authorities;
     }
 
     @Override
-    public String getUsername() {
-        return email;
+    public Map<String, Object> getAttributes() {
+        return attributes;
     }
 
+    @Override
+    public String getName() {
+        return String.valueOf(id);
+    }
 }
