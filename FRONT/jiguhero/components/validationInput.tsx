@@ -3,6 +3,10 @@ import styled from "@emotion/styled";
 import { Button, TextField } from "@mui/material";
 import { ButtonBorder, ButtonFull } from 'styles/styled';
 
+
+//handleValueCheck는 중복확인을 할 수 있는 api함수를 담아주면 됩니다.
+//isCheck는 부모로부터 중복확인 여부 state 값을 받아온다.
+//setIsCheck는 부모로부터 중복확인 여부 state를 변경시킬 수 있는 함수를 받아온다.
 export default function ConfirmValidationInput({
   type,
   value,
@@ -21,10 +25,9 @@ export default function ConfirmValidationInput({
   const [helperText, setHelperText] = useState(defaultText);
 
   //중복체크를 on 할 것인지 안할것인지 판별 여부
-  const [isOnCheck, setIsOnCheck] = useState(false);
+  const [isOnCheck, setOnCheck] = useState(false);
 
   const HandleOnChange = (e) => {
-
     //한번이라도 수정한 적이 있으면 
     //isCheck를 false 변경시킨다.
     if (isCheck) setIsCheck(false);
@@ -42,25 +45,29 @@ export default function ConfirmValidationInput({
     }
 
     if (regexCheck) {
-      // 정규표현식체크가 통과되면 successText를 송출하고 아니면 errorText를 송출한다
+      // 정규표현식체크가 통과되면 successText를 송출하고 
+      //아니면 errorText를 송출한다
       if (regexCheck.test(e.target.value)) {
         setIsError(false);
-        setIsOnCheck(true);
+        setOnCheck(true);
         return setHelperText(successText);
       }
       if (!regexCheck.test(e.target.value)) {
         setIsError(true);
         setHelperText(errorText);
-        setIsOnCheck(false);
+        setOnCheck(false);
       }
     }
   };
+
   const handleCheck = () => {
+    //handleValueCheck는 중복확인을 할 수 있는 api함수를 담기
     handleValueCheck();
   };
 
   return (
     <Container>
+
       <HeroTextField
         label="대원명을 입력해주세요"
         error={isError}
@@ -76,26 +83,30 @@ export default function ConfirmValidationInput({
           hColor={'#65ACE2'}
           dColor={'#98C064'}>확인</ButtonFull>
       ) : (
-        <CheckBnt
+        <ButtonBorder
+          hColor={'#65ACE2'}
+          dColor={'#98C064'}
           isOnCheck={isOnCheck}
           disabled={!isOnCheck ? true : false}
-          onClick={handleCheck}>
+          onClick={handleCheck}
+        >
           중복확인
-        </CheckBnt>
+        </ButtonBorder>
       )}
     </Container>
   );
 }
 
-ConfirmValidationInput.defaultProps = {
-  type: "text",
-  label: "",
-  value: "",
-  setValue: () => { },
-  isCheck: false,
-  setIsCheck: () => { },
-  handleValueCheck: () => { }
-};
+
+// ConfirmValidationInput.defaultProps = {
+//   type: "text",
+//   label: "",
+//   value: "",
+//   setValue: () => { },
+//   isCheck: false,
+//   setIsCheck: () => { },
+//   handleValueCheck: () => { }
+// };
 
 
 //////styled-components
@@ -115,18 +126,4 @@ const HeroTextField = styled(TextField)`
   }
 
 `
-const CheckBnt = styled(Button)`
-  position: absolute;
-  right: 0rem;
-  width: 5rem;
-  height: 40px;
-  background-color: white;
-  border: ${({ isOnCheck }) => (isOnCheck ? "1px solid #98C064;" : "1px solid #d9d9d9")};
-  color: ${({ isOnCheck }) => (isOnCheck ? "#98C064" : "#3C3C3C")};
-  font-size: 15px;
-  border-radius: 15px;
-    :hover, .active{
-      border-color: #65ACE2;
-      color: #65ACE2;
-      background-color: white;}
-`;
+

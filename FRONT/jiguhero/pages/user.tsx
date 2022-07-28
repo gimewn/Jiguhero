@@ -82,7 +82,7 @@ const SignUpText = styled('h1')`
   align-items: center;
   margin-top: 3rem;
 `
-const CameraBox = styled('div')`
+const CameraBox = styled('form')`
   width: 150px;
   height: 150px;
   background-color: #FFffff;
