@@ -2,10 +2,11 @@ import GroundTop5 from 'components/Top5Slide';
 import styled from 'styled-components';
 import MissionTop3 from 'components/MissionTop3'
 import Map from 'components/map';
+import News from 'components/news';
 
 const Title = styled('p')`
   font-weight: bold;
-  font-size: 0.9em;
+  font-size: 1em;
 `
 const Block = styled('div')`
 padding: 10px 10px 0 10px;
@@ -39,7 +40,9 @@ export default function Home(){
     </Block>
     <Block>
       <Title>📰대원들을 위한 친환경 소식</Title>
-      <Content></Content>
+      <Content>
+        <News />
+      </Content>
     </Block>
     </>
   )

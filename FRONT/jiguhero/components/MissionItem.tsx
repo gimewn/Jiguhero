@@ -2,11 +2,11 @@ import styled from 'styled-components';
 
 const Title = styled('p')`
     font-weight: bold;
-    font-size:0.9em;
+    font-size:1em;
     margin: 5px 10px;
 `
 const JoinSentence = styled('span')`
-    font-size:12px;
+    font-size:13px;
     margin: 0 2px;
 `
 const JoinPeople = styled('span')`
@@ -33,7 +33,7 @@ const Mission = styled('div')`
         width:500px;
     }
     @media screen and (min-width:700px){
-        width:650px;
+        width:620px;
     }
 `
 

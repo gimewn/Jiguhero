@@ -52,7 +52,7 @@ const GroundTopFive = [
         600:{
             slidesPerView:4,
         },
-        750: {
+        800: {
             slidesPerView: 5,
           }
       }}
