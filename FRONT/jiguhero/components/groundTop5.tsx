@@ -7,19 +7,21 @@ const Ground = styled('div')`
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    width:120px;
+    width:100%;
+    /* min-width:100px; */
     height:120px;
     padding:10px;
+    margin-right:20px;
 `
 const Icon = styled('p')`
     font-size:20px;
-    margin:0 auto;
+    margin: 5px auto;
 `
 const Title = styled('p')`
     margin: 0 auto;
     text-align: center;
-    font-size:12px;
-    width:60px;
+    font-size:13px;
+    width:80px;
     word-break: keep-all;
 `
 

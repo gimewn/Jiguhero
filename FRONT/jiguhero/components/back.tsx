@@ -27,7 +27,7 @@ interface PageName{
 export default function Back({name}:PageName){
     const router = useRouter()
     return(
-        <Title>
+        <Title className="BackTitle">
             <BackButton onClick={() => {router.back()}}/>
             <PageTitle>{name}</PageTitle>
         </Title>
