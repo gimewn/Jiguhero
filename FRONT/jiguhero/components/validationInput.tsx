@@ -110,19 +110,16 @@ export default function ConfirmValidationInput({
 
 
 //////styled-components
-const Container = styled.div`
+const Container = styled('div')`
   position: relative;
 `;
 
 
 const HeroTextField = styled(TextField)`
-  width: 15rem;
+  width: 13.5rem;
   height: 7vw;
   :hover{
     color: #65ACE2;
-  }
-  input {
-    width: calc(100% - 10px);
   }
 
 `

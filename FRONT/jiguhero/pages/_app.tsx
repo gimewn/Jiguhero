@@ -8,6 +8,41 @@ import Image from 'next/image';
 import logo from '../public/logo.png';
 import { useRouter } from "next/router";
 import { createTheme, ThemeProvider } from '@mui/material';
+import { SessionProvider } from 'next-auth/react';
+
+
+
+
+function MyApp({ Component, pageProps }: AppProps) {
+  const router = useRouter();
+  const onLink = (href) => {
+    router.push(href);
+  };
+  return (
+    <SessionProvider session={pageProps.session}>
+      <ThemeProvider theme={theme}>
+        <RecoilRoot>
+          <Header>
+            <Image src={logo} width={160} height={40} onClick={() => onLink("/")} layout='fixed' />
+            <DeskMenu>
+              <MenuForDesk />
+            </DeskMenu>
+          </Header>
+          <Container>
+            <Component {...pageProps} />
+          </Container>
+          <Footer>
+            <MobileMenu>
+              <MenuForMobile />
+            </MobileMenu>
+          </Footer>
+        </RecoilRoot>
+      </ThemeProvider>
+    </SessionProvider>
+  );
+};
+
+export default MyApp
 
 //MUI component에 font 적용을 위함
 const theme = createTheme({
@@ -48,32 +83,3 @@ const Footer = styled('div')`
   left:0;
   right:0;
 `
-
-function MyApp({ Component, pageProps }: AppProps) {
-  const router = useRouter();
-  const onLink = (href) => {
-    router.push(href);
-  };
-  return (
-    <ThemeProvider theme={theme}>
-      <RecoilRoot>
-        <Header>
-          <Image src={logo} width={160} height={40} onClick={() => onLink("/")} layout='fixed' />
-          <DeskMenu>
-            <MenuForDesk />
-          </DeskMenu>
-        </Header>
-        <Container>
-          <Component {...pageProps} />
-        </Container>
-        <Footer>
-          <MobileMenu>
-            <MenuForMobile />
-          </MobileMenu>
-        </Footer>
-      </RecoilRoot>
-    </ThemeProvider>
-  );
-};
-
-export default MyApp

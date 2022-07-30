@@ -80,7 +80,7 @@ const SignUpText = styled('h1')`
   display:flex;
   justify-content: center;
   align-items: center;
-  margin-top: 3rem;
+  margin-top: 1.8rem;
 `
 const CameraBox = styled('form')`
   width: 150px;
@@ -109,3 +109,6 @@ const ButtonStack = styled('div')`
   align-items: center;
   padding-top: 60px;
 `
+
+
+
