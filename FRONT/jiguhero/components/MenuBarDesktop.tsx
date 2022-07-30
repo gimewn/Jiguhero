@@ -21,19 +21,6 @@ const Menu = styled('div')`
     color:#65ACE2;
   }
 `
-// if (process.browser){
-//   var navContainer = document.getElementById("NavBar");
-//   var menus = navContainer.getElementsByClassName("navMenu");
-//   for (var i = 0; i < menus.length; i++) {  
-//     menus[i].addEventListener("click", function() {  
-//     var current = document.getElementsByClassName("active");  
-//     if (current.length > 0) {
-//       current[0].className = current[0].className.replace(" active", "");  
-//     }  
-//     this.className += " active";  
-//     });  
-//   }  
-// }
 
 export default function UnderlineLink() {
   const router = useRouter();

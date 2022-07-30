@@ -44,6 +44,23 @@ body {
   margin: 0;
   font-family: 'PyeongChang-Regular', 'PyeongChang-Bold', 'PyeongChangPeace-Bold', 'Pretendard', -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+    overflow: auto;
+  height:100%;
+}
+body{
+  justify-content: center;
+  padding-bottom: 30px;
+}
+@media screen and (max-width: 650px){
+  body{
+    padding-bottom:80px;
+  }
+}
+
+#wrap {
+  min-height: 100%;
+  position: relative;
+  padding-bottom:80px;
 }
 
 a {
@@ -55,40 +72,35 @@ a {
   box-sizing: border-box;
 }
 
-.MuiBottomNavigation-root .MuiButtonBase-root svg {
-  font-size:2em;
-  color: #98C064;
-}
-
-.MuiBottomNavigation-root .Mui-selected svg{
-  font-size:2.2em;
-  color: #65ACE2;
-}
-
-.css-1bjk3jo-MuiButtonBase-root-MuiBottomNavigationAction-root.Mui-selected {
-  color:#98C064;
-}
-
-.MuiBottomNavigation-root {
-  height:80px;
-}
-.MuiBottomNavigationAction-label {
-  font-family: 'PyeongChang-Regular';
-  font-size:0.7em;
-}
-
-.MuiBottomNavigationAction-label.Mui-selected {
-  font-size: 0.8em;
-}
-
-.css-1bjk3jo-MuiButtonBase-root-MuiBottomNavigationAction-root{
-  padding:none;
-}
-
-.css-kqgs8v-MuiButtonBase-root-MuiBottomNavigationAction-root.Mui-selected{
-  color:#98C064;
-}
-
-/* * :hover{
+* :hover{
   cursor: pointer;
-} */
+}
+
+@media screen and (min-width: 375px){
+  .swiper{
+    width:300px;
+  }
+}
+@media screen and (min-width:450px){
+  .swiper{
+    width: 400px;
+  }
+}
+@media screen and (min-width: 550px){
+  .swiper{
+    width:500px;
+  }
+}
+@media screen and (min-width:700px){
+  .swiper{
+    width:650px;
+  }
+  .swiper-wrapper{
+    justify-content: center;
+  }
+}
+
+.swiper-slide{
+  width:120px !important;
+  margin: 5px;
+}
