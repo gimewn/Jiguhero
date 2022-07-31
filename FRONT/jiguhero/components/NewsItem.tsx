@@ -12,9 +12,12 @@ const NewsDiv = styled('div')`
 `
 
 const Title = styled('p')`
-    visibility: hidden;
+    display:none;
+    font-size:20px;
     color:white;
     position: absolute;
+    top: 10px;
+    left:20px;
 `
 
 const Item = styled('div')`
@@ -42,9 +45,9 @@ const Item = styled('div')`
     }
     :hover{
         filter: brightness(30%);
-    }
-    &:hover .newsTitle{
-        visibility: visible;
+        .newsTitle{
+            display:inline;
+        }
     }
 `
 
