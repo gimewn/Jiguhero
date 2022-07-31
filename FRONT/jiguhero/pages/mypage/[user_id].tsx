@@ -130,7 +130,11 @@ const Mypage = () => {
   const [data, setData] = useState<Idata>();
   useEffect(() => {
     (async () => {
-      const response = await fetch(`http://43.200.54.174:8080/user/1`);
+      const response = await fetch("http://43.200.54.174:8080/user/1", {
+        headers: {
+          Accept: "*/*",
+        }
+      })
       const json = await response.json();
       setData(json);
     })();
@@ -148,7 +152,7 @@ const Mypage = () => {
         </BgImg>
         <div>
           <p>빨강</p>
-          <h2>니츠</h2>
+          <h2>{data.nickname}</h2>
         </div>
         <Box margin="14px 0 0 0">
           <ArrowForwardIosRoundedIcon sx={{ color: blue[300] }} />
