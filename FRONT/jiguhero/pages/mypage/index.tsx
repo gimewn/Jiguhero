@@ -7,19 +7,25 @@ import ArrowForwardIosRoundedIcon from "@mui/icons-material/ArrowForwardIosRound
 import Link from "next/link";
 import { ButtonBorder, ButtonFull } from "styles/styled";
 import { theme } from "pages/theme";
+import { blue } from "@mui/material/colors";
+import { Pagination } from "@mui/material";
 
 const Profile = styled("div")`
   display: flex;
   h2 {
-    font-family: "PyeongChangPeace-Bold";
     font-size: 28px;
-    margin: 10px 60px 20px 20px;
+    margin: 0px 60px 10px 20px;
   }
   box {
     margin: 30px;
   }
   &:hover {
     cursor: pointer;
+  }
+  div p {
+    font-family: "PyeongChangPeace-Bold";
+    margin: 10px 60px 0px 20px;
+    color: #ff4848;
   }
 `;
 
@@ -28,7 +34,7 @@ const BgImg = styled("div")`
   width: 65px;
   height: 65px;
 
-  border: 2px solid transparent;
+  border: 1px solid transparent;
   border-radius: 50%;
   background-image: linear-gradient(to bottom, #ff4848, #ffd362);
   background-origin: border-box;
@@ -36,8 +42,8 @@ const BgImg = styled("div")`
   img {
     display: flex;
     align-items: center;
-    left: 2.5px;
-    top: 2.4px;
+    left: 3.5px;
+    top: 3.5px;
     justify-content: center;
     position: relative;
     width: 56px;
@@ -75,10 +81,14 @@ const Play = styled("div")`
   text-align: center;
   width: 250px;
   height: 80px;
-  font-size: 15px;
+  font-size: 13px;
+  flex-direction: column;
 
   &:hover {
     cursor: pointer;
+  }
+  p {
+    margin: 4px;
   }
 `;
 const Mis = styled("div")`
@@ -109,28 +119,48 @@ const Mypage = () => {
         <BgImg>
           <img alt="nitz" src="IMG_1008.JPG" />
         </BgImg>
-
-        <h2>니츠</h2>
+        <div>
+          <p>빨강</p>
+          <h2>니츠</h2>
+        </div>
         <Box margin="14px 0 0 0">
-          <ArrowForwardIosRoundedIcon />
+          <ArrowForwardIosRoundedIcon sx={{ color: blue[300] }} />
         </Box>
       </Profile>
     );
   }
 
+  const PagI = styled(Pagination)`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px;
+  `;
+
   // 임무
   function Mission() {
-    const MissionList = ["하나", "둘", "셋"];
+    const MissionList = ["하나", "둘", "셋", "넷", "다섯", "여섯"];
+    const remainder = MissionList.length % 3;
+    const quot = parseInt(MissionList.length / 3);
+    const [page, setPage] = useState(1);
+    const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
+      setPage(value);
+    };
 
     return (
       <>
-        {MissionList.map((num) => (
+        {MissionList.slice((page - 1) * 3, page * 3).map((num) => (
           <Link href="/" key={num}>
             <a>
               <Mis>{num}</Mis>
             </a>
           </Link>
         ))}
+        <PagI
+          count={remainder === 0 ? quot : quot + 1}
+          page={page}
+          onChange={handleChange}
+        />
       </>
     );
   }
@@ -141,21 +171,34 @@ const Mypage = () => {
       { icon: "❤️", title: "내가 애정하는 친환경 카페" },
       { icon: "🏝", title: "제주도의 제로웨이스트 샵" },
       { icon: "🍽", title: "광주광역시의 비건식당" },
+      { icon: "🍡", title: "재활용품 사용가게" },
+      { icon: "🍘", title: "친환경 생활용품점" },
+      { icon: "🍨", title: "유기농 디저트 맛집" },
     ];
+    const remainder = PlayedArea.length % 3;
+    const quot = parseInt(PlayedArea.length / 3);
+    const [page, setPage] = useState(1);
+    const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
+      setPage(value);
+    };
 
     return (
       <>
-        {PlayedArea.map((dic) => (
+        {PlayedArea.slice((page - 1) * 3, page * 3).map((dic) => (
           <Link href="/" key={dic.title}>
             <a>
               <Play key={dic.title}>
-                {dic.icon}
-                <br />
-                {dic.title}
+                <p>{dic.icon}</p>
+                <span>{dic.title}</span>
               </Play>
             </a>
           </Link>
         ))}
+        <PagI
+          count={remainder === 0 ? quot : quot + 1}
+          page={page}
+          onChange={handleChange}
+        />
       </>
     );
   }
