@@ -12,30 +12,35 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Entity
-@Table(name = "Review")
-public class Review {
+@Table(name = "Conn_Mission")
+public class Conn_Mission {
+
     @Id
-    @Column(name = "review_id")
+    @Column(name = "conn_mission_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long reviewId;
+    private long connMissionId;
 
     @Column(nullable = false)
-    private int score;
+    private String state;
 
     @Column(nullable = false)
-    private String content;
+    private int role;
 
-    //@Column(nullable = false, name = "user_id")
-    //private long userId;
+    @Column(nullable = false, name = "success_rate")
+    private int successRate;
 
-    //@Column(nullable = false, name = "place_id")
-    //private long placeId;
+//    @Column(nullable = false)
+//    private long user_id;
+//
+//    @Column(nullable = false)
+//    private long mission_id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userId")
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "placeId")
-    private Place place;
+    @JoinColumn(name = "missionId")
+    private Mission mission;
+
 }

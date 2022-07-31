@@ -16,41 +16,42 @@ import java.time.LocalDateTime;
 @Table(name = "Mission")
 public class Mission {
     @Id
+    @Column(name = "mission_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long mission_id;
+    private long missionId;
 
     @Column(nullable = false)
     private String title;
 
-    @Column(nullable = false)
-    private LocalDateTime start_date;
+    @Column(nullable = false, name = "start_date")
+    private LocalDateTime startDate;
+
+    @Column(nullable = false, name = "end_date")
+    private LocalDateTime endDate;
+
+    @Column(nullable = false, name = "enrty_point")
+    private int entryPoint;
+
+    @Column(nullable = true, name = "sido_code")
+    private String sidoCode;
+
+    @Column(nullable = true, name = "gugun_code")
+    private String gugunCode;
+
+    @Column(nullable = true, name = "dong_code")
+    private String dongCode;
+
+    @Column(nullable = false, name = "now_person")
+    private int nowPerson;
+
+    @Column(nullable = false, name = "max_person")
+    private int maxPerson;
+
+    @Column(nullable = false, name = "failed_person")
+    private int failedPerson;
 
     @Column(nullable = false)
-    private LocalDateTime end_date;
-
-    @Column(nullable = false)
-    private int entry_point;
-
-    @Column(nullable = true)
-    private String sido_code;
-
-    @Column(nullable = true)
-    private String gugun_code;
-
-    @Column(nullable = true)
-    private String dong_code;
-
-    @Column(nullable = false)
-    private int now_person;
-
-    @Column(nullable = false)
-    private int max_person;
-
-    @Column(nullable = false)
-    private int failed_person;
-
-    @Column(nullable = false)
-    private int like;
+    private int likes;
 
     @Column(nullable = false)
     private int hits;

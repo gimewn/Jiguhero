@@ -15,8 +15,9 @@ import javax.persistence.*;
 @Table(name = "Promotion")
 public class Promotion {
     @Id
+    @Column(name = "promotion_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long promotion_id;
+    private long promotionId;
 
     @Column(nullable = false)
     private String title;
@@ -26,4 +27,7 @@ public class Promotion {
 
     @Column(nullable = true)
     private String content;
+
+    @OneToOne(mappedBy = "promotion")
+    private Image_Promotion imagePromotion;
 }

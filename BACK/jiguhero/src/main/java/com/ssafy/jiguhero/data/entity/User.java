@@ -5,10 +5,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -18,7 +17,8 @@ import javax.persistence.Table;
 @Table(name = "User")
 public class User {
     @Id
-    private long user_id;
+    @Column(name = "user_id")
+    private long userId;
 
     @Column(nullable = false)
     private String email;
@@ -34,4 +34,13 @@ public class User {
 
     @Column(nullable = false)
     private int point;
+
+    @OneToMany(mappedBy = "user")
+    List<Ground> ground = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    List<Report> report = new ArrayList<>();
+
+    @OneToOne(mappedBy = "user")
+    private Image_User imageUser;
 }
