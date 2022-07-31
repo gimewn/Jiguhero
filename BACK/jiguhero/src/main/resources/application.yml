@@ -27,7 +27,7 @@ spring:
             - profile
         naver:
           clientId: 61No1qNDaGEXDwKNQ4Th
-          clientSecret: QLL0txFJOr
+          clientSecret: hPgLeg1uCb
           clientAuthenticationMethod: post
           authorizationGrantType: authorization_code
           redirectUri: http://localhost:8080/login/ouath2/code/naver
