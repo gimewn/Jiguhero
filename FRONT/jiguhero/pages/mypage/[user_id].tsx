@@ -1,5 +1,5 @@
 import { border, Box, color, Container } from "@mui/system";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Avatar from "@mui/material/Avatar";
 import Grid from "@mui/material/Grid";
 import styled from "styled-components";
@@ -9,6 +9,7 @@ import { ButtonBorder, ButtonFull } from "styles/styled";
 import { theme } from "pages/theme";
 import { blue } from "@mui/material/colors";
 import { Pagination } from "@mui/material";
+import { userInfo } from "os";
 
 const Profile = styled("div")`
   display: flex;
@@ -108,10 +109,36 @@ const Mis = styled("div")`
   }
 `;
 
+const PagI = styled(Pagination)`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 10px;
+`;
+
+interface Idata {
+  userId: number;
+  email: string;
+  nickname: string;
+  name: string;
+  grade: number;
+  point: number;
+}
+
 const Mypage = () => {
+
+  const [data, setData] = useState<Idata>();
+  useEffect(() => {
+    (async () => {
+      const response = await fetch(`http://43.200.54.174:8080/user/1`);
+      const json = await response.json();
+      setData(json);
+    })();
+  }, []);
+
+  console.log(data)
   // 탭 전환
   const [tab, setTab] = useState(true);
-
   // 프로필
   function ProfileDiv() {
     return (
@@ -129,13 +156,6 @@ const Mypage = () => {
       </Profile>
     );
   }
-
-  const PagI = styled(Pagination)`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 10px;
-  `;
 
   // 임무
   function Mission() {
@@ -205,7 +225,7 @@ const Mypage = () => {
 
   // 프로필 클릭
   const onClickBox = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    console.log(event);
+
   };
 
   return (
@@ -274,3 +294,4 @@ const Mypage = () => {
 };
 
 export default Mypage;
+
