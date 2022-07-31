@@ -42,7 +42,7 @@ public class Image_Mission {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userId")
-    private User user;
+    private Hero user;
 
 
 }

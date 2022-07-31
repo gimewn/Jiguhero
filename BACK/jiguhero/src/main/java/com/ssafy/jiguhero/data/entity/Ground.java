@@ -45,7 +45,7 @@ public class Ground {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userId")
-    private User user;
+    private Hero user;
 
     public static Ground of(GroundDto groundDto) {
         Ground groundEntity = ModelMapperUtils.getModelMapper().map(groundDto, Ground.class);

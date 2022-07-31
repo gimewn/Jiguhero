@@ -22,7 +22,7 @@ public class Like_Mission {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userId")
-    private User user;
+    private Hero user;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "missionId")
