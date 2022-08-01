@@ -38,8 +38,9 @@ public class UserServiceImpl implements UserService {
 
         String saveFile = imageUser.getSaveFile();
         String saveFolder = imageUser.getSaveFolder();
-        String target = saveFolder.split("\\\\")[1];
-        String date = saveFolder.split("\\\\")[2];
+        String sep = saveFolder.substring(0,1);
+        String target = saveFolder.split(sep)[1];
+        String date = saveFolder.split(sep)[2];
         String url = request.getRequestURL().toString().replace(request.getRequestURI(),"") + "/image/" + saveFile + "?target=" + target + "&date=" + date;
 
         return url;
