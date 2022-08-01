@@ -1,7 +1,5 @@
 package com.ssafy.jiguhero.data.entity;
 
-import com.ssafy.jiguhero.data.dto.MissionDto;
-import com.ssafy.jiguhero.util.ModelMapperUtils;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -57,10 +55,4 @@ public class Mission {
 
     @Column(nullable = false)
     private int hits;
-
-    public static Mission of(MissionDto missionDto) {
-        Mission missionEntity = ModelMapperUtils.getModelMapper().map(missionDto, Mission.class);
-
-        return missionEntity;
-    }
 }

@@ -6,8 +6,8 @@ import java.util.List;
 
 public interface GroundService {
 
-    List<GroundDto> getTop5HitsLikes();
+    List<GroundDto> getTop5Hits();
 
-    List<GroundDto> getLikeGrounds(Long userId);
+    List<GroundDto> getTop5Likes();
 
 }
