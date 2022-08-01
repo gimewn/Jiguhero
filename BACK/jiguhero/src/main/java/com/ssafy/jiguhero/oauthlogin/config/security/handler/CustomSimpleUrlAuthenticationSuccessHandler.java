@@ -40,26 +40,43 @@ public class CustomSimpleUrlAuthenticationSuccessHandler extends SimpleUrlAuthen
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         DefaultAssert.isAuthentication(!response.isCommitted());
 
-        String targetUrl = determineTargetUrl(request, response, authentication);
+        // Token 생성
+        TokenMapping tokenMapping = customTokenProviderService.createToken(authentication);
+
+        String targetUrl = determineTargetUrl(request, response, authentication, tokenMapping);
 
         clearAuthenticationAttributes(request, response);
+
+        // Cookie 생성
+        Cookie cookie = new Cookie("refreshToken", tokenMapping.getRefreshToken());
+        // 만료기한 : 30일
+        cookie.setMaxAge(30 * 24 * 60 * 60);
+        // optional properties
+        cookie.setSecure(true);
+        cookie.setHttpOnly(true);
+        cookie.setPath("/");
+
+        // add cookie to response
+        response.addCookie(cookie);
+
         getRedirectStrategy().sendRedirect(request, response, targetUrl);
     }
 
-    protected String determineTargetUrl(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
+    protected String determineTargetUrl(HttpServletRequest request, HttpServletResponse response, Authentication authentication, TokenMapping tokenMapping) {
+
         Optional<String> redirectUri = CustomCookie.getCookie(request, REDIRECT_URI_PARAM_COOKIE_NAME).map(Cookie::getValue);
 
         DefaultAssert.isAuthentication( !(redirectUri.isPresent() && !isAuthorizedRedirectUri(redirectUri.get())) );
 
         String targetUrl = redirectUri.orElse(getDefaultTargetUrl());
 
-        TokenMapping tokenMapping = customTokenProviderService.createToken(authentication);
         Token token = Token.builder()
                             .userEmail(tokenMapping.getUserEmail())
                             .refreshToken(tokenMapping.getRefreshToken())
                             .build();
         tokenRepository.save(token);
 
+        // queryParam에 Access Token 저장
         return UriComponentsBuilder.fromUriString(targetUrl)
                 .queryParam("token", tokenMapping.getAccessToken())
                 .build().toUriString();
