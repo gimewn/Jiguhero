@@ -64,6 +64,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <RecoilRoot>
       <Header>
+        
         <Image src={logo} width={160} height={40} onClick={() => onLink("/")} layout='fixed' />
         <DeskMenu>
           <MenuForDesk />
