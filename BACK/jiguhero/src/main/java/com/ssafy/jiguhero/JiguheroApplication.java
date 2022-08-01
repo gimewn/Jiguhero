@@ -10,7 +10,6 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 public class JiguheroApplication {
 
 	public static void main(String[] args) {
-		System.out.println();
 		SpringApplication.run(JiguheroApplication.class, args);
 	}
 
