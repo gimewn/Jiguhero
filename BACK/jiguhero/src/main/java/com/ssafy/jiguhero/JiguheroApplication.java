@@ -1,12 +1,12 @@
 package com.ssafy.jiguhero;
 
-import com.ssafy.jiguhero.config.AppProperties;
+import com.ssafy.jiguhero.config.FileUploadProperties;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 
+@EnableConfigurationProperties({FileUploadProperties.class})
 @SpringBootApplication
-@EnableConfigurationProperties(AppProperties.class)
 public class JiguheroApplication {
 
 	public static void main(String[] args) {

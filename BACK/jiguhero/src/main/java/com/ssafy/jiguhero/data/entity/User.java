@@ -1,11 +1,13 @@
 package com.ssafy.jiguhero.data.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.sun.istack.NotNull;
-import lombok.*;
+import com.ssafy.jiguhero.data.dto.UserDto;
+import com.ssafy.jiguhero.util.ModelMapperUtils;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,47 +22,19 @@ public class User {
     @Column(name = "user_id")
     private long userId;
 
-    ///////////////////////////////////////////////////////////////////////////////////////
-    @Email
-    ///////////////////////////////////////////////////////////////////////////////////////
-    //@Column(nullable = false)
+    @Column(nullable = false)
     private String email;
 
-    //@Column(nullable = false)
+    @Column(nullable = false)
     private String nickname;
 
-    //@Column(nullable = false)
+    @Column(nullable = false)
     private String name;
 
-    ///////////////////////////////////////////////////////////////////////////////////////
-    @JsonIgnore
-    private String password;
-
-    private String imageUrl;
-
-    //@Column(nullable = false)
-    private Boolean emailVerified = false;
-
-    //@NotNull
-    @Enumerated(EnumType.STRING)
-    private AuthProvider provider;
-
-    private String providerId;
-
-    @Builder(builderClassName= "social", builderMethodName = "socialBuilder")
-    private User(String name, @Email String email, String imageUrl, @NotNull AuthProvider provider, String providerId) {
-        this.name = name;
-        this.email = email;
-        this.imageUrl = imageUrl;
-        this.provider = provider;
-        this.providerId = providerId;
-    }
-    ///////////////////////////////////////////////////////////////////////////////////////
-
-    //@Column(nullable = false)
+    @Column(nullable = false)
     private int grade;
 
-    //@Column(nullable = false)
+    @Column(nullable = false)
     private int point;
 
     @OneToMany(mappedBy = "user")
@@ -71,4 +45,10 @@ public class User {
 
     @OneToOne(mappedBy = "user")
     private Image_User imageUser;
+
+    public static User of(UserDto userDto) {
+        User userEntity = ModelMapperUtils.getModelMapper().map(userDto, User.class);
+
+        return userEntity;
+    }
 }

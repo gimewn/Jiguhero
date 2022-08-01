@@ -8,4 +8,6 @@ public interface GroundService {
 
     List<GroundDto> getTop5HitsLikes();
 
+    List<GroundDto> getLikeGrounds(Long userId);
+
 }
