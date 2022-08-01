@@ -11,6 +11,7 @@ import { blue } from "@mui/material/colors";
 import { Pagination } from "@mui/material";
 import { userInfo } from "os";
 
+
 const Profile = styled("div")`
   display: flex;
   h2 {
@@ -27,6 +28,7 @@ const Profile = styled("div")`
     font-family: "PyeongChangPeace-Bold";
     margin: 10px 60px 0px 20px;
     color: #ff4848;
+    font-size: 18px;
   }
 `;
 
@@ -64,6 +66,9 @@ const EntireContainer = styled("div")`
 const TextGroup = styled("div")`
   text-align: start;
   line-height: 2;
+  p {
+    font-family: 'PyeongChang-Bold';
+  }
 `;
 
 const ButtonGroup = styled("div")`
@@ -113,7 +118,7 @@ const PagI = styled(Pagination)`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
 `;
 
 interface Idata {
@@ -125,22 +130,21 @@ interface Idata {
   point: number;
 }
 
-const Mypage = () => {
+const Mypage = (user_id) => {
 
-  const [data, setData] = useState<Idata>();
-  useEffect(() => {
-    (async () => {
-      const response = await fetch("http://43.200.54.174:8080/user/1", {
-        headers: {
-          Accept: "*/*",
-        }
-      })
-      const json = await response.json();
-      setData(json);
-    })();
-  }, []);
+  // const [data, setData] = useState<Idata>();
+  // useEffect(() => {
+  //   (async () => {
+  //     const response = await fetch(`http://43.200.54.174:8080/user/${user_id}`, {
+  //       headers: {
+  //         Accept: "*/*",
+  //       }
+  //     })
+  //     const json = await response.json();
+  //     setData(json);
+  //   })();
+  // }, []);
 
-  console.log(data)
   // 탭 전환
   const [tab, setTab] = useState(true);
   // 프로필
@@ -148,11 +152,11 @@ const Mypage = () => {
     return (
       <Profile>
         <BgImg>
-          <img alt="nitz" src="IMG_1008.JPG" />
+          <img alt="nitz" src='/IMG_1008.jpg'/>
         </BgImg>
         <div>
           <p>빨강</p>
-          <h2>{data.nickname}</h2>
+          <h2>니츠</h2>
         </div>
         <Box margin="14px 0 0 0">
           <ArrowForwardIosRoundedIcon sx={{ color: blue[300] }} />
@@ -290,7 +294,7 @@ const Mypage = () => {
         )}
       </ButtonGroup>
       <Box>{tab ? <PlayingArea /> : <Mission />}</Box>
-      <ButtonFull dColor={"#FF4848"} hColor={"#FF4848"}>
+      <ButtonFull  dColor={"#FF4848"} hColor={"#FF4848"}>
         로그아웃
       </ButtonFull>
     </EntireContainer>

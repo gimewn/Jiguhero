@@ -39,7 +39,7 @@ export default function UnderlineLink() {
         <a className={router.pathname == "/mission/nowjoin" ? "active" : ""}>임무 인증</a>
       </Link>
       <Link href="/mypage" className="navMenu">
-        <a className={router.pathname == "/mypage/:userId" ? "active" : ""}>마이페이지</a>
+        <a className={router.pathname == "/mypage" ? "active" : ""}>마이페이지</a>
       </Link>
     </Menu>
   );
