@@ -1,0 +1,14 @@
+.container {
+  padding: 0 2rem;
+  font-family:'PyeongChang-Bold', 'PyeongChangPeace-Bold', 'Courier New', Courier, monospace;
+}
+
+.main {
+  min-height: 100vh;
+  padding: 4rem 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
