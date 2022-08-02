@@ -4,10 +4,10 @@ import java.util.Optional;
 
 import javax.transaction.Transactional;
 
+import com.ssafy.jiguhero.data.entity.User;
+import com.ssafy.jiguhero.data.repository.UserRepository;
 import com.ssafy.jiguhero.oauthlogin.advice.assertThat.DefaultAssert;
 import com.ssafy.jiguhero.oauthlogin.config.security.token.UserPrincipal;
-import com.ssafy.jiguhero.oauthlogin.domain.entity.user.User;
-import com.ssafy.jiguhero.oauthlogin.repository.user.UserRepository;
 
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

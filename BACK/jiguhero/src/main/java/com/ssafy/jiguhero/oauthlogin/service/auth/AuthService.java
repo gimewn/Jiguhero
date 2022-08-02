@@ -3,13 +3,14 @@ package com.ssafy.jiguhero.oauthlogin.service.auth;
 import java.net.URI;
 import java.util.Optional;
 
+import com.ssafy.jiguhero.data.entity.User;
+import com.ssafy.jiguhero.data.repository.UserRepository;
 import com.ssafy.jiguhero.oauthlogin.advice.assertThat.DefaultAssert;
 import com.ssafy.jiguhero.oauthlogin.config.security.token.UserPrincipal;
 
 import com.ssafy.jiguhero.oauthlogin.domain.entity.user.Provider;
 import com.ssafy.jiguhero.oauthlogin.domain.entity.user.Role;
 import com.ssafy.jiguhero.oauthlogin.domain.entity.user.Token;
-import com.ssafy.jiguhero.oauthlogin.domain.entity.user.User;
 import com.ssafy.jiguhero.oauthlogin.domain.mapping.TokenMapping;
 import com.ssafy.jiguhero.oauthlogin.payload.request.auth.ChangePasswordRequest;
 import com.ssafy.jiguhero.oauthlogin.payload.request.auth.SignInRequest;
@@ -19,7 +20,6 @@ import com.ssafy.jiguhero.oauthlogin.payload.response.ApiResponse;
 import com.ssafy.jiguhero.oauthlogin.payload.response.AuthResponse;
 import com.ssafy.jiguhero.oauthlogin.payload.response.Message;
 import com.ssafy.jiguhero.oauthlogin.repository.auth.TokenRepository;
-import com.ssafy.jiguhero.oauthlogin.repository.user.UserRepository;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -67,7 +67,8 @@ public class AuthService {
 
     public ResponseEntity<?> modify(UserPrincipal userPrincipal, ChangePasswordRequest passwordChangeRequest){
         Optional<User> user = userRepository.findById(userPrincipal.getId());
-        boolean passwordCheck = passwordEncoder.matches(passwordChangeRequest.getOldPassword(),user.get().getPassword());
+//        boolean passwordCheck = passwordEncoder.matches(passwordChangeRequest.getOldPassword(),user.get().getPassword());
+        boolean passwordCheck = true;
         DefaultAssert.isTrue(passwordCheck, "잘못된 비밀번호 입니다.");
 
         boolean newPasswordCheck = passwordChangeRequest.getNewPassword().equals(passwordChangeRequest.getReNewPassword());
@@ -115,7 +116,7 @@ public class AuthService {
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentContextPath().path("/auth/")
-                .buildAndExpand(user.getId()).toUri();
+                .buildAndExpand(user.getUserId()).toUri();
         ApiResponse apiResponse = ApiResponse.builder().check(true).information(Message.builder().message("회원가입에 성공하였습니다.").build()).build();
 
         return ResponseEntity.created(location).body(apiResponse);

@@ -3,15 +3,11 @@ package com.ssafy.jiguhero.oauthlogin.controller.auth;
 
 import javax.validation.Valid;
 
-import com.ssafy.jiguhero.oauthlogin.advice.payload.ErrorResponse;
 import com.ssafy.jiguhero.oauthlogin.config.security.token.CurrentUser;
 import com.ssafy.jiguhero.oauthlogin.config.security.token.UserPrincipal;
-import com.ssafy.jiguhero.oauthlogin.domain.entity.user.User;
 import com.ssafy.jiguhero.oauthlogin.payload.request.auth.ChangePasswordRequest;
 import com.ssafy.jiguhero.oauthlogin.payload.request.auth.SignInRequest;
 import com.ssafy.jiguhero.oauthlogin.payload.request.auth.SignUpRequest;
-import com.ssafy.jiguhero.oauthlogin.payload.response.AuthResponse;
-import com.ssafy.jiguhero.oauthlogin.payload.response.Message;
 import com.ssafy.jiguhero.oauthlogin.service.auth.AuthService;
 import com.ssafy.jiguhero.oauthlogin.payload.request.auth.RefreshTokenRequest;
 

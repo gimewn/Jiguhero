@@ -5,8 +5,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import com.ssafy.jiguhero.oauthlogin.domain.entity.user.User;
-
+import com.ssafy.jiguhero.data.entity.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -30,7 +29,7 @@ public class UserPrincipal implements OAuth2User, UserDetails{
     public static UserPrincipal create(User user) {
         List<GrantedAuthority> authorities = Collections.singletonList(new SimpleGrantedAuthority(user.getRole().getValue()));
         return new UserPrincipal(
-                user.getId(),
+                user.getUserId(),
                 user.getEmail(),
                 user.getPassword(),
                 authorities

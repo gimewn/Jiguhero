@@ -2,14 +2,14 @@ package com.ssafy.jiguhero.oauthlogin.service.auth;
 
 import java.util.Optional;
 
+import com.ssafy.jiguhero.data.entity.User;
+import com.ssafy.jiguhero.data.repository.UserRepository;
 import com.ssafy.jiguhero.oauthlogin.advice.assertThat.DefaultAssert;
 import com.ssafy.jiguhero.oauthlogin.config.security.auth.OAuth2UserInfo;
 import com.ssafy.jiguhero.oauthlogin.config.security.auth.OAuth2UserInfoFactory;
 import com.ssafy.jiguhero.oauthlogin.config.security.token.UserPrincipal;
 import com.ssafy.jiguhero.oauthlogin.domain.entity.user.Provider;
 import com.ssafy.jiguhero.oauthlogin.domain.entity.user.Role;
-import com.ssafy.jiguhero.oauthlogin.domain.entity.user.User;
-import com.ssafy.jiguhero.oauthlogin.repository.user.UserRepository;
 
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
@@ -69,7 +69,6 @@ public class CustomDefaultOAuth2UserService extends DefaultOAuth2UserService{
     private User updateExistingUser(User user, OAuth2UserInfo oAuth2UserInfo) {
 
         user.updateName(oAuth2UserInfo.getName());
-        user.updateImageUrl(oAuth2UserInfo.getImageUrl());
 
         return userRepository.save(user);
     }
