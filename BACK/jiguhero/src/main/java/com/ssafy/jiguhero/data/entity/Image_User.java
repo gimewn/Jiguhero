@@ -30,6 +30,6 @@ public class Image_User {
     private String saveFile;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "userId", unique = true)
+    @JoinColumn(name = "userId")
     private User user;
 }

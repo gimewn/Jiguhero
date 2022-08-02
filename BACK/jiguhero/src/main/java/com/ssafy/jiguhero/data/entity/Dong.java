@@ -30,12 +30,12 @@ public class Dong {
     //private String gugunCode;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "sidoCode")
-    private Sido sido;
-
-    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "gugunCode")
     private Gugun gugun;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "sidoCode")
+    private Sido sido;
 
     @OneToMany(mappedBy = "dong")
     List<Baseaddress> baseaddress = new ArrayList<>();

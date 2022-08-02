@@ -26,7 +26,7 @@ public class SwaggerConfiguration {
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
                 .title("SSAFY 7th Common Project Gwangju C105 with Swagger")
-                .description("이게 되네? 팀의 친환경 큐레이션 SNS 웹프로젝트 REST API")
+                .description("설명 부분")
                 .version("1.0.0")
                 .build();
     }
