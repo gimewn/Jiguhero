@@ -4,7 +4,6 @@ import { RecoilRoot } from 'recoil'
 import MenuForDesk from 'components/MenuBarDesktop'
 import MenuForMobile from 'components/MenuBarMobile';
 import styled from 'styled-components';
-import logo from 'public/logo.png';
 import Image from 'next/image';
 import logo from '../public/logo.png';
 import { useRouter } from "next/router";
@@ -12,47 +11,6 @@ import { createTheme, ThemeProvider } from '@mui/material';
 import { SessionProvider } from 'next-auth/react';
 
 
-
-
-function MyApp({ Component, pageProps }: AppProps) {
-  const router = useRouter();
-  const onLink = (href) => {
-    router.push(href);
-  };
-  return (
-    <SessionProvider session={pageProps.session}>
-      <ThemeProvider theme={theme}>
-        <RecoilRoot>
-          <Header>
-            <Image src={logo} width={160} height={40} onClick={() => onLink("/")} layout='fixed' />
-            <DeskMenu>
-              <MenuForDesk />
-            </DeskMenu>
-          </Header>
-          <Container>
-            <Component {...pageProps} />
-          </Container>
-          <Footer>
-            <MobileMenu>
-              <MenuForMobile />
-            </MobileMenu>
-          </Footer>
-        </RecoilRoot>
-      </ThemeProvider>
-    </SessionProvider>
-  );
-};
-
-export default MyApp
-
-//MUI component에 font 적용을 위함
-const theme = createTheme({
-  typography: {
-    fontFamily: [
-      'PyeongChang',
-    ].join(','),
-  },
-});
 
 
 const Header = styled('div')`
@@ -100,18 +58,16 @@ const Footer = styled('div')`
   bottom:0;
   left:0;
   right:0;
-<<<<<<< HEAD
-`
-=======
   background-color: white;
 `
 
-function MyApp({ Component, pageProps }: AppProps) {
+function MyApp({ Component, pageProps: { pageProps } }: AppProps) {
   const router = useRouter();
   const onLink = (href) => {
-        router.push(href);
-        };
+    router.push(href);
+  };
   return (
+
     <RecoilRoot>
       <Header>
         <Image src={logo} width={160} height={40} onClick={() => onLink("/")} layout='fixed' />
@@ -120,9 +76,9 @@ function MyApp({ Component, pageProps }: AppProps) {
         </DeskMenu>
       </Header>
       <Body>
-      <Container>
-        <Component {...pageProps} />
-      </Container>
+        <Container>
+          <Component {...pageProps} />
+        </Container>
       </Body>
       <Footer>
         <MobileMenu>
@@ -130,8 +86,9 @@ function MyApp({ Component, pageProps }: AppProps) {
         </MobileMenu>
       </Footer>
     </RecoilRoot>
+
   );
 };
 
 export default MyApp
->>>>>>> b664c07f4bbfc770f756825fa952860c166d8f1e
+

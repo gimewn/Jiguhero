@@ -1,23 +1,26 @@
 import Head from "next/head"
 import styled from "styled-components"
+import Image from 'node_modules/next/image';
 import KakaoImg from '/public/kakao_login.png';
 import GoogleImg from '/public/google_login.png';
 import NaverImg from '/public/naver_login.png';
-import Image from 'next/image';
-import { useSession, signIn, signOut } from "next-auth/react";
+import Router from 'next/router';
+import GoogleLogin from 'react-google-login';
 
 export default function Login() {
-  // const { data, status } = useSession();
-  // session에서 OAuth 사용자 정보 확인하기
-  const { data: session } = useSession()
 
-  // 사용자 정보 있으면, 이메일과 로그아웃 버튼 출력
-  // if (session) {
-  //   return <>
-  //     Signed in as {session.user.email} <br />
-  //     <button onClick={() => signOut()}>Sign out</button>
-  //   </>
-  // }
+  const onSuccess = (res: any) => {
+    console.log(res); // 로그인한 사용자 정보 조회
+    Router.push('/google'); // /google 페이지로 이동
+  }
+
+  const onFailure = (error: any) => {
+    console.log(error);
+    window.addEventListener("message", ({ data }) => {
+      console.log(data)
+    })
+  }
+
 
   return (
     <>
@@ -48,30 +51,33 @@ export default function Login() {
             <Image src={GoogleImg} />
           </SnsLoginGoogle>
 
-          {/* // 사용자 정보 없으면, 로그인 버튼 출력 - signIn() 함수는 next-auth기본 로그인화면으로 이동시켜준다. */}
-          {/* <>
-            Not signed in <br />
-            <button onClick={() => signIn()}>Sign in</button>
-          </> */}
+          <Wrapper>
+            <Header.Container>
+              <Header.Title>로그인할 방법을 선택해주세요.</Header.Title>
+            </Header.Container>
+
+            <Button.Container>
+              <Button.ButtonList>
+                <Button.GoogleButton
+                  clientId='748891844766-2mnlsibs54s53a1u1q2p6b659bbqrbed.apps.googleusercontent.com' // 발급된 clientId 등록
+                  onSuccess={onSuccess}
+                  onFailure={onFailure}
+                  cookiePolicy={'single_host_origin'} // 쿠키 정책 등록
+                  buttonText='Google 로그인' // 버튼에 사용될 텍스트
+                />
+              </Button.ButtonList>
+            </Button.Container>
+          </Wrapper>
 
 
-          {/* <p>status: {status}</p>
-          <p>{data?.user?.name}</p>
-          {data?.user ? (
-            <button type="button" onClick={() => signOut()}>
-              Google Logout
-            </button>
-          ) : (
-            <button type="button" onClick={() => signIn("google")}>
-              Google Login
-            </button>
-          )} */}
 
         </main>
       </LoginWrapper>
     </>
   );
 };
+
+
 
 
 const LoginWrapper = styled('div')`
@@ -114,4 +120,41 @@ const SnsLoginNaver = styled('div')`
 `
 
 
+////google
+const Wrapper = styled.div`
+    max-width: 720px;
 
+    margin: 0 auto;
+`
+
+const Header = {
+  Container: styled.div`
+        text-align: center;
+    `,
+
+  Title: styled.h2``,
+}
+
+const Button = {
+  Container: styled.div``,
+
+  ButtonList: styled.div`
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    `,
+
+  GoogleButton: styled(GoogleLogin)`
+        width: 360px;
+        height: 40px;
+
+        margin: 6px 0;
+
+        justify-content: center;
+
+        & span {
+            font-size: 18px;
+            font-weight: 700 !important;
+        }
+    `,
+}
