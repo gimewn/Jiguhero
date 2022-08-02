@@ -1,7 +1,7 @@
 @font-face {
   font-family: 'PyeongChangPeace-Bold';
-  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2206-02@1.0/PyeongChangPeace-Light.woff2') format('woff2');
-  font-weight: normal;
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2206-02@1.0/PyeongChangPeace-Bold.woff2') format('woff2');
+  font-weight: 700;
   font-style: normal;
 }
 
@@ -27,10 +27,26 @@ font-family: 'PyeongChang-Regular', 'PyeongChang-Bold', 'PyeongChangPeace-Bold',
 
 html,
 body {
-  padding: 15px 20px;
   margin: 0;
   font-family: 'PyeongChang-Regular', 'PyeongChang-Bold', 'PyeongChangPeace-Bold', 'Pretendard', -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+    overflow: auto;
+  height:100%;
+}
+body{
+  justify-content: center;
+  padding-bottom: 30px;
+}
+@media screen and (max-width: 650px){
+  body{
+    padding-bottom:80px;
+  }
+}
+
+#wrap {
+  min-height: 100%;
+  position: relative;
+  padding-bottom:80px;
 }
 
 a {
@@ -42,26 +58,35 @@ a {
   box-sizing: border-box;
 }
 
-.MuiBottomNavigation-root .MuiButtonBase-root svg {
-  font-size:30px;
-  color: #98C064;
+* :hover{
+  cursor: pointer;
 }
 
-.MuiBottomNavigation-root .Mui-selected svg{
-  font-size:35px;
-  color: #65ACE2;
+@media screen and (min-width: 375px){
+  .swiper{
+    width:300px;
+  }
+}
+@media screen and (min-width:450px){
+  .swiper{
+    width: 400px;
+  }
+}
+@media screen and (min-width: 550px){
+  .swiper{
+    width:500px;
+  }
+}
+@media screen and (min-width:700px){
+  .swiper{
+    width:650px;
+  }
+  .swiper-wrapper{
+    justify-content: center;
+  }
 }
 
-.css-1cx4pt4-MuiBottomNavigationAction-label.Mui-selected {
-  color:#98C064;
-  font-family: 'PyeongChang-Regular';
-  font-size: 13px;
-}
-
-.MuiBottomNavigation-root {
-  height:100px;
-}
-.MuiBottomNavigationAction-label {
-  font-family: 'PyeongChang-Regular';
-  font-size:13px;
+.swiper-slide{
+  width:120px !important;
+  margin: 5px;
 }
