@@ -27,6 +27,7 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-google-login": "^5.2.2",
+    "react-kakao-login": "^2.1.0",
     "react-slick": "^0.29.0",
     "recoil": "^0.7.4",
     "slick-carousel": "^1.8.1",

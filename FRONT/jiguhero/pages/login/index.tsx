@@ -6,22 +6,62 @@ import GoogleImg from '/public/google_login.png';
 import NaverImg from '/public/naver_login.png';
 import Router from 'next/router';
 import GoogleLogin from 'react-google-login';
+import * as React from 'react'
+import Script from 'next/script';
 
 export default function Login() {
 
-  const onSuccess = (res: any) => {
-    console.log(res); // 로그인한 사용자 정보 조회
-    Router.push('/google'); // /google 페이지로 이동
-  }
+  // const onSuccess = (res: any) => {
+  //   console.log(res); // 로그인한 사용자 정보 조회
+  //   Router.push('/google'); // /google 페이지로 이동
+  // }
 
-  const onFailure = (error: any) => {
-    console.log(error);
-    window.addEventListener("message", ({ data }) => {
-      console.log(data)
+  // const onFailure = (error: any) => {
+  //   console.log(error);
+  //   window.addEventListener("message", ({ data }) => {
+  //     console.log(data)
+  //   })
+  // }
+
+
+  //사용자 정보를 담아둘 userObj
+  const [userObj, setUserObj] = React.useState({
+    email: "",
+    name: ""
+  })
+  //로그인 성공시 res처리
+  const onLoginSuccess = (res: any) => {
+    setUserObj({
+      ...userObj,
+      email: res.profileObj.email,
+      name: res.profileObj.name
     })
   }
 
+  // 카카오 로그인!
+  const kakaoLogin = async () => {
+    const kakao = (window as any).Kakao;
 
+    // 카카오 로그인 구현
+    kakao.Auth.login({
+      success: () => {
+        kakao.API.request({
+          url: '/v2/user/me', // 사용자 정보 가져오기
+          success: (res: any) => {
+            // 로그인 성공할 경우 정보 확인 후 /kakao 페이지로 push
+            console.log(res);
+            Router.push('/login/kakao');
+          },
+          fail: (error: any) => {
+            console.log(error);
+          }
+        })
+      },
+      fail: (error: any) => {
+        console.log(error);
+      }
+    })
+  }
   return (
     <>
 
@@ -29,9 +69,11 @@ export default function Login() {
         {/* header 추가 */}
         <Head>
           <title>로그인 | 지구-방위대</title>
+          <meta name="google-signin-scope" content="profile email" />
+          <meta name="google-signin-client_id" content="%748891844766-2mnlsibs54s53a1u1q2p6b659bbqrbed.apps.googleusercontent.com%" />
         </Head>
-
         <main>
+          <Script src="https://apis.google.com/js/platform.js" async defer />
           <LoginText>로그인</LoginText>
           <SnsLoginText>SNS 계정으로 로그인하기</SnsLoginText>
 
@@ -51,23 +93,27 @@ export default function Login() {
             <Image src={GoogleImg} />
           </SnsLoginGoogle>
 
-          <Wrapper>
-            <Header.Container>
-              <Header.Title>로그인할 방법을 선택해주세요.</Header.Title>
-            </Header.Container>
+          <div>
+            <GoogleLogin
+              clientId='748891844766-2mnlsibs54s53a1u1q2p6b659bbqrbed.apps.googleusercontent.com'
+              buttonText="Google 아이디로 로그인"
+              onSuccess={result => onLoginSuccess(result)}
+              onFailure={result => console.log(result)}
+              cookiePolicy={'single_host_origin'}
+            />
+          </div>
 
-            <Button.Container>
-              <Button.ButtonList>
-                <Button.GoogleButton
-                  clientId='748891844766-2mnlsibs54s53a1u1q2p6b659bbqrbed.apps.googleusercontent.com' // 발급된 clientId 등록
-                  onSuccess={onSuccess}
-                  onFailure={onFailure}
-                  cookiePolicy={'single_host_origin'} // 쿠키 정책 등록
-                  buttonText='Google 로그인' // 버튼에 사용될 텍스트
-                />
-              </Button.ButtonList>
-            </Button.Container>
-          </Wrapper>
+
+          <Button.Container>
+            <Button.ButtonList>
+              <Button.KakaoButton onClick={kakaoLogin}>
+                <Button.ButtonText>Kakao</Button.ButtonText>
+              </Button.KakaoButton>
+            </Button.ButtonList>
+          </Button.Container>
+
+
+
 
 
 
@@ -81,60 +127,46 @@ export default function Login() {
 
 
 const LoginWrapper = styled('div')`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        `
 const LoginText = styled('h1')`
-  display:flex;
-  justify-content: center;
-  align-items: center;
-  /* margin: 3.5rem; */
-  height: 10vh;
-`
+        display:flex;
+        justify-content: center;
+        align-items: center;
+        /* margin: 3.5rem; */
+        height: 10vh;
+        `
 const SnsLoginText = styled('span')`
-  display:flex;
-  justify-content: center;
-  align-items: center;
-  height: 3rem;
-`
+        display:flex;
+        justify-content: center;
+        align-items: center;
+        height: 3rem;
+        `
 const SnsLoginKakao = styled('div')`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 20rem;
-  
-`
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 20rem;
+
+        `
 const SnsLoginGoogle = styled('div')`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 20rem;
-`
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 20rem;
+        `
 
 const SnsLoginNaver = styled('div')`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 20rem;
-`
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 20rem;
+        `
 
 
-////google
-const Wrapper = styled.div`
-    max-width: 720px;
-
-    margin: 0 auto;
-`
-
-const Header = {
-  Container: styled.div`
-        text-align: center;
-    `,
-
-  Title: styled.h2``,
-}
-
+//kakao
 const Button = {
   Container: styled.div``,
 
@@ -144,17 +176,25 @@ const Button = {
         align-items: center;
     `,
 
-  GoogleButton: styled(GoogleLogin)`
+  KakaoButton: styled.button`
+        background-color: #fef01b;
+
         width: 360px;
         height: 40px;
 
         margin: 6px 0;
 
-        justify-content: center;
+        border: none;
+        border-radius: 6px;
 
-        & span {
-            font-size: 18px;
-            font-weight: 700 !important;
-        }
+        cursor: pointer;
+    `,
+
+  ButtonText: styled.h4`
+        margin: 0;
+        padding: 0;
+        
+        font-size: 18px;
+        color: #ffffff;
     `,
 }

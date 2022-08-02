@@ -9,6 +9,7 @@ import logo from '../public/logo.png';
 import { useRouter } from "next/router";
 import { createTheme, ThemeProvider } from '@mui/material';
 import { SessionProvider } from 'next-auth/react';
+import Head from 'next/head';
 
 
 
@@ -75,6 +76,10 @@ function MyApp({ Component, pageProps: { pageProps } }: AppProps) {
           <MenuForDesk />
         </DeskMenu>
       </Header>
+      <Head>
+        <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
+        <script>Kakao.init('46f862b6d1bd1530724be12dfcfe0625')</script> {/* JavsScript 키 입력 */}
+      </Head>
       <Body>
         <Container>
           <Component {...pageProps} />
