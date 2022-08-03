@@ -14,10 +14,7 @@ export const ButtonFull = styled('button')`
         background-color: ${(props) => props.hColor};
         border:${(props) => props.hColor} 1px solid;
         cursor: pointer;
-<<<<<<< HEAD
-=======
         
->>>>>>> bab531d23425a453cf202e64b6999346913f7a24
     }
 `
 
@@ -31,10 +28,7 @@ export const ButtonBorder = styled('button')`
         color:white;
         background-color: ${(props) => props.dColor};
         cursor: pointer;
-<<<<<<< HEAD
-=======
         
         
->>>>>>> bab531d23425a453cf202e64b6999346913f7a24
     }
 `
