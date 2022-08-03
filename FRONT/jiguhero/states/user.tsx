@@ -1,8 +1,9 @@
 import { atom } from "recoil";
 
 
-export const user = atom({
+
+
+export const userAt = atom({
     key:"user",
-    default:{
-    }
+    default:JSON.parse(localStorage.getItem('user'))
 })

@@ -139,7 +139,6 @@ const Mypage = (user_id) => {
       const response = await fetch(`http://localhost:3000/user/1`, {
         headers: {
           Accept: "*/*",
-          // Authorization : Bearer
         }
       })
       const json = await response.json();
