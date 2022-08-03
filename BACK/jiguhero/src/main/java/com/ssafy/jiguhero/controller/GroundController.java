@@ -2,6 +2,7 @@ package com.ssafy.jiguhero.controller;
 
 import com.ssafy.jiguhero.data.dto.GroundDto;
 import com.ssafy.jiguhero.data.dto.MissionDto;
+import com.ssafy.jiguhero.data.entity.Ground;
 import com.ssafy.jiguhero.service.GroundService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -34,4 +35,12 @@ public class GroundController {
 
         return ResponseEntity.status(HttpStatus.OK).body(list);
     }
+
+    @ApiOperation(value = "사용자들이 생성한 활동구역 전체 리스트 목록을 반환한다.(리뷰 제외)", response = List.class)
+    @GetMapping("/")
+    public ResponseEntity<List<GroundDto>> getGrounds() {
+        List<GroundDto> list = groundService.getGrounds();
+        return ResponseEntity.status(HttpStatus.OK).body(list);
+    }
+    
 }

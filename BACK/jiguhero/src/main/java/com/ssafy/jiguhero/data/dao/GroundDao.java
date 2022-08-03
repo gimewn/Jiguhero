@@ -15,4 +15,6 @@ public interface GroundDao {
     // ground_id로 미션 정보 조회
     Ground selectGroundById(Long groundId);
 
+    List<Ground> selectGround();
+
 }

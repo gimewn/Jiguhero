@@ -48,4 +48,11 @@ public class GroundServiceImpl implements GroundService {
 
         return dtoList;
     }
+
+    @Override
+    public List<GroundDto> getGrounds() {
+        List<Ground> entityList = groundDao.selectGround();
+        List<GroundDto> dtoList = entityList.stream().map(entity -> GroundDto.of(entity)).collect(Collectors.toList());
+        return dtoList;
+    }
 }
