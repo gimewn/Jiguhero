@@ -37,10 +37,18 @@ public class GroundController {
     }
 
     @ApiOperation(value = "사용자들이 생성한 활동구역 전체 리스트 목록을 반환한다.(리뷰 제외)", response = List.class)
-    @GetMapping("/")
+    @GetMapping("/list")
     public ResponseEntity<List<GroundDto>> getGrounds() {
         List<GroundDto> list = groundService.getGrounds();
         return ResponseEntity.status(HttpStatus.OK).body(list);
+    }
+
+    @ApiOperation(value = "특정 활동구역의 정보를 반환한다.", response = GroundDto.class)
+    @GetMapping("/get/{ground_id}")
+    public ResponseEntity<GroundDto> getGround(@PathVariable("ground_id") Long groundId){
+        GroundDto dto = groundService.getGround(groundId);
+
+        return ResponseEntity.status(HttpStatus.OK).body(dto);
     }
     
 }

@@ -43,8 +43,14 @@ public class GroundDaoImpl implements GroundDao {
     }
 
     @Override
-    public List<Ground> selectGround() {
+    public List<Ground> selectGrounds() {
         List<Ground> selectedGrounds = groundRepository.findAll();
         return selectedGrounds;
+    }
+
+    @Override
+    public Ground selectGround(Long groundId) {
+        Ground selected = groundRepository.getById(groundId);
+        return selected;
     }
 }
