@@ -4,8 +4,8 @@ const nextConfig = {
   async rewrites() {
     return [
       {
-        source: '/user/1' ,
-        destination: `http://i7c105.p.ssafy.io:8080/user/1`,
+        source: '/:path*' ,
+        destination: `http://i7c105.p.ssafy.io:8080/:path*`,
       },
     ];
   },

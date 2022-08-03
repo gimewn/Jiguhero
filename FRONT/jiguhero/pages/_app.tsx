@@ -80,14 +80,16 @@ function MyApp({ Component, pageProps: { pageProps } }: AppProps) {
       </Header>
       <Head>
         {/* 카카오 */}
-        <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
-        <script>Kakao.init('46f862b6d1bd1530724be12dfcfe0625')</script>
+        {/* <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
+        <script>Kakao.init('fbd4737ed4f35dac659c27c72650a3fe')</script> */}
         {/* 네이버 */}
-        <script src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.2.js"></script>
+        {/* <script src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.2.js"></script> */}
       </Head>
       <Body>
         <Container>
+          <SessionProvider session={pageProps?.session} >
           <Component {...pageProps} />
+          </SessionProvider>
         </Container>
       </Body>
       <Footer>
