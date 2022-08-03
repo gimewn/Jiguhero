@@ -42,4 +42,12 @@ public class MissionController {
 
         return ResponseEntity.status(HttpStatus.OK).body(list);
     }
+
+    @ApiOperation(value = "전체 임무 리스트를 반환한다.", response = List.class)
+    @GetMapping("/")
+    public ResponseEntity<List<MissionDto>> getAllMissions() {
+        List<MissionDto> list = missionService.getAllMissions();
+
+        return ResponseEntity.status(HttpStatus.OK).body(list);
+    }
 }

@@ -54,4 +54,11 @@ public class MissionDaoImpl implements MissionDao {
         return selectedJoinMissions;
     }
 
+    @Override
+    public List<Mission> selectAllMission() {
+        List<Mission> selectedAllMissions = missionRepository.findAll();
+
+        return selectedAllMissions;
+    }
+
 }

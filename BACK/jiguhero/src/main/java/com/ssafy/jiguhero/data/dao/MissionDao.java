@@ -21,4 +21,7 @@ public interface MissionDao {
     // user에 해당하는 join_mission 인스터스 목록
     List<Conn_Mission> selectJoinMissionByUser(User user);
 
+    // 전체 all_mission 인스터스 목록
+    List<Mission> selectAllMission();
+
 }
