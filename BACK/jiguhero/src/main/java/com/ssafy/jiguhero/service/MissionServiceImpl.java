@@ -3,6 +3,7 @@ package com.ssafy.jiguhero.service;
 import com.ssafy.jiguhero.data.dao.MissionDao;
 import com.ssafy.jiguhero.data.dao.UserDao;
 import com.ssafy.jiguhero.data.dto.MissionDto;
+import com.ssafy.jiguhero.data.entity.Conn_Mission;
 import com.ssafy.jiguhero.data.entity.Like_Mission;
 import com.ssafy.jiguhero.data.entity.Mission;
 import com.ssafy.jiguhero.data.entity.User;
@@ -48,4 +49,20 @@ public class MissionServiceImpl implements MissionService {
 
         return dtoList;
     }
+
+    @Override
+    public List<MissionDto> getJoinMissions(Long userId) {
+        User userEntity = userDao.selectUserById(userId);
+        List<Conn_Mission> joinMissionList = missionDao.selectJoinMissionByUser(userEntity);
+        List<Mission> entityList = new ArrayList<>();
+
+        for (Conn_Mission joinMission : joinMissionList) {
+            entityList.add(joinMission.getMission());
+        }
+
+        List<MissionDto> dtoList = entityList.stream().map(entity -> MissionDto.of(entity)).collect(Collectors.toList());
+
+        return dtoList;
+    }
+
 }

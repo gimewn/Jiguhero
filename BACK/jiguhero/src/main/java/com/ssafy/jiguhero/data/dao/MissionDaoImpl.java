@@ -1,8 +1,10 @@
 package com.ssafy.jiguhero.data.dao;
 
+import com.ssafy.jiguhero.data.entity.Conn_Mission;
 import com.ssafy.jiguhero.data.entity.Like_Mission;
 import com.ssafy.jiguhero.data.entity.Mission;
 import com.ssafy.jiguhero.data.entity.User;
+import com.ssafy.jiguhero.data.repository.ConnMissionRepository;
 import com.ssafy.jiguhero.data.repository.LikeMissionRepository;
 import com.ssafy.jiguhero.data.repository.MissionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,11 +17,13 @@ public class MissionDaoImpl implements MissionDao {
 
     private final MissionRepository missionRepository;
     private final LikeMissionRepository likeMissionRepository;
+    private final ConnMissionRepository connMissionRepository;
 
     @Autowired
-    public MissionDaoImpl(MissionRepository missionRepository, LikeMissionRepository likeMissionRepository) {
+    public MissionDaoImpl(MissionRepository missionRepository, LikeMissionRepository likeMissionRepository, ConnMissionRepository connMissionRepository) {
         this.missionRepository = missionRepository;
         this.likeMissionRepository = likeMissionRepository;
+        this.connMissionRepository = connMissionRepository;
     }
 
     @Override
@@ -41,6 +45,13 @@ public class MissionDaoImpl implements MissionDao {
         Mission selectedMission = missionRepository.getById(missionId);
 
         return selectedMission;
+    }
+
+    @Override
+    public List<Conn_Mission> selectJoinMissionByUser(User user) {
+        List<Conn_Mission> selectedJoinMissions = connMissionRepository.findAllByUser(user);
+
+        return selectedJoinMissions;
     }
 
 }

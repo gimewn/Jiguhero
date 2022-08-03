@@ -1,5 +1,6 @@
 package com.ssafy.jiguhero.data.dao;
 
+import com.ssafy.jiguhero.data.entity.Conn_Mission;
 import com.ssafy.jiguhero.data.entity.Like_Mission;
 import com.ssafy.jiguhero.data.entity.Mission;
 import com.ssafy.jiguhero.data.entity.User;
@@ -16,5 +17,8 @@ public interface MissionDao {
 
     // mission_id로 미션 정보 조회
     Mission selectMissionById(Long missionId);
+
+    // user에 해당하는 join_mission 인스터스 목록
+    List<Conn_Mission> selectJoinMissionByUser(User user);
 
 }

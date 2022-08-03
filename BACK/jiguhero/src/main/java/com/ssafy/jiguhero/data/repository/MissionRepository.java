@@ -1,7 +1,9 @@
 package com.ssafy.jiguhero.data.repository;
 
+import com.ssafy.jiguhero.data.entity.Conn_Mission;
 import com.ssafy.jiguhero.data.entity.Like_Mission;
 import com.ssafy.jiguhero.data.entity.Mission;
+import com.ssafy.jiguhero.data.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
