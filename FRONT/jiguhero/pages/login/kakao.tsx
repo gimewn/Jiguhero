@@ -1,15 +1,12 @@
-import { NextPage } from 'next';
 import Router from 'next/router';
 import * as React from 'react';
 import styled from 'styled-components';
 
-const Kakao: NextPage = () => {
-
+export default function Kakao() {
+  //카카오
   const kakao = (window as any).Kakao;
-
   const KakaoLogout = () => {
     console.log(kakao.Auth.getAccessToken()); // 카카오 접근 토큰 확인 (로그인 후 해당 토큰을 이용하여 추가 기능 수행 가능)
-
     // 카카오 로그인 링크 해제
     kakao.API.request({
       url: '/v1/user/unlink',
@@ -24,9 +21,11 @@ const Kakao: NextPage = () => {
     })
   }
 
+
   return (
     <Wrapper>
       <Title>KaKao Page...</Title>
+
       <Button onClick={KakaoLogout}>
         <ButtonText>Logout</ButtonText>
       </Button>
@@ -34,7 +33,7 @@ const Kakao: NextPage = () => {
   )
 }
 
-export default Kakao;
+
 
 const Wrapper = styled.div`
     max-width: 720px;

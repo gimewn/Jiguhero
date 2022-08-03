@@ -9,7 +9,8 @@ import logo from '../public/logo.png';
 import { useRouter } from "next/router";
 import { createTheme, ThemeProvider } from '@mui/material';
 import { SessionProvider } from 'next-auth/react';
-import Head from 'next/head';
+import Head from 'node_modules/next/head';
+
 
 
 
@@ -77,8 +78,11 @@ function MyApp({ Component, pageProps: { pageProps } }: AppProps) {
         </DeskMenu>
       </Header>
       <Head>
+        {/* 카카오 */}
         <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
-        <script>Kakao.init('46f862b6d1bd1530724be12dfcfe0625')</script> {/* JavsScript 키 입력 */}
+        <script>Kakao.init('46f862b6d1bd1530724be12dfcfe0625')</script>
+        {/* 네이버 */}
+        <script src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.2.js"></script>
       </Head>
       <Body>
         <Container>

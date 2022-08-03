@@ -1,48 +1,60 @@
-import Head from "next/head"
+import Head from "node_modules/next/head"
 import styled from "styled-components"
 import Image from 'node_modules/next/image';
 import KakaoImg from '/public/kakao_login.png';
 import GoogleImg from '/public/google_login.png';
 import NaverImg from '/public/naver_login.png';
-import Router from 'next/router';
-import GoogleLogin from 'react-google-login';
+import KakaoLogImg from '/public/kakao.png';
+import Router from 'node_modules/next/router';
+// import GoogleLogin from 'react-google-login';
 import * as React from 'react'
 import Script from 'next/script';
 
+//구글
+import { GoogleLogin } from '@react-oauth/google';
+import { GoogleOAuthProvider } from '@react-oauth/google';
+import { useGoogleLogin } from '@react-oauth/google';
+
 export default function Login() {
-
-  // const onSuccess = (res: any) => {
-  //   console.log(res); // 로그인한 사용자 정보 조회
-  //   Router.push('/google'); // /google 페이지로 이동
-  // }
-
-  // const onFailure = (error: any) => {
-  //   console.log(error);
-  //   window.addEventListener("message", ({ data }) => {
-  //     console.log(data)
+  //클라이언트 ID (환경변수)
+  // let googleClientId: string = process.env.REACT_APP_CLIENT_ID || "";
+  // 사용자 정보를 담아둘 userObj
+  // const [userObj, setUserObj] = React.useState({
+  //   email: "",
+  //   name: ""
+  // })
+  // //로그인 성공시 res처리
+  // const onLoginSuccess = (res: any) => {
+  //   setUserObj({
+  //     ...userObj,
+  //     email: res.profileObj.email,
+  //     name: res.profileObj.name
   //   })
   // }
 
-
-  //사용자 정보를 담아둘 userObj
-  const [userObj, setUserObj] = React.useState({
-    email: "",
-    name: ""
-  })
-  //로그인 성공시 res처리
-  const onLoginSuccess = (res: any) => {
-    setUserObj({
-      ...userObj,
-      email: res.profileObj.email,
-      name: res.profileObj.name
-    })
+  //구글
+  const googleSuccess = async (res) => {
+    console.log('auth.js-googlesuccess-res', res)
+    fetch(`https://oauth2.googleapis.com/tokeninfo?id_token=${res.credential}`)
+      .then(res => res.json())
+      .then(response => {
+        console.log('user Info=', response)
+      })
+      .catch(error => console.log(error));
+  };
+  const googleError = (error) => {
+    console.log('google signin failed-error', error)
   }
 
-  // 카카오 로그인!
+
+  // const login = useGoogleLogin({
+  //   onSuccess: tokenResponse => console.log(tokenResponse),
+  // });
+
+
+  //카카오
   const kakaoLogin = async () => {
     const kakao = (window as any).Kakao;
-
-    // 카카오 로그인 구현
     kakao.Auth.login({
       success: () => {
         kakao.API.request({
@@ -62,60 +74,68 @@ export default function Login() {
       }
     })
   }
+
+  //네이버
+
+
   return (
     <>
-
       <LoginWrapper>
         {/* header 추가 */}
         <Head>
           <title>로그인 | 지구-방위대</title>
-          <meta name="google-signin-scope" content="profile email" />
-          <meta name="google-signin-client_id" content="%748891844766-2mnlsibs54s53a1u1q2p6b659bbqrbed.apps.googleusercontent.com%" />
+          {/* <meta name="google-signin-scope" content="profile email" />
+          <meta name="google-signin-client_id" content="%748891844766-2mnlsibs54s53a1u1q2p6b659bbqrbed.apps.googleusercontent.com%" /> */}
         </Head>
         <main>
-          <Script src="https://apis.google.com/js/platform.js" async defer />
+          {/* <Script src="https://apis.google.com/js/platform.js" async defer /> */}
           <LoginText>로그인</LoginText>
           <SnsLoginText>SNS 계정으로 로그인하기</SnsLoginText>
 
           {/* 카카오 로그인 */}
-          <SnsLoginKakao>
-            <Image src={KakaoImg} />
+          <SnsLoginKakao onClick={kakaoLogin}>
+            <Image src={KakaoLogImg} />
+            {/* <Image src={KakaoImg} /> */}
           </SnsLoginKakao>
 
-          {/* 네이버 로그인 */}
+          {/* 네이버 로그인
           <SnsLoginNaver>
             <Image src={NaverImg} />
-          </SnsLoginNaver>
+          </SnsLoginNaver> */}
 
 
           {/* 구글 로그인 */}
-          <SnsLoginGoogle>
-            <Image src={GoogleImg} />
-          </SnsLoginGoogle>
-
-          <div>
+          {/* <SnsLoginGoogle
+            clientId='748891844766-2mnlsibs54s53a1u1q2p6b659bbqrbed.apps.googleusercontent.com'
+            buttonText="Google로 로그인"
+            onSuccess={result => onLoginSuccess(result)}
+            onFailure={result => console.log(result)}
+          /> */}
+          {/* <GoogleOAuthProvider clientId='748891844766-2mnlsibs54s53a1u1q2p6b659bbqrbed.apps.googleusercontent.com'>
             <GoogleLogin
-              clientId='748891844766-2mnlsibs54s53a1u1q2p6b659bbqrbed.apps.googleusercontent.com'
-              buttonText="Google 아이디로 로그인"
-              onSuccess={result => onLoginSuccess(result)}
+              buttonText="Google로 로그인"
+              onSuccess={(credentialResponse) => {
+                console.log(credentialResponse);
+              }}
+              onError={() => {
+                console.log('Login Failed');
+              }}
               onFailure={result => console.log(result)}
-              cookiePolicy={'single_host_origin'}
             />
-          </div>
+          </GoogleOAuthProvider> */}
+          <GoogleOAuthProvider clientId="748891844766-2mnlsibs54s53a1u1q2p6b659bbqrbed.apps.googleusercontent.com">
+            <GoogleLogin
+              buttonText="Google 로그인"
+              onSuccess={googleSuccess}
+              onFailure={googleError}
+            />
 
+            {/* 
+            <MyCustomButton onClick={() => login()}>
+              Sign in with Google 🚀{' '}
+            </MyCustomButton>; */}
 
-          <Button.Container>
-            <Button.ButtonList>
-              <Button.KakaoButton onClick={kakaoLogin}>
-                <Button.ButtonText>Kakao</Button.ButtonText>
-              </Button.KakaoButton>
-            </Button.ButtonList>
-          </Button.Container>
-
-
-
-
-
+          </GoogleOAuthProvider>
 
         </main>
       </LoginWrapper>
@@ -124,7 +144,9 @@ export default function Login() {
 };
 
 
+const MyCustomButton = styled(GoogleLogin)`
 
+`
 
 const LoginWrapper = styled('div')`
         display: flex;
@@ -151,11 +173,12 @@ const SnsLoginKakao = styled('div')`
         width: 20rem;
 
         `
-const SnsLoginGoogle = styled('div')`
+const SnsLoginGoogle = styled(GoogleLogin)`
         display: flex;
         justify-content: center;
         align-items: center;
-        width: 20rem;
+        width : 300px;
+        height: 45px;
         `
 
 const SnsLoginNaver = styled('div')`
@@ -165,36 +188,3 @@ const SnsLoginNaver = styled('div')`
         width: 20rem;
         `
 
-
-//kakao
-const Button = {
-  Container: styled.div``,
-
-  ButtonList: styled.div`
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    `,
-
-  KakaoButton: styled.button`
-        background-color: #fef01b;
-
-        width: 360px;
-        height: 40px;
-
-        margin: 6px 0;
-
-        border: none;
-        border-radius: 6px;
-
-        cursor: pointer;
-    `,
-
-  ButtonText: styled.h4`
-        margin: 0;
-        padding: 0;
-        
-        font-size: 18px;
-        color: #ffffff;
-    `,
-}
