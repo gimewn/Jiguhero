@@ -1,67 +1,46 @@
 import styled from 'styled-components';
 import { useEffect } from 'react';
+import { useRouter } from 'next/router';
 
 const MapDiv = styled('div')`
-    width:95%;
-    height:270px;
-    @media screen and (min-width:600px){
-        height:400px;
-    }
-    border:0;
-    border-radius: 20px;
+    width:inherit;
+    height:inherit;
+    border: ${props => props.bord || 0};
+    border-radius: ${props => props.borderR || 0};
 `
-declare global {
-    interface Window{
-        kakao:any
+
+export default function KakaoMap(){
+    const router = useRouter();
+    const FullMap = (href) => {
+        router.push(href);
     }
-}
-
-interface AddressProps{
-    address:string
-}
-
-export default function KakaoMap({address}:AddressProps){
     useEffect(() => {
-        const onLoadKakaoMap = () => {
-          window.kakao.maps.load(() => {
-            const geocoder = new window.kakao.maps.services.Geocoder() // 주소-좌표 반환 객체를 생성
-            // 주소로 좌표를 검색
-            geocoder.addressSearch(address, (result: any, status: any) => {
-              if (status === window.kakao.maps.services.Status.OK) { // 정상적으로 검색이 완료됐으면
-                var coords = new window.kakao.maps.LatLng(result[0].y, result[0].x)
-                // 지도를 생성
-                const container = document.getElementById("map")
-                const options = {
-                  center: coords,
-                  level: 3,
-                }
-                const map = new window.kakao.maps.Map(container, options)
-                // 결과값으로 받은 위치를 마커로 표시
-                new window.kakao.maps.Marker({
-                  map: map,
-                  position: coords,
-                })
-              } else { // 정상적으로 좌표가 검색이 안 될 경우 디폴트 좌표로 검색
-                const container = document.getElementById("map")
-                const options = {
-                  center: new window.kakao.maps.LatLng(33.450701, 126.570667),
-                  level: 3,
-                }
-                // 지도를 생성
-                const map = new window.kakao.maps.Map(container, options)
-                new window.kakao.maps.Marker({
-                  map: map,
-                  position: coords,
-                })
-              }
-            })
-          })
-        }
-        onLoadKakaoMap()
-      }, [address])
+
+    var mapContainer = document.getElementById('map') // 지도를 표시할 div 
+    var mapOption = { 
+        center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
+        level: 3 // 지도의 확대 레벨 
+    };
+  
+    var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
     
-    return(
-        <MapDiv id="map">
-        </MapDiv>
+    // HTML5의 geolocation으로 사용할 수 있는지 확인합니다 
+    if (navigator.geolocation) {
+      
+      // GeoLocation을 이용해서 접속 위치를 얻어옵니다
+      navigator.geolocation.getCurrentPosition(function(position) {
+          
+          var lat = position.coords.latitude, // 위도
+              lon = position.coords.longitude; // 경도
+          
+          var locPosition = new kakao.maps.LatLng(lat, lon); // 마커가 표시될 위치를 geolocation으로 얻어온 좌표로 생성합니다  
+          // 지도 중심좌표를 접속위치로 변경합니다
+          map.setCenter(locPosition);      
+     })}
+  })
+
+  return(
+    <MapDiv id="map" onClick={() => FullMap("/ecomarket")}>
+    </MapDiv>
     )
 }

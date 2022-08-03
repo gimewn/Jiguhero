@@ -22,7 +22,7 @@ const Container = styled('div')`
   justify-content: center;
   flex-direction: column;
   min-width:375px;
-  max-width:700px;
+  /* max-width:700px; */
   span, p {
     align-items: flex-start;
   }
