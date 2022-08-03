@@ -4,9 +4,16 @@ import { RecoilRoot } from 'recoil'
 import MenuForDesk from 'components/MenuBarDesktop'
 import MenuForMobile from 'components/MenuBarMobile';
 import styled from 'styled-components';
-import logo from 'public/logo.png';
 import Image from 'next/image';
+import logo from '../public/logo.png';
 import { useRouter } from "next/router";
+import { createTheme, ThemeProvider } from '@mui/material';
+import { SessionProvider } from 'next-auth/react';
+import Head from 'node_modules/next/head';
+
+
+
+
 
 const Header = styled('div')`
   display:flex;
@@ -56,12 +63,13 @@ const Footer = styled('div')`
   background-color: white;
 `
 
-function MyApp({ Component, pageProps }: AppProps) {
+function MyApp({ Component, pageProps: { pageProps } }: AppProps) {
   const router = useRouter();
   const onLink = (href) => {
-        router.push(href);  
-        };
+    router.push(href);
+  };
   return (
+
     <RecoilRoot>
       <Header>
         
@@ -70,10 +78,17 @@ function MyApp({ Component, pageProps }: AppProps) {
           <MenuForDesk />
         </DeskMenu>
       </Header>
+      <Head>
+        {/* 카카오 */}
+        <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
+        <script>Kakao.init('46f862b6d1bd1530724be12dfcfe0625')</script>
+        {/* 네이버 */}
+        <script src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.2.js"></script>
+      </Head>
       <Body>
-      <Container>
-        <Component {...pageProps} />
-      </Container>
+        <Container>
+          <Component {...pageProps} />
+        </Container>
       </Body>
       <Footer>
         <MobileMenu>
@@ -81,7 +96,9 @@ function MyApp({ Component, pageProps }: AppProps) {
         </MobileMenu>
       </Footer>
     </RecoilRoot>
+
   );
 };
 
 export default MyApp
+

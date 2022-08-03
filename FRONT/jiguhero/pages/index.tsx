@@ -17,33 +17,33 @@ const Content = styled('div')`
   align-items: center;
 `
 
-export default function Home(){
+export default function Home() {
   return (
     <>
-    <Block>
-      <Title>☘️ 내 주변 친환경 가게를 찾아보자!</Title>
-      <Content>
-        <Map address={'광주광역시 북구 용봉로'} />
-      </Content>
-    </Block>
-    <Block>
-      <Title>🧐 가장 핫한 대원들의 활동구역 TOP5</Title>
-      <Content>
-      <GroundTop5 />
-      </Content>
-    </Block>
-    <Block>
-      <Title>🔥지금 대원들이 가장 많이 도전 중인 임무</Title>
-      <Content>
-      <MissionTop3 />
-      </Content>
-    </Block>
-    <Block>
-      <Title>📰대원들을 위한 친환경 소식</Title>
-      <Content>
-        <News />
-      </Content>
-    </Block>
+      <Block>
+        <Title>☘️ 내 주변 친환경 가게를 찾아보자!</Title>
+        <Content>
+          <Map address={'광주광역시 북구 용봉로'} />
+        </Content>
+      </Block>
+      <Block>
+        <Title>🧐 가장 핫한 대원들의 활동구역 TOP5</Title>
+        <Content>
+          <GroundTop5 />
+        </Content>
+      </Block>
+      <Block>
+        <Title>🔥지금 대원들이 가장 많이 도전 중인 임무</Title>
+        <Content>
+          <MissionTop3 />
+        </Content>
+      </Block>
+      <Block>
+        <Title>📰대원들을 위한 친환경 소식</Title>
+        <Content>
+          <News />
+        </Content>
+      </Block>
     </>
   )
 }
