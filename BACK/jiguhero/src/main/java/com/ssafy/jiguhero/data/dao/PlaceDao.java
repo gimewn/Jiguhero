@@ -1,9 +1,6 @@
 package com.ssafy.jiguhero.data.dao;
 
-import com.ssafy.jiguhero.data.entity.Conn_Ground;
-import com.ssafy.jiguhero.data.entity.Ground;
-import com.ssafy.jiguhero.data.entity.Place;
-import com.ssafy.jiguhero.data.entity.Review;
+import com.ssafy.jiguhero.data.entity.*;
 
 import java.util.List;
 
@@ -15,4 +12,6 @@ public interface PlaceDao {
     List<Review> selectJoinReviewByPlace(Place placeEntity);
 
     void insertReview(Review review);
+
+    void insertReport(Report report);
 }

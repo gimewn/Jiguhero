@@ -13,4 +13,6 @@ public interface PlaceService {
     List<ReviewDto> getReviews(Long placeId);
 
     void saveReview(String content, int score, Long placeId, Long userId);
+
+    void saveReport(String content, int category, Long placeId, Long userId);
 }

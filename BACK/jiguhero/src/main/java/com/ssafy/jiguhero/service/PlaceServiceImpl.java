@@ -70,4 +70,16 @@ public class PlaceServiceImpl implements PlaceService{
         review.setUser(userEntity);
         placeDao.insertReview(review);
     }
+
+    @Override
+    public void saveReport(String content, int category, Long placeId, Long userId) {
+        Report report = new Report();
+        Place placeEntity = placeDao.selectPlaceById(placeId);
+        User userEntity = userDao.selectUserById(userId);
+        report.setContent(content);
+        report.setCategory(category);
+        report.setPlace(placeEntity);
+        report.setUser(userEntity);
+        placeDao.insertReport(report);
+    }
 }

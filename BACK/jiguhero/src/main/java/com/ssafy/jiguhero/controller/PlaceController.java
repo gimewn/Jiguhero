@@ -60,4 +60,16 @@ public class PlaceController {
         return new ResponseEntity<String>("success", HttpStatus.OK);
     }
 
+    @ApiOperation(value = "특정 장소에 대한 신고를 저장한다.")
+    @PostMapping("/report")
+    public ResponseEntity<String> saveReport(
+            @RequestParam("content") String content,
+            @RequestParam("category") int category,
+            @RequestParam("place_id") Long placeId,
+            @RequestParam("user_id") Long userId){
+        placeService.saveReport(content, category, placeId, userId);
+
+        return new ResponseEntity<String>("success", HttpStatus.OK);
+    }
+
 }
