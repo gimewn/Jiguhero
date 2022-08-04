@@ -8,6 +8,7 @@ import com.ssafy.jiguhero.data.entity.Like_Ground;
 import com.ssafy.jiguhero.data.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,6 +58,7 @@ public class GroundServiceImpl implements GroundService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public GroundDto getGround(Long groundId) {
         Ground entity = groundDao.selectGroundById(groundId);
         GroundDto dto = GroundDto.of(entity);
