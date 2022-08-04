@@ -45,13 +45,6 @@ public class Place {
     @Column(nullable = true)
     private long lng;
 
-//    @Column(nullable = false)
-//    private String category_code;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "code")
-    private Category category;
-
     @OneToMany(mappedBy = "place")
     List<Review> review = new ArrayList<>();
 }

@@ -2,7 +2,9 @@ package com.ssafy.jiguhero.controller;
 
 import com.ssafy.jiguhero.data.dto.GroundDto;
 import com.ssafy.jiguhero.data.dto.MissionDto;
+import com.ssafy.jiguhero.data.dto.PlaceDto;
 import com.ssafy.jiguhero.data.entity.Ground;
+import com.ssafy.jiguhero.data.entity.Place;
 import com.ssafy.jiguhero.service.GroundService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -50,5 +52,7 @@ public class GroundController {
 
         return ResponseEntity.status(HttpStatus.OK).body(dto);
     }
+
+
     
 }
