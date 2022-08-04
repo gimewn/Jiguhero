@@ -37,7 +37,7 @@ public class MissionController {
     }
 
     @ApiOperation(value = "user_id에 해당하는 유저가 참여중인 임무 리스트를 반환한다.", response = List.class)
-    @GetMapping("/{user_id}/join")
+    @GetMapping("/{user_id}/joins")
     public ResponseEntity<List<MissionDto>> getJoinMissions(@PathVariable("user_id") Long userId) {
         List<MissionDto> list = missionService.getJoinMissions(userId);
 
