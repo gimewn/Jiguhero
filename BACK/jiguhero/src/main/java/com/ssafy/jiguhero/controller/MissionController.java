@@ -75,7 +75,7 @@ public class MissionController {
                                                      ) {
 
         missionService.saveMission(title,startDate,endDate,entryPoint,sidoCode,gugunCode,dongCode,nowPerson,maxPerson,failedPerson,likes,hits);
-
+        // missionServiceImpl 확인!!! Conn_Mission도 추가해야함(임무 작성한 대원 저장 등)
         return new ResponseEntity<String>("success", HttpStatus.OK);
     }
 }
