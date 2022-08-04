@@ -1,6 +1,7 @@
 package com.ssafy.jiguhero.controller;
 
 import com.ssafy.jiguhero.data.dto.PlaceDto;
+import com.ssafy.jiguhero.data.dto.ReviewDto;
 import com.ssafy.jiguhero.service.PlaceService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -42,4 +43,11 @@ public class PlaceController {
         return ResponseEntity.status(HttpStatus.OK).body(placeDto);
     }
 
+    @ApiOperation(value = "특정 장소에 대한 모든 리뷰 정보를 반환한다.", response = List.class)
+    @GetMapping("/review/{place_id}")
+    public ResponseEntity<List<ReviewDto>> getReviews(@PathVariable("place_id") Long placeId){
+        List<ReviewDto> list = placeService.getReviews(placeId);
+
+        return ResponseEntity.status(HttpStatus.OK).body(list);
+    }
 }

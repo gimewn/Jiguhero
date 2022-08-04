@@ -3,10 +3,8 @@ package com.ssafy.jiguhero.service;
 import com.ssafy.jiguhero.data.dao.GroundDao;
 import com.ssafy.jiguhero.data.dao.PlaceDao;
 import com.ssafy.jiguhero.data.dto.PlaceDto;
-import com.ssafy.jiguhero.data.entity.Conn_Ground;
-import com.ssafy.jiguhero.data.entity.Conn_Mission;
-import com.ssafy.jiguhero.data.entity.Ground;
-import com.ssafy.jiguhero.data.entity.Place;
+import com.ssafy.jiguhero.data.dto.ReviewDto;
+import com.ssafy.jiguhero.data.entity.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -46,5 +44,15 @@ public class PlaceServiceImpl implements PlaceService{
         Place entity = placeDao.selectPlaceById(placeId);
         PlaceDto dto = PlaceDto.of(entity);
         return dto;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<ReviewDto> getReviews(Long placeId) {
+        Place placeEntity = placeDao.selectPlaceById(placeId);
+        List<Review> joinReviewList = placeDao.selectJoinReviewByPlace(placeEntity);
+
+        List<ReviewDto> dtoList = joinReviewList.stream().map(entity -> ReviewDto.of(entity)).collect(Collectors.toList());
+        return dtoList;
     }
 }
