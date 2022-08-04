@@ -27,6 +27,7 @@ public class GroundServiceImpl implements GroundService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<GroundDto> getTop5HitsLikes() {
         List<Ground> entityList = groundDao.selectTop5HitsLikes();
 
@@ -36,6 +37,7 @@ public class GroundServiceImpl implements GroundService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<GroundDto> getLikeGrounds(Long userId) {
         User userEntity = userDao.selectUserById(userId);
         List<Like_Ground> likeGroundList = groundDao.selectLikeGroundByUser(userEntity);
@@ -51,6 +53,7 @@ public class GroundServiceImpl implements GroundService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<GroundDto> getGrounds() {
         List<Ground> entityList = groundDao.selectGrounds();
         List<GroundDto> dtoList = entityList.stream().map(entity -> GroundDto.of(entity)).collect(Collectors.toList());

@@ -26,13 +26,20 @@ public class PlaceController {
         this.placeService = placeService;
     }
 
-    @ApiOperation(value = "특정 활동구역에 포함된 모든 장소 정보를 반환한다.", response = PlaceDto.class)
-    @GetMapping("/get/{ground_id}")
+    @ApiOperation(value = "특정 활동구역에 포함된 모든 장소 정보를 반환한다.", response = List.class)
+    @GetMapping("/list/{ground_id}")
     public ResponseEntity<List<PlaceDto>> getPlaces(@PathVariable("ground_id") Long groundId){
-
         List<PlaceDto> list = placeService.getPlaces(groundId);
 
         return ResponseEntity.status(HttpStatus.OK).body(list);
+    }
+
+    @ApiOperation(value = "특정 장소에 대한 정보를 반환한다.", response = PlaceDto.class)
+    @GetMapping("/get/{place_id}")
+    public ResponseEntity<PlaceDto> getPlace(@PathVariable("place_id") Long placeId){
+        PlaceDto placeDto = placeService.getPlace(placeId);
+
+        return ResponseEntity.status(HttpStatus.OK).body(placeDto);
     }
 
 }

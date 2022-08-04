@@ -39,4 +39,12 @@ public class PlaceServiceImpl implements PlaceService{
         List<PlaceDto> dtoList = entityList.stream().map(entity -> PlaceDto.of(entity)).collect(Collectors.toList());
         return dtoList;
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public PlaceDto getPlace(Long placeId) {
+        Place entity = placeDao.selectPlaceById(placeId);
+        PlaceDto dto = PlaceDto.of(entity);
+        return dto;
+    }
 }
