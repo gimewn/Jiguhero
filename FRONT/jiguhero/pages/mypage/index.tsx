@@ -133,19 +133,8 @@ interface Idata {
 
 const Mypage = (user_id) => {
 
-  const [data, setData] = useState<Idata>();
-  useEffect(() => {
-    (async () => {
-      const response = await fetch(`http://localhost:3000/user/1`, {
-        headers: {
-          Accept: "*/*",
-        }
-      })
-      const json = await response.json();
-      setData(json);
-    })();
-  }, []);
-  console.log(data)
+  
+
   // 탭 전환
   const [tab, setTab] = useState(true);
   // 프로필
