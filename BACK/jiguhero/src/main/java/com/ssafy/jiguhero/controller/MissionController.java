@@ -8,12 +8,10 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -54,9 +52,30 @@ public class MissionController {
 
     @ApiOperation(value = "해당 임무의 모든 정보를 반환한다.", response = String.class)
     @GetMapping("/{mission_id}/details")
-    public ResponseEntity<MissionDto> getAllMissions(@PathVariable("mission_id") Long missionId) {
+    public ResponseEntity<MissionDto> getMission(@PathVariable("mission_id") Long missionId) {
         MissionDto result = missionService.getMissionById(missionId);
 
         return ResponseEntity.status(HttpStatus.OK).body(result);
+    }
+
+    @ApiOperation(value = "해당 임무의 모든 정보를 반환한다.", response = String.class)
+    @PostMapping("/{mission_id}/details")
+    public ResponseEntity<String> saveMission(@RequestParam("title") String title,
+                                                     @RequestParam("start_date") LocalDateTime startDate,
+                                                     @RequestParam("end_date") LocalDateTime endDate,
+                                                     @RequestParam("enrty_point") int entryPoint,
+                                                     @RequestParam("sido_code") String sidoCode,
+                                                     @RequestParam("gugun_code") String gugunCode,
+                                                     @RequestParam("dong_code") String dongCode,
+                                                     @RequestParam("now_person") int nowPerson,
+                                                     @RequestParam("max_person") int maxPerson,
+                                                     @RequestParam("failed_person") int failedPerson,
+                                                     @RequestParam("likes") int likes,
+                                                     @RequestParam("hits") int hits
+                                                     ) {
+
+        missionService.saveMission(title,startDate,endDate,entryPoint,sidoCode,gugunCode,dongCode,nowPerson,maxPerson,failedPerson,likes,hits);
+
+        return new ResponseEntity<String>("success", HttpStatus.OK);
     }
 }

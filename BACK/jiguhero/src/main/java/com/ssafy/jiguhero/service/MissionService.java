@@ -2,6 +2,7 @@ package com.ssafy.jiguhero.service;
 
 import com.ssafy.jiguhero.data.dto.MissionDto;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface MissionService {
@@ -20,4 +21,5 @@ public interface MissionService {
     // missionId에 해당하는 임무
     MissionDto getMissionById(Long missionId);
 
+    void saveMission(String title, LocalDateTime startDate, LocalDateTime endDate, int entryPoint, String sidoCode, String gugunCode, String dongCode, int nowPerson, int maxPerson, int failedPerson, int likes, int hits);
 }

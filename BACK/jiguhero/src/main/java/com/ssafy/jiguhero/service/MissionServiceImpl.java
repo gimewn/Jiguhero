@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -82,5 +83,28 @@ public class MissionServiceImpl implements MissionService {
         MissionDto dto = MissionDto.of(entity);
         return dto;
     }
+
+    @Override
+    public void saveMission(String title, java.time.LocalDateTime startDate, LocalDateTime endDate, int entryPoint,
+                            String sidoCode, String gugunCode, String dongCode, int nowPerson, int maxPerson,
+                            int failedPerson, int likes, int hits) {
+        Mission mission = new Mission();
+        mission.setTitle(title);
+        mission.setStartDate(startDate);
+        mission.setEndDate(endDate);
+        mission.setEntryPoint(entryPoint);
+        mission.setSidoCode(sidoCode);
+        mission.setGugunCode(gugunCode);
+        mission.setDongCode(dongCode);
+        mission.setNowPerson(nowPerson);
+        mission.setMaxPerson(maxPerson);
+        mission.setFailedPerson(failedPerson);
+        mission.setLikes(likes);
+        mission.setHits(hits);
+
+        // Conn_Mission도 추가해야함(임무 작성한 대원 저장 등)
+
+    }
+
 
 }
