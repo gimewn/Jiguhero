@@ -5,6 +5,7 @@ import com.ssafy.jiguhero.data.dto.PromotionDto;
 import com.ssafy.jiguhero.data.entity.Promotion;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -20,6 +21,7 @@ public class PromotionServiceImpl implements PromotionService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<PromotionDto> getTop3Regtime() {
         List<Promotion> entityList = promotionDao.selectTop3Regtime();
 
