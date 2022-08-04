@@ -42,4 +42,9 @@ public class PlaceDaoImpl implements PlaceDao{
         List<Review> selectedJoinReview = reviewRepository.findAllByPlace(placeEntity);
         return selectedJoinReview;
     }
+
+    @Override
+    public void insertReview(Review review) {
+        reviewRepository.save(review);
+    }
 }

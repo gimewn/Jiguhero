@@ -8,10 +8,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -49,6 +46,18 @@ public class PlaceController {
         List<ReviewDto> list = placeService.getReviews(placeId);
 
         return ResponseEntity.status(HttpStatus.OK).body(list);
+    }
+
+    @ApiOperation(value = "특정 장소에 대한 리뷰를 저장한다.")
+    @PostMapping("/review")
+    public ResponseEntity<String> saveReview(
+            @RequestParam("content") String content,
+            @RequestParam("score") int score,
+            @RequestParam("place_id") Long placeId,
+            @RequestParam("user_id") Long userId){
+        placeService.saveReview(content, score, placeId, userId);
+
+        return new ResponseEntity<String>("success", HttpStatus.OK);
     }
 
 }

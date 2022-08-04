@@ -13,4 +13,6 @@ public interface PlaceDao {
     Place selectPlaceById(Long placeId);
 
     List<Review> selectJoinReviewByPlace(Place placeEntity);
+
+    void insertReview(Review review);
 }

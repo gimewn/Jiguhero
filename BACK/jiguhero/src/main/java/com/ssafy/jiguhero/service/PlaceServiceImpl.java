@@ -2,6 +2,7 @@ package com.ssafy.jiguhero.service;
 
 import com.ssafy.jiguhero.data.dao.GroundDao;
 import com.ssafy.jiguhero.data.dao.PlaceDao;
+import com.ssafy.jiguhero.data.dao.UserDao;
 import com.ssafy.jiguhero.data.dto.PlaceDto;
 import com.ssafy.jiguhero.data.dto.ReviewDto;
 import com.ssafy.jiguhero.data.entity.*;
@@ -16,10 +17,12 @@ import java.util.stream.Collectors;
 public class PlaceServiceImpl implements PlaceService{
     private final GroundDao groundDao;
     private final PlaceDao placeDao;
+    private final UserDao userDao;
 
-    public PlaceServiceImpl(GroundDao groundDao, PlaceDao placeDao) {
+    public PlaceServiceImpl(GroundDao groundDao, PlaceDao placeDao, UserDao userDao) {
         this.groundDao = groundDao;
         this.placeDao = placeDao;
+        this.userDao = userDao;
     }
 
 
@@ -54,5 +57,17 @@ public class PlaceServiceImpl implements PlaceService{
 
         List<ReviewDto> dtoList = joinReviewList.stream().map(entity -> ReviewDto.of(entity)).collect(Collectors.toList());
         return dtoList;
+    }
+
+    @Override
+    public void saveReview(String content, int score, Long placeId, Long userId) {
+        Review review = new Review();
+        Place placeEntity = placeDao.selectPlaceById(placeId);
+        User userEntity = userDao.selectUserById(userId);
+        review.setContent(content);
+        review.setScore(score);
+        review.setPlace(placeEntity);
+        review.setUser(userEntity);
+        placeDao.insertReview(review);
     }
 }
