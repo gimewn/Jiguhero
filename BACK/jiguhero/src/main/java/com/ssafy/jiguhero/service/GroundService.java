@@ -13,4 +13,6 @@ public interface GroundService {
     List<GroundDto> getGrounds();
 
     GroundDto getGround(Long groundId);
+
+    List<GroundDto> getGroundsByUser(Long userId);
 }

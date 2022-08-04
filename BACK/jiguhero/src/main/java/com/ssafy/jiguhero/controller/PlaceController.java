@@ -50,4 +50,5 @@ public class PlaceController {
 
         return ResponseEntity.status(HttpStatus.OK).body(list);
     }
+
 }

@@ -54,4 +54,10 @@ public class GroundDaoImpl implements GroundDao {
         Ground selected = groundRepository.getById(groundId);
         return selected;
     }
+
+    @Override
+    public List<Ground> selectGroundByUser(User userEntity) {
+        List<Ground> selectedGrounds = groundRepository.findAllByUser(userEntity);
+        return selectedGrounds;
+    }
 }

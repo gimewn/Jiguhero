@@ -53,6 +53,11 @@ public class GroundController {
         return ResponseEntity.status(HttpStatus.OK).body(dto);
     }
 
-
+    @ApiOperation(value = "특정 유저가 생성한 활동구역 목록을 반환한다.", response = List.class)
+    @GetMapping("/list/{user_id}")
+    public ResponseEntity<List<GroundDto>> getGroundsByUser(@PathVariable("user_id") Long userId){
+        List<GroundDto> list = groundService.getGroundsByUser(userId);
+        return ResponseEntity.status(HttpStatus.OK).body(list);
+    }
     
 }

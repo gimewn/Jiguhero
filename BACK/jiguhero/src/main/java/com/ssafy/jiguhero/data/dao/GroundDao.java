@@ -19,4 +19,5 @@ public interface GroundDao {
 
     Ground selectGround(Long groundId);
 
+    List<Ground> selectGroundByUser(User userEntity);
 }
