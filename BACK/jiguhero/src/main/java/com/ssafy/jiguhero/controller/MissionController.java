@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController
@@ -36,7 +37,7 @@ public class MissionController {
     }
 
     @ApiOperation(value = "user_id에 해당하는 유저가 참여중인 임무 리스트를 반환한다.", response = List.class)
-    @GetMapping("/{user_id}")
+    @GetMapping("/{user_id}/join")
     public ResponseEntity<List<MissionDto>> getJoinMissions(@PathVariable("user_id") Long userId) {
         List<MissionDto> list = missionService.getJoinMissions(userId);
 
@@ -49,5 +50,13 @@ public class MissionController {
         List<MissionDto> list = missionService.getAllMissions();
 
         return ResponseEntity.status(HttpStatus.OK).body(list);
+    }
+
+    @ApiOperation(value = "해당 임무의 모든 정보를 반환한다.", response = String.class)
+    @GetMapping("/{mission_id}/details")
+    public ResponseEntity<MissionDto> getAllMissions(@PathVariable("mission_id") Long missionId) {
+        MissionDto result = missionService.getMissionById(missionId);
+
+        return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 }

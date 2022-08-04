@@ -9,6 +9,7 @@ import com.ssafy.jiguhero.data.entity.Mission;
 import com.ssafy.jiguhero.data.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -71,6 +72,15 @@ public class MissionServiceImpl implements MissionService {
         List<MissionDto> dtoList = entityList.stream().map(entity -> MissionDto.of(entity)).collect(Collectors.toList());
 
         return dtoList;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public  MissionDto getMissionById(Long missionId) {
+        Mission entity = missionDao.selectMissionById(missionId);
+
+        MissionDto dto = MissionDto.of(entity);
+        return dto;
     }
 
 }

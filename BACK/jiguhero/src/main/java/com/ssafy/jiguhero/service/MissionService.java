@@ -17,4 +17,7 @@ public interface MissionService {
     // 전체 임무 목록
     List<MissionDto> getAllMissions();
 
+    // missionId에 해당하는 임무
+    MissionDto getMissionById(Long missionId);
+
 }
