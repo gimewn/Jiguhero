@@ -26,4 +26,6 @@ public interface MissionService {
     void joinMission(Long userId, Long missionId);
 
     int likeMission(Long missionId, Long userId);
+
+    int deleteMission(Long missionId, Long userId);
 }

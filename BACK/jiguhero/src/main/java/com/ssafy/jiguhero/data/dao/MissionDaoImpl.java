@@ -88,4 +88,27 @@ public class MissionDaoImpl implements MissionDao {
     public void deleteLikeMission(Mission mission, User user){
         likeMissionRepository.deleteByMissionAndUser(mission, user);
     }
+
+    @Override
+    public Optional<Conn_Mission> selectConnMission(Mission mission, User user){
+        Optional<Conn_Mission> connMission = connMissionRepository.findByMissionAndUser(mission, user);
+        if(connMission.isPresent()) return connMission;
+        else return null;
+    }
+
+    @Override
+    public void deleteConnMission(Mission mission){
+        connMissionRepository.deleteAllByMission(mission);
+    }
+
+    @Override
+    public void deleteMissionById(Long missionId){
+        missionRepository.deleteById(missionId);
+    }
+
+    @Override
+    public void deleteLikeMission(Mission mission){
+        likeMissionRepository.deleteAllByMission(mission);
+    }
 }
+

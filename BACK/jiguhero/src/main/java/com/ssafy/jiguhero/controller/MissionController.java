@@ -73,7 +73,7 @@ public class MissionController {
                                               @RequestParam("failed_person") int failedPerson,
                                               @RequestParam("likes") int likes,
                                               @RequestParam("hits") int hits
-                                                     ) {
+    ) {
 
         missionService.saveMission(userId, title, startDate, endDate, entryPoint, sidoCode, gugunCode, dongCode, nowPerson, maxPerson, failedPerson, likes, hits);
 
@@ -96,5 +96,15 @@ public class MissionController {
 
         if(check == 1) return new ResponseEntity<String>("success", HttpStatus.OK);
         else return new ResponseEntity<String>("deletesuccess", HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "해당 임무를 삭제한다.", response = List.class)
+    @DeleteMapping("/{mission_id}/details")
+    public ResponseEntity<String> deleteMission(@PathVariable("mission_id") Long missionId, @RequestParam("user_id") Long userId) {
+        int check = missionService.deleteMission(missionId, userId);
+
+        if(check == 1) return new ResponseEntity<String>("success", HttpStatus.OK);
+        else return new ResponseEntity<String>("unauthorized", HttpStatus.OK);
+
     }
 }

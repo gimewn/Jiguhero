@@ -19,4 +19,6 @@ public interface LikeMissionRepository extends JpaRepository<Like_Mission, Long>
 
     Optional<Like_Mission> findByMissionAndUser(Mission mission, User user);
 
+    void deleteAllByMission(Mission mission);
+
 }

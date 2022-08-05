@@ -35,4 +35,12 @@ public interface MissionDao {
 
     void deleteLikeMission(Mission mission, User user);
 
+    Optional<Conn_Mission> selectConnMission(Mission mission, User user);
+
+    void deleteConnMission(Mission mission);
+
+    void deleteMissionById(Long missionId);
+
+    void deleteLikeMission(Mission mission);
+
 }

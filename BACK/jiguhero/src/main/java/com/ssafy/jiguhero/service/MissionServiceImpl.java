@@ -29,7 +29,6 @@ public class MissionServiceImpl implements MissionService {
     }
 
     @Override
-    @Transactional(readOnly = true)
     public List<MissionDto> getTop3NowPerson() {
         List<Mission> entityList = missionDao.selectTop3NowPerson();
 
@@ -39,7 +38,6 @@ public class MissionServiceImpl implements MissionService {
     }
 
     @Override
-    @Transactional(readOnly = true)
     public List<MissionDto> getLikeMissions(Long userId) {
         User userEntity = userDao.selectUserById(userId);
         List<Like_Mission> likeMissionList = missionDao.selectLikeMissionByUser(userEntity);
@@ -55,7 +53,6 @@ public class MissionServiceImpl implements MissionService {
     }
 
     @Override
-    @Transactional(readOnly = true)
     public List<MissionDto> getJoinMissions(Long userId) {
         User userEntity = userDao.selectUserById(userId);
         List<Conn_Mission> joinMissionList = missionDao.selectJoinMissionByUser(userEntity);
@@ -150,6 +147,23 @@ public class MissionServiceImpl implements MissionService {
 
     public void deleteLikeMission(Mission mission, User user){
         missionDao.deleteLikeMission(mission, user);
+    }
+
+    @Transactional
+    public int deleteMission(Long missionId, Long userId){
+        Conn_Mission connMission = new Conn_Mission();
+        User userEntity = userDao.selectUserById(userId);
+        Mission missionEntity = missionDao.selectMissionById(missionId);
+
+        if(missionDao.selectConnMission(missionEntity, userEntity)!=null) {
+            missionDao.deleteConnMission(missionEntity);
+            missionDao.deleteLikeMission(missionEntity);
+            missionDao.deleteMissionById(missionId);
+
+            return 1;
+        }
+        else return 2;
+
     }
 
 }

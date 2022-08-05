@@ -9,11 +9,11 @@ import java.util.List;
 public interface PlaceService {
     List<PlaceDto> getPlaces(Long groundId);
 
-    PlaceDto getPlace(Long placeId);
+    PlaceDto getPlace(String placeId);
 
-    List<ReviewDto> getReviews(Long placeId);
+    List<ReviewDto> getReviews(String placeId);
 
-    void saveReview(ReviewDto review, Long userId, Long placeId);
+    void saveReview(ReviewDto review, String placeId, Long userId);
 
-    void saveReport(ReportDto reportDto, Long placeId, Long userId);
+    void saveReport(ReportDto reportDto, String placeId, Long userId);
 }
