@@ -34,6 +34,6 @@ public class PromotionController {
     @GetMapping("/get/{promotion_id}")
     public ResponseEntity<PromotionDto> getPromotion(@PathVariable("promotion_id") Long promotionId){
         PromotionDto dto = promotionService.getPromotion(promotionId);
-        return dto;
+        return ResponseEntity.status(HttpStatus.OK).body(dto);
     }
 }
