@@ -1,14 +1,17 @@
 package com.ssafy.jiguhero.oauthlogin.config.security.handler;
 
+import com.ssafy.jiguhero.data.repository.UserRepository;
 import com.ssafy.jiguhero.oauthlogin.advice.assertThat.DefaultAssert;
 import com.ssafy.jiguhero.oauthlogin.config.security.OAuth2Config;
 import com.ssafy.jiguhero.oauthlogin.config.security.util.CustomCookie;
+import com.ssafy.jiguhero.oauthlogin.domain.entity.user.Role;
 import com.ssafy.jiguhero.oauthlogin.domain.entity.user.Token;
 import com.ssafy.jiguhero.oauthlogin.domain.mapping.TokenMapping;
 import com.ssafy.jiguhero.oauthlogin.repository.auth.CustomAuthorizationRequestRepository;
 import com.ssafy.jiguhero.oauthlogin.repository.auth.TokenRepository;
 import com.ssafy.jiguhero.oauthlogin.service.auth.CustomTokenProviderService;
 
+import com.ssafy.jiguhero.service.UserService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
@@ -35,6 +38,7 @@ public class CustomSimpleUrlAuthenticationSuccessHandler extends SimpleUrlAuthen
     private final OAuth2Config oAuth2Config;
     private final TokenRepository tokenRepository;
     private final CustomAuthorizationRequestRepository customAuthorizationRequestRepository;
+    private final UserService userService;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
@@ -75,6 +79,14 @@ public class CustomSimpleUrlAuthenticationSuccessHandler extends SimpleUrlAuthen
                             .refreshToken(tokenMapping.getRefreshToken())
                             .build();
         tokenRepository.save(token);
+
+        // 처음 로그인한 유저라면 quertParam에 key : REGISTER / value : REQUIRED 저장
+        if(userService.getUserByEmail(tokenMapping.getUserEmail()).getRole().equals(Role.REGISTER)){
+            return UriComponentsBuilder.fromUriString(targetUrl)
+                    .queryParam("token", tokenMapping.getAccessToken())
+                    .queryParam("REGISTER", "REQUIRED")
+                    .build().toUriString();
+        }
 
         // queryParam에 Access Token 저장
         return UriComponentsBuilder.fromUriString(targetUrl)

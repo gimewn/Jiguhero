@@ -1,5 +1,7 @@
 package com.ssafy.jiguhero.data.entity;
 
+import com.ssafy.jiguhero.data.dto.ReportDto;
+import com.ssafy.jiguhero.util.ModelMapperUtils;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,12 +27,6 @@ public class Report {
     @Column(nullable = true)
     private String content;
 
-//    @Column(nullable = true)
-//    private long place_id;
-//
-//    @Column(nullable = true)
-//    private long user_id;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userId")
     private User user;
@@ -38,4 +34,9 @@ public class Report {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "placeId")
     private Place place;
+
+    public static Report of(ReportDto reportDto){
+        Report report = ModelMapperUtils.getModelMapper().map(reportDto, Report.class);
+        return report;
+    }
 }

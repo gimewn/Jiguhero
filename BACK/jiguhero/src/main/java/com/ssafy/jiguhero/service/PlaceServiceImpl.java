@@ -4,6 +4,7 @@ import com.ssafy.jiguhero.data.dao.GroundDao;
 import com.ssafy.jiguhero.data.dao.PlaceDao;
 import com.ssafy.jiguhero.data.dao.UserDao;
 import com.ssafy.jiguhero.data.dto.PlaceDto;
+import com.ssafy.jiguhero.data.dto.ReportDto;
 import com.ssafy.jiguhero.data.dto.ReviewDto;
 import com.ssafy.jiguhero.data.entity.*;
 import org.springframework.stereotype.Service;
@@ -60,26 +61,22 @@ public class PlaceServiceImpl implements PlaceService{
     }
 
     @Override
-    public void saveReview(String content, int score, Long placeId, Long userId) {
-        Review review = new Review();
+    public void saveReview(ReviewDto review, Long userId, Long placeId) {
+        Review reviewEntity = Review.of(review);
         Place placeEntity = placeDao.selectPlaceById(placeId);
         User userEntity = userDao.selectUserById(userId);
-        review.setContent(content);
-        review.setScore(score);
-        review.setPlace(placeEntity);
-        review.setUser(userEntity);
-        placeDao.insertReview(review);
+        reviewEntity.setPlace(placeEntity);
+        reviewEntity.setUser(userEntity);
+        placeDao.insertReview(reviewEntity);
     }
 
     @Override
-    public void saveReport(String content, int category, Long placeId, Long userId) {
-        Report report = new Report();
+    public void saveReport(ReportDto report, Long placeId, Long userId) {
+        Report reportEntity = Report.of(report);
         Place placeEntity = placeDao.selectPlaceById(placeId);
         User userEntity = userDao.selectUserById(userId);
-        report.setContent(content);
-        report.setCategory(category);
-        report.setPlace(placeEntity);
-        report.setUser(userEntity);
-        placeDao.insertReport(report);
+        reportEntity.setPlace(placeEntity);
+        reportEntity.setUser(userEntity);
+        placeDao.insertReport(reportEntity);
     }
 }

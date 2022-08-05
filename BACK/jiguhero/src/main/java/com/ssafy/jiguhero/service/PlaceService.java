@@ -1,6 +1,7 @@
 package com.ssafy.jiguhero.service;
 
 import com.ssafy.jiguhero.data.dto.PlaceDto;
+import com.ssafy.jiguhero.data.dto.ReportDto;
 import com.ssafy.jiguhero.data.dto.ReviewDto;
 
 import java.util.List;
@@ -12,7 +13,7 @@ public interface PlaceService {
 
     List<ReviewDto> getReviews(Long placeId);
 
-    void saveReview(String content, int score, Long placeId, Long userId);
+    void saveReview(ReviewDto review, Long userId, Long placeId);
 
-    void saveReport(String content, int category, Long placeId, Long userId);
+    void saveReport(ReportDto reportDto, Long placeId, Long userId);
 }

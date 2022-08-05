@@ -24,4 +24,6 @@ public class UserService {
         ApiResponse apiResponse = ApiResponse.builder().check(true).information(user.get()).build();
         return ResponseEntity.ok(apiResponse);
     }
+
+
 }

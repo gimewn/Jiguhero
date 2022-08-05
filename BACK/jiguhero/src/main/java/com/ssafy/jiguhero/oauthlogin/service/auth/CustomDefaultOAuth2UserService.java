@@ -48,6 +48,7 @@ public class CustomDefaultOAuth2UserService extends DefaultOAuth2UserService{
             user = updateExistingUser(user, oAuth2UserInfo);
         } else {
             user = registerNewUser(oAuth2UserRequest, oAuth2UserInfo);
+
         }
 
         return UserPrincipal.create(user, oAuth2User.getAttributes());
@@ -60,7 +61,7 @@ public class CustomDefaultOAuth2UserService extends DefaultOAuth2UserService{
                     .name(oAuth2UserInfo.getName())
                     .email(oAuth2UserInfo.getEmail())
                     .imageUrl(oAuth2UserInfo.getImageUrl())
-                    .role(Role.USER)
+                    .role(Role.REGISTER)    // 처음 로그인한 유저는 ROLE.REGISTER 부여
                     .build();
         
         return userRepository.save(user);

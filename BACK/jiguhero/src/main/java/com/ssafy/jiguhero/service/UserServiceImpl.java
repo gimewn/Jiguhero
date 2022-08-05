@@ -47,4 +47,15 @@ public class UserServiceImpl implements UserService {
 
         return url;
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public UserDto getUserByEmail(String email) {
+        User userEntity = userDao.selectUserByEmail(email);
+        UserDto userDto = UserDto.of(userEntity);
+
+        return userDto;
+    }
+
+
 }

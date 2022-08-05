@@ -21,4 +21,11 @@ public class UserDaoImpl implements UserDao {
 
         return selectedUser;
     }
+
+    @Override
+    public User selectUserByEmail(String email) {
+        User selectUser = userRepository.getByEmail(email);
+
+        return selectUser;
+    }
 }

@@ -1,6 +1,7 @@
 package com.ssafy.jiguhero.controller;
 
 import com.ssafy.jiguhero.data.dto.PlaceDto;
+import com.ssafy.jiguhero.data.dto.ReportDto;
 import com.ssafy.jiguhero.data.dto.ReviewDto;
 import com.ssafy.jiguhero.service.PlaceService;
 import io.swagger.annotations.Api;
@@ -51,11 +52,10 @@ public class PlaceController {
     @ApiOperation(value = "특정 장소에 대한 리뷰를 저장한다.")
     @PostMapping("/review")
     public ResponseEntity<String> saveReview(
-            @RequestParam("content") String content,
-            @RequestParam("score") int score,
+            @RequestBody ReviewDto review,
             @RequestParam("place_id") Long placeId,
             @RequestParam("user_id") Long userId){
-        placeService.saveReview(content, score, placeId, userId);
+        placeService.saveReview(review, placeId, userId);
 
         return new ResponseEntity<String>("success", HttpStatus.OK);
     }
@@ -63,11 +63,10 @@ public class PlaceController {
     @ApiOperation(value = "특정 장소에 대한 신고를 저장한다.")
     @PostMapping("/report")
     public ResponseEntity<String> saveReport(
-            @RequestParam("content") String content,
-            @RequestParam("category") int category,
+            @RequestBody ReportDto report,
             @RequestParam("place_id") Long placeId,
             @RequestParam("user_id") Long userId){
-        placeService.saveReport(content, category, placeId, userId);
+        placeService.saveReport(report, placeId, userId);
 
         return new ResponseEntity<String>("success", HttpStatus.OK);
     }

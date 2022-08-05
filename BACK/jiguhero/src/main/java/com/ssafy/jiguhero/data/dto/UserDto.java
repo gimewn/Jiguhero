@@ -1,6 +1,7 @@
 package com.ssafy.jiguhero.data.dto;
 
 import com.ssafy.jiguhero.data.entity.User;
+import com.ssafy.jiguhero.oauthlogin.domain.entity.user.Role;
 import com.ssafy.jiguhero.util.ModelMapperUtils;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -20,6 +21,7 @@ public class UserDto {
     private String name;
     private int grade;
     private int point;
+    private Role role;
 
     public static UserDto of(User userEntity) {
         UserDto userDto = ModelMapperUtils.getModelMapper().map(userEntity, UserDto.class);

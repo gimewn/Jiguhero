@@ -1,5 +1,7 @@
 package com.ssafy.jiguhero.data.entity;
 
+import com.ssafy.jiguhero.data.dto.ReviewDto;
+import com.ssafy.jiguhero.util.ModelMapperUtils;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -32,4 +34,9 @@ public class Review {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "placeId")
     private Place place;
+
+    public static Review of(ReviewDto reviewDto){
+        Review review = ModelMapperUtils.getModelMapper().map(reviewDto, Review.class);
+        return review;
+    }
 }
