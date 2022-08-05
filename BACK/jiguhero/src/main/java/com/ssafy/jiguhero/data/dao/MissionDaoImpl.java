@@ -61,4 +61,14 @@ public class MissionDaoImpl implements MissionDao {
         return selectedAllMissions;
     }
 
+    @Override
+    public void insertMission(Mission mission){
+        missionRepository.save(mission);
+    }
+
+    @Override
+    public void insertConnMission(Conn_Mission connMission){
+        connMissionRepository.save(connMission);
+    }
+
 }

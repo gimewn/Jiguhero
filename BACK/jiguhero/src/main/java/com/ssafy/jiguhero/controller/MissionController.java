@@ -58,24 +58,35 @@ public class MissionController {
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
-    @ApiOperation(value = "해당 임무의 모든 정보를 반환한다.", response = String.class)
-    @PostMapping("/{mission_id}/details")
-    public ResponseEntity<String> saveMission(@RequestParam("title") String title,
-                                                     @RequestParam("start_date") LocalDateTime startDate,
-                                                     @RequestParam("end_date") LocalDateTime endDate,
-                                                     @RequestParam("enrty_point") int entryPoint,
-                                                     @RequestParam("sido_code") String sidoCode,
-                                                     @RequestParam("gugun_code") String gugunCode,
-                                                     @RequestParam("dong_code") String dongCode,
-                                                     @RequestParam("now_person") int nowPerson,
-                                                     @RequestParam("max_person") int maxPerson,
-                                                     @RequestParam("failed_person") int failedPerson,
-                                                     @RequestParam("likes") int likes,
-                                                     @RequestParam("hits") int hits
+    @ApiOperation(value = "새로운 임무를 등록한다.", response = String.class)
+    @PostMapping("/")
+    public ResponseEntity<String> saveMission(@RequestParam("user_id") Long userId,
+                                              @RequestParam("title") String title,
+                                              @RequestParam("start_date") LocalDateTime startDate,
+                                              @RequestParam("end_date") LocalDateTime endDate,
+                                              @RequestParam("enrty_point") int entryPoint,
+                                              @RequestParam("sido_code") String sidoCode,
+                                              @RequestParam("gugun_code") String gugunCode,
+                                              @RequestParam("dong_code") String dongCode,
+                                              @RequestParam("now_person") int nowPerson,
+                                              @RequestParam("max_person") int maxPerson,
+                                              @RequestParam("failed_person") int failedPerson,
+                                              @RequestParam("likes") int likes,
+                                              @RequestParam("hits") int hits
                                                      ) {
 
-        missionService.saveMission(title,startDate,endDate,entryPoint,sidoCode,gugunCode,dongCode,nowPerson,maxPerson,failedPerson,likes,hits);
-        // missionServiceImpl 확인!!! Conn_Mission도 추가해야함(임무 작성한 대원 저장 등)
+        missionService.saveMission(userId, title, startDate, endDate, entryPoint, sidoCode, gugunCode, dongCode, nowPerson, maxPerson, failedPerson, likes, hits);
+
         return new ResponseEntity<String>("success", HttpStatus.OK);
+        // missionServiceImpl 확인!!! Conn_Mission도 추가해야함(임무 작성한 대원 저장 등)
+    }
+
+    @ApiOperation(value = "해당 임무에 참여한다.", response = String.class)
+    @PostMapping("/{mission_id}/details")
+    public ResponseEntity<String> saveMission(@RequestParam("user_id") Long userId, @RequestParam("mission_id") Long missionId) {
+
+        missionService.joinMission(userId, missionId);
+        return new ResponseEntity<String>("success", HttpStatus.OK);
+        // missionServiceImpl 확인!!! Conn_Mission도 추가해야함(임무 작성한 대원 저장 등)
     }
 }

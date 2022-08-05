@@ -85,7 +85,7 @@ public class MissionServiceImpl implements MissionService {
     }
 
     @Override
-    public void saveMission(String title, java.time.LocalDateTime startDate, LocalDateTime endDate, int entryPoint,
+    public void saveMission(Long userId, String title, java.time.LocalDateTime startDate, LocalDateTime endDate, int entryPoint,
                             String sidoCode, String gugunCode, String dongCode, int nowPerson, int maxPerson,
                             int failedPerson, int likes, int hits) {
         Mission mission = new Mission();
@@ -101,10 +101,29 @@ public class MissionServiceImpl implements MissionService {
         mission.setFailedPerson(failedPerson);
         mission.setLikes(likes);
         mission.setHits(hits);
+        missionDao.insertMission(mission);
+
+        Conn_Mission connMission = new Conn_Mission();
+        User userEntity = userDao.selectUserById(userId);
+        connMission.setState("BEFORE");
+        connMission.setRole(0);
+        connMission.setSuccessRate(0);
+        connMission.setMission(mission);
+        connMission.setUser(userEntity);
 
         // Conn_Mission도 추가해야함(임무 작성한 대원 저장 등)
 
     }
 
+    public void joinMission(Long userId, Long missionId){
+        Conn_Mission connMission = new Conn_Mission();
+        Mission mission = missionDao.selectMissionById(missionId);
+        User userEntity = userDao.selectUserById(userId);
+        connMission.setRole(2);
+        connMission.setSuccessRate(0);
+        connMission.setMission(mission);
+        connMission.setUser(userEntity);
+
+    }
 
 }
