@@ -17,7 +17,7 @@ const Title = styled('p')`
   font-size: 1.1em;
 `
 const Block = styled('div')`
-padding: 10px 10px 0 10px;
+padding: 0px 10px 10px 10px;
 `
 const Content = styled('div')`
   display:flex;

@@ -11,11 +11,13 @@ import { useRouter } from "next/router";
 const Header = styled('div')`
   display:flex;
   justify-content:space-between;
-  margin: 20px 20px 0 20px;
+  margin: 20px 20px 20px 20px;
 `
 const Body = styled('div')`
   display:flex;
   justify-content: center;
+  width:100%;
+  height: 100%;
 `
 const Container = styled('div')`
   display:flex;
@@ -29,9 +31,6 @@ const Container = styled('div')`
   div{
     align-items: center;
   }
-  @media screen and (max-width:414px){
-    padding: 0 10px;
-  }
 `
 
 const DeskMenu = styled('div')`
@@ -41,19 +40,18 @@ const DeskMenu = styled('div')`
   margin: auto 0;
 `
 
-const MobileMenu = styled('div')`
-  @media only screen and (min-width: 650px) {
-    display:none;
-  }
-`
-
 const Footer = styled('div')`
   min-width:350px;
+  height:80px;
+  z-index: 999;
   position: absolute;
   bottom:0;
   left:0;
   right:0;
-  background-color: white;
+  height: 300px;
+  @media only screen and (min-width: 650px) {
+    display:none;
+  }
 `
 
 function MyApp({ Component, pageProps }: AppProps) {
@@ -75,9 +73,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       </Container>
       </Body>
       <Footer>
-        <MobileMenu>
-          <MenuForMobile />
-        </MobileMenu>
+      <MenuForMobile />
       </Footer>
     </RecoilRoot>
   );
