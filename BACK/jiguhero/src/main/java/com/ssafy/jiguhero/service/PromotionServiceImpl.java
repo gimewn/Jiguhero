@@ -24,9 +24,23 @@ public class PromotionServiceImpl implements PromotionService {
     @Transactional(readOnly = true)
     public List<PromotionDto> getTop3Regtime() {
         List<Promotion> entityList = promotionDao.selectTop3Regtime();
-
         List<PromotionDto> dtoList = entityList.stream().map(entity -> PromotionDto.of(entity)).collect(Collectors.toList());
-
         return dtoList;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<PromotionDto> getPromotions() {
+        List<Promotion> entityList = promotionDao.selectPromotions();
+        List<PromotionDto> dtoList = entityList.stream().map(entity -> PromotionDto.of(entity)).collect(Collectors.toList());
+        return dtoList;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public PromotionDto getPromotion(Long promotionId) {
+        Promotion entity = promotionDao.selectPromotion(promotionId);
+        PromotionDto dto = PromotionDto.of(entity);
+        return dto;
     }
 }

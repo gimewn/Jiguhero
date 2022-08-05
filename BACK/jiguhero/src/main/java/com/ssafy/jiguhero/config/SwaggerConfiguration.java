@@ -25,13 +25,13 @@ public class SwaggerConfiguration {
     @Bean
     public Docket api() {
         return new Docket(DocumentationType.OAS_30)
-                .apiInfo(apiInfo())
                 .securityContexts(Arrays.asList(securityContext()))
                 .securitySchemes(Arrays.asList(apiKey()))
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.ssafy.jiguhero"))
                 .paths(PathSelectors.any())
-                .build();
+                .build()
+                ;
     }
 
     private SecurityContext securityContext() {

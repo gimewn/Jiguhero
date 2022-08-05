@@ -8,4 +8,7 @@ public interface PromotionService {
 
     List<PromotionDto> getTop3Regtime();
 
+    List<PromotionDto> getPromotions();
+
+    PromotionDto getPromotion(Long promotionId);
 }

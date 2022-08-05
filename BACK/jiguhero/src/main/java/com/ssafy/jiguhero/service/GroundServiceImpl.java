@@ -51,4 +51,29 @@ public class GroundServiceImpl implements GroundService {
 
         return dtoList;
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<GroundDto> getGrounds() {
+        List<Ground> entityList = groundDao.selectGrounds();
+        List<GroundDto> dtoList = entityList.stream().map(entity -> GroundDto.of(entity)).collect(Collectors.toList());
+        return dtoList;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public GroundDto getGround(Long groundId) {
+        Ground entity = groundDao.selectGroundById(groundId);
+        GroundDto dto = GroundDto.of(entity);
+        return dto;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<GroundDto> getGroundsByUser(Long userId) {
+        User userEntity = userDao.selectUserById(userId);
+        List<Ground> entityList = groundDao.selectGroundByUser(userEntity);
+        List<GroundDto> dtoList = entityList.stream().map(entity -> GroundDto.of(entity)).collect(Collectors.toList());
+        return dtoList;
+    }
 }

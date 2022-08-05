@@ -10,4 +10,9 @@ public interface GroundService {
 
     List<GroundDto> getLikeGrounds(Long userId);
 
+    List<GroundDto> getGrounds();
+
+    GroundDto getGround(Long groundId);
+
+    List<GroundDto> getGroundsByUser(Long userId);
 }

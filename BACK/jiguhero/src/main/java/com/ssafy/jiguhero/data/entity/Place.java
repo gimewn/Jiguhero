@@ -1,11 +1,6 @@
 package com.ssafy.jiguhero.data.entity;
 
-import com.ssafy.jiguhero.data.dto.PlaceDto;
-import com.ssafy.jiguhero.util.ModelMapperUtils;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -15,12 +10,14 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
+@ToString
 @Entity
 @Table(name = "Place")
 public class Place {
     @Id
     @Column(name = "place_id")
-    private String placeId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long placeId;
 
     @Column(nullable = false)
     private String name;
@@ -34,31 +31,18 @@ public class Place {
     @Column(nullable = true)
     private String phone;
 
-    @Column(nullable = true)
+    @Column(nullable = false)
     private String content;
 
     @Column(nullable = true)
     private String url;
 
     @Column(nullable = true)
-    private Double lat;
+    private long lat;
 
     @Column(nullable = true)
-    private Double lng;
-
-//    @Column(nullable = false)
-//    private String category_code;
-
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "code")
-//    private Category category;
+    private long lng;
 
     @OneToMany(mappedBy = "place")
     List<Review> review = new ArrayList<>();
-
-    public static Place of(PlaceDto placeDto) {
-        Place placeEntity = ModelMapperUtils.getModelMapper().map(placeDto, Place.class);
-
-        return placeEntity;
-    }
 }

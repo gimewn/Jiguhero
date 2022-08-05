@@ -49,16 +49,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Integer checkNicknameDupl(String nickname) {
-        if (userDao.existsByNickname(nickname)) return 1;
-        else return 0;
+    @Transactional(readOnly = true)
+    public UserDto getUserByEmail(String email) {
+        User userEntity = userDao.selectUserByEmail(email);
+        UserDto userDto = UserDto.of(userEntity);
+
+        return userDto;
     }
 
-    @Override
-    public UserDto changeUserNickname(Long userId, String nickname) throws Exception {
-        User entity = userDao.updateUserNickname(userId, nickname);
-        UserDto dto = UserDto.of(entity);
 
-        return dto;
-    }
 }

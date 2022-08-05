@@ -2,7 +2,6 @@ package com.ssafy.jiguhero.controller;
 
 import com.ssafy.jiguhero.data.dto.DongDto;
 import com.ssafy.jiguhero.data.dto.GugunDto;
-import com.ssafy.jiguhero.data.dto.PlaceDto;
 import com.ssafy.jiguhero.data.dto.SidoDto;
 import com.ssafy.jiguhero.service.MapService;
 import io.swagger.annotations.Api;
@@ -10,7 +9,10 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -46,14 +48,6 @@ public class MapController {
     @GetMapping("/dong/{gugun_code}")
     public ResponseEntity<List<DongDto>> getDongList(@PathVariable("gugun_code") String gugunCode) {
         List<DongDto> list = mapService.getDongList(gugunCode);
-
-        return ResponseEntity.status(HttpStatus.OK).body(list);
-    }
-
-    @ApiOperation(value = "접속위치와 가까운 순서대로 친환경가게 목록을 반환한다.", response = List.class)
-    @GetMapping
-    public ResponseEntity<List<PlaceDto>> getPlaceList10kmRadius(@RequestParam("lat") Double curLat, @RequestParam("lng") Double curLng) {
-        List<PlaceDto> list = mapService.getPlaceList10kmRadius(curLat, curLng);
 
         return ResponseEntity.status(HttpStatus.OK).body(list);
     }
