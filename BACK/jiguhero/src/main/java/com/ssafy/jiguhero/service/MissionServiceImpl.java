@@ -123,7 +123,30 @@ public class MissionServiceImpl implements MissionService {
         connMission.setSuccessRate(0);
         connMission.setMission(mission);
         connMission.setUser(userEntity);
+        missionDao.insertConnMission(connMission);
 
+    }
+
+    @Transactional(readOnly = true)
+    public int likeMission(Long missionId, Long userId){
+        Like_Mission likeMission = new Like_Mission();
+        User userEntity = userDao.selectUserById(userId);
+        Mission missionEntity = missionDao.selectMissionById(missionId);
+
+        if(missionDao.selectLikeMission(missionEntity, userEntity) == null) {
+            likeMission.setUser(userEntity);
+            likeMission.setMission(missionEntity);
+            missionDao.insertLikeMission(likeMission);
+            return 1;
+        }
+        else {
+            deleteLikeMission(missionEntity, userEntity);
+            return 2;
+        }
+    }
+
+    public void deleteLikeMission(Mission mission, User user){
+        missionDao.deleteLikeMission(mission, user);
     }
 
 }

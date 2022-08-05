@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class MissionDaoImpl implements MissionDao {
@@ -71,4 +72,20 @@ public class MissionDaoImpl implements MissionDao {
         connMissionRepository.save(connMission);
     }
 
+    @Override
+    public Optional<Like_Mission> selectLikeMission(Mission mission, User user){
+        Optional<Like_Mission> likeMission = likeMissionRepository.findByMissionAndUser(mission, user);
+        if(likeMission.isPresent()) return likeMission;
+        else return null;
+    }
+
+    @Override
+    public void insertLikeMission(Like_Mission likeMission){
+        likeMissionRepository.save(likeMission);
+    }
+
+    @Override
+    public void deleteLikeMission(Mission mission, User user){
+        likeMissionRepository.deleteByMissionAndUser(mission, user);
+    }
 }

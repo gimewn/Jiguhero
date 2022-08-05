@@ -24,4 +24,6 @@ public interface MissionService {
     void saveMission(Long userId, String title, LocalDateTime startDate, LocalDateTime endDate, int entryPoint, String sidoCode, String gugunCode, String dongCode, int nowPerson, int maxPerson, int failedPerson, int likes, int hits);
 
     void joinMission(Long userId, Long missionId);
+
+    int likeMission(Long missionId, Long userId);
 }

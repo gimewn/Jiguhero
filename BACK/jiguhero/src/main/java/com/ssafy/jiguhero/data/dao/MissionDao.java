@@ -6,6 +6,7 @@ import com.ssafy.jiguhero.data.entity.Mission;
 import com.ssafy.jiguhero.data.entity.User;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface MissionDao {
 
@@ -27,5 +28,11 @@ public interface MissionDao {
     void insertMission(Mission mission);
 
     void insertConnMission(Conn_Mission connMission);
+
+    Optional<Like_Mission> selectLikeMission(Mission mission, User user);
+
+    void insertLikeMission(Like_Mission likeMission);
+
+    void deleteLikeMission(Mission mission, User user);
 
 }

@@ -50,7 +50,7 @@ public class MissionController {
         return ResponseEntity.status(HttpStatus.OK).body(list);
     }
 
-    @ApiOperation(value = "해당 임무의 모든 정보를 반환한다.", response = String.class)
+    @ApiOperation(value = "해당 임무의 모든 정보를 반환한다.", response = String.class) // 좋아요 클릭 여부 기능 추가해야 함
     @GetMapping("/{mission_id}/details")
     public ResponseEntity<MissionDto> getMission(@PathVariable("mission_id") Long missionId) {
         MissionDto result = missionService.getMissionById(missionId);
@@ -58,7 +58,7 @@ public class MissionController {
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
-    @ApiOperation(value = "새로운 임무를 등록한다.", response = String.class)
+    @ApiOperation(value = "새로운 임무를 등록한다.", response = String.class) // missionServiceImpl 확인!!! Conn_Mission도 추가해야함(임무 작성한 대원 저장 등)
     @PostMapping("/")
     public ResponseEntity<String> saveMission(@RequestParam("user_id") Long userId,
                                               @RequestParam("title") String title,
@@ -87,5 +87,14 @@ public class MissionController {
 
         missionService.joinMission(userId, missionId);
         return new ResponseEntity<String>("success", HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "해당 임무의 '좋아요'를 클릭한다.", response = List.class)
+    @PostMapping("/{mission_id}/hearts")
+    public ResponseEntity<String> saveLikeMission(@PathVariable("mission_id") Long missionId, @RequestParam("user_id") Long userId) {
+        int check = missionService.likeMission(missionId, userId);
+
+        if(check == 1) return new ResponseEntity<String>("success", HttpStatus.OK);
+        else return new ResponseEntity<String>("deletesuccess", HttpStatus.OK);
     }
 }
