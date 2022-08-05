@@ -8,6 +8,7 @@ import com.ssafy.jiguhero.data.entity.Like_Ground;
 import com.ssafy.jiguhero.data.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +27,7 @@ public class GroundServiceImpl implements GroundService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<GroundDto> getTop5HitsLikes() {
         List<Ground> entityList = groundDao.selectTop5HitsLikes();
 
@@ -35,6 +37,7 @@ public class GroundServiceImpl implements GroundService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<GroundDto> getLikeGrounds(Long userId) {
         User userEntity = userDao.selectUserById(userId);
         List<Like_Ground> likeGroundList = groundDao.selectLikeGroundByUser(userEntity);
@@ -46,6 +49,31 @@ public class GroundServiceImpl implements GroundService {
 
         List<GroundDto> dtoList = entityList.stream().map(entity -> GroundDto.of(entity)).collect(Collectors.toList());
 
+        return dtoList;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<GroundDto> getGrounds() {
+        List<Ground> entityList = groundDao.selectGrounds();
+        List<GroundDto> dtoList = entityList.stream().map(entity -> GroundDto.of(entity)).collect(Collectors.toList());
+        return dtoList;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public GroundDto getGround(Long groundId) {
+        Ground entity = groundDao.selectGroundById(groundId);
+        GroundDto dto = GroundDto.of(entity);
+        return dto;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<GroundDto> getGroundsByUser(Long userId) {
+        User userEntity = userDao.selectUserById(userId);
+        List<Ground> entityList = groundDao.selectGroundByUser(userEntity);
+        List<GroundDto> dtoList = entityList.stream().map(entity -> GroundDto.of(entity)).collect(Collectors.toList());
         return dtoList;
     }
 }

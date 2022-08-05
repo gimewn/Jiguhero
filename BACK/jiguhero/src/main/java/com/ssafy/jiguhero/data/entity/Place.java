@@ -1,9 +1,6 @@
 package com.ssafy.jiguhero.data.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -13,6 +10,7 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
+@ToString
 @Entity
 @Table(name = "Place")
 public class Place {
@@ -44,13 +42,6 @@ public class Place {
 
     @Column(nullable = true)
     private long lng;
-
-//    @Column(nullable = false)
-//    private String category_code;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "code")
-    private Category category;
 
     @OneToMany(mappedBy = "place")
     List<Review> review = new ArrayList<>();

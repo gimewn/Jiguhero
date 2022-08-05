@@ -10,4 +10,6 @@ public interface UserService {
 
     String getProfileImageURL(Long userId, HttpServletRequest request);
 
+    UserDto getUserByEmail(String email);
+
 }

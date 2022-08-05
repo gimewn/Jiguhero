@@ -29,6 +29,7 @@ public class MissionServiceImpl implements MissionService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<MissionDto> getTop3NowPerson() {
         List<Mission> entityList = missionDao.selectTop3NowPerson();
 
@@ -38,6 +39,7 @@ public class MissionServiceImpl implements MissionService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<MissionDto> getLikeMissions(Long userId) {
         User userEntity = userDao.selectUserById(userId);
         List<Like_Mission> likeMissionList = missionDao.selectLikeMissionByUser(userEntity);
@@ -53,6 +55,7 @@ public class MissionServiceImpl implements MissionService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<MissionDto> getJoinMissions(Long userId) {
         User userEntity = userDao.selectUserById(userId);
         List<Conn_Mission> joinMissionList = missionDao.selectJoinMissionByUser(userEntity);
