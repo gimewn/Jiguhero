@@ -35,7 +35,7 @@ public class PlaceController {
 
     @ApiOperation(value = "특정 장소에 대한 정보를 반환한다.", response = PlaceDto.class)
     @GetMapping("/get/{place_id}")
-    public ResponseEntity<PlaceDto> getPlace(@PathVariable("place_id") Long placeId){
+    public ResponseEntity<PlaceDto> getPlace(@PathVariable("place_id") String placeId){
         PlaceDto placeDto = placeService.getPlace(placeId);
 
         return ResponseEntity.status(HttpStatus.OK).body(placeDto);
@@ -43,7 +43,7 @@ public class PlaceController {
 
     @ApiOperation(value = "특정 장소에 대한 모든 리뷰 정보를 반환한다.", response = List.class)
     @GetMapping("/review/{place_id}")
-    public ResponseEntity<List<ReviewDto>> getReviews(@PathVariable("place_id") Long placeId){
+    public ResponseEntity<List<ReviewDto>> getReviews(@PathVariable("place_id") String placeId){
         List<ReviewDto> list = placeService.getReviews(placeId);
 
         return ResponseEntity.status(HttpStatus.OK).body(list);
@@ -53,7 +53,7 @@ public class PlaceController {
     @PostMapping("/review")
     public ResponseEntity<String> saveReview(
             @RequestBody ReviewDto review,
-            @RequestParam("place_id") Long placeId,
+            @RequestParam("place_id") String placeId,
             @RequestParam("user_id") Long userId){
         placeService.saveReview(review, placeId, userId);
 
@@ -64,7 +64,7 @@ public class PlaceController {
     @PostMapping("/report")
     public ResponseEntity<String> saveReport(
             @RequestBody ReportDto report,
-            @RequestParam("place_id") Long placeId,
+            @RequestParam("place_id") String placeId,
             @RequestParam("user_id") Long userId){
         placeService.saveReport(report, placeId, userId);
 

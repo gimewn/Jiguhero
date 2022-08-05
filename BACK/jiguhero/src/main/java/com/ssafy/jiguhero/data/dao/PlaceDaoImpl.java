@@ -33,7 +33,7 @@ public class PlaceDaoImpl implements PlaceDao{
     }
 
     @Override
-    public Place selectPlaceById(Long placeId) {
+    public Place selectPlaceById(String placeId) {
         Place selected = placeRepository.getById(placeId);
         return selected;
     }
@@ -52,5 +52,11 @@ public class PlaceDaoImpl implements PlaceDao{
     @Override
     public void insertReport(Report report) {
         reportRepository.save(report);
+    }
+
+    @Override
+    public List<Place> selectAll() {
+        List<Place> selectedPlaces = placeRepository.findAll();
+        return selectedPlaces;
     }
 }

@@ -4,6 +4,9 @@ import com.ssafy.jiguhero.data.entity.User;
 import com.ssafy.jiguhero.data.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Component
 public class UserDaoImpl implements UserDao {
@@ -27,5 +30,28 @@ public class UserDaoImpl implements UserDao {
         User selectUser = userRepository.getByEmail(email);
 
         return selectUser;
+    }
+
+    @Override
+    public Boolean existsByNickname(String nickname) {
+        return userRepository.existsByNickname(nickname);
+    }
+
+    @Override
+    @Transactional
+    public User updateUserNickname(Long userId, String nickname) throws Exception {
+        Optional<User> selectedUser = userRepository.findById(userId);
+        User updatedUser;
+
+        if (selectedUser.isPresent()) {
+            User user = selectedUser.get();
+            user.setNickname(nickname);
+            updatedUser = userRepository.save(user);
+        }
+        else {
+            throw new Exception();
+        }
+
+        return updatedUser;
     }
 }

@@ -12,4 +12,8 @@ public interface UserService {
 
     UserDto getUserByEmail(String email);
 
+    Integer checkNicknameDupl(String nickname);
+
+    UserDto changeUserNickname(Long userId, String nickname) throws Exception;
+
 }

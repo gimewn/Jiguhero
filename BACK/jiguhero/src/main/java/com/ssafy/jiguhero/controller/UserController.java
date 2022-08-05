@@ -8,10 +8,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -44,5 +41,24 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(url);
     }
 
+    @ApiOperation(value = "닉네임의 중복여부를 확인하여 있으면 1을 없으면 0을 반환한다.", response = Integer.class)
+    @GetMapping("/nickname/{nickname}")
+    public ResponseEntity<Integer> checkNicknameDupl(@PathVariable("nickname") String nickname) {
+        Integer check = userService.checkNicknameDupl(nickname);
 
+        return ResponseEntity.status(HttpStatus.OK).body(check);
+    }
+
+    @ApiOperation(value = "user_id에 해당하는 유저의 닉네임을 등록 또는 수정한다.(회원가입, 정보변경 둘 다 사용)", response = UserDto.class)
+    @PutMapping("/{user_id}")
+    public ResponseEntity<UserDto> changeUserNickname(@PathVariable("user_id") Long userId, @RequestParam("nickname") String nickname) {
+        UserDto userDto = null;
+        try {
+            userDto = userService.changeUserNickname(userId, nickname);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(userDto);
+    }
 }

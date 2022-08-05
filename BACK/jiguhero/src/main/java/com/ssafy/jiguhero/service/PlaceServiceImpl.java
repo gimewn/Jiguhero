@@ -44,7 +44,7 @@ public class PlaceServiceImpl implements PlaceService{
 
     @Override
     @Transactional(readOnly = true)
-    public PlaceDto getPlace(Long placeId) {
+    public PlaceDto getPlace(String placeId) {
         Place entity = placeDao.selectPlaceById(placeId);
         PlaceDto dto = PlaceDto.of(entity);
         return dto;
@@ -52,7 +52,7 @@ public class PlaceServiceImpl implements PlaceService{
 
     @Override
     @Transactional(readOnly = true)
-    public List<ReviewDto> getReviews(Long placeId) {
+    public List<ReviewDto> getReviews(String placeId) {
         Place placeEntity = placeDao.selectPlaceById(placeId);
         List<Review> joinReviewList = placeDao.selectJoinReviewByPlace(placeEntity);
 
@@ -61,7 +61,7 @@ public class PlaceServiceImpl implements PlaceService{
     }
 
     @Override
-    public void saveReview(ReviewDto review, Long userId, Long placeId) {
+    public void saveReview(ReviewDto review, String placeId, Long userId) {
         Review reviewEntity = Review.of(review);
         Place placeEntity = placeDao.selectPlaceById(placeId);
         User userEntity = userDao.selectUserById(userId);
@@ -71,7 +71,7 @@ public class PlaceServiceImpl implements PlaceService{
     }
 
     @Override
-    public void saveReport(ReportDto report, Long placeId, Long userId) {
+    public void saveReport(ReportDto report, String placeId, Long userId) {
         Report reportEntity = Report.of(report);
         Place placeEntity = placeDao.selectPlaceById(placeId);
         User userEntity = userDao.selectUserById(userId);
