@@ -9,4 +9,7 @@ public interface PromotionDao {
     // 소식 Top3 최신등록순
     List<Promotion> selectTop3Regtime();
 
+    List<Promotion> selectPromotions();
+
+    Promotion selectPromotion(Long promotionId);
 }
