@@ -25,37 +25,27 @@
 font-family: 'PyeongChang-Regular', 'PyeongChang-Bold', 'PyeongChangPeace-Bold', Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', sans-serif;
 }
 
-@font-face {
-  font-family: 'PyeongChangPeace-Bold';
-  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2206-02@1.0/PyeongChangPeace-Light.woff2') format('woff2');
-  font-weight: 700;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'PyeongChang-Bold';
-  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2206-02@1.0/PyeongChang-Bold.woff2') format('woff2');
-  font-weight: normal;
-  font-style: normal;
-}
-
 html,
 body {
   margin: 0;
   font-family: 'PyeongChang-Regular', 'PyeongChang-Bold', 'PyeongChangPeace-Bold', 'Pretendard', -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
-    overflow: auto;
-  height:100%;
 }
 body{
   justify-content: center;
-  padding-bottom: 30px;
+  overflow: auto;
+  position: relative;
+  height:100%;
+  width:100%;
 }
-@media screen and (max-width: 650px){
+body::-webkit-scrollbar {
+  width: 0;
+}
+/* @media screen and (max-width: 650px){
   body{
     padding-bottom:80px;
   }
-}
+} */
 
 #wrap {
   min-height: 100%;

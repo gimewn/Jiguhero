@@ -38,7 +38,7 @@ class MyDocument extends Document {
     return (
       <Html>
         <Head>
-        <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=bb15f0a00267f128cf095876e739bc89&libraries=services"></script>
+        <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=1f282e36c86cb161bb7dcfcb1989e998"></script>
         </Head>
         <body>
           <Main />

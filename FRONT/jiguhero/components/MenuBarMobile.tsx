@@ -22,7 +22,7 @@ const NavForMobile = styled('div')`
   display:flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 20px;
+  padding: 15px 20px;
   background-color: white;
   background-attachment: fixed;
   a{

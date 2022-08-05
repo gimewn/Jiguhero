@@ -1,9 +1,5 @@
 import styled from 'styled-components';
 
-
-
-
-
 export const ButtonFull = styled('button')`
     background-color: ${(props) => props.dColor};
     border-radius: 15px;
@@ -12,9 +8,7 @@ export const ButtonFull = styled('button')`
     color:white;
     :hover, .active{
         background-color: ${(props) => props.hColor};
-        border:${(props) => props.hColor} 1px solid;
-        cursor: pointer;
-        
+        border:${(props) => props.hColor} 1px solid
     }
 `
 
@@ -27,8 +21,5 @@ export const ButtonBorder = styled('button')`
     :hover, .active{
         color:white;
         background-color: ${(props) => props.dColor};
-        cursor: pointer;
-        
-        
     }
 `
