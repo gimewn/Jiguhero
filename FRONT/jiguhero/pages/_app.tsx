@@ -7,6 +7,8 @@ import styled from 'styled-components';
 import logo from 'public/logo.png';
 import Image from 'next/image';
 import { useRouter } from "next/router";
+import { SessionProvider } from 'next-auth/react';
+
 
 const Header = styled('div')`
   display:flex;
@@ -68,9 +70,9 @@ function MyApp({ Component, pageProps }: AppProps) {
         </DeskMenu>
       </Header>
       <Body>
-      <Container>
-        <Component {...pageProps} />
-      </Container>
+      <SessionProvider session={pageProps?.session} >
+          <Component {...pageProps} />
+      </SessionProvider>
       </Body>
       <Footer>
       <MenuForMobile />
