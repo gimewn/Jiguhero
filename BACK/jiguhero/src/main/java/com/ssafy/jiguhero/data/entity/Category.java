@@ -22,6 +22,6 @@ public class Category {
     @Column(nullable = false)
     private String name;
 
-    @OneToMany(mappedBy = "category")
-    List<Place> place = new ArrayList<>();
+//    @OneToMany(mappedBy = "category")
+//    List<Place> place = new ArrayList<>();
 }
