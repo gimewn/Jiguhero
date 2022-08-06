@@ -8,20 +8,31 @@ import Router, { useRouter } from "next/router";
 import React, { useEffect } from "react";
 import { Main } from "next/document";
 import { ParsedUrlQuery } from "querystring";
-import { signIn, signOut, useSession } from "next-auth/react";
+import { getSession, signIn, signOut, useSession } from "next-auth/react";
+import { NextPageContext } from "node_modules/next/dist/shared/lib/utils";
+import { getCookies } from "cookies-next";
+import checkLogin from "./checkLogin";
 
 export default function Login() {
   const { data: session, status } = useSession();
   const loading = status === "loading";
-  console.log(session)
+  const router = useRouter()
+  const returnUrl = router.query.returnUrl
+
+
+  
+
   return (
     <>
+    {session?.accessToken&&(
+      <p>{session.user.name}</p>
+    )}
       <LoginWrapper>
         <Head>
           {/* header 추가 */}
           <title>로그인 | 지구-방위대</title>
         </Head>
-        
+
         <main>
           <LoginText>로그인</LoginText>
           <SnsLoginText>SNS 계정으로 로그인하기</SnsLoginText>
@@ -32,10 +43,12 @@ export default function Login() {
               <ul>
                 <li>
                   <a
-                    href={"/api/auth/signin"}
                     onClick={(e) => {
                       e.preventDefault();
-                      signIn("kakao");
+                      signIn("kakao", {
+                        redirect:true,
+                        callbackUrl: `/`
+                      });
                     }}
                   >
                     <Image src={KakaoImg} alt="Kakao" />
@@ -51,10 +64,12 @@ export default function Login() {
               <ul>
                 <li>
                   <a
-                    href={"/api/auth/signin"}
                     onClick={(e) => {
                       e.preventDefault();
-                      signIn("google");
+                      signIn("google", {
+                        redirect:true,
+                        callbackUrl: `/`
+                      });
                     }}
                   >
                     <Image src={GoogleImg} alt="Google" />
@@ -74,6 +89,10 @@ export default function Login() {
               </a>
             )}
           </SnsLoginNaver>
+          {session && <button onClick={()=>{signOut({
+            redirect: true,
+            callbackUrl: `http://localhost:3000/`
+          })}}>Logout</button>}
         </main>
       </LoginWrapper>
     </>
@@ -117,3 +136,14 @@ const SnsLoginNaver = styled("div")`
   align-items: center;
   width: 20rem;
 `;
+
+export async function getServerSideProps(context: NextPageContext) {
+  const session = await getSession(context)
+
+
+  return {
+    props: {
+      data: 1,
+    },
+  };
+}

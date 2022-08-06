@@ -11,7 +11,11 @@ import { blue } from "@mui/material/colors";
 import { Pagination } from "@mui/material";
 import { userInfo } from "os";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import { missionPage,playedAreaPage } from "states/mypage";
+import { missionPage, playedAreaPage,tabpage } from "states/mypage";
+import { useQuery } from "@tanstack/react-query";
+import { getSession, useSession } from "next-auth/react";
+import { NextPageContext } from "node_modules/next/dist/shared/lib/utils";
+import { useRouter } from "next/router";
 
 const Profile = styled("div")`
   display: flex;
@@ -68,7 +72,7 @@ const TextGroup = styled("div")`
   text-align: start;
   line-height: 2;
   p {
-    font-family: 'PyeongChang-Bold';
+    font-family: "PyeongChang-Bold";
   }
 `;
 
@@ -123,41 +127,29 @@ const PagI = styled(Pagination)`
 `;
 
 interface Idata {
-  userId: number;
+
   email: string;
-  nickname: string;
   name: string;
   grade: number;
   point: number;
 }
 
-const Mypage = (user_id) => {
+const Mypage = ({data}) => {
+  const session = useSession()
 
-  const [data, setData] = useState<Idata>();
-  useEffect(() => {
-    (async () => {
-      const response = await fetch(`http://localhost:3000/user/1`, {
-        headers: {
-          Accept: "*/*",
-        }
-      })
-      const json = await response.json();
-      setData(json);
-    })();
-  }, []);
-  console.log(data)
   // 탭 전환
-  const [tab, setTab] = useState(true);
+  const tab = useRecoilValue(tabpage);
+  const setTab = useSetRecoilState(tabpage);
   // 프로필
   function ProfileDiv() {
     return (
       <Profile>
         <BgImg>
-          <img alt="nitz" src='/IMG_1008.jpg'/>
+          <img alt="nitz" src={`${session.data.user.image}`}/>
         </BgImg>
         <div>
           <p>빨강</p>
-          <h2>니츠</h2>
+          <h2>{session.data.user.name}</h2>
         </div>
         <Box margin="14px 0 0 0">
           <ArrowForwardIosRoundedIcon sx={{ color: blue[300] }} />
@@ -171,8 +163,8 @@ const Mypage = (user_id) => {
     const MissionList = ["하나", "둘", "셋", "넷", "다섯", "여섯"];
     const remainder = MissionList.length % 3;
     const quot = parseInt(MissionList.length / 3);
-    const page = useRecoilValue(missionPage)
-    const setPage = useSetRecoilState(missionPage)
+    const page = useRecoilValue(missionPage);
+    const setPage = useSetRecoilState(missionPage);
     const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
       setPage(value);
     };
@@ -208,8 +200,8 @@ const Mypage = (user_id) => {
     const remainder = PlayedArea.length % 3;
     const quot = parseInt(PlayedArea.length / 3);
 
-    const page = useRecoilValue(playedAreaPage)
-    const setPage = useSetRecoilState(playedAreaPage)
+    const page = useRecoilValue(playedAreaPage);
+    const setPage = useSetRecoilState(playedAreaPage);
     const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
       setPage(value);
     };
@@ -236,9 +228,9 @@ const Mypage = (user_id) => {
   }
 
   // 프로필 클릭
-  const onClickBox = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-
-  };
+  const onClickBox = (
+    event: React.MouseEvent<HTMLDivElement, MouseEvent>
+  ) => {};
 
   return (
     <EntireContainer>
@@ -298,12 +290,34 @@ const Mypage = (user_id) => {
         )}
       </ButtonGroup>
       <Box>{tab ? <PlayingArea /> : <Mission />}</Box>
-      <ButtonFull  dColor={"#FF4848"} hColor={"#FF4848"}>
+      <ButtonFull dColor={"#FF4848"} hColor={"#FF4848"}>
         로그아웃
       </ButtonFull>
     </EntireContainer>
   );
 };
 
-export default Mypage;
+export async function getServerSideProps(context) {
+  const session = await getSession(context);
+  
 
+  if (!session) {
+    return {
+      redirect: {
+        destination: `/login/?returnUrl=${context.resolvedUrl}`,
+        permanent: false,
+        returnPage: 1
+      },
+    };
+  } else {
+    return {
+      props: {
+        data: {
+          session,
+        },
+      },
+    };
+  }
+}
+
+export default Mypage;
