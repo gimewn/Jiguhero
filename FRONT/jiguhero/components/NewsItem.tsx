@@ -1,33 +1,50 @@
+import { useRouter } from 'next/router';
 import styled from 'styled-components';
 
 interface NewsProps{
     id:number,
-    category:string,
-    image:string,
-    title:string
+    category:number,
+    // image:string,
+    title:string,
+    content:string,
+    key:number
 }
 
 const NewsDiv = styled('div')`
-    background: url('${(props) => props.image}') no-repeat center;
-    background-size: cover;
+    /* background: url('${(props) => props.image}') no-repeat center; */
+    /* background-size: cover; */
     position:relative;
     height: 150px;
     margin: 10px 0;
-    border:0;
-    border-radius: 10px;
+    border:1px solid #65ACE2;
+    border-radius: 20px;
     :hover{
-        background:#252525;
+        background:#65ACE2;
         .newsTitle{
-            opacity: 1;
+            color:white;
+        }
+        .newsContent{
+            color:white;
+        }
+        .category{
+            background-color: white;
+            color:#65ACE2;
         }
     }
 `
 
 const Title = styled('div')`
-    background-color: #252525;
-    opacity: 0;
-    font-size:18px;
-    color:white;
+    .newsTitle{
+        font-size:20px;
+        font-weight:bold;
+        color:#65ACE2;
+        margin-bottom: 10px;
+    }
+    .newsContent{
+        font-size: 16px;
+        margin: 5px auto;
+        color:#252525;
+    }
     position: absolute;
     left:20px;
 `
@@ -51,24 +68,28 @@ const Item = styled('div')`
 `
 
 const Category = styled('p')`
-    background-color:#98C064;
+    background-color:#65ACE2;
     color:white;
     padding: 10px;
     border: 0px;
     border-radius: 10px;
     position: relative;
     display:inline-block;
-    top:80px;
-    margin-right:10px;
+    top:75px;
+    margin: 15px;
 `
 
-export default function NewsItem({id, category, image, title}:NewsProps){
+export default function NewsItem(props:NewsProps){
+    const router = useRouter();
     return(
-        <NewsDiv image = {image}>
-        <Title className="newsTitle">
-            <p>{title}</p></Title>
+        <NewsDiv onClick={() => {router.push(`news/${props.key}`)}}>
+        <Title>
+            <p className="newsTitle">{props.title}</p>
+            <p className="newsContent">{props.content}</p>
+            </Title>
+            
         <Item>
-            <Category>#{category}</Category>
+            { props.category === 1 ? <Category className="category">#프로모션</Category> : <Category className="category">#뉴스</Category>}
         </Item>
         </NewsDiv>
     )

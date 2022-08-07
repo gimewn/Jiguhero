@@ -8,7 +8,19 @@ import logo from 'public/logo.png';
 import Image from 'next/image';
 import { useRouter } from "next/router";
 import { SessionProvider } from 'next-auth/react';
+import {QueryClient,QueryClientProvider} from '@tanstack/react-query';
 
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      refetchOnmount: false,
+      refetchOnReconnect: false,
+      retry: false,
+      staleTime: 5*60*1000,
+    },
+  },
+});
 
 const Header = styled('div')`
   display:flex;
@@ -33,6 +45,9 @@ const Container = styled('div')`
   div{
     align-items: center;
   }
+  @media only screen and (max-width: 650px) {
+    margin-bottom:80px;
+  }
 `
 
 const DeskMenu = styled('div')`
@@ -50,7 +65,6 @@ const Footer = styled('div')`
   bottom:0;
   left:0;
   right:0;
-  height: 300px;
   @media only screen and (min-width: 650px) {
     display:none;
   }
@@ -62,6 +76,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         router.push(href);  
         };
   return (
+
     <RecoilRoot>
       <Header>
         <Image src={logo} width={160} height={40} onClick={() => onLink("/")} layout='fixed' />
@@ -70,9 +85,13 @@ function MyApp({ Component, pageProps }: AppProps) {
         </DeskMenu>
       </Header>
       <Body>
+      <QueryClientProvider client={queryClient}>
+        <Container>
       <SessionProvider session={pageProps?.session} >
           <Component {...pageProps} />
       </SessionProvider>
+        </Container>
+    </QueryClientProvider>
       </Body>
       <Footer>
       <MenuForMobile />

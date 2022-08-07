@@ -5,33 +5,21 @@ import SwiperCore, { Navigation, Pagination } from "swiper";
 import "swiper/css"; //basic
 import "swiper/css/navigation";
 import "swiper/css/pagination";
+import {useQuery} from '@tanstack/react-query';
+import {Token, BASE_URL} from 'pages/api/fetch';
 
 SwiperCore.use([Navigation, Pagination]);
-
-const GroundTopFive = [
-    {
-        icon: "🍞",
-        title: "비건 취향저격 빵집",
-    },
-    {
-        icon: "🌲",
-        title: "제주도 친환경 카페",
-    },
-    {
-        icon: "🐣",
-        title: "전국구 제로웨이스트샵",
-    },
-    {
-        icon: "🧡",
-        title: "내가 애정하는 친환경 카페",
-    },
-    {
-        icon: "🌱",
-        title: "광주 동명동 용기내챌린지",
-    },
-  ];
   
-  export default function ShowGround5(){
+export default function ShowGround5(){
+    const getGround = async() => {
+        return (await fetch(BASE_URL+'home/ground', {
+            method:'get',
+            headers:{
+                Authorization : Token
+            }
+        })).json()
+    }
+    const {data} = useQuery(['ground'], getGround)
     return(
         <>
         <Swiper
@@ -57,7 +45,7 @@ const GroundTopFive = [
           }
       }}
         >
-            {GroundTopFive.map((item) => (<SwiperSlide><GroundFive icon={item.icon} title={item.title} /></SwiperSlide>))}
+        {data?.map((item) => (<SwiperSlide key={item.groundId}><GroundFive icon={item.icon} title={item.title} id={item.groundId}/></SwiperSlide>))}
         </Swiper>
         <i className="icon-arrow-long-right review-swiper-button-next"></i>
         <i className="icon-arrow-long-left review-swiper-button-prev"></i>

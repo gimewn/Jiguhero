@@ -12,6 +12,7 @@ import { Pagination } from "@mui/material";
 import { userInfo } from "os";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { missionPage,playedAreaPage } from "states/mypage";
+import back from 'components/back';
 
 const Profile = styled("div")`
   display: flex;
@@ -152,6 +153,7 @@ const Mypage = (user_id) => {
   function ProfileDiv() {
     return (
       <Profile>
+        <Back name={'마이페이지'} />
         <BgImg>
           <img alt="nitz" src='/IMG_1008.jpg'/>
         </BgImg>
