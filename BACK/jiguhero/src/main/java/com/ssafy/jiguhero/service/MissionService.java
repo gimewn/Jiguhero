@@ -21,9 +21,11 @@ public interface MissionService {
     // missionId에 해당하는 임무
     MissionDto getMissionById(Long missionId);
 
-    void saveMission(Long userId, String title, LocalDateTime startDate, LocalDateTime endDate, int entryPoint, String sidoCode, String gugunCode, String dongCode, int nowPerson, int maxPerson, int failedPerson, int likes, int hits);
+    void saveMission(MissionDto missionDto, Long userId);
 
     void joinMission(Long userId, Long missionId);
 
     int likeMission(Long missionId, Long userId);
+
+    int deleteMission(Long missionId, Long userId);
 }

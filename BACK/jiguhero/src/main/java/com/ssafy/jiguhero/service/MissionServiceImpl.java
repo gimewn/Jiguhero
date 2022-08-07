@@ -29,7 +29,6 @@ public class MissionServiceImpl implements MissionService {
     }
 
     @Override
-    @Transactional(readOnly = true)
     public List<MissionDto> getTop3NowPerson() {
         List<Mission> entityList = missionDao.selectTop3NowPerson();
 
@@ -39,7 +38,6 @@ public class MissionServiceImpl implements MissionService {
     }
 
     @Override
-    @Transactional(readOnly = true)
     public List<MissionDto> getLikeMissions(Long userId) {
         User userEntity = userDao.selectUserById(userId);
         List<Like_Mission> likeMissionList = missionDao.selectLikeMissionByUser(userEntity);
@@ -55,7 +53,6 @@ public class MissionServiceImpl implements MissionService {
     }
 
     @Override
-    @Transactional(readOnly = true)
     public List<MissionDto> getJoinMissions(Long userId) {
         User userEntity = userDao.selectUserById(userId);
         List<Conn_Mission> joinMissionList = missionDao.selectJoinMissionByUser(userEntity);
@@ -88,22 +85,20 @@ public class MissionServiceImpl implements MissionService {
     }
 
     @Override
-    public void saveMission(Long userId, String title, java.time.LocalDateTime startDate, LocalDateTime endDate, int entryPoint,
-                            String sidoCode, String gugunCode, String dongCode, int nowPerson, int maxPerson,
-                            int failedPerson, int likes, int hits) {
+    public void saveMission(MissionDto missionDto, Long userId) {
         Mission mission = new Mission();
-        mission.setTitle(title);
-        mission.setStartDate(startDate);
-        mission.setEndDate(endDate);
-        mission.setEntryPoint(entryPoint);
-        mission.setSidoCode(sidoCode);
-        mission.setGugunCode(gugunCode);
-        mission.setDongCode(dongCode);
-        mission.setNowPerson(nowPerson);
-        mission.setMaxPerson(maxPerson);
-        mission.setFailedPerson(failedPerson);
-        mission.setLikes(likes);
-        mission.setHits(hits);
+        mission.setTitle(missionDto.getTitle());
+        mission.setStartDate(LocalDateTime.now()); // 바꿔야 함
+        mission.setEndDate(LocalDateTime.now()); // 바꿔야 함
+        mission.setEntryPoint(missionDto.getEntryPoint());
+        mission.setSidoCode(missionDto.getSidoCode());
+        mission.setGugunCode(missionDto.getGugunCode());
+        mission.setDongCode(missionDto.getDongCode());
+        mission.setNowPerson(missionDto.getNowPerson());
+        mission.setMaxPerson(missionDto.getMaxPerson());
+        mission.setFailedPerson(missionDto.getFailedPerson());
+        mission.setLikes(missionDto.getLikes());
+        mission.setHits(missionDto.getHits());
         missionDao.insertMission(mission);
 
         Conn_Mission connMission = new Conn_Mission();
@@ -113,8 +108,6 @@ public class MissionServiceImpl implements MissionService {
         connMission.setSuccessRate(0);
         connMission.setMission(mission);
         connMission.setUser(userEntity);
-
-        // Conn_Mission도 추가해야함(임무 작성한 대원 저장 등)
 
     }
 
@@ -150,6 +143,23 @@ public class MissionServiceImpl implements MissionService {
 
     public void deleteLikeMission(Mission mission, User user){
         missionDao.deleteLikeMission(mission, user);
+    }
+
+    @Transactional
+    public int deleteMission(Long missionId, Long userId){
+        Conn_Mission connMission = new Conn_Mission();
+        User userEntity = userDao.selectUserById(userId);
+        Mission missionEntity = missionDao.selectMissionById(missionId);
+
+        if(missionDao.selectConnMission(missionEntity, userEntity)!=null) {
+            missionDao.deleteConnMission(missionEntity);
+            missionDao.deleteLikeMission(missionEntity);
+            missionDao.deleteMissionById(missionId);
+
+            return 1;
+        }
+        else return 2;
+
     }
 
 }
