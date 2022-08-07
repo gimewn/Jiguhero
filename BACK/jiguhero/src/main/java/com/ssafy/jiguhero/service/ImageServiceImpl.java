@@ -2,7 +2,9 @@ package com.ssafy.jiguhero.service;
 
 import com.ssafy.jiguhero.config.FileUploadProperties;
 import com.ssafy.jiguhero.data.dao.ImageDao;
+import com.ssafy.jiguhero.data.dao.PlaceDao;
 import com.ssafy.jiguhero.data.dao.UserDao;
+import com.ssafy.jiguhero.data.entity.Image_Place;
 import com.ssafy.jiguhero.data.entity.Image_User;
 import com.ssafy.jiguhero.data.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,12 +34,14 @@ public class ImageServiceImpl implements ImageService {
     private final Path dirPath;
     private final ImageDao imageDao;
     private final UserDao userDao;
+    private final PlaceDao placeDao;
 
     @Autowired
-    public ImageServiceImpl(FileUploadProperties fileUploadProperties, ImageDao imageDao, UserDao userDao) {
+    public ImageServiceImpl(FileUploadProperties fileUploadProperties, ImageDao imageDao, UserDao userDao, PlaceDao placeDao) {
         this.dirPath = Paths.get(fileUploadProperties.getPath()).toAbsolutePath().normalize();
         this.imageDao = imageDao;
         this.userDao = userDao;
+        this.placeDao = placeDao;
     }
 
     @Override
@@ -96,6 +100,21 @@ public class ImageServiceImpl implements ImageService {
         newImageUser.setSaveFolder(map.get("save_folder"));
         newImageUser.setUser(userDao.selectUserById(userId));
         imageDao.insertImageUser(newImageUser);
+
+        return map.get("save_file");
+    }
+
+    @Override
+    public String savePlaceImage(MultipartFile file, Long userId, String placeId) {
+        Map<String, String> map = saveImage(file, "place");
+
+        Image_Place newImagePlace = new Image_Place();
+        newImagePlace.setOriginFile(map.get("origin_file"));
+        newImagePlace.setSaveFile(map.get("save_file"));
+        newImagePlace.setSaveFolder(map.get("save_folder"));
+        newImagePlace.setPlace(placeDao.selectPlaceById(placeId));
+        newImagePlace.setUser(userDao.selectUserById(userId));
+        imageDao.insertImagePlace(newImagePlace);
 
         return map.get("save_file");
     }
