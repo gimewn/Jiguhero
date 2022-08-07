@@ -13,10 +13,6 @@ const Mapping = styled('div')`
     height:400px;
   }
 `
-<<<<<<< HEAD
-
-=======
->>>>>>> 61b5400ce78714854e305d0b0ba747fde799bc19
 const Title = styled('p')`
   font-weight: bold;
   font-size: 1.1em;

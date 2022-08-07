@@ -37,17 +37,10 @@ body{
   position: relative;
   height:100%;
   width:100%;
-<<<<<<< HEAD
 }
 body::-webkit-scrollbar {
   width: 0;
 }
-=======
-}
-body::-webkit-scrollbar {
-  width: 0;
-}
->>>>>>> 61b5400ce78714854e305d0b0ba747fde799bc19
 /* @media screen and (max-width: 650px){
   body{
     padding-bottom:80px;
