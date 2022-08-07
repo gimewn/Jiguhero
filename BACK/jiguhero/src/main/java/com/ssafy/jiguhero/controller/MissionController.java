@@ -50,10 +50,10 @@ public class MissionController {
         return ResponseEntity.status(HttpStatus.OK).body(list);
     }
 
-    @ApiOperation(value = "해당 임무의 모든 정보를 반환한다.", response = String.class) // 좋아요 클릭 여부/ 기능 추가해야 함
+    @ApiOperation(value = "해당 임무의 모든 정보를 반환한다.", response = String.class) // 좋아요 클릭 여부/ 기능 추가해야 함 o
     @GetMapping("/{mission_id}/details")
-    public ResponseEntity<MissionDto> getMission(@PathVariable("mission_id") Long missionId) {
-        MissionDto result = missionService.getMissionById(missionId);
+    public ResponseEntity<MissionDto> getMission(@PathVariable("mission_id") Long missionId, @RequestParam("user_id") Long userId) {
+        MissionDto result = missionService.getMissionById(missionId, userId);
 
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
