@@ -19,7 +19,7 @@ public interface MissionService {
     List<MissionDto> getAllMissions();
 
     // missionId에 해당하는 임무
-    MissionDto getMissionById(Long missionId);
+    MissionDto getMissionById(Long missionId, Long userId);
 
     void saveMission(MissionDto missionDto, Long userId);
 

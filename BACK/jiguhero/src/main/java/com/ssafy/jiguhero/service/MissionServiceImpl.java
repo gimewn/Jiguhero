@@ -77,10 +77,16 @@ public class MissionServiceImpl implements MissionService {
 
     @Override
     @Transactional(readOnly = true)
-    public  MissionDto getMissionById(Long missionId) {
-        Mission entity = missionDao.selectMissionById(missionId);
-
-        MissionDto dto = MissionDto.of(entity);
+    public  MissionDto getMissionById(Long missionId, Long userId) {
+        Mission missionEntity = missionDao.selectMissionById(missionId);
+        User userEntity = userDao.selectUserById(userId);
+        MissionDto dto = MissionDto.of(missionEntity);
+        if(missionDao.selectConnMission(missionEntity, userEntity)!=null) {
+            dto.setJoinCheck(true);
+        }
+        if(missionDao.selectLikeMission(missionEntity, userEntity) != null) {
+            dto.setLikeCheck(true);
+        }
         return dto;
     }
 
