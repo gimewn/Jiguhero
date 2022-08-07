@@ -63,7 +63,7 @@ SSAFY 7기 2학기 공통 프로젝트
 - Jira
 - Webex
 - Mattermost
-<br>
+
 ### 협업 환경
 - Notion
     - 진행 상황 타임라인 기록
