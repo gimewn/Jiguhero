@@ -10,12 +10,17 @@ import { theme } from "pages/theme";
 import { blue } from "@mui/material/colors";
 import { Pagination } from "@mui/material";
 import { userInfo } from "os";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { RecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { missionPage, playedAreaPage,tabpage } from "states/mypage";
-import { useQuery } from "@tanstack/react-query";
-import { getSession, useSession } from "next-auth/react";
+import { dehydrate, Query, QueryClient, QueryClientProvider, useQuery } from "@tanstack/react-query";
+import { getSession, SessionProvider, useSession } from "next-auth/react";
 import { NextPageContext } from "node_modules/next/dist/shared/lib/utils";
 import { useRouter } from "next/router";
+import userData from "pages/api/user/[id]";
+import missionUserData from "pages/api/mission/[id]";
+import groundUserData from "pages/api/ground/[id]";
+import { getToken } from "next-auth/jwt";
+
 
 const Profile = styled("div")`
   display: flex;
@@ -135,7 +140,12 @@ interface Idata {
 }
 
 const Mypage = ({data}) => {
-  const session = useSession()
+  // console.log(props.data)
+
+  
+  const {data:userInfo} = useQuery(['mission'],()=> {userData()})
+  console.log(userInfo)
+
 
   // 탭 전환
   const tab = useRecoilValue(tabpage);
@@ -145,11 +155,11 @@ const Mypage = ({data}) => {
     return (
       <Profile>
         <BgImg>
-          <img alt="nitz" src={`${session.data.user.image}`}/>
+          <img alt="nitz" src={`${data.session.user.image}`}/>
         </BgImg>
         <div>
           <p>빨강</p>
-          <h2>{session.data.user.name}</h2>
+          <h2>{data.session.user.name}</h2>
         </div>
         <Box margin="14px 0 0 0">
           <ArrowForwardIosRoundedIcon sx={{ color: blue[300] }} />
@@ -230,7 +240,9 @@ const Mypage = ({data}) => {
   // 프로필 클릭
   const onClickBox = (
     event: React.MouseEvent<HTMLDivElement, MouseEvent>
-  ) => {};
+  ) => {
+    
+  };
 
   return (
     <EntireContainer>
@@ -297,27 +309,44 @@ const Mypage = ({data}) => {
   );
 };
 
-export async function getServerSideProps(context) {
-  const session = await getSession(context);
-  
 
-  if (!session) {
-    return {
-      redirect: {
-        destination: `/login/?returnUrl=${context.resolvedUrl}`,
-        permanent: false,
-        returnPage: 1
-      },
-    };
-  } else {
+
+
+// const Page = ({ pageProps}) => {
+//   <SessionProvider session={pageProps.session}>
+//     <Mypage />
+//   </SessionProvider>
+
+
+// }
+
+
+
+
+
+
+export async function getServerSideProps(context) {
+  const session2 = new QueryClient()
+  const userInfo2 = new QueryClient()
+  const missionInfo2 = new QueryClient()
+  const groundInfo2 = new QueryClient()
+  const session = await getSession(context);
+  await session2.prefetchQuery(['session'], ()=> {return getSession(context)})
+  await userInfo2.prefetchQuery(['userInfo'], ()=>{userData()})
+  await missionInfo2.prefetchQuery(['missionUserInfo'], ()=>{missionUserData(context)})
+  await groundInfo2.prefetchQuery(['groundUserInfo'], ()=>{groundUserData(context)})
+
+
+
     return {
       props: {
         data: {
           session,
+          dehydratedState: dehydrate(userInfo2)
         },
       },
     };
-  }
+  
 }
 
 export default Mypage;

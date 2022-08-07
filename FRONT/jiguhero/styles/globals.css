@@ -62,9 +62,9 @@ a {
   box-sizing: border-box;
 }
 
-* :hover{
+/* * :hover{
   cursor: pointer;
-}
+} */
 
 @media screen and (min-width: 375px){
   .swiper{

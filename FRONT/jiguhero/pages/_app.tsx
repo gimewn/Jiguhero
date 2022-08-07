@@ -8,9 +8,20 @@ import logo from "public/logo.png";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { SessionProvider } from "next-auth/react";
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import {
+  QueryClient,
+  QueryClientProvider,
+  Hydrate,
+} from "@tanstack/react-query";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      staleTime: Infinity,
+    },
+  },
+});
 
 const Header = styled("div")`
   display: flex;
@@ -80,10 +91,12 @@ function MyApp({ Component, pageProps }: AppProps) {
       </Header>
       <Body>
         <Container>
-          <QueryClientProvider client={queryClient} >
-            <SessionProvider session={pageProps?.session}>
-              <Component {...pageProps} />
-            </SessionProvider>
+          <QueryClientProvider client={queryClient}>
+            <Hydrate state={pageProps?.dehydratedState} >
+              <SessionProvider session={pageProps?.session}>
+                <Component {...pageProps} />
+              </SessionProvider>
+            </Hydrate>
           </QueryClientProvider>
         </Container>
       </Body>

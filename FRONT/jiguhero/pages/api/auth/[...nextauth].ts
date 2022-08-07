@@ -22,13 +22,13 @@ export default NextAuth({
   callbacks: {
     async jwt({ token, account }) {
       // Persist the OAuth access_token to the token right after signin
-      console.log(account);
+
       if (account) {
         token.accessToken = account.access_token;
         token.refreshToken = account.refresh_token;
+
       }
       return token;
-      console.log(token);
     },
     async session({ session, token, user }) {
       // Send properties to the client, like an access_token from a provider.
