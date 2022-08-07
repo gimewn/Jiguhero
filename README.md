@@ -75,6 +75,6 @@ SSAFY 7기 2학기 공통 프로젝트
     - 매일 Scrum 회의 내용 기록
     - 참고 자료 공유
     - 이슈 발생 시 공유
-<br>
-### 팀원 역할 분배
+
+### 팀원 소개
 ![팀원소개](https://user-images.githubusercontent.com/97578425/183292315-e1565a0c-de96-4d84-aa73-b5cfdd796c7a.png)
