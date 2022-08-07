@@ -79,4 +79,9 @@ public class PlaceServiceImpl implements PlaceService{
         reportEntity.setUser(userEntity);
         placeDao.insertReport(reportEntity);
     }
+
+    @Override
+    public void deleteReview(Long reviewId) {
+        placeDao.deleteReview(reviewId);
+    }
 }

@@ -60,6 +60,12 @@ public class PlaceController {
         return new ResponseEntity<String>("success", HttpStatus.OK);
     }
 
+    @ApiOperation(value = "리뷰를 삭제한다.")
+    @DeleteMapping("/review/{review_id}")
+    public void deleteReview(@PathVariable("review_id") Long reviewId){
+        placeService.deleteReview(reviewId);
+    }
+
     @ApiOperation(value = "특정 장소에 대한 신고를 저장한다.")
     @PostMapping("/report")
     public ResponseEntity<String> saveReport(
@@ -70,5 +76,7 @@ public class PlaceController {
 
         return new ResponseEntity<String>("success", HttpStatus.OK);
     }
+
+
 
 }

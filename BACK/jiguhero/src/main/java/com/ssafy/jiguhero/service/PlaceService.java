@@ -16,4 +16,6 @@ public interface PlaceService {
     void saveReview(ReviewDto review, String placeId, Long userId);
 
     void saveReport(ReportDto reportDto, String placeId, Long userId);
+
+    void deleteReview(Long reviewId);
 }

@@ -59,4 +59,9 @@ public class PlaceDaoImpl implements PlaceDao{
         List<Place> selectedPlaces = placeRepository.findAll();
         return selectedPlaces;
     }
+
+    @Override
+    public void deleteReview(Long reviewId) {
+        reviewRepository.deleteById(reviewId);
+    }
 }

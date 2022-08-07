@@ -17,4 +17,6 @@ public interface PlaceDao {
 
     // 모든 친환경 가게 가져오기
     List<Place> selectAll();
+
+    void deleteReview(Long reviewId);
 }
