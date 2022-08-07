@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router';
 import styled from 'styled-components';
 
 const Title = styled('p')`
@@ -40,12 +41,13 @@ const Mission = styled('div')`
 interface MissionItemProps{
     title:string,
     now:number,
-    limit:number
+    id:number
 }
 
-export default function MissionItem({title, now, limit}:MissionItemProps){
+export default function MissionItem({title, now,id}:MissionItemProps){
+    const router = useRouter();
     return(
-        <Mission>
+        <Mission onClick={() => {router.push(`mission/${id}`)}}>
             <Title>{title}</Title>
             <div>
             <JoinSentence> 현재 </JoinSentence>

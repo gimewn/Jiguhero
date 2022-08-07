@@ -7,6 +7,7 @@ import styled from "styled-components";
 import logo from "public/logo.png";
 import Image from "next/image";
 import { useRouter } from "next/router";
+<<<<<<< HEAD
 import { SessionProvider } from "next-auth/react";
 import {
   QueryClient,
@@ -42,12 +43,54 @@ const Container = styled("div")`
   /* max-width:700px; */
   span,
   p {
+=======
+import { SessionProvider } from 'next-auth/react';
+import {QueryClient,QueryClientProvider} from '@tanstack/react-query';
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      refetchOnmount: false,
+      refetchOnReconnect: false,
+      retry: false,
+      staleTime: 5*60*1000,
+    },
+  },
+});
+
+const Header = styled('div')`
+  display:flex;
+  justify-content:space-between;
+  margin: 20px 20px 20px 20px;
+`
+const Body = styled('div')`
+  display:flex;
+  justify-content: center;
+  width:100%;
+  height: 100%;
+`
+const Container = styled('div')`
+  display:flex;
+  justify-content: center;
+  flex-direction: column;
+  min-width:375px;
+  /* max-width:700px; */
+  span, p {
+>>>>>>> 61b5400ce78714854e305d0b0ba747fde799bc19
     align-items: flex-start;
   }
   div {
     align-items: center;
   }
+<<<<<<< HEAD
 `;
+=======
+  @media only screen and (max-width: 650px) {
+    margin-bottom:80px;
+  }
+`
+>>>>>>> 61b5400ce78714854e305d0b0ba747fde799bc19
 
 const DeskMenu = styled("div")`
   @media only screen and (max-width: 650px) {
@@ -56,6 +99,7 @@ const DeskMenu = styled("div")`
   margin: auto 0;
 `;
 
+<<<<<<< HEAD
 const Footer = styled("div")`
   min-width: 350px;
   height: 80px;
@@ -69,6 +113,20 @@ const Footer = styled("div")`
     display: none;
   }
 `;
+=======
+const Footer = styled('div')`
+  min-width:350px;
+  height:80px;
+  z-index: 999;
+  position: absolute;
+  bottom:0;
+  left:0;
+  right:0;
+  @media only screen and (min-width: 650px) {
+    display:none;
+  }
+`
+>>>>>>> 61b5400ce78714854e305d0b0ba747fde799bc19
 
 function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter();
@@ -76,6 +134,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     router.push(href);
   };
   return (
+
     <RecoilRoot>
       <Header>
         <Image
@@ -90,6 +149,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         </DeskMenu>
       </Header>
       <Body>
+<<<<<<< HEAD
         <Container>
           <QueryClientProvider client={queryClient}>
             <Hydrate state={pageProps?.dehydratedState} >
@@ -102,6 +162,18 @@ function MyApp({ Component, pageProps }: AppProps) {
       </Body>
       <Footer>
         <MenuForMobile />
+=======
+      <QueryClientProvider client={queryClient}>
+        <Container>
+      <SessionProvider session={pageProps?.session} >
+          <Component {...pageProps} />
+      </SessionProvider>
+        </Container>
+    </QueryClientProvider>
+      </Body>
+      <Footer>
+      <MenuForMobile />
+>>>>>>> 61b5400ce78714854e305d0b0ba747fde799bc19
       </Footer>
     </RecoilRoot>
   );

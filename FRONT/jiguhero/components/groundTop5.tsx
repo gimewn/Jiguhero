@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router';
 import styled from 'styled-components';
 
 const Ground = styled('div')`
@@ -27,12 +28,14 @@ const Title = styled('p')`
 
 interface GroundFiveProps{
     icon:string,
-    title:string
+    title:string,
+    id:number,
 }
 
-export default function GroundFive({icon, title}:GroundFiveProps){
+export default function GroundFive({icon, title, id}:GroundFiveProps){
+    const router = useRouter();
     return(
-        <Ground>
+        <Ground onClick={() => {router.push(`ground/${id}`)}}>
             <Icon>{icon}</Icon>
             <Title>{title}</Title>
         </Ground>

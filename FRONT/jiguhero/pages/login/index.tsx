@@ -32,7 +32,6 @@ export default function Login() {
           {/* header 추가 */}
           <title>로그인 | 지구-방위대</title>
         </Head>
-
         <main>
           <LoginText>로그인</LoginText>
           <SnsLoginText>SNS 계정으로 로그인하기</SnsLoginText>
