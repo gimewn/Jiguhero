@@ -2,8 +2,10 @@ package com.ssafy.jiguhero.service;
 
 import com.ssafy.jiguhero.config.FileUploadProperties;
 import com.ssafy.jiguhero.data.dao.ImageDao;
+import com.ssafy.jiguhero.data.dao.MissionDao;
 import com.ssafy.jiguhero.data.dao.PlaceDao;
 import com.ssafy.jiguhero.data.dao.UserDao;
+import com.ssafy.jiguhero.data.entity.Image_Mission;
 import com.ssafy.jiguhero.data.entity.Image_Place;
 import com.ssafy.jiguhero.data.entity.Image_User;
 import com.ssafy.jiguhero.data.entity.User;
@@ -23,6 +25,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -35,13 +38,15 @@ public class ImageServiceImpl implements ImageService {
     private final ImageDao imageDao;
     private final UserDao userDao;
     private final PlaceDao placeDao;
+    private final MissionDao missionDao;
 
     @Autowired
-    public ImageServiceImpl(FileUploadProperties fileUploadProperties, ImageDao imageDao, UserDao userDao, PlaceDao placeDao) {
+    public ImageServiceImpl(FileUploadProperties fileUploadProperties, ImageDao imageDao, UserDao userDao, PlaceDao placeDao, MissionDao missionDao) {
         this.dirPath = Paths.get(fileUploadProperties.getPath()).toAbsolutePath().normalize();
         this.imageDao = imageDao;
         this.userDao = userDao;
         this.placeDao = placeDao;
+        this.missionDao = missionDao;
     }
 
     @Override
@@ -115,6 +120,23 @@ public class ImageServiceImpl implements ImageService {
         newImagePlace.setPlace(placeDao.selectPlaceById(placeId));
         newImagePlace.setUser(userDao.selectUserById(userId));
         imageDao.insertImagePlace(newImagePlace);
+
+        return map.get("save_file");
+    }
+
+    @Override
+    public String saveMissionImage(MultipartFile file, Long userId, Long missionId) {
+        Map<String, String> map = saveImage(file, "mission");
+
+        Image_Mission newImageMission = new Image_Mission();
+        newImageMission.setOriginFile(map.get("origin_file"));
+        newImageMission.setSaveFile(map.get("save_file"));
+        newImageMission.setSaveFolder(map.get("save_folder"));
+        newImageMission.setMission(missionDao.selectMissionById(missionId));
+        newImageMission.setUser(userDao.selectUserById(userId));
+        newImageMission.setRegtime(LocalDateTime.now());
+        newImageMission.setRep(false); // 대표 이미지 X
+        imageDao.insertImageMission(newImageMission);
 
         return map.get("save_file");
     }

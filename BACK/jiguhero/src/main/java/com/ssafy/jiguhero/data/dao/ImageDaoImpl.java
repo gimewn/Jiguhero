@@ -1,9 +1,7 @@
 package com.ssafy.jiguhero.data.dao;
 
-import com.ssafy.jiguhero.data.entity.Image_Place;
-import com.ssafy.jiguhero.data.entity.Image_User;
-import com.ssafy.jiguhero.data.entity.Place;
-import com.ssafy.jiguhero.data.entity.User;
+import com.ssafy.jiguhero.data.entity.*;
+import com.ssafy.jiguhero.data.repository.ImageMissionRepository;
 import com.ssafy.jiguhero.data.repository.ImagePlaceRepository;
 import com.ssafy.jiguhero.data.repository.ImageUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,11 +15,13 @@ public class ImageDaoImpl implements ImageDao{
 
     private final ImageUserRepository imageUserRepository;
     private final ImagePlaceRepository imagePlaceRepository;
+    private final ImageMissionRepository imageMissionRepository;
 
     @Autowired
-    public ImageDaoImpl(ImageUserRepository imageUserRepository, ImagePlaceRepository imagePlaceRepository) {
+    public ImageDaoImpl(ImageUserRepository imageUserRepository, ImagePlaceRepository imagePlaceRepository, ImageMissionRepository imageMissionRepository) {
         this.imageUserRepository = imageUserRepository;
         this.imagePlaceRepository = imagePlaceRepository;
+        this.imageMissionRepository = imageMissionRepository;
     }
 
     @Override
@@ -63,6 +63,20 @@ public class ImageDaoImpl implements ImageDao{
         List<Image_Place> selectedImagePlaces = imagePlaceRepository.findAllByPlace(place);
 
         return selectedImagePlaces;
+    }
+
+    @Override
+    public Image_Mission insertImageMission(Image_Mission imageMission) {
+        Image_Mission savedImageMission = imageMissionRepository.save(imageMission);
+
+        return savedImageMission;
+    }
+
+    @Override
+    public List<Image_Mission> selectImageMissions(Mission mission) {
+        List<Image_Mission> selectedImageMissions = imageMissionRepository.findAllByMission(mission);
+
+        return selectedImageMissions;
     }
 
 
