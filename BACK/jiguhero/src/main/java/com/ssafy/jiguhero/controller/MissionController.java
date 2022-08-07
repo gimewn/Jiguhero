@@ -50,7 +50,7 @@ public class MissionController {
         return ResponseEntity.status(HttpStatus.OK).body(list);
     }
 
-    @ApiOperation(value = "해당 임무의 모든 정보를 반환한다.", response = String.class) // 좋아요 클릭 여부 기능 추가해야 함
+    @ApiOperation(value = "해당 임무의 모든 정보를 반환한다.", response = String.class) // 좋아요 클릭 여부/ 기능 추가해야 함
     @GetMapping("/{mission_id}/details")
     public ResponseEntity<MissionDto> getMission(@PathVariable("mission_id") Long missionId) {
         MissionDto result = missionService.getMissionById(missionId);
@@ -60,22 +60,9 @@ public class MissionController {
 
     @ApiOperation(value = "새로운 임무를 등록한다.", response = String.class) // missionServiceImpl 확인!!! Conn_Mission도 추가해야함(임무 작성한 대원 저장 등)
     @PostMapping("/")
-    public ResponseEntity<String> saveMission(@RequestParam("user_id") Long userId,
-                                              @RequestParam("title") String title,
-                                              @RequestParam("start_date") LocalDateTime startDate,
-                                              @RequestParam("end_date") LocalDateTime endDate,
-                                              @RequestParam("enrty_point") int entryPoint,
-                                              @RequestParam("sido_code") String sidoCode,
-                                              @RequestParam("gugun_code") String gugunCode,
-                                              @RequestParam("dong_code") String dongCode,
-                                              @RequestParam("now_person") int nowPerson,
-                                              @RequestParam("max_person") int maxPerson,
-                                              @RequestParam("failed_person") int failedPerson,
-                                              @RequestParam("likes") int likes,
-                                              @RequestParam("hits") int hits
-    ) {
+    public ResponseEntity<String> saveMission(@RequestBody MissionDto missionDto, @RequestParam("user_id") Long userId) {
 
-        missionService.saveMission(userId, title, startDate, endDate, entryPoint, sidoCode, gugunCode, dongCode, nowPerson, maxPerson, failedPerson, likes, hits);
+        missionService.saveMission(missionDto, userId);
 
         return new ResponseEntity<String>("success", HttpStatus.OK);
         // missionServiceImpl 확인!!! Conn_Mission도 추가해야함(임무 작성한 대원 저장 등)
