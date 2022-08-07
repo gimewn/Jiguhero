@@ -75,15 +75,27 @@ public class ImageServiceImpl implements ImageService {
         return map;
     }
 
+    @Override
     public String saveUserImage(MultipartFile file, Long userId) {
+        // 이미 프로필 이미지가 등록되어 있는지 확인
+        User user = userDao.selectUserById(userId);
+        Image_User imageUser = imageDao.selectImageUser(user);
+        if (imageUser != null) { // 이미 등록되어 있으면 프로필 이미지 정보 삭제
+            try {
+                imageDao.deleteImageUser(user);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+
         Map<String, String> map = saveImage(file, "user");
 
-        Image_User imageUser = new Image_User();
-        imageUser.setOriginFile(map.get("origin_file"));
-        imageUser.setSaveFile(map.get("save_file"));
-        imageUser.setSaveFolder(map.get("save_folder"));
-        imageUser.setUser(userDao.selectUserById(userId));
-        imageDao.insertImageUser(imageUser);
+        Image_User newImageUser = new Image_User();
+        newImageUser.setOriginFile(map.get("origin_file"));
+        newImageUser.setSaveFile(map.get("save_file"));
+        newImageUser.setSaveFolder(map.get("save_folder"));
+        newImageUser.setUser(userDao.selectUserById(userId));
+        imageDao.insertImageUser(newImageUser);
 
         return map.get("save_file");
     }

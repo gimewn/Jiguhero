@@ -6,6 +6,8 @@ import com.ssafy.jiguhero.data.repository.ImageUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+
 @Component
 public class ImageDaoImpl implements ImageDao{
 
@@ -25,8 +27,23 @@ public class ImageDaoImpl implements ImageDao{
 
     @Override
     public Image_User selectImageUser(User user) {
-        Image_User selectedImageUser = imageUserRepository.findByUser(user);
+        Optional<Image_User> selectedImageUser = imageUserRepository.findByUser(user);
 
-        return selectedImageUser;
+        if (selectedImageUser.isPresent()) return selectedImageUser.get();
+        else return null;
     }
+
+    @Override
+    public void deleteImageUser(User user) throws Exception {
+        Optional<Image_User> selectedImageUser = imageUserRepository.findByUser(user);
+
+        if (selectedImageUser.isPresent()) {
+            imageUserRepository.delete(selectedImageUser.get());
+        }
+        else {
+            throw new Exception();
+        }
+    }
+
+
 }

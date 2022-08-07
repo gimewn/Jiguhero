@@ -9,4 +9,6 @@ public interface ImageDao {
 
     Image_User selectImageUser(User user);
 
+    void deleteImageUser(User user) throws Exception;
+
 }
