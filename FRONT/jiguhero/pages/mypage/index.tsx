@@ -141,7 +141,7 @@ interface Idata {
 
 const Mypage = ({data}) => {
   // console.log(props.data)
-
+  const router = useRouter()
   
   const {data:userInfo} = useQuery(['mission'],()=> {userData()})
   console.log(userInfo)
@@ -241,7 +241,7 @@ const Mypage = ({data}) => {
   const onClickBox = (
     event: React.MouseEvent<HTMLDivElement, MouseEvent>
   ) => {
-    
+    router.push('/mypage/profile')
   };
 
   return (
@@ -335,7 +335,7 @@ export async function getServerSideProps(context) {
   await userInfo2.prefetchQuery(['userInfo'], ()=>{userData()})
   await missionInfo2.prefetchQuery(['missionUserInfo'], ()=>{missionUserData(context)})
   await groundInfo2.prefetchQuery(['groundUserInfo'], ()=>{groundUserData(context)})
-
+  console.log(dehydrate(groundInfo2))
 
 
     return {

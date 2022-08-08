@@ -42,13 +42,13 @@ export default function Login() {
                 <li>
                   <a
                     onClick={(e) => {
-                      e.preventDefault();
+                      // e.preventDefault();
                       // loginAccess()
-                      router.push(`http://i7c105.p.ssafy.io:8080/oauth2/authorize/kakao`)
-                      // signIn("kakao", {
-                      //   redirect:true,
-                      //   callbackUrl: `/`
-                      // });
+                      // router.push(`http://i7c105.p.ssafy.io:8080/oauth2/authorize/kakao?redirect_uri=http://localhost:3000`)
+                      signIn("kakao", {
+                        redirect:true,
+                        callbackUrl: `/`
+                      });
                     }}
                   >
                     <Image src={KakaoImg} alt="Kakao" />
@@ -69,10 +69,10 @@ export default function Login() {
                       
                 
                       
-                      // signIn("google", {
-                      //   redirect:true,
-                      //   callbackUrl: `/`
-                      // });
+                      signIn("google", {
+                        redirect:true,
+                        callbackUrl: `/`
+                      });
                     }}
                   >
                     <Image src={GoogleImg} alt="Google" />
