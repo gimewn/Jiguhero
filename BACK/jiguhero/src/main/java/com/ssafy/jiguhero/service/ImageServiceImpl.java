@@ -2,7 +2,11 @@ package com.ssafy.jiguhero.service;
 
 import com.ssafy.jiguhero.config.FileUploadProperties;
 import com.ssafy.jiguhero.data.dao.ImageDao;
+import com.ssafy.jiguhero.data.dao.MissionDao;
+import com.ssafy.jiguhero.data.dao.PlaceDao;
 import com.ssafy.jiguhero.data.dao.UserDao;
+import com.ssafy.jiguhero.data.entity.Image_Mission;
+import com.ssafy.jiguhero.data.entity.Image_Place;
 import com.ssafy.jiguhero.data.entity.Image_User;
 import com.ssafy.jiguhero.data.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +25,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -32,12 +37,16 @@ public class ImageServiceImpl implements ImageService {
     private final Path dirPath;
     private final ImageDao imageDao;
     private final UserDao userDao;
+    private final PlaceDao placeDao;
+    private final MissionDao missionDao;
 
     @Autowired
-    public ImageServiceImpl(FileUploadProperties fileUploadProperties, ImageDao imageDao, UserDao userDao) {
+    public ImageServiceImpl(FileUploadProperties fileUploadProperties, ImageDao imageDao, UserDao userDao, PlaceDao placeDao, MissionDao missionDao) {
         this.dirPath = Paths.get(fileUploadProperties.getPath()).toAbsolutePath().normalize();
         this.imageDao = imageDao;
         this.userDao = userDao;
+        this.placeDao = placeDao;
+        this.missionDao = missionDao;
     }
 
     @Override
@@ -75,15 +84,59 @@ public class ImageServiceImpl implements ImageService {
         return map;
     }
 
+    @Override
     public String saveUserImage(MultipartFile file, Long userId) {
+        // 이미 프로필 이미지가 등록되어 있는지 확인
+        User user = userDao.selectUserById(userId);
+        Image_User imageUser = imageDao.selectImageUser(user);
+        if (imageUser != null) { // 이미 등록되어 있으면 프로필 이미지 정보 삭제
+            try {
+                imageDao.deleteImageUser(user);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+
         Map<String, String> map = saveImage(file, "user");
 
-        Image_User imageUser = new Image_User();
-        imageUser.setOriginFile(map.get("origin_file"));
-        imageUser.setSaveFile(map.get("save_file"));
-        imageUser.setSaveFolder(map.get("save_folder"));
-        imageUser.setUser(userDao.selectUserById(userId));
-        imageDao.insertImageUser(imageUser);
+        Image_User newImageUser = new Image_User();
+        newImageUser.setOriginFile(map.get("origin_file"));
+        newImageUser.setSaveFile(map.get("save_file"));
+        newImageUser.setSaveFolder(map.get("save_folder"));
+        newImageUser.setUser(userDao.selectUserById(userId));
+        imageDao.insertImageUser(newImageUser);
+
+        return map.get("save_file");
+    }
+
+    @Override
+    public String savePlaceImage(MultipartFile file, Long userId, String placeId) {
+        Map<String, String> map = saveImage(file, "place");
+
+        Image_Place newImagePlace = new Image_Place();
+        newImagePlace.setOriginFile(map.get("origin_file"));
+        newImagePlace.setSaveFile(map.get("save_file"));
+        newImagePlace.setSaveFolder(map.get("save_folder"));
+        newImagePlace.setPlace(placeDao.selectPlaceById(placeId));
+        newImagePlace.setUser(userDao.selectUserById(userId));
+        imageDao.insertImagePlace(newImagePlace);
+
+        return map.get("save_file");
+    }
+
+    @Override
+    public String saveMissionImage(MultipartFile file, Long userId, Long missionId) {
+        Map<String, String> map = saveImage(file, "mission");
+
+        Image_Mission newImageMission = new Image_Mission();
+        newImageMission.setOriginFile(map.get("origin_file"));
+        newImageMission.setSaveFile(map.get("save_file"));
+        newImageMission.setSaveFolder(map.get("save_folder"));
+        newImageMission.setMission(missionDao.selectMissionById(missionId));
+        newImageMission.setUser(userDao.selectUserById(userId));
+        newImageMission.setRegtime(LocalDateTime.now());
+        newImageMission.setRep(false); // 대표 이미지 X
+        imageDao.insertImageMission(newImageMission);
 
         return map.get("save_file");
     }

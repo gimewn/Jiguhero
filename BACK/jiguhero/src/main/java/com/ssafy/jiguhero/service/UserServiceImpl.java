@@ -7,6 +7,7 @@ import com.ssafy.jiguhero.data.entity.Image_User;
 import com.ssafy.jiguhero.data.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -23,6 +24,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public UserDto getUserById(Long userId) {
         User entity = userDao.selectUserById(userId);
 
@@ -39,10 +41,36 @@ public class UserServiceImpl implements UserService {
         String saveFile = imageUser.getSaveFile();
         String saveFolder = imageUser.getSaveFolder();
         String sep = saveFolder.substring(0,1);
+        if (sep.equals("\\")) sep = "\\\\";
         String target = saveFolder.split(sep)[1];
         String date = saveFolder.split(sep)[2];
         String url = request.getRequestURL().toString().replace(request.getRequestURI(),"") + "/image/" + saveFile + "?target=" + target + "&date=" + date;
 
         return url;
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public UserDto getUserByEmail(String email) {
+        User userEntity = userDao.selectUserByEmail(email);
+        UserDto userDto = UserDto.of(userEntity);
+
+        return userDto;
+    }
+
+    @Override
+    public Integer checkNicknameDupl(String nickname) {
+        if (userDao.existsByNickname(nickname)) return 1;
+        else return 0;
+    }
+
+    @Override
+    public UserDto changeUserNickname(Long userId, String nickname) throws Exception {
+        User entity = userDao.updateUserNickname(userId, nickname);
+        UserDto dto = UserDto.of(entity);
+
+        return dto;
+    }
+
+
 }

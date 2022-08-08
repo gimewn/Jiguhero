@@ -10,4 +10,10 @@ public interface UserService {
 
     String getProfileImageURL(Long userId, HttpServletRequest request);
 
+    UserDto getUserByEmail(String email);
+
+    Integer checkNicknameDupl(String nickname);
+
+    UserDto changeUserNickname(Long userId, String nickname) throws Exception;
+
 }

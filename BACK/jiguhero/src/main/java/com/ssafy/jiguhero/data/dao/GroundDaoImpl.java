@@ -7,6 +7,7 @@ import com.ssafy.jiguhero.data.repository.GroundRepository;
 import com.ssafy.jiguhero.data.repository.LikeGroundRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -40,5 +41,23 @@ public class GroundDaoImpl implements GroundDao {
         Ground selectedGround = groundRepository.getById(groundId);
 
         return selectedGround;
+    }
+
+    @Override
+    public List<Ground> selectGrounds() {
+        List<Ground> selectedGrounds = groundRepository.findAll();
+        return selectedGrounds;
+    }
+
+    @Override
+    public Ground selectGround(Long groundId) {
+        Ground selected = groundRepository.getById(groundId);
+        return selected;
+    }
+
+    @Override
+    public List<Ground> selectGroundByUser(User userEntity) {
+        List<Ground> selectedGrounds = groundRepository.findAllByUser(userEntity);
+        return selectedGrounds;
     }
 }

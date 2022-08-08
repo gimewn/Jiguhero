@@ -1,7 +1,6 @@
 package com.ssafy.jiguhero.data.repository;
 
 import com.ssafy.jiguhero.data.entity.Conn_Mission;
-import com.ssafy.jiguhero.data.entity.Like_Mission;
 import com.ssafy.jiguhero.data.entity.Mission;
 import com.ssafy.jiguhero.data.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -9,13 +8,16 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
-public interface MissionRepository extends JpaRepository<Mission, Long> {
+public interface ConnMissionRepository extends JpaRepository<Conn_Mission, Long> {
 
-    // 미션 정보 가져오기 -> 기본 메서드 findById 사용
+    // user에 해당하는 join_mission 인스터스 목록
+    List<Conn_Mission> findAllByUser(User user);
 
-    // 임무 Top3 참여자순
-    List<Mission> findTop3ByOrderByNowPersonDesc();
+    Optional<Conn_Mission> findByMissionAndUser(Mission mission, User user);
+
+    void deleteAllByMission(Mission mission);
 
 }
