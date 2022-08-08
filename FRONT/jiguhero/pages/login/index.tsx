@@ -12,14 +12,13 @@ import { getSession, signIn, signOut, useSession } from "next-auth/react";
 import { NextPageContext } from "node_modules/next/dist/shared/lib/utils";
 import { getCookies } from "cookies-next";
 import checkLogin from "./checkLogin";
+import loginAccess from "pages/api/login";
 
 export default function Login() {
   const { data: session, status } = useSession();
   const loading = status === "loading";
   const router = useRouter()
   const returnUrl = router.query.returnUrl
-
-
   
 
   return (
@@ -44,10 +43,12 @@ export default function Login() {
                   <a
                     onClick={(e) => {
                       e.preventDefault();
-                      signIn("kakao", {
-                        redirect:true,
-                        callbackUrl: `/`
-                      });
+                      // loginAccess()
+                      router.push(`http://i7c105.p.ssafy.io:8080/oauth2/authorize/kakao`)
+                      // signIn("kakao", {
+                      //   redirect:true,
+                      //   callbackUrl: `/`
+                      // });
                     }}
                   >
                     <Image src={KakaoImg} alt="Kakao" />
@@ -65,10 +66,13 @@ export default function Login() {
                   <a
                     onClick={(e) => {
                       e.preventDefault();
-                      signIn("google", {
-                        redirect:true,
-                        callbackUrl: `/`
-                      });
+                      
+                
+                      
+                      // signIn("google", {
+                      //   redirect:true,
+                      //   callbackUrl: `/`
+                      // });
                     }}
                   >
                     <Image src={GoogleImg} alt="Google" />
