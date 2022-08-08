@@ -125,7 +125,18 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
-    public String saveMissionImage(MultipartFile file, Long userId, Long missionId) {
+    public String saveMissionImage(MultipartFile file, Long userId, Long missionId, int rep) {
+        if (rep == 1) { // 대표 이미지 등록일 경우
+            Image_Mission imageMission = imageDao.selectRepImageMission(missionDao.selectMissionById(missionId));
+            if (imageMission != null) { // 대표 이미지가 이미 등록되어 있을 경우
+                try {
+                    imageDao.deleteImageMission(imageMission);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+
         Map<String, String> map = saveImage(file, "mission");
 
         Image_Mission newImageMission = new Image_Mission();
@@ -135,7 +146,8 @@ public class ImageServiceImpl implements ImageService {
         newImageMission.setMission(missionDao.selectMissionById(missionId));
         newImageMission.setUser(userDao.selectUserById(userId));
         newImageMission.setRegtime(LocalDateTime.now());
-        newImageMission.setRep(false); // 대표 이미지 X
+        if (rep == 1) newImageMission.setRep(true);
+        else newImageMission.setRep(false);
         imageDao.insertImageMission(newImageMission);
 
         return map.get("save_file");

@@ -73,10 +73,23 @@ public class ImageDaoImpl implements ImageDao{
     }
 
     @Override
+    public Image_Mission selectRepImageMission(Mission mission) {
+        Optional<Image_Mission> selectedImageMission = imageMissionRepository.findByMissionAndRep(mission, true);
+
+        if (selectedImageMission.isPresent()) return selectedImageMission.get();
+        else return null;
+    }
+
+    @Override
     public List<Image_Mission> selectImageMissions(Mission mission) {
         List<Image_Mission> selectedImageMissions = imageMissionRepository.findAllByMission(mission);
 
         return selectedImageMissions;
+    }
+
+    @Override
+    public void deleteImageMission(Image_Mission imageMission) throws Exception {
+        imageMissionRepository.delete(imageMission);
     }
 
 

@@ -16,7 +16,7 @@ public interface ImageService {
 
     String savePlaceImage(MultipartFile file, Long userId, String placeId);
 
-    String saveMissionImage(MultipartFile file, Long userId, Long missionId);
+    String saveMissionImage(MultipartFile file, Long userId, Long missionId, int rep);
 
     Resource loadImage(String fileName, String saveFolder) throws FileNotFoundException;
 
