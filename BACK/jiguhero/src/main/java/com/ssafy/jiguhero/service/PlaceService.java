@@ -4,12 +4,13 @@ import com.ssafy.jiguhero.data.dto.PlaceDto;
 import com.ssafy.jiguhero.data.dto.ReportDto;
 import com.ssafy.jiguhero.data.dto.ReviewDto;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 public interface PlaceService {
     List<PlaceDto> getPlaces(Long groundId);
 
-    PlaceDto getPlace(String placeId);
+    PlaceDto getPlace(String placeId, HttpServletRequest request);
 
     List<ReviewDto> getReviews(String placeId);
 
@@ -18,4 +19,6 @@ public interface PlaceService {
     void saveReport(ReportDto reportDto, String placeId, Long userId);
 
     void deleteReview(Long reviewId);
+
+    List<String> getPlaceImageURL(String placeId, HttpServletRequest request);
 }

@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -28,6 +30,7 @@ public class MissionDto {
     private int failedPerson;
     private int likes;
     private int hits;
+    private List<String> imageURL = new ArrayList<>();
 
     private boolean likeCheck;
     private boolean joinCheck;

@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController
@@ -35,8 +36,8 @@ public class PlaceController {
 
     @ApiOperation(value = "특정 장소에 대한 정보를 반환한다.", response = PlaceDto.class)
     @GetMapping("/get/{place_id}")
-    public ResponseEntity<PlaceDto> getPlace(@PathVariable("place_id") String placeId){
-        PlaceDto placeDto = placeService.getPlace(placeId);
+    public ResponseEntity<PlaceDto> getPlace(@PathVariable("place_id") String placeId, HttpServletRequest request){
+        PlaceDto placeDto = placeService.getPlace(placeId, request);
 
         return ResponseEntity.status(HttpStatus.OK).body(placeDto);
     }

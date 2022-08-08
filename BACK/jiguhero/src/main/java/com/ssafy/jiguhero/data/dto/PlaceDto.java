@@ -7,6 +7,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -23,6 +26,7 @@ public class PlaceDto implements Comparable<PlaceDto> {
     private Double lat;
     private Double lng;
     private Double radius;
+    private List<String> imageURL = new ArrayList<>();
 
     public static PlaceDto of(Place placeEntity) {
         PlaceDto placeDto = ModelMapperUtils.getModelMapper().map(placeEntity, PlaceDto.class);
