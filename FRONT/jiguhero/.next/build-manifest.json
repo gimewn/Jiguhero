@@ -30,10 +30,15 @@
       "static/chunks/main.js",
       "static/chunks/pages/_error.js"
     ],
-    "/ground": [
+    "/ecomarket": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
-      "static/chunks/pages/ground.js"
+      "static/chunks/pages/ecomarket.js"
+    ],
+    "/login": [
+      "static/chunks/webpack.js",
+      "static/chunks/main.js",
+      "static/chunks/pages/login.js"
     ],
     "/mission": [
       "static/chunks/webpack.js",
@@ -44,11 +49,6 @@
       "static/chunks/webpack.js",
       "static/chunks/main.js",
       "static/chunks/pages/mission/nowjoin.js"
-    ],
-    "/mypage": [
-      "static/chunks/webpack.js",
-      "static/chunks/main.js",
-      "static/chunks/pages/mypage.js"
     ]
   },
   "ampFirstPages": []
