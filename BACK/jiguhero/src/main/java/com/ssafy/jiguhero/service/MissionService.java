@@ -1,5 +1,6 @@
 package com.ssafy.jiguhero.service;
 
+import com.ssafy.jiguhero.data.dto.FeedDto;
 import com.ssafy.jiguhero.data.dto.MissionDto;
 
 import java.time.LocalDateTime;
@@ -28,4 +29,8 @@ public interface MissionService {
     int likeMission(Long missionId, Long userId);
 
     int deleteMission(Long missionId, Long userId);
+
+    MissionDto changeMission(MissionDto missionDto, Long userId) throws Exception;
+
+    FeedDto getFeedById(Long feedId, Long userId);
 }

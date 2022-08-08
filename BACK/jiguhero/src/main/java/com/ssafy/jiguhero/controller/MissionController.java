@@ -1,5 +1,6 @@
 package com.ssafy.jiguhero.controller;
 
+import com.ssafy.jiguhero.data.dto.FeedDto;
 import com.ssafy.jiguhero.data.dto.GroundDto;
 import com.ssafy.jiguhero.data.dto.MissionDto;
 import com.ssafy.jiguhero.service.MissionService;
@@ -93,5 +94,27 @@ public class MissionController {
         if(check == 1) return new ResponseEntity<String>("success", HttpStatus.OK);
         else return new ResponseEntity<String>("unauthorized", HttpStatus.OK);
 
+    }
+
+    @ApiOperation(value = "해당 임무의 세부 내용을 변경한다", response = String.class)
+    @PutMapping("/{mission_id}/details")
+    public ResponseEntity<MissionDto> changeMission(@RequestBody MissionDto missionDto, @RequestParam("user_id") Long userId) {
+        MissionDto missionDtoResult = null;
+        try {
+            missionDtoResult = missionService.changeMission(missionDto, userId);
+        }
+        catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(missionDtoResult);
+
+    }
+
+    @ApiOperation(value = "선택된 인증샷의 정보를 반환한다")
+    @GetMapping("/{mission_id}/{feed_id}/details")
+    public ResponseEntity<FeedDto> getFeed(@PathVariable("feed_id") Long feedId, @RequestParam("user_id") Long userId){
+        FeedDto result = missionService.getFeedById(feedId, userId);
+
+        return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 }

@@ -1,9 +1,7 @@
 package com.ssafy.jiguhero.data.dao;
 
-import com.ssafy.jiguhero.data.entity.Conn_Mission;
-import com.ssafy.jiguhero.data.entity.Like_Mission;
-import com.ssafy.jiguhero.data.entity.Mission;
-import com.ssafy.jiguhero.data.entity.User;
+import com.ssafy.jiguhero.data.dto.MissionDto;
+import com.ssafy.jiguhero.data.entity.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -42,5 +40,13 @@ public interface MissionDao {
     void deleteMissionById(Long missionId);
 
     void deleteLikeMission(Mission mission);
+
+    Mission updateMission(MissionDto missionDto) throws Exception;
+
+    Feed selectFeedById(Long missionId);
+
+    Like_Feed selectLikeFeedByUser(Feed feed, User user);
+
+    int countByFeed(Feed feed);
 
 }

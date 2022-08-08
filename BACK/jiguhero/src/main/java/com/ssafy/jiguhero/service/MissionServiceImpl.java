@@ -2,11 +2,9 @@ package com.ssafy.jiguhero.service;
 
 import com.ssafy.jiguhero.data.dao.MissionDao;
 import com.ssafy.jiguhero.data.dao.UserDao;
+import com.ssafy.jiguhero.data.dto.FeedDto;
 import com.ssafy.jiguhero.data.dto.MissionDto;
-import com.ssafy.jiguhero.data.entity.Conn_Mission;
-import com.ssafy.jiguhero.data.entity.Like_Mission;
-import com.ssafy.jiguhero.data.entity.Mission;
-import com.ssafy.jiguhero.data.entity.User;
+import com.ssafy.jiguhero.data.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -166,6 +164,38 @@ public class MissionServiceImpl implements MissionService {
         }
         else return 2;
 
+    }
+
+    @Override
+    public MissionDto changeMission(MissionDto missionDto, Long userId) throws Exception{
+        Mission missionEntity = missionDao.selectMissionById(missionDto.getMissionId());
+        User userEntity = userDao.selectUserById(userId);
+
+        if(missionDao.selectConnMission(missionEntity, userEntity)!=null) {
+            Mission mission = missionDao.updateMission(missionDto);
+            MissionDto dto = MissionDto.of(mission);
+            return dto;
+        }
+        else {
+            throw new Exception();
+        }
+
+    }
+
+    @Override
+    public FeedDto getFeedById(Long feedId, Long userId){
+        User userEntity = userDao.selectUserById(userId);
+        Feed feedEntity = missionDao.selectFeedById(feedId);
+        FeedDto dto = FeedDto.of(feedEntity);
+
+        int cnt = missionDao.countByFeed(feedEntity);
+        dto.setLikeCnt(cnt);
+
+        if(missionDao.selectLikeFeedByUser(feedEntity, userEntity)!=null){
+            dto.setLikeCheck(true);
+        }
+
+        return dto;
     }
 
 }
