@@ -66,8 +66,8 @@ const PlaceGroup = styled("div")`
     flex-direction: column;
     justify-content: start;
   }
-  @media only screen and (min-width: 651px) {
-    top: 50px;
+  @media only screen and (min-width: 650px) {
+    top: 80px;
     right: 20px;
   }
   ::-webkit-scrollbar {
@@ -123,15 +123,17 @@ const Mapping = styled("div")`
   }
   `
 const SelectBox = styled('select')`
-  width:90px;
-  height:40px;
+  height:45px;
   margin-left:10px;
   border:0;
   border-radius: 10px;
   padding:10px;
+  display: inline-block;
+  font-size:15px;
   -moz-appearance:none;  /* Firefox */
-   -webkit-appearance:none;  /* Safari and Chrome */
-   appearance:none;  /* 화살표 없애기 공통*/
+  -webkit-appearance:none;  /* Safari and Chrome */
+  appearance:none;  /* 화살표 없애기 공통*/
+  box-shadow: 0 0 10px #999999;
 `
 
 export default function FullMap(props:any) {
@@ -140,15 +142,16 @@ export default function FullMap(props:any) {
   const [choiceP, setChoiceP] = useState([]);
   const [data, setData] = useState([]);
   const {data:sido} = useQuery(['sido'], getSido);
-  const [ChoiceSido, setChoiceSido] = useState('');
+  const [ChoiceSido, setChoiceSido] = useState('11');
   const {data:gugun} = useQuery(['gugun', ChoiceSido], () => getGugun(ChoiceSido), {
     enabled: !!ChoiceSido,
   });
-  const [ChoiceGugun, setChoiceGugun] = useState('');
+  const [ChoiceGugun, setChoiceGugun] = useState('11110');
   const {data:dong} = useQuery(['dong', ChoiceGugun], () => getDong(ChoiceGugun), {
     enabled: !!ChoiceGugun
   })
   const [ChoiceDong, setChoiceDong] = useState('');
+  let search = false;
 
   useEffect(() => {
     function getFetch(lat, lon) {
@@ -220,7 +223,20 @@ export default function FullMap(props:any) {
       map.setCenter(locPosition);
       getFetch(newLat, newLon);
     });
-    
+
+    if(search){
+      var geocoder = new kakao.maps.services.Geocoder();
+  
+      // 주소로 좌표를 검색합니다
+      geocoder.addressSearch(`${ChoiceSido} ${ChoiceGugun} ${ChoiceDong}`, function(result, status) {
+  
+      // 정상적으로 검색이 완료됐으면 
+       if (status === kakao.maps.services.Status.OK) {
+  
+          var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+          // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
+          map.setCenter(coords);
+    }})}
   }, []);
 
   return (
