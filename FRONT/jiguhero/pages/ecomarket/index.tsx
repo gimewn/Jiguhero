@@ -4,15 +4,35 @@ import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import Modal from "components/modal";
 import { Token, BASE_URL } from "pages/api/fetch";
+import LocationOnRoundedIcon from '@mui/icons-material/LocationOnRounded';
+import SourceRoundedIcon from '@mui/icons-material/SourceRounded';
+import { useQuery } from "@tanstack/react-query";
+import getSido from 'pages/api/ecomarket/getSido';
+import getGugun from 'pages/api/ecomarket/getGugun';
+import getDong from 'pages/api/ecomarket/getDong';
 
 const Div = styled("div")`
   position: relative;
 `;
+
+export const LocIcon = styled(LocationOnRoundedIcon)`
+  font-size:1em;
+  color:#98C064;
+`
+export const ConIcon = styled(SourceRoundedIcon)`
+  font-size:1em;
+  color:#98C064;
+`
+export const WithIcon = styled('div')`
+  display:flex;
+  align-items: baseline;
+`
 const Content = styled("div")`
   z-index: 995;
   position: absolute;
   top: 20px;
   left: 15px;
+  display:flex;
 `;
 const Title = styled("div")`
   display: flex;
@@ -34,7 +54,7 @@ const PlaceGroup = styled("div")`
   position: absolute;
   z-index: 996;
   width: inherit;
-  height: inherit;
+  height: 80%;
   overflow: auto;
   padding: 10px;
   @media only screen and (max-width: 650px) {
@@ -70,6 +90,9 @@ const Place = styled("div")`
     .placeTitle {
       color: #252525;
     }
+    .icon{
+      color:white;
+    }
   }
 `;
 const PlaceTitle = styled("p")`
@@ -82,6 +105,10 @@ const PlaceAddress = styled("p")`
 `;
 const PlaceContent = styled("p")`
   font-size: 15px;
+  display:block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 const Back = styled(ArrowBackIosRoundedIcon)`
   color: #98c064;
@@ -90,26 +117,77 @@ const Back = styled(ArrowBackIosRoundedIcon)`
 const Mapping = styled("div")`
   z-index: 1;
   width: 100vw;
-  height: 100rem;
-`;
+  height: calc(100vh - 80px);
+  @media only screen and (max-width: 650px) {
+    height: calc(100vh - 160px);
+  }
+  `
+const SelectBox = styled('select')`
+  width:90px;
+  height:40px;
+  margin-left:10px;
+  border:0;
+  border-radius: 10px;
+  padding:10px;
+  -moz-appearance:none;  /* Firefox */
+   -webkit-appearance:none;  /* Safari and Chrome */
+   appearance:none;  /* 화살표 없애기 공통*/
+`
 
-export default function FullMap() {
+export default function FullMap(props:any) {
   const router = useRouter();
   const [show, setShow] = useState(false);
   const [choiceP, setChoiceP] = useState([]);
   const [data, setData] = useState([]);
+  const {data:sido} = useQuery(['sido'], getSido);
+  const [ChoiceSido, setChoiceSido] = useState('');
+  const {data:gugun} = useQuery(['gugun', ChoiceSido], () => getGugun(ChoiceSido), {
+    enabled: !!ChoiceSido,
+  });
+  const [ChoiceGugun, setChoiceGugun] = useState('');
+  const {data:dong} = useQuery(['dong', ChoiceGugun], () => getDong(ChoiceGugun), {
+    enabled: !!ChoiceGugun
+  })
+  const [ChoiceDong, setChoiceDong] = useState('');
 
-  function getFetch(lat, lon) {
-    fetch(BASE_URL + `map?lat=${lat}&lng=${lon}`, {
-      method: "get",
-      headers: {
-        Authorization: Token,
-      },
-    })
-      .then((res) => res.json())
-      .then((res) => setData(res));
-  }
   useEffect(() => {
+    function getFetch(lat, lon) {
+      fetch(BASE_URL + `map?lat=${lat}&lng=${lon}`, {
+        method: "get",
+        headers: {
+          Authorization: Token,
+        },
+      })
+        .then((res) => res.json())
+        .then((res) => {
+          setData(res)
+          for (var i = 0; i < res?.length; i++) {
+            // 마커 이미지의 이미지 크기 입니다
+            var imageSize = new kakao.maps.Size(20, 30);
+      
+            // 마커 이미지를 생성합니다
+            var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
+            let item = res[i];
+            let lat = res[i].lat
+            let lng = res[i].lng
+            var latlng = new kakao.maps.LatLng(lat, lng);
+            // 마커를 생성합니다
+            var marker = new kakao.maps.Marker({
+              map: map, // 마커를 표시할 지도
+              position: latlng, // 마커를 표시할 위치
+              // title: data[i].title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
+              image: markerImage, // 마커 이미지
+            });
+            kakao.maps.event.addListener(marker, 'click', () => {
+              setShow(true)
+              setChoiceP(item)
+            });
+          }
+        }
+        );
+    }
+    var imageSrc =
+    "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png";
     let mapContainer = document.getElementById("map"), // 지도를 표시할 div
       mapOption = {
         center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
@@ -129,6 +207,7 @@ export default function FullMap() {
         getFetch(lat, lon);
       });
     }
+    map.setDraggable(true);
     kakao.maps.event.addListener(map, "center_changed", function () {
       // 지도의  레벨을 얻어옵니다
       let level = map.getLevel();
@@ -136,29 +215,12 @@ export default function FullMap() {
       let locPosition = map.getCenter();
       let newLat = locPosition.getLat();
       let newLon = locPosition.getLng();
-      console.log(newLat, newLon);
+      console.log(newLat, newLon)
       map.setLevel(level);
       map.setCenter(locPosition);
       getFetch(newLat, newLon);
     });
-    var imageSrc =
-      "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png";
-
-    for (var i = 0; i < data.length; i++) {
-      // 마커 이미지의 이미지 크기 입니다
-      var imageSize = new kakao.maps.Size(24, 35);
-
-      // 마커 이미지를 생성합니다
-      var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
-
-      // 마커를 생성합니다
-      var marker = new kakao.maps.Marker({
-        map: map, // 마커를 표시할 지도
-        position: data[i].latlng, // 마커를 표시할 위치
-        title: data[i].title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
-        image: markerImage, // 마커 이미지
-      });
-    }
+    
   }, []);
 
   return (
@@ -171,6 +233,21 @@ export default function FullMap() {
             }}
           />
         </Title>
+        <SelectBox onChange={(e) => {setChoiceSido(e.target.value)}}>
+          {sido?.map((item) => (
+            <option key={item['sidoCode']} value={item['sidoCode']}>{item['sidoName']}</option>
+          ))}
+        </SelectBox>
+        <SelectBox onChange={(e) => {setChoiceGugun(e.target.value)}}>
+          {gugun?.map((item) => (
+            <option key={item['gugunCode']} value={item['gugunCode']}>{item['gugunName'].split(" ")[1]}</option>
+          ))}
+        </SelectBox>
+        <SelectBox onChange={(e) => {setChoiceDong(e.target.value)}}>
+          {dong?.map((item) => (
+            <option key={item['dongCode']} value={item['dongCode']}>{item['dongName'].split(" ")[2]}</option>
+          ))}
+        </SelectBox>
       </Content>
       <PlaceGroup>
         {data?.map((item) => (
@@ -182,8 +259,12 @@ export default function FullMap() {
             }}
           >
             <PlaceTitle className="placeTitle">{item.name}</PlaceTitle>
-            <PlaceAddress>{item.jibunAddress}</PlaceAddress>
-            <PlaceContent>{item.content}</PlaceContent>
+            <WithIcon>
+            <LocIcon className="icon" /><PlaceAddress>{item.roadAddress}</PlaceAddress>
+            </WithIcon>
+            {item.content ? <WithIcon>
+            <ConIcon className="icon" /><PlaceContent>{item.content}</PlaceContent>         
+            </WithIcon> : <></>}
           </Place>
         ))}
       </PlaceGroup>

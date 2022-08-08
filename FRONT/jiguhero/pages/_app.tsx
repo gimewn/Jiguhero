@@ -13,6 +13,7 @@ import {
   QueryClientProvider,
   Hydrate,
 } from "@tanstack/react-query";
+import Head from 'next/head';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -29,13 +30,19 @@ const queryClient = new QueryClient({
 const Header = styled("div")`
   display: flex;
   justify-content: space-between;
-  margin: 20px 20px 20px 20px;
+  padding:20px;
+  position:fixed;
+  left:0;
+  right:0;
+  z-index:999;
+  background-color: white;
 `;
 const Body = styled("div")`
   display: flex;
   justify-content: center;
   width: 100%;
   height: 100%;
+  margin-top:80px;
 `;
 const Container = styled("div")`
   display: flex;
@@ -83,6 +90,10 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
 
     <RecoilRoot>
+      <Head>
+      <link rel="favicon" href="FRONT\jiguhero\public\favicon.ico" />
+      <title>지구방위대</title>
+      </Head>
       <Header>
         <Image
           src={logo}

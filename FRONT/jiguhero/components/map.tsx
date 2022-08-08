@@ -35,6 +35,7 @@ export default function KakaoMap(){
             let locPosition = new kakao.maps.LatLng(lat, lon); // 마커가 표시될 위치를 geolocation으로 얻어온 좌표로 생성합니다  
               // 지도 중심좌표를 접속위치로 변경합니다
             map.setCenter(locPosition);
+            console.log(lat, lon);
             })}
     }, []);
   return(
