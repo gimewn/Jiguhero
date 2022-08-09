@@ -42,7 +42,7 @@ const Title = styled('div')`
         color:#252525;
     }
     position: absolute;
-    left:20px;
+    left:25px;
 `
 
 const Item = styled('div')`

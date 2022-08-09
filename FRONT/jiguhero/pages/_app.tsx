@@ -14,6 +14,7 @@ import {
   Hydrate,
 } from "@tanstack/react-query";
 import Script from "next/script";
+import Head from 'next/head';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -30,13 +31,19 @@ const queryClient = new QueryClient({
 const Header = styled("div")`
   display: flex;
   justify-content: space-between;
-  margin: 20px 20px 20px 20px;
+  padding:20px;
+  position:fixed;
+  left:0;
+  right:0;
+  z-index:999;
+  background-color: white;
 `;
 const Body = styled("div")`
   display: flex;
   justify-content: center;
   width: 100%;
   height: 100%;
+  margin-top:80px;
 `;
 const Container = styled("div")`
   display: flex;
@@ -75,10 +82,9 @@ const Footer = styled('div')`
     display:none;
   }
 `
-
-declare global{
-  interface Window{
-    kakao:any;
+declare global {
+  interface Window {
+    kakao: any;
   }
 }
 
@@ -90,10 +96,10 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
 
     <RecoilRoot>
-      <Script
-        src="//dapi.kakao.com/v2/maps/sdk.js?appkey=bb4b7193b8de121008bd7bfa4c617a94&libraries=services,clusterer&autoload=false"
-        strategy="beforeInteractive"
-      />
+      <Head>
+      <link rel="favicon" href="FRONT\jiguhero\public\favicon.ico" />
+      <title>지구방위대</title>
+      </Head>
       <Header>
         <Image
           src={logo}

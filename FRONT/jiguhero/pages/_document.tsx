@@ -38,6 +38,7 @@ class MyDocument extends Document {
     return (
       <Html>
         <Head>
+          <script type="text/javascript" src={`//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAOMAP_APPKEY}&libraries=services`}></script>
         </Head>
         <body>
           <Main />
