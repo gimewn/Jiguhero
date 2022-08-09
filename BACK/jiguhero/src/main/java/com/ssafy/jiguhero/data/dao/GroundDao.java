@@ -28,4 +28,6 @@ public interface GroundDao {
     List<Conn_Ground> selectConnGroundByGround(Ground groundEntity);
 
     void deleteConnGroundById(long connGroundId);
+
+    void deleteGroundById(Long groundId);
 }

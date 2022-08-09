@@ -78,4 +78,10 @@ public class GroundController {
     public ResponseEntity<String> deletePlaceInGround(@RequestParam("place_id") String placeId, @RequestParam("ground_id") Long groundId, @RequestParam("user_id") Long userId){
         return new ResponseEntity<String>(String.valueOf(groundService.deletePlace(placeId, groundId, userId)), HttpStatus.OK);
     }
+
+    @ApiOperation(value = "활동구역을 삭제한다.", response = String.class)
+    @DeleteMapping("/")
+    public ResponseEntity<String> deleteGround(@RequestParam("ground_id") Long groundId, @RequestParam("user_id") Long userId){
+        return new ResponseEntity<String>(String.valueOf(groundService.deleteGround(groundId, userId)), HttpStatus.OK);
+    }
 }

@@ -85,4 +85,9 @@ public class GroundDaoImpl implements GroundDao {
     public void deleteConnGroundById(long connGroundId) {
         connGroundRepository.deleteById(connGroundId);
     }
+
+    @Override
+    public void deleteGroundById(Long groundId) {
+        groundRepository.deleteById(groundId);
+    }
 }

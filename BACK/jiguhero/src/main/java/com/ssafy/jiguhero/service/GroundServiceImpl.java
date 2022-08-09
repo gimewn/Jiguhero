@@ -135,4 +135,23 @@ public class GroundServiceImpl implements GroundService {
 
         return "failed";
     }
+
+    @Override
+    public String deleteGround(Long groundId, Long userId) {
+        Ground groundEntity = groundDao.selectGroundById(groundId);
+
+        if(groundEntity.getUser().getUserId() != userId){
+            return "unauthorized";
+        }
+
+        List<Conn_Ground> list = groundDao.selectConnGroundByGround(groundEntity);
+
+        for(Conn_Ground connGround : list){
+            groundDao.deleteConnGroundById(connGround.getConnGroundId());
+        }
+
+        groundDao.deleteGroundById(groundId);
+
+        return "success";
+    }
 }

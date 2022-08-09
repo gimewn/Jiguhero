@@ -22,4 +22,6 @@ public interface GroundService {
     boolean addGround(String placeId, Long groundId, Long userId);
 
     String deletePlace(String placeId, Long groundId, Long userId);
+
+    String deleteGround(Long groundId, Long userId);
 }
