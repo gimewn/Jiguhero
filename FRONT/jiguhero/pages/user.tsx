@@ -25,7 +25,7 @@ export default function User() {
       {/* 프로필 사진 추가 */}
       <CameraBtn>
         <IconButton aria-label="upload picture" component="label">
-          <input hidden accept="image/*" type="file" />
+          <input hidden accept="image/*" type="file" name="file" />
           <CameraBox>
             <PhotoCamera fontSize="large" />
           </CameraBox>
