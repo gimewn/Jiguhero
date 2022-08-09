@@ -74,4 +74,15 @@ public class GroundDaoImpl implements GroundDao {
     public void insertConnGround(Conn_Ground connGroundEntity) {
         connGroundRepository.save(connGroundEntity);
     }
+
+    @Override
+    public List<Conn_Ground> selectConnGroundByGround(Ground groundEntity) {
+        List<Conn_Ground> selectedConnGrounds = connGroundRepository.findAllByGround(groundEntity);
+        return selectedConnGrounds;
+    }
+
+    @Override
+    public void deleteConnGroundById(long connGroundId) {
+        connGroundRepository.deleteById(connGroundId);
+    }
 }

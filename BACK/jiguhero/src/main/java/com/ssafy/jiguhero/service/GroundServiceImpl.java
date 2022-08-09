@@ -99,4 +99,40 @@ public class GroundServiceImpl implements GroundService {
             groundDao.insertConnGround(connGroundEntity);
         }
     }
+
+    @Override
+    public boolean addGround(String placeId, Long groundId, Long userId) {
+        Ground groundEntity = groundDao.selectGroundById(groundId);
+
+        if(groundEntity.getUser().getUserId() != userId){
+            return false;
+        }
+
+        Place placeEntity = placeDao.selectPlaceById(placeId);
+        Conn_Ground connGroundEntity = new Conn_Ground();
+        connGroundEntity.setGround(groundEntity);
+        connGroundEntity.setPlace(placeEntity);
+        groundDao.insertConnGround(connGroundEntity);
+        return true;
+    }
+
+    @Override
+    public String deletePlace(String placeId, Long groundId, Long userId) {
+        Ground groundEntity = groundDao.selectGroundById(groundId);
+
+        if(groundEntity.getUser().getUserId() != userId){
+            return "unauthorized";
+        }
+
+        List<Conn_Ground> list = groundDao.selectConnGroundByGround(groundEntity);
+
+        for(Conn_Ground connGround : list){
+            if(connGround.getPlace().getPlaceId().equals(placeId)){
+                groundDao.deleteConnGroundById(connGround.getConnGroundId());
+                return "success";
+            }
+        }
+
+        return "failed";
+    }
 }

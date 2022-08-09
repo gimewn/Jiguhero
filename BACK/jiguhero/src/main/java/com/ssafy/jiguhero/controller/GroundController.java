@@ -57,10 +57,25 @@ public class GroundController {
         return ResponseEntity.status(HttpStatus.OK).body(list);
     }
 
-    @ApiOperation(value = "활동구역을 생성한다.")
+    @ApiOperation(value = "활동구역을 생성한다.", response = String.class)
     @PostMapping("/")
-    public ResponseEntity<String> saveGround(@RequestBody GroundDto groundDto, @RequestBody List<PlaceDto> placeDtoList, @RequestParam("user_id") Long userId){
+    public ResponseEntity<String> createGround(@RequestBody GroundDto groundDto, @RequestBody List<PlaceDto> placeDtoList, @RequestParam("user_id") Long userId){
         groundService.saveGround(groundDto, placeDtoList, userId);
         return new ResponseEntity<String>("success", HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "활동구역에 장소를 추가한다.", response = String.class)
+    @PostMapping("/place")
+    public ResponseEntity<String> addGround(@RequestParam("place_id") String placeId, @RequestParam("ground_id") Long groundId, @RequestParam("user_id") Long userId){
+        if(groundService.addGround(placeId, groundId, userId)){
+            return new ResponseEntity<String>("success", HttpStatus.OK);
+        }
+        return new ResponseEntity<String>("unauthorized", HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "활동구역에서 장소를 삭제한다.", response = String.class)
+    @DeleteMapping("/place")
+    public ResponseEntity<String> deletePlaceInGround(@RequestParam("place_id") String placeId, @RequestParam("ground_id") Long groundId, @RequestParam("user_id") Long userId){
+        return new ResponseEntity<String>(String.valueOf(groundService.deletePlace(placeId, groundId, userId)), HttpStatus.OK);
     }
 }

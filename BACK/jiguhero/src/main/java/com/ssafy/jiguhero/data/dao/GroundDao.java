@@ -24,4 +24,8 @@ public interface GroundDao {
     void insertGround(Ground groundEntity);
 
     void insertConnGround(Conn_Ground connGroundEntity);
+
+    List<Conn_Ground> selectConnGroundByGround(Ground groundEntity);
+
+    void deleteConnGroundById(long connGroundId);
 }
