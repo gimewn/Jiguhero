@@ -14,7 +14,25 @@ import { getSession, SessionProvider, useSession } from "next-auth/react";
 import PostMission from "pages/api/mission/index";
 import moment from "moment"
 
+const Block = styled('div')`
+  margin: 0.5rem;
+`
 
+const Content = styled('div')`
+  display:flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+    @media screen and (min-width: 360px){
+        width:400px;
+    }
+    @media screen and (min-width: 550px){
+        width:500px;
+    }
+    @media screen and (min-width:700px){
+        width:620px;
+    }
+`
 
 const BoxInput = styled('input')`
   border: #65ACE2 solid 1px ;
@@ -162,25 +180,25 @@ function MissionPicture() {
   )
 }
 
-//지역
+//지역 설정
 function MissionLocation() {
-  const [data, setData] = useState([]);
-  const { data: sido } = useQuery(['sido'], getSido);
-  const [ChoiceSido, setChoiceSido] = useState('11');
-  const { data: gugun } = useQuery(['gugun', ChoiceSido], () => getGugun(ChoiceSido), {
-    enabled: !!ChoiceSido,
-  });
-  const [ChoiceGugun, setChoiceGugun] = useState('11110');
-  const { data: dong } = useQuery(['dong', ChoiceGugun], () => getDong(ChoiceGugun), {
-    enabled: !!ChoiceGugun
-  })
-  const [ChoiceDong, setChoiceDong] = useState('');
-  let search = false;
+  // const [data, setData] = useState([]);
+  // const { data: sido } = useQuery(['sido'], getSido);
+  // const [ChoiceSido, setChoiceSido] = useState('11');
+  // const { data: gugun } = useQuery(['gugun', ChoiceSido], () => getGugun(ChoiceSido), {
+  //   enabled: !!ChoiceSido,
+  // });
+  // const [ChoiceGugun, setChoiceGugun] = useState('11110');
+  // const { data: dong } = useQuery(['dong', ChoiceGugun], () => getDong(ChoiceGugun), {
+  //   enabled: !!ChoiceGugun
+  // })
+  // const [ChoiceDong, setChoiceDong] = useState('');
+  // let search = false;
 
 
   return (
     <>
-      <PlaceGroup>
+      {/* <PlaceGroup>
         {data?.map((item) => (
           <Place
             key={item.placeId}
@@ -198,7 +216,7 @@ function MissionLocation() {
             </WithIcon> : <></>}
           </Place>
         ))}
-      </PlaceGroup>
+      </PlaceGroup> */}
 
 
     </>
@@ -217,8 +235,13 @@ export default function Createmission() {
       <Backcomponents name='임무 생성하기'></Backcomponents>
 
       <>
-        {/* 임무명 */}
-        <MissionName />
+        <Block>
+          <Content>
+            {/* 임무명 */}
+            <MissionName />
+
+          </Content>
+        </Block>
         {/* 활동기간 */}
         <DatePick />
         {/* 포인트 */}
