@@ -13,12 +13,13 @@ import {
   QueryClientProvider,
   Hydrate,
 } from "@tanstack/react-query";
+import Script from "next/script";
 
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       refetchOnWindowFocus: false,
-      refetchOnmount: false,
+      refetchOnMount: false,
       refetchOnReconnect: false,
       retry: false,
       staleTime: 5*60*1000,
@@ -75,6 +76,12 @@ const Footer = styled('div')`
   }
 `
 
+declare global{
+  interface Window{
+    kakao:any;
+  }
+}
+
 function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter();
   const onLink = (href) => {
@@ -83,6 +90,10 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
 
     <RecoilRoot>
+      <Script
+        src="//dapi.kakao.com/v2/maps/sdk.js?appkey=bb4b7193b8de121008bd7bfa4c617a94&libraries=services,clusterer&autoload=false"
+        strategy="beforeInteractive"
+      />
       <Header>
         <Image
           src={logo}
@@ -90,6 +101,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           height={40}
           onClick={() => onLink("/")}
           layout="fixed"
+          alt="로고"
         />
         <DeskMenu>
           <MenuForDesk />

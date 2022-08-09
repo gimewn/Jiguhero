@@ -6,12 +6,8 @@ import Head from "node_modules/next/head";
 import styled from "styled-components";
 import Router, { useRouter } from "next/router";
 import React, { useEffect } from "react";
-import { Main } from "next/document";
 import { ParsedUrlQuery } from "querystring";
 import { getSession, signIn, signOut, useSession } from "next-auth/react";
-import { NextPageContext } from "node_modules/next/dist/shared/lib/utils";
-import { getCookies } from "cookies-next";
-import checkLogin from "./checkLogin";
 
 export default function Login() {
   const { data: session, status } = useSession();
@@ -19,13 +15,10 @@ export default function Login() {
   const router = useRouter()
   const returnUrl = router.query.returnUrl
 
-
-  
-
   return (
     <>
     {session?.accessToken&&(
-      <p>{session.user.name}</p>
+      <p>{session.user.email}</p>
     )}
       <LoginWrapper>
         <Head>
@@ -136,9 +129,8 @@ const SnsLoginNaver = styled("div")`
   width: 20rem;
 `;
 
-export async function getServerSideProps(context: NextPageContext) {
+export async function getServerSideProps(context) {
   const session = await getSession(context)
-
 
   return {
     props: {

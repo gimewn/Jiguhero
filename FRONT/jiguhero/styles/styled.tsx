@@ -1,6 +1,9 @@
 import styled from 'styled-components';
-
-export const ButtonFull = styled('button')`
+interface ColorProp{
+    dColor:string,
+    hColor:string
+}
+export const ButtonFull = styled('button')<{dColor:string, hColor:string}>`
     background-color: ${(props) => props.dColor};
     border-radius: 15px;
     border: ${(props) => props.dColor} 1px solid;
@@ -12,7 +15,7 @@ export const ButtonFull = styled('button')`
     }
 `
 
-export const ButtonBorder = styled('button')`
+export const ButtonBorder = styled('button')<{dColor:string}>`
     border: ${(props) => props.dColor} solid 1px;
     background-color: white;
     border-radius: 15px;

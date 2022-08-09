@@ -6,7 +6,7 @@ import styled from "styled-components";
 import ArrowForwardIosRoundedIcon from "@mui/icons-material/ArrowForwardIosRounded";
 import Link from "next/link";
 import { ButtonBorder, ButtonFull } from "styles/styled";
-import { theme } from "pages/theme";
+import { theme } from "components/theme";
 import { blue } from "@mui/material/colors";
 import { Pagination } from "@mui/material";
 import { userInfo } from "os";
@@ -20,6 +20,7 @@ import userData from "pages/api/user/[id]";
 import missionUserData from "pages/api/mission/[id]";
 import groundUserData from "pages/api/ground/[id]";
 import { getToken } from "next-auth/jwt";
+import Image from 'next/image';
 
 
 const Profile = styled("div")`
@@ -132,7 +133,6 @@ const PagI = styled(Pagination)`
 `;
 
 interface Idata {
-
   email: string;
   name: string;
   grade: number;
@@ -155,7 +155,7 @@ const Mypage = ({data}) => {
     return (
       <Profile>
         <BgImg>
-          <img alt="nitz" src={`${data.session.user.image}`}/>
+          <Image alt="nitz" src={`${data.session.user.image}`}/>
         </BgImg>
         <div>
           <p>빨강</p>
@@ -172,7 +172,7 @@ const Mypage = ({data}) => {
   function Mission() {
     const MissionList = ["하나", "둘", "셋", "넷", "다섯", "여섯"];
     const remainder = MissionList.length % 3;
-    const quot = parseInt(MissionList.length / 3);
+    const quot = MissionList.length / 3;
     const page = useRecoilValue(missionPage);
     const setPage = useSetRecoilState(missionPage);
     const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
@@ -208,7 +208,7 @@ const Mypage = ({data}) => {
       { icon: "🍨", title: "유기농 디저트 맛집" },
     ];
     const remainder = PlayedArea.length % 3;
-    const quot = parseInt(PlayedArea.length / 3);
+    const quot = PlayedArea.length / 3;
 
     const page = useRecoilValue(playedAreaPage);
     const setPage = useSetRecoilState(playedAreaPage);
