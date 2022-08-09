@@ -1,5 +1,6 @@
 package com.ssafy.jiguhero.oauthlogin.config.security.handler;
 
+import com.ssafy.jiguhero.data.dto.UserDto;
 import com.ssafy.jiguhero.data.repository.UserRepository;
 import com.ssafy.jiguhero.oauthlogin.advice.assertThat.DefaultAssert;
 import com.ssafy.jiguhero.oauthlogin.config.security.OAuth2Config;
@@ -75,22 +76,31 @@ public class CustomSimpleUrlAuthenticationSuccessHandler extends SimpleUrlAuthen
         String targetUrl = redirectUri.orElse(getDefaultTargetUrl());
 
         Token token = Token.builder()
-                            .userEmail(tokenMapping.getUserEmail())
-                            .refreshToken(tokenMapping.getRefreshToken())
-                            .build();
+                .userEmail(tokenMapping.getUserEmail())
+                .refreshToken(tokenMapping.getRefreshToken())
+                .build();
         tokenRepository.save(token);
 
+        System.out.println(userService.getUserByEmail(tokenMapping.getUserEmail()).getRole());
+        System.out.println(Role.REGISTER);
+
+        UserDto user = userService.getUserByEmail(tokenMapping.getUserEmail());
+
         // 처음 로그인한 유저라면 quertParam에 key : REGISTER / value : REQUIRED 저장
-        if(userService.getUserByEmail(tokenMapping.getUserEmail()).getRole().equals(Role.REGISTER)){
+        if(user.getRole().equals("REGISTER")){
             return UriComponentsBuilder.fromUriString(targetUrl)
                     .queryParam("token", tokenMapping.getAccessToken())
                     .queryParam("REGISTER", "REQUIRED")
+                    .queryParam("email", user.getEmail())
+                    .queryParam("userid", user.getUserId())
                     .build().toUriString();
         }
 
         // queryParam에 Access Token 저장
         return UriComponentsBuilder.fromUriString(targetUrl)
                 .queryParam("token", tokenMapping.getAccessToken())
+                .queryParam("REGISTER", "DONE")
+                .queryParam("email", tokenMapping.getUserEmail())
                 .build().toUriString();
     }
 

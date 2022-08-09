@@ -43,4 +43,11 @@ public class PromotionServiceImpl implements PromotionService {
         PromotionDto dto = PromotionDto.of(entity);
         return dto;
     }
+
+    @Override
+    public PromotionDto savePromotion(PromotionDto promotionDto) {
+        Promotion promotionEntity = Promotion.of(promotionDto);
+        Promotion savedPromotion = promotionDao.insertPromotion(promotionEntity);
+        return PromotionDto.of(savedPromotion);
+    }
 }

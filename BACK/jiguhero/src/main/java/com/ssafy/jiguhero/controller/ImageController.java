@@ -52,11 +52,11 @@ public class ImageController {
     }
 
     @PostMapping("/mission")
-    public ResponseEntity<String> uploadMissionImage(@RequestParam("file") MultipartFile file, @RequestParam("userId") Long userId, @RequestParam("missionId") Long missionId) {
+    public ResponseEntity<String> uploadMissionImage(@RequestParam("file") MultipartFile file, @RequestParam("userId") Long userId, @RequestParam("missionId") Long missionId, @RequestParam("rep") int rep) {
         if(file.isEmpty()) {
             return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
         }
-        imageService.saveMissionImage(file, userId, missionId);
+        imageService.saveMissionImage(file, userId, missionId, rep);
 
         return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
     }

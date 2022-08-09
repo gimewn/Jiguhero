@@ -6,10 +6,14 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ImageMissionRepository extends JpaRepository<Image_Mission, Long> {
 
     List<Image_Mission> findAllByMission(Mission mission);
+
+    // 임무의 대표 이미지 정보 반환
+    Optional<Image_Mission> findByMissionAndRep(Mission mission, Boolean rep);
 
 }

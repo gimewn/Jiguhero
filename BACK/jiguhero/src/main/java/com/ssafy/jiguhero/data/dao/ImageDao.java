@@ -18,6 +18,16 @@ public interface ImageDao {
 
     Image_Mission insertImageMission(Image_Mission imageMission);
 
+    // 대표 이미지 반환
+    Image_Mission selectRepImageMission(Mission mission);
+
     List<Image_Mission> selectImageMissions(Mission mission);
 
+    void deleteImageMission(Image_Mission imageMission) throws Exception;
+
+    Image_Promotion insertImagePromotion(Image_Promotion imagePromotion);
+
+    Image_Promotion selectImagePromotion(Promotion promotion);
+
+    void deleteImagePromotion(Image_Promotion imagePromotion) throws Exception;
 }

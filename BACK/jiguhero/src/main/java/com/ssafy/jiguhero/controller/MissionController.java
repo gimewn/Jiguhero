@@ -44,24 +44,24 @@ public class MissionController {
     }
 
     @ApiOperation(value = "전체 임무 리스트를 반환한다.", response = List.class)
-    @GetMapping("/")
-    public ResponseEntity<List<MissionDto>> getAllMissions() {
-        List<MissionDto> list = missionService.getAllMissions();
+    @GetMapping()
+    public ResponseEntity<List<MissionDto>> getAllMissions(HttpServletRequest request) {
+        List<MissionDto> list = missionService.getAllMissions(request);
 
         return ResponseEntity.status(HttpStatus.OK).body(list);
     }
 
     @ApiOperation(value = "해당 임무의 모든 정보를 반환한다.", response = String.class) // 좋아요 클릭 여부/ 기능 추가해야 함 o
     @GetMapping("/{mission_id}/details")
-    public ResponseEntity<MissionDto> getMission(@PathVariable("mission_id") Long missionId, @RequestParam("user_id") Long userId) {
-        MissionDto result = missionService.getMissionById(missionId, userId);
+    public ResponseEntity<MissionDto> getMission(@PathVariable("mission_id") Long missionId, @RequestParam("userId") Long userId, HttpServletRequest request) {
+        MissionDto result = missionService.getMissionById(missionId, userId, request);
 
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
     @ApiOperation(value = "새로운 임무를 등록한다.", response = String.class) // missionServiceImpl 확인!!! Conn_Mission도 추가해야함(임무 작성한 대원 저장 등)
     @PostMapping("/")
-    public ResponseEntity<String> saveMission(@RequestBody MissionDto missionDto, @RequestParam("user_id") Long userId) {
+    public ResponseEntity<String> saveMission(@RequestBody MissionDto missionDto, @RequestParam("userId") Long userId) {
 
         missionService.saveMission(missionDto, userId);
 
@@ -71,7 +71,7 @@ public class MissionController {
 
     @ApiOperation(value = "해당 임무에 참여한다.", response = String.class)
     @PostMapping("/{mission_id}/details")
-    public ResponseEntity<String> saveMission(@RequestParam("user_id") Long userId, @RequestParam("mission_id") Long missionId) {
+    public ResponseEntity<String> saveMission(@RequestParam("userId") Long userId, @RequestParam("missionId") Long missionId) {
 
         missionService.joinMission(userId, missionId);
         return new ResponseEntity<String>("success", HttpStatus.OK);
@@ -79,7 +79,7 @@ public class MissionController {
 
     @ApiOperation(value = "해당 임무의 '좋아요'를 클릭한다.", response = List.class)
     @PostMapping("/{mission_id}/hearts")
-    public ResponseEntity<String> saveLikeMission(@PathVariable("mission_id") Long missionId, @RequestParam("user_id") Long userId) {
+    public ResponseEntity<String> saveLikeMission(@PathVariable("mission_id") Long missionId, @RequestParam("userId") Long userId) {
         int check = missionService.likeMission(missionId, userId);
 
         if(check == 1) return new ResponseEntity<String>("success", HttpStatus.OK);
@@ -88,7 +88,7 @@ public class MissionController {
 
     @ApiOperation(value = "해당 임무를 삭제한다.", response = List.class)
     @DeleteMapping("/{mission_id}/details")
-    public ResponseEntity<String> deleteMission(@PathVariable("mission_id") Long missionId, @RequestParam("user_id") Long userId) {
+    public ResponseEntity<String> deleteMission(@PathVariable("mission_id") Long missionId, @RequestParam("userId") Long userId) {
         int check = missionService.deleteMission(missionId, userId);
 
         if(check == 1) return new ResponseEntity<String>("success", HttpStatus.OK);

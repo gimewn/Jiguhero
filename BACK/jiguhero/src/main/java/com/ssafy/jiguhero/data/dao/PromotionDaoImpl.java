@@ -36,4 +36,10 @@ public class PromotionDaoImpl implements PromotionDao {
         Promotion selectedPromotion = promotionRepository.getById(promotionId);
         return selectedPromotion;
     }
+
+    @Override
+    public Promotion insertPromotion(Promotion promotion) {
+        Promotion savedPromotion = promotionRepository.save(promotion);
+        return savedPromotion;
+    }
 }
