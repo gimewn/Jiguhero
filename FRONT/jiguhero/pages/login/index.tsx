@@ -20,13 +20,13 @@ export default function Login() {
   const returnUrl = router.query.returnUrl
 
 
-  
+
 
   return (
     <>
-    {session?.accessToken&&(
-      <p>{session.user.name}</p>
-    )}
+      {session?.accessToken && (
+        <p>{session.user.name}</p>
+      )}
       <LoginWrapper>
         <Head>
           {/* header 추가 */}
@@ -39,42 +39,35 @@ export default function Login() {
           {/* 카카오 로그인*/}
           <SnsLoginKakao>
             {!session && (
-              <ul>
-                <li>
-                  <a
-                    onClick={(e) => {
-                      e.preventDefault();
-                      signIn("kakao", {
-                        redirect:true,
-                        callbackUrl: `/`
-                      });
-                    }}
-                  >
-                    <Image src={KakaoImg} alt="Kakao" />
-                  </a>
-                </li>
-              </ul>
+              <a
+                onClick={(e) => {
+                  e.preventDefault();
+                  signIn("kakao", {
+                    redirect: true,
+                    callbackUrl: `/`
+                  });
+                }}
+              >
+                <Image src={KakaoImg} alt="Kakao" />
+              </a>
+
             )}
           </SnsLoginKakao>
 
           {/* 구글 로그인*/}
           <SnsLoginGoogle>
             {!session && (
-              <ul>
-                <li>
-                  <a
-                    onClick={(e) => {
-                      e.preventDefault();
-                      signIn("google", {
-                        redirect:true,
-                        callbackUrl: `/`
-                      });
-                    }}
-                  >
-                    <Image src={GoogleImg} alt="Google" />
-                  </a>
-                </li>
-              </ul>
+              <a
+                onClick={(e) => {
+                  e.preventDefault();
+                  signIn("google", {
+                    redirect: true,
+                    callbackUrl: `/`
+                  });
+                }}
+              >
+                <Image src={GoogleImg} alt="Google" />
+              </a>
             )}
           </SnsLoginGoogle>
 
@@ -88,10 +81,12 @@ export default function Login() {
               </a>
             )}
           </SnsLoginNaver>
-          {session && <button onClick={()=>{signOut({
-            redirect: true,
-            callbackUrl: `http://localhost:3000/`
-          })}}>Logout</button>}
+          {session && <button onClick={() => {
+            signOut({
+              redirect: true,
+              callbackUrl: `http://localhost:3000/`
+            })
+          }}>Logout</button>}
         </main>
       </LoginWrapper>
     </>
