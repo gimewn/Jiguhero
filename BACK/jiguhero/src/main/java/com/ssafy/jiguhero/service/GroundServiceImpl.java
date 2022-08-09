@@ -156,6 +156,7 @@ public class GroundServiceImpl implements GroundService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<PlaceDto> getPlacesByGround(Long groundId) {
         Ground groundEntity = groundDao.selectGroundById(groundId);
 

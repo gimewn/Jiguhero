@@ -16,4 +16,5 @@ public interface PromotionDao {
     Promotion insertPromotion(Promotion promotion);
 
     void deletePromotion(Long promotionId);
+
 }

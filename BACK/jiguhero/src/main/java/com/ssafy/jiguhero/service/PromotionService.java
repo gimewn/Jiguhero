@@ -15,4 +15,5 @@ public interface PromotionService {
     PromotionDto savePromotion(PromotionDto promotionDto);
 
     void deletePromotion(Long promotionId);
+
 }

@@ -53,6 +53,18 @@ public class PromotionController {
         return ResponseEntity.status(HttpStatus.OK).body(savedPromotion);
     }
 
+    @ApiOperation(value = "프로모션 및 이벤트 소식 정보를 수정한다.", response = PromotionDto.class)
+    @PutMapping
+    public ResponseEntity<PromotionDto> updatePromotion(@RequestParam("file") MultipartFile file, @RequestBody PromotionDto promotionDto){
+        PromotionDto updatedPromotion = promotionService.savePromotion(promotionDto);
+
+        if(!file.isEmpty()) { // 이미지가 포함되어 있을 경우
+            imageService.savePromotionImage(file, updatedPromotion.getPromotionId());
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(updatedPromotion);
+    }
+
     @ApiOperation(value = "프로모션 및 이벤트 소식 정보를 삭제한다.", response = String.class)
     @DeleteMapping("/")
     public ResponseEntity<String> deletePromotion(@RequestParam("promotion_id") Long promotionId){

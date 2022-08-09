@@ -69,4 +69,5 @@ public class PromotionServiceImpl implements PromotionService {
 
         promotionDao.deletePromotion(promotionId);
     }
+
 }
