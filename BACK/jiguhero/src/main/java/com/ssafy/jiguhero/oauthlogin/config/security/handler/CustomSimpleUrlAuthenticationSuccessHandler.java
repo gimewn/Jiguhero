@@ -94,12 +94,9 @@ public class CustomSimpleUrlAuthenticationSuccessHandler extends SimpleUrlAuthen
                 .build();
         tokenRepository.save(token);
 
-        System.out.println(userService.getUserByEmail(tokenMapping.getUserEmail()).getRole());
-        System.out.println(Role.REGISTER);
-
         UserDto user = userService.getUserByEmail(tokenMapping.getUserEmail());
 
-        // 처음 로그인한 유저라면 quertParam에 key : REGISTER / value : REQUIRED 저장
+        // 처음 로그인한 유저라면 queryParam에 key : REGISTER / value : REQUIRED 저장
         if(user.getRole().equals("REGISTER")){
             return UriComponentsBuilder.fromUriString(targetUrl)
                     .queryParam("token", tokenMapping.getAccessToken())
@@ -109,11 +106,12 @@ public class CustomSimpleUrlAuthenticationSuccessHandler extends SimpleUrlAuthen
                     .build().encode().toUriString();
         }
 
-        // queryParam에 Access Token 저장
+        // 회원가입이 완료된 유저라면 quertParam에 key : REGISTER / value : DONE 저장
         return UriComponentsBuilder.fromUriString(targetUrl)
                 .queryParam("token", tokenMapping.getAccessToken())
                 .queryParam("REGISTER", "DONE")
-                .queryParam("email", tokenMapping.getUserEmail())
+                .queryParam("email", user.getEmail())
+                .queryParam("userid", user.getUserId())
                 .build().encode().toUriString();
     }
 
