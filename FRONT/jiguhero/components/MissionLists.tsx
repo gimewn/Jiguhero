@@ -7,6 +7,7 @@ import Link from "next/link";
 import getMission from 'pages/api/mission/index';
 import { dehydrate, Query, QueryClient, QueryClientProvider, useQuery } from "@tanstack/react-query";
 import { getSession, SessionProvider, useSession } from "next-auth/react";
+import { useState } from 'react';
 
 
 const PagI = styled(Pagination)`
@@ -19,9 +20,10 @@ const PagI = styled(Pagination)`
 
 
 export default function MissionLists() {
-  const { data: MISSION } = useQuery(['missions'], getMission)
+  const [cate, setCate] = useState("latest")
+  const { data: MISSION } = useQuery(['missions'], ()=>{getMission(cate)})
   console.log(MISSION)
-  const remainder = parseInt(MISSION?.length % 5);
+  const remainder = MISSION?.length % 5;
   const quot = MISSION?.length / 5;
   const page = useRecoilValue(missionLists)
   const setPage = useSetRecoilState(missionLists)
@@ -48,7 +50,7 @@ export default function MissionLists() {
 export async function getServerSideProps(context) {
   const missionList = new QueryClient()
   const session = await getSession(context);
-  await missionList.prefetchQuery(['missions'], () => { getMission() })
+  await missionList.prefetchQuery(['missions'], () => { getMission("latest") })
 
   return {
     props: {

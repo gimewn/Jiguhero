@@ -142,15 +142,9 @@ interface Idata {
 
 const Mypage = ({ data }) => {
   // console.log(props.data)
-<<<<<<< HEAD
-
-
-  const { data: userInfo } = useQuery(['mission'], () => { userData() })
-=======
   const router = useRouter()
   
   const {data:userInfo} = useQuery(['mission'],()=> {userData()})
->>>>>>> FE/mypage
   console.log(userInfo)
 
 

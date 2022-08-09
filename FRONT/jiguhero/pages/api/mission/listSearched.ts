@@ -2,7 +2,7 @@ import renewAccess from "../auth/renewAccess";
 import { BASE_URL, Token } from 'pages/api/fetch';
 
 
-export default async function getMission(select){
+export default async function listSearched(text){
 
     if(select==="latest") {
 
@@ -20,4 +20,3 @@ export default async function getMission(select){
     })
     return data
 }
-
