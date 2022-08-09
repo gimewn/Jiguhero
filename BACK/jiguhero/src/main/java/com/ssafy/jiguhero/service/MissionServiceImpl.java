@@ -251,4 +251,18 @@ public class MissionServiceImpl implements MissionService {
         return urlList;
     }
 
+    @Override
+    public FeedDto changeFeed(FeedDto feedDto, Long userId) throws Exception{
+        User userEntity = userDao.selectUserById(userId);
+
+        if(missionDao.selectFeed(feedDto.getFeedId(), userEntity)!=null) {
+            Feed feed = missionDao.updateFeed(feedDto);
+            FeedDto dto = FeedDto.of(feed);
+            return dto;
+        }
+        else {
+            throw new Exception();
+        }
+    }
+
 }

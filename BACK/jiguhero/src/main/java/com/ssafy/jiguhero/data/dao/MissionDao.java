@@ -1,5 +1,6 @@
 package com.ssafy.jiguhero.data.dao;
 
+import com.ssafy.jiguhero.data.dto.FeedDto;
 import com.ssafy.jiguhero.data.dto.MissionDto;
 import com.ssafy.jiguhero.data.entity.*;
 
@@ -50,5 +51,9 @@ public interface MissionDao {
     int countByFeed(Feed feed);
 
     void insertFeed(Feed feed);
+
+    Optional<Feed> selectFeed(Long feedId, User user);
+
+    Feed updateFeed(FeedDto feedDto) throws Exception;
 
 }

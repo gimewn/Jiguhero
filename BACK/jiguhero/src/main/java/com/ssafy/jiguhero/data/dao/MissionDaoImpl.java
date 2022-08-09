@@ -1,5 +1,6 @@
 package com.ssafy.jiguhero.data.dao;
 
+import com.ssafy.jiguhero.data.dto.FeedDto;
 import com.ssafy.jiguhero.data.dto.MissionDto;
 import com.ssafy.jiguhero.data.entity.*;
 import com.ssafy.jiguhero.data.repository.*;
@@ -161,6 +162,31 @@ public class MissionDaoImpl implements MissionDao {
     public void insertFeed(Feed feed){
         feedRepository.save(feed);
 
+    }
+
+    @Override
+    public Optional<Feed> selectFeed(Long feedId, User user){
+        Optional<Feed> result = feedRepository.findByFeedIdAndUser(feedId, user);
+        if(result.isPresent()) return result;
+        else return null;
+    }
+
+    @Override
+    public Feed updateFeed(FeedDto feedDto) throws Exception{
+        Optional<Feed> selectedFeed = feedRepository.findById(feedDto.getFeedId());
+        Feed updatedFeed;
+
+        if(selectedFeed.isPresent()) {
+            Feed feed = selectedFeed.get();
+            feed.setContent(feedDto.getContent());
+
+            updatedFeed = feedRepository.save(feed);
+        }
+        else {
+            throw new Exception();
+        }
+
+        return updatedFeed;
     }
 }
 

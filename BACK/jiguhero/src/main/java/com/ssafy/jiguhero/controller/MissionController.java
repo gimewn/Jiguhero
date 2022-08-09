@@ -125,4 +125,18 @@ public class MissionController {
 
         return new ResponseEntity<String>("success",HttpStatus.OK);
     }
+
+    @ApiOperation(value = "해당 인증샷을 수정한다")
+    @PutMapping("/{mission_id}/feed/{feed_id}/details")
+    public ResponseEntity<FeedDto> changeFeed(@RequestBody FeedDto feedDto, @RequestParam("user_id") Long userId){
+        FeedDto feedDtoResult = null;
+        try {
+            feedDtoResult = missionService.changeFeed(feedDto, userId);
+        }
+        catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(feedDtoResult);
+    }
+
 }
