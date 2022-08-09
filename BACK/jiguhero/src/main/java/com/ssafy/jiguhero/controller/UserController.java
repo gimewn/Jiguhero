@@ -2,6 +2,7 @@ package com.ssafy.jiguhero.controller;
 
 import com.ssafy.jiguhero.data.dto.GroundDto;
 import com.ssafy.jiguhero.data.dto.UserDto;
+import com.ssafy.jiguhero.service.ImageService;
 import com.ssafy.jiguhero.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -20,9 +22,12 @@ public class UserController {
 
     private final UserService userService;
 
+    private final ImageService imageService;
+
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService, ImageService imageService) {
         this.userService = userService;
+        this.imageService = imageService;
     }
 
     @ApiOperation(value = "user_id로 유저 정보를 조회해 반환한다.", response = UserDto.class)
@@ -52,13 +57,15 @@ public class UserController {
 
     @ApiOperation(value = "user_id에 해당하는 유저의 닉네임을 등록 또는 수정한다.(회원가입, 정보변경 둘 다 사용)", response = UserDto.class)
     @PutMapping("/{user_id}")
-    public ResponseEntity<UserDto> changeUserNickname(@PathVariable("user_id") Long userId, @RequestParam("nickname") String nickname) {
+    public ResponseEntity<UserDto> changeUserNickname(@PathVariable("user_id") Long userId, @RequestParam("nickname") String nickname, @RequestParam("file") MultipartFile file) {
         UserDto userDto = null;
         try {
             userDto = userService.changeUserNickname(userId, nickname);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+        
+        imageService.saveUserImage(file, userId);
 
         return ResponseEntity.status(HttpStatus.OK).body(userDto);
     }
