@@ -11,15 +11,16 @@ import { blue } from "@mui/material/colors";
 import { Pagination } from "@mui/material";
 import { userInfo } from "os";
 import { RecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import { missionPage, playedAreaPage,tabpage } from "states/mypage";
+import { missionPage, playedAreaPage, tabpage } from "states/mypage";
 import { dehydrate, Query, QueryClient, QueryClientProvider, useQuery } from "@tanstack/react-query";
-import { getSession, SessionProvider, useSession } from "next-auth/react";
+import { getSession, SessionProvider, useSession, signOut } from "next-auth/react";
 import { NextPageContext } from "node_modules/next/dist/shared/lib/utils";
 import { useRouter } from "next/router";
 import userData from "pages/api/user/[id]";
 import missionUserData from "pages/api/mission/[id]";
 import groundUserData from "pages/api/ground/[id]";
 import { getToken } from "next-auth/jwt";
+
 
 
 const Profile = styled("div")`
@@ -139,11 +140,11 @@ interface Idata {
   point: number;
 }
 
-const Mypage = ({data}) => {
+const Mypage = ({ data }) => {
   // console.log(props.data)
 
-  
-  const {data:userInfo} = useQuery(['mission'],()=> {userData()})
+
+  const { data: userInfo } = useQuery(['mission'], () => { userData() })
   console.log(userInfo)
 
 
@@ -155,7 +156,7 @@ const Mypage = ({data}) => {
     return (
       <Profile>
         <BgImg>
-          <img alt="nitz" src={`${data.session.user.image}`}/>
+          <img alt="nitz" src={`${data.session.user.image}`} />
         </BgImg>
         <div>
           <p>빨강</p>
@@ -241,7 +242,7 @@ const Mypage = ({data}) => {
   const onClickBox = (
     event: React.MouseEvent<HTMLDivElement, MouseEvent>
   ) => {
-    
+
   };
 
   return (
@@ -302,7 +303,14 @@ const Mypage = ({data}) => {
         )}
       </ButtonGroup>
       <Box>{tab ? <PlayingArea /> : <Mission />}</Box>
-      <ButtonFull dColor={"#FF4848"} hColor={"#FF4848"}>
+      <ButtonFull
+        onClick={() => {
+          signOut({
+            redirect: true,
+            callbackUrl: `http://localhost:3000/`
+          })
+        }}
+        dColor={"#FF4848"} hColor={"#FF4848"}>
         로그아웃
       </ButtonFull>
     </EntireContainer>
@@ -331,22 +339,22 @@ export async function getServerSideProps(context) {
   const missionInfo2 = new QueryClient()
   const groundInfo2 = new QueryClient()
   const session = await getSession(context);
-  await session2.prefetchQuery(['session'], ()=> {return getSession(context)})
-  await userInfo2.prefetchQuery(['userInfo'], ()=>{userData()})
-  await missionInfo2.prefetchQuery(['missionUserInfo'], ()=>{missionUserData(context)})
-  await groundInfo2.prefetchQuery(['groundUserInfo'], ()=>{groundUserData(context)})
+  await session2.prefetchQuery(['session'], () => { return getSession(context) })
+  await userInfo2.prefetchQuery(['userInfo'], () => { userData() })
+  await missionInfo2.prefetchQuery(['missionUserInfo'], () => { missionUserData(context) })
+  await groundInfo2.prefetchQuery(['groundUserInfo'], () => { groundUserData(context) })
 
 
 
-    return {
-      props: {
-        data: {
-          session,
-          dehydratedState: dehydrate(userInfo2)
-        },
+  return {
+    props: {
+      data: {
+        session,
+        dehydratedState: dehydrate(userInfo2)
       },
-    };
-  
+    },
+  };
+
 }
 
 export default Mypage;

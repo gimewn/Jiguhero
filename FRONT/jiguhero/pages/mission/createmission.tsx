@@ -9,7 +9,10 @@ import "react-datepicker/dist/react-datepicker.css";
 import locale from 'date-fns/locale/ko'
 import IconButton from '@mui/material/IconButton';
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
-
+import { dehydrate, Query, QueryClient, QueryClientProvider, useQuery } from "@tanstack/react-query";
+import { getSession, SessionProvider, useSession } from "next-auth/react";
+import PostMission from "pages/api/mission/index";
+import moment from "moment"
 
 
 
@@ -86,8 +89,12 @@ function MissionName() {
 
 //활동기간
 function DatePick() {
+  const nowTime = moment().format('YYYY-MM-DD')
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
+
+  console.log(nowTime)
+  console.log(startDate, endDate)
   return (
     <>
       <a>활동기간</a>
@@ -101,7 +108,7 @@ function DatePick() {
           startDate={startDate}
           endDate={endDate}
           minDate={new Date()}
-          dateFormat="yyyy/MM/dd"
+          dateFormat="yyyy-MM-dd"
         />
 
         <DateInput
@@ -112,7 +119,7 @@ function DatePick() {
           startDate={startDate}
           endDate={endDate}
           minDate={startDate}
-          dateFormat="yyyy/MM/dd"
+          dateFormat="yyyy-MM-dd"
         />
 
       </DateWrapper>
@@ -155,6 +162,48 @@ function MissionPicture() {
   )
 }
 
+//지역
+function MissionLocation() {
+  const [data, setData] = useState([]);
+  const { data: sido } = useQuery(['sido'], getSido);
+  const [ChoiceSido, setChoiceSido] = useState('11');
+  const { data: gugun } = useQuery(['gugun', ChoiceSido], () => getGugun(ChoiceSido), {
+    enabled: !!ChoiceSido,
+  });
+  const [ChoiceGugun, setChoiceGugun] = useState('11110');
+  const { data: dong } = useQuery(['dong', ChoiceGugun], () => getDong(ChoiceGugun), {
+    enabled: !!ChoiceGugun
+  })
+  const [ChoiceDong, setChoiceDong] = useState('');
+  let search = false;
+
+
+  return (
+    <>
+      <PlaceGroup>
+        {data?.map((item) => (
+          <Place
+            key={item.placeId}
+            onClick={() => {
+              setShow(true);
+              setChoiceP(item);
+            }}
+          >
+            <PlaceTitle className="placeTitle">{item.name}</PlaceTitle>
+            <WithIcon>
+              <LocIcon className="icon" /><PlaceAddress>{item.roadAddress}</PlaceAddress>
+            </WithIcon>
+            {item.content ? <WithIcon>
+              <ConIcon className="icon" /><PlaceContent>{item.content}</PlaceContent>
+            </WithIcon> : <></>}
+          </Place>
+        ))}
+      </PlaceGroup>
+
+
+    </>
+  )
+}
 
 export default function Createmission() {
   return (
@@ -187,4 +236,20 @@ export default function Createmission() {
 
     </>
   )
+}
+
+export async function getServerSideProps(context) {
+  const createmission = new QueryClient()
+  const session = await getSession(context);
+  await createmission.prefetchQuery(['mission'], () => { PostMission() })
+
+  return {
+    props: {
+      data: {
+        session,
+        dehydratedState: dehydrate(createmission)
+      },
+    },
+  };
+
 }

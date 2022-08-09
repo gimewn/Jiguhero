@@ -6,6 +6,9 @@ import React, { useState } from 'react';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import { useRouter } from 'next/router';
 import MissionLIST from "components/MissionLists"
+import { dehydrate, Query, QueryClient, QueryClientProvider, useQuery } from "@tanstack/react-query";
+import { getSession, SessionProvider, useSession } from "next-auth/react";
+import getMission from "pages/api/mission/index";
 
 const BackCompo = styled(Backcomponents)`
   margin-top: 10px;
@@ -45,6 +48,7 @@ const ButtonContent = styled('div')`
     @media screen and (min-width:700px){
         width:620px;
     }
+
 `
 const BoxSelect = styled('select')`
     border: #65ACE2 solid 1px;
@@ -58,7 +62,7 @@ const BoxInput = styled('input')`
   background-color: white;
   border-radius: 15px;
   padding:3px;
-  width: 13rem;
+  width: 15rem;
 `
 const SearchButton = styled(SearchRoundedIcon)`
     color:#65ACE2;
@@ -86,25 +90,25 @@ const ListContent = styled('div')`
 `
 
 //select Box
-const OPTIONS = [
-    { value: "latest", name: "최신 등록순" },
-    { value: "name", name: "이름순" },
-];
-function SelectBox(props) {
-    return (
-        <BoxSelect>
-            {props.options.map((option) => (
-                <option
-                    key={option.value}
-                    value={option.value}
-                >
-                    {option.name}
-                </option>
-            ))}
+// const OPTIONS = [
+//     { value: "latest", name: "최신 등록순" },
+//     { value: "name", name: "이름순" },
+// ];
+// function SelectBox(props) {
+//     return (
+//         <BoxSelect>
+//             {props.options.map((option) => (
+//                 <option
+//                     key={option.value}
+//                     value={option.value}
+//                 >
+//                     {option.name}
+//                 </option>
+//             ))}
 
-        </BoxSelect>
-    )
-}
+//         </BoxSelect>
+//     )
+// }
 
 //input Box
 function InputBox() {
@@ -134,6 +138,7 @@ function ButtonBox() {
                     hColor={"#98C064"}
                     dColor={"#65ACE2"}
                     onClick={() => router.push("/mission/nowjoin")}
+
                 >참여 중인 임무 모아보기</ButtonFull>
                 <ButtonFull
                     dColor={"#98C064"}
@@ -170,7 +175,7 @@ export default function Mission() {
             {/* search Bar */}
             <Block>
                 <Content>
-                    <SelectBox options={OPTIONS} />
+                    {/* <SelectBox options={OPTIONS} /> */}
                     <InputBox />
                     <SearchButton />
                 </Content>
@@ -184,4 +189,20 @@ export default function Mission() {
             </Block>
         </>
     )
+}
+
+
+export async function getServerSideProps(context) {
+    const missionList = new QueryClient()
+    const session = await getSession(context);
+    await missionList.prefetchQuery(['mission'], () => { getMission() })
+
+    return {
+        props: {
+            data: {
+                session,
+                dehydratedState: dehydrate(missionList)
+            },
+        },
+    };
 }

@@ -1,4 +1,7 @@
 import styled from 'styled-components';
+import { useRouter } from 'next/router';
+import Link from 'next/link';
+
 
 const List = styled('div')`
   border: 1px solid #98C064;
@@ -10,6 +13,9 @@ const List = styled('div')`
   justify-content: center;
   overflow: hidden;
   margin: 5px;
+  :hover{
+    cursor: pointer;
+  }
 
   @media screen and (min-width: 360px){
       width:350px;
@@ -35,15 +41,17 @@ const ListContent = styled('div')`
   height: 150px;
   border: 1px solid none;
   float: left;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  
 `
 
 const TextWrapper = styled('div')`
   margin: 4px;
 `
-const Nick = styled('a')`
-  font-size: 0.75rem;
-  font-weight: bold;
-`
+
 
 const TitleName = styled('a')`
   font-size: 1rem;
@@ -56,44 +64,59 @@ const Date = styled(Name)`
 `
 const JoinPeople = styled(Name)`
 `
+const PointBtn = styled('div')`
+  border-radius: 12.5px;
+  padding:5px;
+  border: 1px solid #98C064;
+  background-color: #98C064;
+  color: white;
+  font-size: x-small;
+  margin-left:auto;
+  margin-right:15px;
+`
 
 interface MissionProps {
-  nickname: string,
+  entryPoint: number,
   title: string,
-  start_date: number,
-  end_date: number,
-  sido: string,
-  now_person: number,
-  max_person: number,
-  image: string,
+  starDate: number,
+  endDate: number,
+  sidocCode: string,
+  nowPerson: number,
+  maxPerson: number,
+  imageURL: string,
+  missionId: number,
 }
 
 
-export default function MissionList({ nickname, title, start_date, end_date, sido, now_person, max_person, image }: MissionProps) {
+export default function MissionList({ missionId, entryPoint, title, startDate, endDate, sido, nowPerson, maxPerson, imageURL }: MissionProps) {
+  const router = useRouter();
+  // const missionDates = ({ mission_id }: { mission_id: number }) => {
+  //   router.push(`/mission/${mission_id}/details`)
+  // }
+  // console.log(missionId)
+  // console.log(missionID)
+
   return (
     <>
-      <List>
-        <ListImg image={image} />
+      <List onClick={() => router.push(`/mission/${missionId}`)}>
+        <ListImg image={imageURL} />
         <ListContent>
-
-          <TextWrapper>
-            <Nick>{nickname}</Nick>
-            <Name>의 임무</Name>
-          </TextWrapper>
-          <TextWrapper>
-            <TitleName>{title}</TitleName>
-          </TextWrapper>
-          <TextWrapper>
-            <Name>{sido}</Name>
-          </TextWrapper>
-          <TextWrapper>
-            <Date>{start_date}~{end_date}</Date>
-          </TextWrapper>
-          <TextWrapper>
-            <JoinPeople>{now_person} / {max_person}명</JoinPeople>
-          </TextWrapper>
+          <div>
+            <TextWrapper>
+              <TitleName>{title}</TitleName>
+            </TextWrapper>
+            <TextWrapper>
+              <Name>{sido}</Name>
+            </TextWrapper>
+            <TextWrapper>
+              <Date>{startDate[0]}.{startDate[1]}.{startDate[2]}~{endDate[0]}.{endDate[1]}.{endDate[2]}</Date>
+            </TextWrapper>
+            <TextWrapper>
+              <JoinPeople>{nowPerson} / {maxPerson}명</JoinPeople>
+            </TextWrapper>
+          </div>
+          <PointBtn>+{entryPoint}</PointBtn>
         </ListContent>
-
       </List>
     </>
   )
