@@ -24,4 +24,6 @@ public interface GroundService {
     String deletePlace(String placeId, Long groundId, Long userId);
 
     String deleteGround(Long groundId, Long userId);
+
+    List<PlaceDto> getPlacesByGround(Long groundId);
 }

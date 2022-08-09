@@ -154,4 +154,18 @@ public class GroundServiceImpl implements GroundService {
 
         return "success";
     }
+
+    @Override
+    public List<PlaceDto> getPlacesByGround(Long groundId) {
+        Ground groundEntity = groundDao.selectGroundById(groundId);
+
+        List<Conn_Ground> connGroundList = groundDao.selectConnGroundByGround(groundEntity);
+        List<Place> placeList  = new ArrayList<Place>();
+        for(Conn_Ground connGround : connGroundList){
+            placeList.add(connGround.getPlace());
+        }
+
+        List<PlaceDto> dtoList = placeList.stream().map(entity -> PlaceDto.of(entity)).collect(Collectors.toList());
+        return dtoList;
+    }
 }
