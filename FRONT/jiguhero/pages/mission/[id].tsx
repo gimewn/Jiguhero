@@ -13,7 +13,6 @@ const BackCompo = styled(Backcomponents)`
 const Block = styled('div')`
   
 `
-
 const ImgWrapper = styled('div')`
   margin-top: 30px;
   position: relative;
@@ -66,23 +65,24 @@ interface MissionProps {
 }
 
 
-function MissionList({ missionId, image, title, startDate, endDate, nowPerson, maxPerson }: MissionProps) {
+// function MissionList({ missionId, image, title, startDate, endDate, nowPerson, maxPerson }: MissionProps) {
+function MissionList() {
     return (
         <>
             <ImgWrapper>
-                <img src={image} />
+
             </ImgWrapper>
 
             <TitleWrapper>
-                <a>{title}</a>
+                <a>임무타이틀</a>
             </TitleWrapper>
 
             <PersonWrapper>
-                <a>{nowPerson} / {maxPerson}명</a>
+                <a>1 / 2명</a>
             </PersonWrapper>
 
             <DateWrapper>
-                <a>{startDate} ~ {endDate}</a>
+                <a>1 ~ 2</a>
             </DateWrapper>
         </>
     )
@@ -104,7 +104,7 @@ export default function MissionDetail() {
 
             <Block>
                 <Content>
-
+                    <MissionList />
                     {/* {MissionData?.map((item, index) => (
                         <MissionList key={index} {...item} />
                     ))} */}

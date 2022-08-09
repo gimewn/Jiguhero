@@ -191,7 +191,7 @@ function MissionPicture() {
 
     <CameraBtn>
       <IconButton aria-label="upload picture" component="label">
-        <input hidden accept="image/*" type="file" />
+        <input hidden accept="image/*" type="file" name="file" />
         <CameraBox>
           <PhotoCamera fontSize="large" />
         </CameraBox>
