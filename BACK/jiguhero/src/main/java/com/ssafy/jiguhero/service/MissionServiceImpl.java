@@ -1,16 +1,15 @@
 package com.ssafy.jiguhero.service;
 
+import com.ssafy.jiguhero.data.dao.ImageDao;
 import com.ssafy.jiguhero.data.dao.MissionDao;
 import com.ssafy.jiguhero.data.dao.UserDao;
 import com.ssafy.jiguhero.data.dto.MissionDto;
-import com.ssafy.jiguhero.data.entity.Conn_Mission;
-import com.ssafy.jiguhero.data.entity.Like_Mission;
-import com.ssafy.jiguhero.data.entity.Mission;
-import com.ssafy.jiguhero.data.entity.User;
+import com.ssafy.jiguhero.data.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,11 +20,13 @@ public class MissionServiceImpl implements MissionService {
 
     private final MissionDao missionDao;
     private final UserDao userDao;
+    private final ImageDao imageDao;
 
     @Autowired
-    public MissionServiceImpl(MissionDao missionDao, UserDao userDao) {
+    public MissionServiceImpl(MissionDao missionDao, UserDao userDao, ImageDao imageDao) {
         this.missionDao = missionDao;
         this.userDao = userDao;
+        this.imageDao = imageDao;
     }
 
     @Override
@@ -68,16 +69,21 @@ public class MissionServiceImpl implements MissionService {
     }
 
     @Override
-    public List<MissionDto> getAllMissions() {
+    public List<MissionDto> getAllMissions(HttpServletRequest request) {
         List<Mission> entityList = missionDao.selectAllMission();
         List<MissionDto> dtoList = entityList.stream().map(entity -> MissionDto.of(entity)).collect(Collectors.toList());
+
+        for (MissionDto dto : dtoList) {
+            String url = getRepMissionImageURL(dto.getMissionId(), request);
+            dto.setRepImageURL(url);
+        }
 
         return dtoList;
     }
 
     @Override
     @Transactional(readOnly = true)
-    public  MissionDto getMissionById(Long missionId, Long userId) {
+    public MissionDto getMissionById(Long missionId, Long userId, HttpServletRequest request) {
         Mission missionEntity = missionDao.selectMissionById(missionId);
         User userEntity = userDao.selectUserById(userId);
         MissionDto dto = MissionDto.of(missionEntity);
@@ -87,6 +93,8 @@ public class MissionServiceImpl implements MissionService {
         if(missionDao.selectLikeMission(missionEntity, userEntity) != null) {
             dto.setLikeCheck(true);
         }
+        dto.setRepImageURL(getRepMissionImageURL(missionId, request));
+        dto.setImageURL(getMissionImageURL(missionId, request));
         return dto;
     }
 
@@ -166,6 +174,41 @@ public class MissionServiceImpl implements MissionService {
         }
         else return 2;
 
+    }
+
+    @Override
+    public String getRepMissionImageURL(Long missionId, HttpServletRequest request) {
+        Image_Mission imageMission = imageDao.selectRepImageMission(missionDao.selectMissionById(missionId));
+
+        String saveFile = imageMission.getSaveFile();
+        String saveFolder = imageMission.getSaveFolder();
+        String sep = saveFolder.substring(0,1);
+        if (sep.equals("\\")) sep = "\\\\";
+        String target = saveFolder.split(sep)[1];
+        String date = saveFolder.split(sep)[2];
+        String url = request.getRequestURL().toString().replace(request.getRequestURI(),"") + "/image/" + saveFile + "?target=" + target + "&date=" + date;
+
+        return url;
+    }
+
+    @Override
+    public List<String> getMissionImageURL(Long missionId, HttpServletRequest request) {
+        List<Image_Mission> imageMissions = imageDao.selectImageMissions(missionDao.selectMissionById(missionId));
+        List<String> urlList = new ArrayList<>();
+
+        for (Image_Mission imageMission : imageMissions) {
+            String saveFile = imageMission.getSaveFile();
+            String saveFolder = imageMission.getSaveFolder();
+            String sep = saveFolder.substring(0,1);
+            if (sep.equals("\\")) sep = "\\\\";
+            String target = saveFolder.split(sep)[1];
+            String date = saveFolder.split(sep)[2];
+            String url = request.getRequestURL().toString().replace(request.getRequestURI(),"") + "/image/" + saveFile + "?target=" + target + "&date=" + date;
+
+            urlList.add(url);
+        }
+
+        return urlList;
     }
 
 }
