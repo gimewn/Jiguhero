@@ -111,10 +111,18 @@ public class MissionController {
     }
 
     @ApiOperation(value = "선택된 인증샷의 정보를 반환한다")
-    @GetMapping("/{mission_id}/{feed_id}/details")
+    @GetMapping("/{mission_id}/feed/{feed_id}/details")
     public ResponseEntity<FeedDto> getFeed(@PathVariable("feed_id") Long feedId, @RequestParam("user_id") Long userId){
         FeedDto result = missionService.getFeedById(feedId, userId);
 
         return ResponseEntity.status(HttpStatus.OK).body(result);
+    }
+
+    @ApiOperation(value = "인증샷을 등록한다")
+    @PostMapping("{mission_id}/feed")
+    public ResponseEntity<String> saveFeed(@RequestBody FeedDto feedDto, @RequestParam("user_id") Long userId){
+        missionService.saveFeed(feedDto,userId);
+
+        return new ResponseEntity<String>("success",HttpStatus.OK);
     }
 }

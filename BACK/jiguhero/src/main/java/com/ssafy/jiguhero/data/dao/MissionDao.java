@@ -49,4 +49,6 @@ public interface MissionDao {
 
     int countByFeed(Feed feed);
 
+    void insertFeed(Feed feed);
+
 }

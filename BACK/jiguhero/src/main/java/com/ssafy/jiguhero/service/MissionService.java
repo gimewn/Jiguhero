@@ -33,4 +33,6 @@ public interface MissionService {
     MissionDto changeMission(MissionDto missionDto, Long userId) throws Exception;
 
     FeedDto getFeedById(Long feedId, Long userId);
+
+    void saveFeed(FeedDto feedDto,Long userId);
 }

@@ -156,5 +156,11 @@ public class MissionDaoImpl implements MissionDao {
 
         return cnt;
     }
+
+    @Override
+    public void insertFeed(Feed feed){
+        feedRepository.save(feed);
+
+    }
 }
 

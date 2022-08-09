@@ -198,4 +198,11 @@ public class MissionServiceImpl implements MissionService {
         return dto;
     }
 
+    @Override
+    public void saveFeed(FeedDto feedDto,Long userId){
+        Feed feed = new Feed();
+        feed.setContent(feedDto.getContent());
+        missionDao.insertFeed(feed);
+
+    }
 }
