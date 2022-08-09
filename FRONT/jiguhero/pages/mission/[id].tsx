@@ -5,93 +5,127 @@ import { dehydrate, Query, QueryClient, QueryClientProvider, useQuery } from "@t
 import { getSession, SessionProvider, useSession } from "next-auth/react";
 import MoreVertRoundedIcon from '@mui/icons-material/MoreVertRounded';
 import missionUserData from 'pages/api/mission/[id]';
+import EmojiPeopleRoundedIcon from '@mui/icons-material/EmojiPeopleRounded';
+import MonetizationOnRoundedIcon from '@mui/icons-material/MonetizationOnRounded';
+import CalendarMonthRoundedIcon from '@mui/icons-material/CalendarMonthRounded';
+import { ButtonFull, ButtonBorder } from 'styles/styled';
+import { useRouter } from 'next/router';
+import RoomRoundedIcon from '@mui/icons-material/RoomRounded';
+import Mission from '.';
 
 const BackCompo = styled(Backcomponents)`
   margin-top: 10px;
   margin-bottom: 10px;
 `
+
 const Block = styled('div')`
-  
-`
-const ImgWrapper = styled('div')`
-  margin-top: 30px;
-  position: relative;
-  width: 200px;
-  height: 200px;
-  
-//추가할 것 : 모바일 환경 적용하자
-  img{
-    position: absolute;
-    top: 0;
-    left: 0;
-    transform: translate(50, 50);
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    background-position: center center;
-    background-repeat: no-repeat;
-  }
-`
+  margin: 0.2rem;
 
-const TitleWrapper = styled('div')`
-`
-
-const DateWrapper = styled('div')`
-`
-
-const PersonWrapper = styled('div')`
 `
 const Content = styled('div')`
-  display: flex;
-  flex-direction: column;
+  display:flex;
+  justify-content: left;
+  
+    @media screen and (min-width: 360px){
+        margin-left: 1.5rem;
+    }
+    @media screen and (min-width: 500px){
+        margin-left: 1.5rem;
+    }
+    @media screen and (min-width:700px){
+        margin-left: 3.5rem;
+    }
+`
+const ImageBlock = styled('div')`
+    display:flex;
+  flex-direction: row;
+  justify-content: center;
     @media screen and (min-width: 360px){
         width:400px;
     }
-    @media screen and (min-width: 550px){
+    @media screen and (min-width: 500px){
         width:500px;
     }
     @media screen and (min-width:700px){
         width:620px;
     }
 `
-interface MissionProps {
-    missionId: number,
-    title: string,
-    startDate: number,
-    endDate: number,
-    nowPerson: number,
-    maxPerson: number,
-    image: string,
-}
+const ImageContent = styled('div')`
+    margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  //임시 이미지를
+  background-image: url('https://cdn.pixabay.com/photo/2017/01/20/00/30/maldives-1993704_960_720.jpg');
+  background-size: cover;
+  background-position: center;
+  height: 300px;
+  border-radius: 10px;
+    @media screen and (min-width: 360px){
+        width:360px;
+        height:360px;
+    }
+    @media screen and (min-width: 500px){
+        width:500px;
+        height:500px;
+    }
+    @media screen and (min-width:700px){
+        width:500px;
+        height: 500px;
+    }
+`
 
+const PeopleIcon = styled(EmojiPeopleRoundedIcon)`
+    color: #65ACE2;
+    margin-right: 5px;
+    margin-left: 5px;
+`
+const PointIcon = styled(MonetizationOnRoundedIcon)`
+    color: #65ACE2;
+    margin-right: 5px;
+    margin-left: 5px;
+`
+const CalendarIcon = styled(CalendarMonthRoundedIcon)`
+    color: #65ACE2;
+    margin-right: 5px;
+    margin-left: 5px;
+`
+const TitleText = styled('a')`
+    font-size: x-large;
+    font-weight: bold;
+`
+const ContentText = styled('a')`
+    font-size: medium;
+`
+const LocalIcon = styled(RoomRoundedIcon)`
+    color: #65ACE2;
+    margin-right: 5px;
+    margin-left: 5px;
+`
+const WebBtn = styled(ButtonFull)`
 
-// function MissionList({ missionId, image, title, startDate, endDate, nowPerson, maxPerson }: MissionProps) {
-function MissionList() {
-    return (
-        <>
-            <ImgWrapper>
+  border-radius: 12.5px;
+  padding:5px;
+  color: white;
+  font-size: x-small;
+  margin: 3px;
 
-            </ImgWrapper>
-
-            <TitleWrapper>
-                <a>임무타이틀</a>
-            </TitleWrapper>
-
-            <PersonWrapper>
-                <a>1 / 2명</a>
-            </PersonWrapper>
-
-            <DateWrapper>
-                <a>1 ~ 2</a>
-            </DateWrapper>
-        </>
-    )
-}
-
-
+`
+const BtnContent = styled('div')`
+    display:flex;
+    justify-content: flex-end;
+    @media only screen and (max-width:650px){
+        display: none;
+    }
+    @media screen and (min-width:700px){
+        margin-right: 3.5rem;
+    }
+`
 
 
 export default function MissionDetail() {
+    const router = useRouter()
+    const { data: MissionDetail } = useQuery(['missions'], missionUserData)
+    console.log(MissionDetail)
     return (
         <>
             {/* 헤더 */}
@@ -102,15 +136,75 @@ export default function MissionDetail() {
             {/* 모바일 뷰에서 뒤로가기 버튼! */}
             <BackCompo name='임무 상세보기'></BackCompo>
 
+
+            {/* 미션이미지 */}
+            <Block>
+                <ImageBlock>
+                    <ImageContent />
+                </ImageBlock>
+            </Block>
+
+            {/* 임무타이틀 */}
             <Block>
                 <Content>
-                    <MissionList />
-                    {/* {MissionData?.map((item, index) => (
-                        <MissionList key={index} {...item} />
-                    ))} */}
+                    <TitleText>{MissionDetail.title}</TitleText>
                 </Content>
             </Block>
 
+            {/* 참여자수/정원 */}
+            <Block>
+                <Content>
+                    < PeopleIcon />
+                    <ContentText>{MissionDetail.nowPerson} / {MissionDetail.maxPerson} 명</ContentText>
+                </Content>
+            </Block>
+
+            {/* 포인트 */}
+            <Block>
+                <Content>
+                    <PointIcon />
+                    <ContentText>+{MissionDetail.entryPoint}P</ContentText>
+                </Content>
+            </Block>
+
+            {/* 활동기간 */}
+            <Block>
+                <Content>
+                    <CalendarIcon />
+                    <ContentText>
+                        {MissionDetail.startDate[0]}.{MissionDetail.startDate[1]}.{MissionDetail.startDate[2]}
+                        ~ {MissionDetail.endDate[0]}.{MissionDetail.endDate[1]}.{MissionDetail.endDate[2]}
+                    </ContentText>
+                </Content>
+            </Block>
+
+            {/* 미션장소 */}
+            <Block>
+                <Content>
+                    <LocalIcon />
+                    <ContentText>
+                        {MissionDetail.sidoCode} {MissionDetail.gugunCode}
+                    </ContentText>
+                </Content>
+            </Block>
+
+
+            {/* 웹 뷰에서 수정 삭제 버튼 */}
+            <Block>
+                <BtnContent>
+                    <WebBtn
+                        dColor={"#98C064"}
+                        hColor={"#65ACE2"}
+                        onClick={() => router.push("/mission/createmission")}
+                    >수정</WebBtn>
+
+                    <WebBtn
+                        hColor={"#98C064"}
+                        dColor={"#65ACE2"}
+                        onClick={() => router.push("/mission/createmission")}
+                    >삭제</WebBtn>
+                </BtnContent>
+            </Block>
 
         </>
     )
