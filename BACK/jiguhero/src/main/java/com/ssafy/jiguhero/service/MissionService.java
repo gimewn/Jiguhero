@@ -1,5 +1,6 @@
 package com.ssafy.jiguhero.service;
 
+import com.ssafy.jiguhero.data.dto.FeedDto;
 import com.ssafy.jiguhero.data.dto.MissionDto;
 
 import javax.servlet.http.HttpServletRequest;
@@ -29,6 +30,13 @@ public interface MissionService {
     int likeMission(Long missionId, Long userId);
 
     int deleteMission(Long missionId, Long userId);
+
+
+    MissionDto changeMission(MissionDto missionDto, Long userId) throws Exception;
+
+    FeedDto getFeedById(Long feedId, Long userId);
+
+    void saveFeed(FeedDto feedDto,Long userId);
 
     String getRepMissionImageURL(Long missionId, HttpServletRequest request);
 

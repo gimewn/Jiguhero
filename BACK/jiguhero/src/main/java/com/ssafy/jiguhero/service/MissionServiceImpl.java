@@ -3,6 +3,7 @@ package com.ssafy.jiguhero.service;
 import com.ssafy.jiguhero.data.dao.ImageDao;
 import com.ssafy.jiguhero.data.dao.MissionDao;
 import com.ssafy.jiguhero.data.dao.UserDao;
+import com.ssafy.jiguhero.data.dto.FeedDto;
 import com.ssafy.jiguhero.data.dto.MissionDto;
 import com.ssafy.jiguhero.data.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -177,6 +178,45 @@ public class MissionServiceImpl implements MissionService {
     }
 
     @Override
+    public MissionDto changeMission(MissionDto missionDto, Long userId) throws Exception{
+        Mission missionEntity = missionDao.selectMissionById(missionDto.getMissionId());
+        User userEntity = userDao.selectUserById(userId);
+
+        if(missionDao.selectConnMission(missionEntity, userEntity)!=null) {
+            Mission mission = missionDao.updateMission(missionDto);
+            MissionDto dto = MissionDto.of(mission);
+            return dto;
+        }
+        else {
+            throw new Exception();
+        }
+
+    }
+
+    @Override
+    public FeedDto getFeedById(Long feedId, Long userId){
+        User userEntity = userDao.selectUserById(userId);
+        Feed feedEntity = missionDao.selectFeedById(feedId);
+        FeedDto dto = FeedDto.of(feedEntity);
+
+        int cnt = missionDao.countByFeed(feedEntity);
+        dto.setLikeCnt(cnt);
+
+        if(missionDao.selectLikeFeedByUser(feedEntity, userEntity)!=null){
+            dto.setLikeCheck(true);
+        }
+
+        return dto;
+    }
+
+    @Override
+    public void saveFeed(FeedDto feedDto,Long userId){
+        Feed feed = new Feed();
+        feed.setContent(feedDto.getContent());
+        missionDao.insertFeed(feed);
+
+    }
+
     public String getRepMissionImageURL(Long missionId, HttpServletRequest request) {
         Image_Mission imageMission = imageDao.selectRepImageMission(missionDao.selectMissionById(missionId));
 
