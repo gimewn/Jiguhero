@@ -14,6 +14,12 @@ import { getSession, SessionProvider, useSession } from "next-auth/react";
 import PostMission from "pages/api/mission/index";
 import moment from "moment"
 
+const MissioWrapper = styled('div')`
+  display:flex;
+  flex-direction: column;
+  margin-top: 3rem;
+`
+
 const Block = styled('div')`
   margin: 0.5rem;
 `
@@ -32,6 +38,9 @@ const Content = styled('div')`
     @media screen and (min-width:700px){
         width:620px;
     }
+`
+const Text = styled('a')`
+  font-weight: bold;
 `
 
 const BoxInput = styled('input')`
@@ -53,6 +62,20 @@ const DateWrapper = styled('div')`
   display: inline-flex;
 `
 
+const SelectSido = styled('select')`
+    border: #65ACE2 solid 1px;
+    background-color: white;
+    border-radius: 15px;
+    padding:3px;
+    margin: 0.5rem; 
+`
+
+const SelectGugun = styled(SelectSido)`
+`
+
+const SelectDong = styled(SelectSido)`
+
+`
 const CameraBox = styled('form')`
   width: 150px;
   height: 150px;
@@ -82,7 +105,6 @@ const PointInput = styled('input')`
   margin-left: 10px;
 `
 const PeopleInput = styled(PointInput)`
-  
 `
 
 //임무명
@@ -94,9 +116,9 @@ function MissionName() {
   }
   return (
     <div>
-      <a>
+      <Text>
         임무명
-      </a>
+      </Text>
       <BoxInput
         type="text"
         onChange={onChange}
@@ -115,7 +137,7 @@ function DatePick() {
   console.log(startDate, endDate)
   return (
     <>
-      <a>활동기간</a>
+      <Text>활동기간</Text>
       <DateWrapper>
 
         <DateInput
@@ -128,7 +150,7 @@ function DatePick() {
           minDate={new Date()}
           dateFormat="yyyy-MM-dd"
         />
-
+        <a> ~</a>
         <DateInput
           selected={endDate}
           onChange={date => setEndDate(date)}
@@ -148,7 +170,7 @@ function DatePick() {
 function Point() {
   return (
     <>
-      <a>포인트</a>
+      <Text>포인트</Text>
       <PointInput type='number' min="1" max="2000" />
     </>
   )
@@ -157,30 +179,29 @@ function Point() {
 function JoinPeople() {
   return (
     <>
-      <a>정원</a>
+      <Text>정원</Text>
       <PeopleInput type='number' min="1" />
     </>
   )
 }
 
-//인증샷
+//미션사진
 function MissionPicture() {
   return (
-    <>
-      <a>인증샷</a>
-      <CameraBtn>
-        <IconButton aria-label="upload picture" component="label">
-          <input hidden accept="image/*" type="file" />
-          <CameraBox>
-            <PhotoCamera fontSize="large" />
-          </CameraBox>
-        </IconButton>
-      </CameraBtn>
-    </>
+
+    <CameraBtn>
+      <IconButton aria-label="upload picture" component="label">
+        <input hidden accept="image/*" type="file" />
+        <CameraBox>
+          <PhotoCamera fontSize="large" />
+        </CameraBox>
+      </IconButton>
+    </CameraBtn>
+
   )
 }
 
-//지역 설정
+//지역 설정 --- 
 function MissionLocation() {
   // const [data, setData] = useState([]);
   // const { data: sido } = useQuery(['sido'], getSido);
@@ -198,6 +219,21 @@ function MissionLocation() {
 
   return (
     <>
+      <Text>지역</Text>
+      {/* 시도 선택 */}
+      <SelectSido>
+      </SelectSido>
+
+      {/* 구군 선택 */}
+      <SelectGugun>
+      </SelectGugun>
+
+      {/* 동 선택 */}
+      <SelectDong>
+      </SelectDong>
+
+
+      {/* 윤주님 코드 */}
       {/* <PlaceGroup>
         {data?.map((item) => (
           <Place
@@ -234,27 +270,49 @@ export default function Createmission() {
       {/* 모바일 뷰에서 뒤로가기 버튼! */}
       <Backcomponents name='임무 생성하기'></Backcomponents>
 
-      <>
+      <MissioWrapper>
+        {/* 미션사진추가 */}
         <Block>
           <Content>
-            {/* 임무명 */}
-            <MissionName />
-
+            <MissionPicture />
           </Content>
         </Block>
+
+        {/* 임무명 */}
+        <Block>
+          <Content>
+            <MissionName />
+          </Content>
+        </Block>
+
         {/* 활동기간 */}
-        <DatePick />
+        <Block>
+          <Content>
+            <DatePick />
+          </Content>
+        </Block>
+
         {/* 포인트 */}
-        <Point />
+        <Block>
+          <Content>
+            <Point />
+          </Content>
+        </Block>
+
         {/* 정원 */}
-        <JoinPeople />
+        <Block>
+          <Content>
+            <JoinPeople />
+          </Content>
+        </Block>
+
         {/* 지역 */}
-
-        {/* 인증샷 */}
-        <MissionPicture />
-
-
-      </>
+        <Block>
+          <Content>
+            <MissionLocation />
+          </Content>
+        </Block>
+      </MissioWrapper>
 
 
     </>
