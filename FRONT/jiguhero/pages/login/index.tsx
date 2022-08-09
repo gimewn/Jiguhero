@@ -6,13 +6,13 @@ import Head from "node_modules/next/head";
 import styled from "styled-components";
 import Router, { useRouter } from "next/router";
 import React, { useEffect } from "react";
-import { Main } from "next/document";
-import { ParsedUrlQuery } from "querystring";
 import { getSession, signIn, signOut, useSession } from "next-auth/react";
 import { NextPageContext } from "node_modules/next/dist/shared/lib/utils";
-import { getCookies } from "cookies-next";
-import checkLogin from "./checkLogin";
 import loginAccess from "pages/api/login";
+import { NextPage } from "next";
+
+
+
 
 export default function Login() {
   const { data: session, status } = useSession();
@@ -139,6 +139,7 @@ const SnsLoginNaver = styled("div")`
   align-items: center;
   width: 20rem;
 `;
+
 
 export async function getServerSideProps(context: NextPageContext) {
   const session = await getSession(context)

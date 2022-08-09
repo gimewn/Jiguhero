@@ -1,3 +1,4 @@
+import renewAccess from "../auth/renewAccess";
 
 
 
@@ -13,7 +14,8 @@ export default async function loginAccess() {
       Authorization: `Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjU5NTk2MjE2LCJleHAiOjE2NjEzOTYyMTZ9.EFvEjb89aJTp2E9BZGFodNJdlQ034dvQ78YEHwOXjLyuQhnUCQYIlfkh2NUeNYSxHWwu1O_UFosRrODXoSqsAA`,
     }),
   });
-    const json = await response.json()
-    console.log(json)
-    return json
+  const data = await response.json().catch(()=>{
+    renewAccess
+  })
+    return data
 }

@@ -172,7 +172,7 @@ const Mypage = ({data}) => {
   function Mission() {
     const MissionList = ["하나", "둘", "셋", "넷", "다섯", "여섯"];
     const remainder = MissionList.length % 3;
-    const quot = parseInt(MissionList.length / 3);
+    const quot = MissionList.length / 3;
     const page = useRecoilValue(missionPage);
     const setPage = useSetRecoilState(missionPage);
     const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
@@ -208,7 +208,7 @@ const Mypage = ({data}) => {
       { icon: "🍨", title: "유기농 디저트 맛집" },
     ];
     const remainder = PlayedArea.length % 3;
-    const quot = parseInt(PlayedArea.length / 3);
+    const quot = PlayedArea.length / 3;
 
     const page = useRecoilValue(playedAreaPage);
     const setPage = useSetRecoilState(playedAreaPage);
@@ -335,7 +335,7 @@ export async function getServerSideProps(context) {
   await userInfo2.prefetchQuery(['userInfo'], ()=>{userData()})
   await missionInfo2.prefetchQuery(['missionUserInfo'], ()=>{missionUserData(context)})
   await groundInfo2.prefetchQuery(['groundUserInfo'], ()=>{groundUserData(context)})
-  console.log(dehydrate(groundInfo2))
+
 
 
     return {
