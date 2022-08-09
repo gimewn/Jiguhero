@@ -14,6 +14,7 @@ import { getSession, SessionProvider, useSession } from "next-auth/react";
 import PostMission from "pages/api/mission/index";
 import moment from "moment"
 
+
 const MissioWrapper = styled('div')`
   display:flex;
   flex-direction: column;
@@ -39,6 +40,23 @@ const Content = styled('div')`
         width:620px;
     }
 `
+
+const BtnContent = styled('div')`
+  display:flex;
+  flex-direction: row;
+  align-items: right;
+  justify-content: right;
+    @media screen and (min-width: 360px){
+        width:400px;
+    }
+    @media screen and (min-width: 550px){
+        width:500px;
+    }
+    @media screen and (min-width:700px){
+        width:620px;
+    }
+`
+
 const Text = styled('a')`
   font-weight: bold;
 `
@@ -105,6 +123,11 @@ const PointInput = styled('input')`
   margin-left: 10px;
 `
 const PeopleInput = styled(PointInput)`
+`
+
+const SubmitBtn = styled(ButtonFull)`
+  width: 3rem;
+  margin-right: 3rem;
 `
 
 //임무명
@@ -312,8 +335,20 @@ export default function Createmission() {
             <MissionLocation />
           </Content>
         </Block>
-      </MissioWrapper>
 
+
+        {/* 등록버튼 */}
+        <Block>
+          <BtnContent>
+            <SubmitBtn
+              hColor={'#98C064'}
+              dColor={'#65ACE2'}
+              variant="contained"
+            // onClick={() => router.push("/")}
+            >등록</SubmitBtn>
+          </BtnContent>
+        </Block>
+      </MissioWrapper>
 
     </>
   )
