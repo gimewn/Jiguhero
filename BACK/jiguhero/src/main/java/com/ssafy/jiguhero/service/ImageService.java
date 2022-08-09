@@ -18,6 +18,8 @@ public interface ImageService {
 
     String saveMissionImage(MultipartFile file, Long userId, Long missionId, int rep);
 
+    String savePromotionImage(MultipartFile file, Long promotionId);
+
     Resource loadImage(String fileName, String saveFolder) throws FileNotFoundException;
 
 }

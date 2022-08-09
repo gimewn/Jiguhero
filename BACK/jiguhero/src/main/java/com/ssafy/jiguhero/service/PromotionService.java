@@ -11,4 +11,6 @@ public interface PromotionService {
     List<PromotionDto> getPromotions();
 
     PromotionDto getPromotion(Long promotionId);
+
+    PromotionDto savePromotion(PromotionDto promotionDto);
 }

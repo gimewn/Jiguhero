@@ -25,4 +25,9 @@ public interface ImageDao {
 
     void deleteImageMission(Image_Mission imageMission) throws Exception;
 
+    Image_Promotion insertImagePromotion(Image_Promotion imagePromotion);
+
+    Image_Promotion selectImagePromotion(Promotion promotion);
+
+    void deleteImagePromotion(Image_Promotion imagePromotion) throws Exception;
 }
