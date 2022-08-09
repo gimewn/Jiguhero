@@ -56,5 +56,11 @@ public class GroundController {
         List<GroundDto> list = groundService.getGroundsByUser(userId);
         return ResponseEntity.status(HttpStatus.OK).body(list);
     }
-    
+
+    @ApiOperation(value = "활동구역을 생성한다.")
+    @PostMapping("/")
+    public ResponseEntity<String> saveGround(@RequestBody GroundDto groundDto, @RequestBody List<PlaceDto> placeDtoList, @RequestParam("user_id") Long userId){
+        groundService.saveGround(groundDto, placeDtoList, userId);
+        return new ResponseEntity<String>("success", HttpStatus.OK);
+    }
 }

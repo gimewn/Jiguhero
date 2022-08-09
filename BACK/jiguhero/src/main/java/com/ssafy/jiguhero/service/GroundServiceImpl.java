@@ -1,11 +1,11 @@
 package com.ssafy.jiguhero.service;
 
 import com.ssafy.jiguhero.data.dao.GroundDao;
+import com.ssafy.jiguhero.data.dao.PlaceDao;
 import com.ssafy.jiguhero.data.dao.UserDao;
 import com.ssafy.jiguhero.data.dto.GroundDto;
-import com.ssafy.jiguhero.data.entity.Ground;
-import com.ssafy.jiguhero.data.entity.Like_Ground;
-import com.ssafy.jiguhero.data.entity.User;
+import com.ssafy.jiguhero.data.dto.PlaceDto;
+import com.ssafy.jiguhero.data.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,11 +19,13 @@ public class GroundServiceImpl implements GroundService {
 
     private final GroundDao groundDao;
     private final UserDao userDao;
+    private final PlaceDao placeDao;
 
     @Autowired
-    public GroundServiceImpl(GroundDao groundDao, UserDao userDao) {
+    public GroundServiceImpl(GroundDao groundDao, UserDao userDao, PlaceDao placeDao) {
         this.groundDao = groundDao;
         this.userDao = userDao;
+        this.placeDao = placeDao;
     }
 
     @Override
@@ -75,5 +77,26 @@ public class GroundServiceImpl implements GroundService {
         List<Ground> entityList = groundDao.selectGroundByUser(userEntity);
         List<GroundDto> dtoList = entityList.stream().map(entity -> GroundDto.of(entity)).collect(Collectors.toList());
         return dtoList;
+    }
+
+    @Override
+    public void saveGround(GroundDto groundDto, List<PlaceDto> placeDtoList, Long userId) {
+        User userEntity = userDao.selectUserById(userId);
+
+        Ground groundEntity = new Ground();
+        groundEntity.setContent(groundDto.getContent());
+        groundEntity.setHits(0);
+        groundEntity.setLikes(0);
+        groundEntity.setUser(userEntity);
+
+        groundDao.insertGround(groundEntity);
+
+        for(PlaceDto placeDto : placeDtoList){
+            Place placeEntity = placeDao.selectPlaceById(placeDto.getPlaceId());
+            Conn_Ground connGroundEntity = new Conn_Ground();
+            connGroundEntity.setGround(groundEntity);
+            connGroundEntity.setPlace(placeEntity);
+            groundDao.insertConnGround(connGroundEntity);
+        }
     }
 }
