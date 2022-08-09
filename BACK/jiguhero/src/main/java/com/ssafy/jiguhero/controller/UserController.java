@@ -64,7 +64,7 @@ public class UserController {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        
+
         imageService.saveUserImage(file, userId);
 
         return ResponseEntity.status(HttpStatus.OK).body(userDto);

@@ -1,6 +1,7 @@
 package com.ssafy.jiguhero.data.dao;
 
 import com.ssafy.jiguhero.data.entity.Promotion;
+import com.ssafy.jiguhero.data.repository.ImagePromotionRepository;
 import com.ssafy.jiguhero.data.repository.PromotionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -12,10 +13,12 @@ import java.util.List;
 public class PromotionDaoImpl implements PromotionDao {
 
     private final PromotionRepository promotionRepository;
+    private final ImagePromotionRepository imagePromotionRepository;
 
     @Autowired
-    public PromotionDaoImpl(PromotionRepository promotionRepository) {
+    public PromotionDaoImpl(PromotionRepository promotionRepository, ImagePromotionRepository imagePromotionRepository) {
         this.promotionRepository = promotionRepository;
+        this.imagePromotionRepository = imagePromotionRepository;
     }
 
     @Override
@@ -42,4 +45,10 @@ public class PromotionDaoImpl implements PromotionDao {
         Promotion savedPromotion = promotionRepository.save(promotion);
         return savedPromotion;
     }
+
+    @Override
+    public void deletePromotion(Long promotionId) {
+        promotionRepository.deleteById(promotionId);
+    }
+
 }

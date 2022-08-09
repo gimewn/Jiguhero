@@ -1,7 +1,9 @@
 package com.ssafy.jiguhero.service;
 
+import com.ssafy.jiguhero.data.dao.ImageDao;
 import com.ssafy.jiguhero.data.dao.PromotionDao;
 import com.ssafy.jiguhero.data.dto.PromotionDto;
+import com.ssafy.jiguhero.data.entity.Image_Promotion;
 import com.ssafy.jiguhero.data.entity.Promotion;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,10 +16,12 @@ import java.util.stream.Collectors;
 public class PromotionServiceImpl implements PromotionService {
 
     private final PromotionDao promotionDao;
+    private final ImageDao imageDao;
 
     @Autowired
-    public PromotionServiceImpl(PromotionDao promotionDao) {
+    public PromotionServiceImpl(PromotionDao promotionDao, ImageDao imageDao) {
         this.promotionDao = promotionDao;
+        this.imageDao = imageDao;
     }
 
     @Override
@@ -49,5 +53,20 @@ public class PromotionServiceImpl implements PromotionService {
         Promotion promotionEntity = Promotion.of(promotionDto);
         Promotion savedPromotion = promotionDao.insertPromotion(promotionEntity);
         return PromotionDto.of(savedPromotion);
+    }
+
+    @Override
+    public void deletePromotion(Long promotionId) {
+        Promotion promotionEntity = promotionDao.selectPromotion(promotionId);
+        Image_Promotion imagePromotion = imageDao.selectImagePromotion(promotionEntity);
+        if (imagePromotion != null) {
+            try {
+                imageDao.deleteImagePromotion(imagePromotion);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        promotionDao.deletePromotion(promotionId);
     }
 }
