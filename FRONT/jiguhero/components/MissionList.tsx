@@ -27,8 +27,12 @@ const List = styled('div')`
       width:500px;
   }
 `
+
+interface Ilist {
+  image: string;
+}
 const ListImg = styled('div')`
-  background-image: url('${(props) => props.image}');
+  background-image: url('${(props: Ilist) => props.image}');
   background-size: cover;
   background-position: center;
   width: 150px;
@@ -76,15 +80,15 @@ const PointBtn = styled('div')`
 `
 
 interface MissionProps {
-  entryPoint: number,
-  title: string,
-  starDate: number,
-  endDate: number,
-  sidocCode: string,
-  nowPerson: number,
-  maxPerson: number,
-  imageURL: string,
-  missionId: number,
+  entryPoint: number;
+  title: string;
+  starDate: number;
+  endDate: number;
+  sidocCode: string;
+  nowPerson: number;
+  maxPerson: number;
+  imageURL: string;
+  missionId: number;
 }
 
 

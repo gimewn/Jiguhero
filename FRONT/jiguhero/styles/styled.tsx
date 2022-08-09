@@ -1,14 +1,19 @@
 import styled from 'styled-components';
 
+interface IButton {
+    dColor: string;
+    hColor: string;
+}
+
 export const ButtonFull = styled('button')`
-    background-color: ${(props) => props.dColor};
+    background-color: ${(props: IButton) => props.dColor};
     border-radius: 15px;
-    border: ${(props) => props.dColor} 1px solid;
+    border: ${(props: IButton) => props.dColor} 1px solid;
     padding:10px;
     color:white;
     :hover, .active{
-        background-color: ${(props) => props.hColor};
-        border:${(props) => props.hColor} 1px solid
+        background-color: ${(props: IButton) => props.hColor};
+        border:${(props: IButton) => props.hColor} 1px solid
     }
     :hover{
     cursor: pointer;
@@ -16,14 +21,14 @@ export const ButtonFull = styled('button')`
 `
 
 export const ButtonBorder = styled('button')`
-    border: ${(props) => props.dColor} solid 1px;
+    border: ${(props: IButton) => props.dColor} solid 1px;
     background-color: white;
     border-radius: 15px;
     padding:10px;
-    color:${(props) => props.dColor};
+    color:${(props: IButton) => props.dColor};
     :hover, .active{
         color:white;
-        background-color: ${(props) => props.dColor};
+        background-color: ${(props: IButton) => props.dColor};
         
     }
     :hover{
