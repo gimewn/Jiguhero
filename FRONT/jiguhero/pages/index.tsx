@@ -5,6 +5,7 @@ import Map from 'components/map';
 import News from 'components/news';
 import {useQuery} from '@tanstack/react-query';
 import axios from 'axios';
+import { useSession } from 'next-auth/react';
 
 const Mapping = styled('div')`
   width:100%;
@@ -27,6 +28,8 @@ const Content = styled('div')`
 `
 
 export default function Home(){
+  const session = useSession()
+  console.log(session)
   return (
     <>
     <Block>

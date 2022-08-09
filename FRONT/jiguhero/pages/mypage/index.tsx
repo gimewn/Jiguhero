@@ -142,9 +142,15 @@ interface Idata {
 
 const Mypage = ({ data }) => {
   // console.log(props.data)
+<<<<<<< HEAD
 
 
   const { data: userInfo } = useQuery(['mission'], () => { userData() })
+=======
+  const router = useRouter()
+  
+  const {data:userInfo} = useQuery(['mission'],()=> {userData()})
+>>>>>>> FE/mypage
   console.log(userInfo)
 
 
@@ -242,7 +248,7 @@ const Mypage = ({ data }) => {
   const onClickBox = (
     event: React.MouseEvent<HTMLDivElement, MouseEvent>
   ) => {
-
+    router.push('/mypage/profile')
   };
 
   return (
