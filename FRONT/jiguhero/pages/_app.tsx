@@ -94,9 +94,9 @@ function MyApp({ Component, pageProps }: AppProps) {
     router.push(href);
   };
   return (
-
     <RecoilRoot>
       <Head>
+      {/* <script type="text/javascript" src={`//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAOMAP_APPKEY}&libraries=services`}></script> */}
       <link rel="favicon" href="FRONT\jiguhero\public\favicon.ico" />
       <title>지구방위대</title>
       </Head>
@@ -118,6 +118,10 @@ function MyApp({ Component, pageProps }: AppProps) {
           <QueryClientProvider client={queryClient}>
             <Hydrate state={pageProps?.dehydratedState} >
               <SessionProvider session={pageProps?.session}>
+              <Script
+        src={`//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAOMAP_APPKEY}&libraries=services,clusterer&autoload=false`}
+        strategy="beforeInteractive"
+      />
                 <Component {...pageProps} />
               </SessionProvider>
             </Hydrate>
