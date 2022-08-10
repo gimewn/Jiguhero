@@ -13,6 +13,8 @@ import {
   QueryClientProvider,
   Hydrate,
 } from "@tanstack/react-query";
+import Script from "next/script";
+import Head from 'next/head';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -41,7 +43,8 @@ const Body = styled("div")`
   justify-content: center;
   width: 100%;
   height: 100%;
-  overflow: auto;
+  margin-top:80px;
+
 `;
 const Container = styled("div")`
   display: flex;
@@ -82,6 +85,11 @@ const Footer = styled('div')`
     display:none;
   }
 `
+declare global {
+  interface Window {
+    kakao: any;
+  }
+}
 
 function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter();
@@ -89,8 +97,12 @@ function MyApp({ Component, pageProps }: AppProps) {
     router.push(href);
   };
   return (
-
     <RecoilRoot>
+      <Head>
+        {/* <script type="text/javascript" src={`//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAOMAP_APPKEY}&libraries=services`}></script> */}
+        <link rel="favicon" href="FRONT\jiguhero\public\favicon.ico" />
+        <title>지구방위대</title>
+      </Head>
       <Header>
         <Image
           src={logo}
@@ -98,6 +110,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           height={40}
           onClick={() => onLink("/")}
           layout="fixed"
+          alt="로고"
         />
         <DeskMenu>
           <MenuForDesk />
@@ -108,6 +121,10 @@ function MyApp({ Component, pageProps }: AppProps) {
           <QueryClientProvider client={queryClient}>
             <Hydrate state={pageProps?.dehydratedState} >
               <SessionProvider session={pageProps?.session}>
+                <Script
+                  src={`//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAOMAP_APPKEY}&libraries=services,clusterer&autoload=false`}
+                  strategy="beforeInteractive"
+                />
                 <Component {...pageProps} />
               </SessionProvider>
             </Hydrate>

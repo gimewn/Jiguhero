@@ -6,7 +6,7 @@ import styled from "styled-components";
 import ArrowForwardIosRoundedIcon from "@mui/icons-material/ArrowForwardIosRounded";
 import Link from "next/link";
 import { ButtonBorder, ButtonFull } from "styles/styled";
-import { theme } from "pages/theme";
+import { theme } from "components/theme";
 import { blue } from "@mui/material/colors";
 import { Pagination } from "@mui/material";
 import { userInfo } from "os";
@@ -20,6 +20,7 @@ import userData from "pages/api/user/[id]";
 import missionUserData from "pages/api/mission/[id]";
 import groundUserData from "pages/api/ground/[id]";
 import { getToken } from "next-auth/jwt";
+import Image from 'next/image';
 
 
 
@@ -133,7 +134,6 @@ const PagI = styled(Pagination)`
 `;
 
 interface Idata {
-
   email: string;
   name: string;
   grade: number;
@@ -141,11 +141,10 @@ interface Idata {
 }
 
 const Mypage = ({ data }) => {
-  // console.log(props.data)
-
+  console.log(data)
 
   const { data: userInfo } = useQuery(['mission'], () => { userData() })
-  console.log(userInfo)
+  const router = useRouter()
 
 
   // 탭 전환
@@ -156,11 +155,11 @@ const Mypage = ({ data }) => {
     return (
       <Profile>
         <BgImg>
-          <img alt="nitz" src={`${data.session.user.image}`} />
+          {/* <img alt="nitz" src={`${data.session.user.image}`} /> */}
         </BgImg>
         <div>
           <p>빨강</p>
-          <h2>{data.session.user.name}</h2>
+          {/* <h2>{data.session.user.name}</h2> */}
         </div>
         <Box margin="14px 0 0 0">
           <ArrowForwardIosRoundedIcon sx={{ color: blue[300] }} />
@@ -242,7 +241,7 @@ const Mypage = ({ data }) => {
   const onClickBox = (
     event: React.MouseEvent<HTMLDivElement, MouseEvent>
   ) => {
-
+    router.push('/mypage/profile')
   };
 
   return (
@@ -341,7 +340,7 @@ export async function getServerSideProps(context) {
   const session = await getSession(context);
   await session2.prefetchQuery(['session'], () => { return getSession(context) })
   await userInfo2.prefetchQuery(['userInfo'], () => { userData() })
-  await missionInfo2.prefetchQuery(['missionUserInfo'], () => { missionUserData(context) })
+  await missionInfo2.prefetchQuery(['missionUserInfo'], () => { missionUserData() })
   await groundInfo2.prefetchQuery(['groundUserInfo'], () => { groundUserData(context) })
 
 

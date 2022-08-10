@@ -21,8 +21,9 @@ const PagI = styled(Pagination)`
 export default function MissionLists() {
   const { data: MISSION } = useQuery(['missions'], getMission)
   console.log(MISSION)
-  const remainder = MISSION?.length % 5;
-  const quot = parseInt(MISSION?.length / 5);
+
+  const remainder = (MISSION?.length % 5);
+  const quot = MISSION?.length / 5;
   const page = useRecoilValue(missionLists)
   const setPage = useSetRecoilState(missionLists)
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {

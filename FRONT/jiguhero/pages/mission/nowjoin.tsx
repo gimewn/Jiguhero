@@ -1,3 +1,4 @@
+
 import NowJoin from "components/NowJoinLists"
 
 
@@ -8,4 +9,5 @@ export default function Mission() {
             <NowJoin />
         </div>
     )
+
 }

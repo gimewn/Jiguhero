@@ -23,16 +23,13 @@ const List = styled('div')`
   @media screen and (min-width:450px){
       width: 400px;
   }
-  @media screen and (min-width: 700px max-width: 1400;){
+  @media screen and (min-width: 700px){
       width:500px;
   }
 `
 
-// interface Ilist {
-//   image: string;
-// }
-const ListImg = styled('div')`
-  background-image: url(${props => props.image});
+const ListImg = styled('div') <{ image: string }>`
+  background-image: url('${(props) => props.image}');
   background-size: cover;
   background-position: center;
   width: 150px;
@@ -80,11 +77,12 @@ const PointBtn = styled('div')`
 `
 
 interface MissionProps {
+
   entryPoint: number;
   title: string;
   startDate: number;
   endDate: number;
-  sido: string;
+  sidoCode: string;
   nowPerson: number;
   maxPerson: number;
   repImageURL: string;
@@ -92,7 +90,7 @@ interface MissionProps {
 }
 
 
-export default function MissionList({ missionId, entryPoint, title, startDate, endDate, sido, nowPerson, maxPerson, repImageURL }: MissionProps) {
+export default function MissionList({ missionId, entryPoint, title, startDate, endDate, sidoCode, nowPerson, maxPerson, repImageURL }: MissionProps) {
   const router = useRouter();
   // const missionDates = ({ mission_id }: { mission_id: number }) => {
   //   router.push(`/mission/${mission_id}/details`)
@@ -110,7 +108,7 @@ export default function MissionList({ missionId, entryPoint, title, startDate, e
               <TitleName>{title}</TitleName>
             </TextWrapper>
             <TextWrapper>
-              <Name>{sido}</Name>
+              <Name>{sidoCode}</Name>
             </TextWrapper>
             <TextWrapper>
               <Date>{startDate[0]}.{startDate[1]}.{startDate[2]}~{endDate[0]}.{endDate[1]}.{endDate[2]}</Date>

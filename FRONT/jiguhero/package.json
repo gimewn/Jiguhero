@@ -30,6 +30,7 @@
     "react": "18.2.0",
     "react-datepicker": "^4.8.0",
     "react-dom": "18.2.0",
+    "react-hook-form": "^7.34.0",
     "react-query": "^4.0.0",
     "react-slick": "^0.29.0",
     "recoil": "^0.7.4",
@@ -45,5 +46,8 @@
     "eslint-config-next": "12.2.2",
     "react-query": "^4.0.0",
     "typescript": "4.7.4"
+  },
+  "resolutions": {
+    "terser": "3.14.1"
   }
 }
