@@ -49,6 +49,7 @@ public class PromotionServiceImpl implements PromotionService {
     }
 
     @Override
+    @Transactional
     public PromotionDto savePromotion(PromotionDto promotionDto) {
         Promotion promotionEntity = Promotion.of(promotionDto);
         Promotion savedPromotion = promotionDao.insertPromotion(promotionEntity);
@@ -56,6 +57,7 @@ public class PromotionServiceImpl implements PromotionService {
     }
 
     @Override
+    @Transactional
     public void deletePromotion(Long promotionId) {
         Promotion promotionEntity = promotionDao.selectPromotion(promotionId);
         Image_Promotion imagePromotion = imageDao.selectImagePromotion(promotionEntity);

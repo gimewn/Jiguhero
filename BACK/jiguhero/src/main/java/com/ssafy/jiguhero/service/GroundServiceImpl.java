@@ -80,6 +80,7 @@ public class GroundServiceImpl implements GroundService {
     }
 
     @Override
+    @Transactional
     public void saveGround(GroundDto groundDto, Long userId) {
         User userEntity = userDao.selectUserById(userId);
 
@@ -129,6 +130,7 @@ public class GroundServiceImpl implements GroundService {
     }
 
     @Override
+    @Transactional
     public String deletePlace(String placeId, Long groundId, Long userId) {
         Ground groundEntity = groundDao.selectGroundById(groundId);
 

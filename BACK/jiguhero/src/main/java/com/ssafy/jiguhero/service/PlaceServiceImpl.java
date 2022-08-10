@@ -57,6 +57,7 @@ public class PlaceServiceImpl implements PlaceService{
     }
 
     @Override
+    @Transactional
     public List<String> getPlaceImageURL(String placeId, HttpServletRequest request) {
         List<Image_Place> imagePlaces = imageDao.selectImagePlaces(placeDao.selectPlaceById(placeId));
         List<String> urlList = new ArrayList<>();
@@ -87,6 +88,7 @@ public class PlaceServiceImpl implements PlaceService{
     }
 
     @Override
+    @Transactional
     public void saveReview(ReviewDto review, String placeId, Long userId) {
         Review reviewEntity = Review.of(review);
         Place placeEntity = placeDao.selectPlaceById(placeId);
@@ -97,6 +99,7 @@ public class PlaceServiceImpl implements PlaceService{
     }
 
     @Override
+    @Transactional
     public void saveReport(ReportDto report, String placeId, Long userId) {
         Report reportEntity = Report.of(report);
         Place placeEntity = placeDao.selectPlaceById(placeId);
@@ -107,6 +110,7 @@ public class PlaceServiceImpl implements PlaceService{
     }
 
     @Override
+    @Transactional
     public void deleteReview(Long reviewId) {
         placeDao.deleteReview(reviewId);
     }
