@@ -188,5 +188,18 @@ public class MissionDaoImpl implements MissionDao {
 
         return updatedFeed;
     }
+
+    @Override
+    public List<Mission> searchMission(String search,String array){
+        List<Mission> selectedAllMissions = null;
+        if(array=="title") {
+            selectedAllMissions = missionRepository.findAllByTitleContainingOrderByTitleAsc(search);
+        }
+        else {
+            selectedAllMissions = missionRepository.findAllByTitleContainingOrderByRegtimeAsc(search);
+        }
+        return selectedAllMissions;
+    }
+
 }
 

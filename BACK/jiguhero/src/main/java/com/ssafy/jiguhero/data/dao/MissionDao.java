@@ -56,4 +56,6 @@ public interface MissionDao {
 
     Feed updateFeed(FeedDto feedDto) throws Exception;
 
+    List<Mission> searchMission(String search, String array);
+
 }

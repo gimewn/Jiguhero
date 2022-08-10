@@ -265,4 +265,13 @@ public class MissionServiceImpl implements MissionService {
         }
     }
 
+    @Override
+    public List<MissionDto> searchMission(String search, String array) {
+        List<Mission> entityList = missionDao.searchMission(search, array);
+
+        List<MissionDto> dtoList = entityList.stream().map(entity -> MissionDto.of(entity)).collect(Collectors.toList());
+
+        return dtoList;
+    }
+
 }

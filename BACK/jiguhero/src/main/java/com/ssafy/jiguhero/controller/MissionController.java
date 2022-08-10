@@ -139,4 +139,14 @@ public class MissionController {
         return ResponseEntity.status(HttpStatus.OK).body(feedDtoResult);
     }
 
+    @ApiOperation(value = "검색어로 검색한 임무 리스트 목록을 제목순 or 등록순으로 반환한다")
+    @GetMapping("/search")
+    public ResponseEntity<List<MissionDto>> searchMission(@RequestParam("search") String search, @RequestParam("array") String array){
+
+        List<MissionDto> list = missionService.searchMission(search, array);
+
+
+        return ResponseEntity.status(HttpStatus.OK).body(list);
+
+    }
 }

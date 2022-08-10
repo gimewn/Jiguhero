@@ -43,4 +43,6 @@ public interface MissionService {
     List<String> getMissionImageURL(Long missionId, HttpServletRequest request);
 
     FeedDto changeFeed(FeedDto feedDto, Long userId) throws Exception;
+
+    List<MissionDto> searchMission(String search, String array);
 }

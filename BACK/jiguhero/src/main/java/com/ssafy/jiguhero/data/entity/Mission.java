@@ -26,6 +26,9 @@ public class Mission {
     private long missionId;
 
     @Column(nullable = false)
+    private LocalDateTime regtime;
+
+    @Column(nullable = false)
     private String title;
 
     @Column(nullable = false, name = "start_date")
