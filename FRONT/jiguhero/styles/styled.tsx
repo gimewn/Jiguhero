@@ -11,7 +11,8 @@ export const ButtonFull = styled('button')<{dColor:string, hColor:string}>`
     color:white;
     :hover, .active{
         background-color: ${(props) => props.hColor};
-        border:${(props) => props.hColor} 1px solid
+        border:${(props) => props.hColor} 1px solid;
+        cursor: pointer;
     }
 `
 
@@ -24,5 +25,6 @@ export const ButtonBorder = styled('button')<{dColor:string}>`
     :hover, .active{
         color:white;
         background-color: ${(props) => props.dColor};
+        cursor: pointer;
     }
 `

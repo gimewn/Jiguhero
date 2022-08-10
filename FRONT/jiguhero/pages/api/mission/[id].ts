@@ -1,17 +1,31 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import renewAccess from "../auth/renewAccess";
+import {BASE_URL, Token} from 'pages/api/fetch';
 
-export default async function missionUserData(req: NextApiRequest) {
-  const response = await fetch(`http://i7c105.p.ssafy.io:8080/mission/1`, {
+// export default async function missionUserData(req: NextApiRequest) {
+export default async function missionUserData() {
+  const response = await fetch(BASE_URL+'mission/1/details?user_id=1', {
     method: "GET",
     headers: new Headers({
-      Authorization: `Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjU5NTk2MjE2LCJleHAiOjE2NjEzOTYyMTZ9.EFvEjb89aJTp2E9BZGFodNJdlQ034dvQ78YEHwOXjLyuQhnUCQYIlfkh2NUeNYSxHWwu1O_UFosRrODXoSqsAA`,
+      Authorization: Token
     }),
   });
-
   const data = await response.json().catch(() => {
     renewAccess;
   });
 
   return data;
 }
+
+// export default async function GetMissionDetail(){
+//     const response = await fetch(BASE_URL+'mission/{id}', {
+//         method:'GET',
+//         headers:{
+//             Authorization : Token
+//         }
+//     });
+//     const data = await response.json().catch(() => {
+//         renewAccess;
+//     })
+//     return data
+// }

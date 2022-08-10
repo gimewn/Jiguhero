@@ -9,7 +9,7 @@ export { default } from "next-auth/middleware"
 export async function middleware(req: NextRequest, ev: NextFetchEvent) {
 	
 	const session = await getToken({req:req, secret: process.env.SECRET })
-	console.log(session)
+
 	if (session) {
 		
 		return NextResponse.rewrite(req.nextUrl)
@@ -22,3 +22,6 @@ export async function middleware(req: NextRequest, ev: NextFetchEvent) {
 export const config = {
 	matcher: ['/mission/:path*', '/mypage/:path*', ]
 }
+
+
+

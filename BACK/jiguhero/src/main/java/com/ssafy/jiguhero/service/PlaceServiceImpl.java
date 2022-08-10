@@ -1,6 +1,7 @@
 package com.ssafy.jiguhero.service;
 
 import com.ssafy.jiguhero.data.dao.GroundDao;
+import com.ssafy.jiguhero.data.dao.ImageDao;
 import com.ssafy.jiguhero.data.dao.PlaceDao;
 import com.ssafy.jiguhero.data.dao.UserDao;
 import com.ssafy.jiguhero.data.dto.PlaceDto;
@@ -10,6 +11,7 @@ import com.ssafy.jiguhero.data.entity.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -19,11 +21,13 @@ public class PlaceServiceImpl implements PlaceService{
     private final GroundDao groundDao;
     private final PlaceDao placeDao;
     private final UserDao userDao;
+    private final ImageDao imageDao;
 
-    public PlaceServiceImpl(GroundDao groundDao, PlaceDao placeDao, UserDao userDao) {
+    public PlaceServiceImpl(GroundDao groundDao, PlaceDao placeDao, UserDao userDao, ImageDao imageDao) {
         this.groundDao = groundDao;
         this.placeDao = placeDao;
         this.userDao = userDao;
+        this.imageDao = imageDao;
     }
 
 
@@ -44,10 +48,32 @@ public class PlaceServiceImpl implements PlaceService{
 
     @Override
     @Transactional(readOnly = true)
-    public PlaceDto getPlace(String placeId) {
+    public PlaceDto getPlace(String placeId, HttpServletRequest request) {
         Place entity = placeDao.selectPlaceById(placeId);
         PlaceDto dto = PlaceDto.of(entity);
+        dto.setImageURL(getPlaceImageURL(placeId, request));
+        // 등록된 이미지 URL 가져오기
         return dto;
+    }
+
+    @Override
+    public List<String> getPlaceImageURL(String placeId, HttpServletRequest request) {
+        List<Image_Place> imagePlaces = imageDao.selectImagePlaces(placeDao.selectPlaceById(placeId));
+        List<String> urlList = new ArrayList<>();
+
+        for (Image_Place imagePlace : imagePlaces) {
+            String saveFile = imagePlace.getSaveFile();
+            String saveFolder = imagePlace.getSaveFolder();
+            String sep = saveFolder.substring(0,1);
+            if (sep.equals("\\")) sep = "\\\\";
+            String target = saveFolder.split(sep)[1];
+            String date = saveFolder.split(sep)[2];
+            String url = request.getRequestURL().toString().replace(request.getRequestURI(),"") + "/image/" + saveFile + "?target=" + target + "&date=" + date;
+
+            urlList.add(url);
+        }
+
+        return urlList;
     }
 
     @Override
