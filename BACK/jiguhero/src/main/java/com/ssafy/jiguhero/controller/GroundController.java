@@ -66,8 +66,8 @@ public class GroundController {
 
     @ApiOperation(value = "활동구역을 생성한다.", response = String.class)
     @PostMapping("/")
-    public ResponseEntity<String> createGround(@RequestBody GroundDto groundDto, @RequestBody List<PlaceDto> placeDtoList, @RequestParam("user_id") Long userId){
-        groundService.saveGround(groundDto, placeDtoList, userId);
+    public ResponseEntity<String> createGround(@RequestBody GroundDto groundDto, @RequestParam("user_id") Long userId){
+        groundService.saveGround(groundDto, userId);
         return new ResponseEntity<String>("success", HttpStatus.OK);
     }
 

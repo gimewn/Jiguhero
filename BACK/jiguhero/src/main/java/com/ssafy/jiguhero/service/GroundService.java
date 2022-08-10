@@ -17,7 +17,7 @@ public interface GroundService {
 
     List<GroundDto> getGroundsByUser(Long userId);
 
-    void saveGround(GroundDto groundDto, List<PlaceDto> placeDtoList, Long userId);
+    void saveGround(GroundDto groundDto, Long userId);
 
     boolean addGround(String placeId, Long groundId, Long userId);
 

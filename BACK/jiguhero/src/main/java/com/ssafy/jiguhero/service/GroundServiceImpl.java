@@ -80,19 +80,22 @@ public class GroundServiceImpl implements GroundService {
     }
 
     @Override
-    public void saveGround(GroundDto groundDto, List<PlaceDto> placeDtoList, Long userId) {
+    public void saveGround(GroundDto groundDto, Long userId) {
         User userEntity = userDao.selectUserById(userId);
 
         Ground groundEntity = new Ground();
         groundEntity.setContent(groundDto.getContent());
         groundEntity.setHits(0);
         groundEntity.setLikes(0);
+        groundEntity.setIcon(groundDto.getIcon());
+        groundEntity.setRegtime(groundDto.getRegtime());
+        groundEntity.setTitle(groundDto.getTitle());
         groundEntity.setUser(userEntity);
 
         groundDao.insertGround(groundEntity);
 
-        for(PlaceDto placeDto : placeDtoList){
-            Place placeEntity = placeDao.selectPlaceById(placeDto.getPlaceId());
+        for(String placeId : groundDto.getPlaceIdList()){
+            Place placeEntity = placeDao.selectPlaceById(placeId);
             Conn_Ground connGroundEntity = new Conn_Ground();
             connGroundEntity.setGround(groundEntity);
             connGroundEntity.setPlace(placeEntity);

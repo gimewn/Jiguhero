@@ -78,6 +78,4 @@ public class PlaceController {
         return new ResponseEntity<String>("success", HttpStatus.OK);
     }
 
-
-
 }
