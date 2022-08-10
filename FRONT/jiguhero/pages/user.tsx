@@ -5,8 +5,8 @@ import PhotoCamera from '@mui/icons-material/PhotoCamera';
 import styled from "styled-components"
 import { useRouter } from 'next/router';
 import { ButtonFull } from 'styles/styled';
-import ConfirmValidationInput from "../components/validationInput";
-import regex from "../components/regex";
+// import ConfirmValidationInput from "../components/validationInput";
+// import regex from "../components/regex";
 
 
 export default function User() {
@@ -34,7 +34,7 @@ export default function User() {
 
       {/* 대원명 입력 및 중복확인*/}
 
-      <ConfirmValidationInput
+      {/* <ConfirmValidationInput
         value={nickInput}
         setValue={setNickInput}
         maxValue={16}
@@ -48,7 +48,7 @@ export default function User() {
         defaultText="필수!"
         successText="Good!"
         errorText="15자 이내로 작성해주세요!"
-      />
+      /> */}
 
 
       {/* 가입완료 버튼 */}
@@ -56,7 +56,6 @@ export default function User() {
         <ButtonFull
           hColor={'#98C064'}
           dColor={'#65ACE2'}
-          variant="contained"
           onClick={() => router.push("/")} >가입완료</ButtonFull>
       </ButtonStack>
     </SignUpWrapper >
