@@ -104,6 +104,7 @@ public class GroundServiceImpl implements GroundService {
     }
 
     @Override
+    @Transactional
     public boolean addGround(String placeId, Long groundId, Long userId) {
         Ground groundEntity = groundDao.selectGroundById(groundId);
 
@@ -112,6 +113,14 @@ public class GroundServiceImpl implements GroundService {
         }
 
         Place placeEntity = placeDao.selectPlaceById(placeId);
+
+        List<Conn_Ground> list = groundDao.selectConnGroundByGround(groundEntity);
+        for(Conn_Ground connGround : list){
+            if(connGround.getPlace().getPlaceId().equals(placeId)){
+                return true;
+            }
+        }
+
         Conn_Ground connGroundEntity = new Conn_Ground();
         connGroundEntity.setGround(groundEntity);
         connGroundEntity.setPlace(placeEntity);
@@ -140,6 +149,7 @@ public class GroundServiceImpl implements GroundService {
     }
 
     @Override
+    @Transactional
     public String deleteGround(Long groundId, Long userId) {
         Ground groundEntity = groundDao.selectGroundById(groundId);
 
