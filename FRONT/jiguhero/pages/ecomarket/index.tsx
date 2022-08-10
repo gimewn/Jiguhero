@@ -223,8 +223,9 @@ export default function FullMap(props:any) {
     window.kakao.maps.load(function(){moveMyGps()})
   }, [])
   useEffect(() => {
-    const FetchReviews = () => {return getReview(choiceP[7])}
-    console.log(FetchReviews)
+    getReview(choiceP['placeId']).then((res) => {
+      setReviews(res)
+    })
   }, [choiceP])
 
   function getFetch(lat, lon, map) {

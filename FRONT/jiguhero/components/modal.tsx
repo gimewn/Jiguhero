@@ -7,6 +7,10 @@ import {ButtonFull} from 'styles/styled'
 import getReview from 'pages/api/place/getReview';
 import postReport from 'pages/api/place/postReport';
 import { useQuery } from '@tanstack/react-query';
+import { Pagination } from "@mui/material";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import {reviewlists} from 'states/place';
+import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
 
 const ModalBack = styled('div')`
     position:absolute;
@@ -35,11 +39,9 @@ const ModalDiv = styled('div')`
     border:0;
     border-radius: 20px;
     z-index:999;
+    max-height:90%;
+    /* bottom:5%; */
     overflow:auto;
-    -ms-overflow-style: none; /* for Internet Explorer, Edge */
-    scrollbar-width: none; /* for Firefox */
-    overflow-y: scroll;
-    bottom:5%;
     /* @media only screen and (max-width: 650px) {
         height
   } */
@@ -64,9 +66,10 @@ const ModalBody = styled('div')`
     display: flex;
     flex-direction: column;
     padding:5px 20px 0px 25px;
+    overflow:auto;
     @media only screen and (max-width: 650px) {
-        padding:0 20px 20px 20px;
-  }
+        padding:0 20px 0px 20px;
+    }
 `
 const ModalAddress = styled('p')`
     margin: 5px 5px;
@@ -84,8 +87,6 @@ color:#98c064;
 `
 const ReportBox = styled('div')<{Color:string}>`
     display:flex;
-    position:absolute;
-    bottom:0;
     width:100%;
     flex-direction: column;
     justify-content: center;
@@ -166,13 +167,97 @@ margin-right:15%;
 //     height:1px;
 // `
 
+const ReviewDiv = styled('div')`
+display:flex;
+margin-left:30px;
+`
+const ReviewBox = styled('div')`
+    background-color:white;
+    border:1px solid #65ACE2;
+    border-radius: 20px;
+    padding:10px 15px;
+    margin-left:10px;
+    margin-top:10px;
+    span{
+        margin-top: auto;
+        margin-bottom:auto;
+    }
+`
+
+const EmojiSpan = styled('span')`
+    font-size:20px;
+    margin: auto 0;
+`
+const Starspan = styled('span')`
+    margin-right:10px;
+`
+
+const Paging = styled(Pagination)`
+    margin: 0 auto;
+`
+const MakeReview = styled('div')`
+    margin-left:30px;
+    margin-top:10px;
+    width:90%;
+`
+const Select = styled('select')`
+    border: 1px solid #98c064;
+    padding:5px;
+    width:30px;
+    margin-left:5px;
+    -moz-appearance:none;  /* Firefox */
+  -webkit-appearance:none;  /* Safari and Chrome */
+  appearance:none;  /* 화살표 없애기 공통*/
+  ::-webkit-scrollbar {
+    display: none; /* for Chrome, Safari, and Opera */
+  }
+  padding: 5px 10px;
+`
+const ReviewArea = styled('textarea')`
+    height:45px;
+    width:80%;
+    border-radius:10px;
+    /* margin: 0px 10px 0px 30px; */
+    padding:10px;
+`
+const ReviewWrite = styled('div')`
+    display:flex;
+    justify-content: center;
+    margin-top:10px;
+`
+const ReportReview = styled(CheckRoundedIcon)`
+    /* margin-top:5px; */
+    color:white;
+    background-color: #98c064;
+    margin:0;
+`
+
 export default function Modal(props){
     const {show, setshow, data, reviews} = props;
     const [isReport, setReport] = useState(false);
     const [ReportCategory, setReportCategory] = useState('');
     const [ReportContent, setReportContent] = useState('');
-    console.log(reviews)
-
+    const reviewEmoji = ['', '😔', '😑', '😶', '🤗', '🥰']
+    const [scoreValue, setsScoreValue] = useState(1);
+    const [reviewValue, setReviewValue] = useState('');
+    const remainder = (reviews?.length % 5);
+    const quot = reviews?.length / 5;
+    const page = useRecoilValue(reviewlists)
+    const setPage = useSetRecoilState(reviewlists)
+    const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
+      setPage(value);
+    };
+    function Emoji(score){
+        return(<EmojiSpan>{reviewEmoji[score['score']]}</EmojiSpan>)
+    }
+    function Star(score){
+        let res = '';
+        for(let i=0; i<score['score']; i++){
+            res += '⭐'
+        }
+        return <Starspan>{res}</Starspan>
+    }
+    
     const ModalContent = show && (
         <>
         <ModalDiv>
@@ -197,10 +282,32 @@ export default function Modal(props){
                 </WithTitle>
                 : <></>}
                 <WithTitle>
-                    <ConTitle>⭐ 대원들의 리뷰</ConTitle>
-                    {/* {reviews?.map((item) => (<div key={item.reviewId}>
-                        <p>{item.score}</p>
-                    </div>))} */}
+                    <ConTitle>🧡 대원들의 리뷰</ConTitle>
+                    <MakeReview>
+                        이 가게의 평점 : ⭐
+                        <Select onChange={(e) => {
+                            setsScoreValue(Number(e.target.value))}}>
+                            {[1, 2, 3, 4, 5].map((item) => (<option value={item} key={item}>{item}</option>))}
+                        </Select>
+                        <ReviewWrite>
+                        <Emoji score={scoreValue} />
+                        <ReviewArea placeholder='리뷰를 남겨주세요.' onChange={(e)=>{setReportContent(e.target.value)}}/>
+                        <ReportReview />
+                        </ReviewWrite>
+                    </MakeReview>
+                    {reviews?.map((item) => (<ReviewDiv>
+                        <Emoji score={item.score} />
+                    <ReviewBox key={item.reviewId}>
+                        <Star score={item.score} />
+                        <span>{item.content}</span>
+                    </ReviewBox>
+                    </ReviewDiv>
+                    ))}
+                    {quot>1 ? <Paging
+                    count={remainder === 0 ? quot : quot + 1}
+                    page={page}
+                    onChange={handleChange}
+                /> : <></>}
                 </WithTitle>
             </ModalBody>
             {isReport ? 
