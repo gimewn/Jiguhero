@@ -57,15 +57,13 @@ public class UserController {
 
     @ApiOperation(value = "user_id에 해당하는 유저의 닉네임을 등록 또는 수정한다.(회원가입, 정보변경 둘 다 사용)", response = UserDto.class)
     @PutMapping("/{user_id}")
-    public ResponseEntity<UserDto> changeUserNickname(@PathVariable("user_id") Long userId, @RequestParam("nickname") String nickname, @RequestParam("file") MultipartFile file) {
+    public ResponseEntity<UserDto> changeUserNickname(@PathVariable("user_id") Long userId, @RequestParam("nickname") String nickname) {
         UserDto userDto = null;
         try {
             userDto = userService.changeUserNickname(userId, nickname);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-
-        imageService.saveUserImage(file, userId);
 
         return ResponseEntity.status(HttpStatus.OK).body(userDto);
     }
