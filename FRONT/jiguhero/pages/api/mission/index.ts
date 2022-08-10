@@ -4,20 +4,20 @@ import { BASE_URL, Token } from 'pages/api/fetch';
 
 export default async function getMission(select){
 
-    if(select==="latest") {
+    // if(select==="latest") {
 
-    }else{
+    // }else{
         
-    }
-    const response = await fetch(BASE_URL+'mission/', {
-        method:'GET',
-        headers:{
-            Authorization : Token
-        }
-    });
-    const data = await response.json().catch(() => {
-        renewAccess;
-    })
-    return data
+    // }
+    // const response = await fetch(BASE_URL+'mission/', {
+    //     method:'GET',
+    //     headers:{
+    //         Authorization : Token
+    //     }
+    // });
+    // const data = await response.json().catch(() => {
+    //     renewAccess;
+    // })
+    // return data
 }
 

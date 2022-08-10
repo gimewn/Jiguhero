@@ -147,7 +147,7 @@ export default function MissionDetail() {
             {/* 임무타이틀 */}
             <Block>
                 <Content>
-                    <TitleText>{MissionDetail.title}</TitleText>
+                    <TitleText>{MissionDetail?.title}</TitleText>
                 </Content>
             </Block>
 
@@ -155,7 +155,7 @@ export default function MissionDetail() {
             <Block>
                 <Content>
                     < PeopleIcon />
-                    <ContentText>{MissionDetail.nowPerson} / {MissionDetail.maxPerson} 명</ContentText>
+                    <ContentText>{MissionDetail?.nowPerson} / {MissionDetail?.maxPerson} 명</ContentText>
                 </Content>
             </Block>
 
@@ -163,7 +163,7 @@ export default function MissionDetail() {
             <Block>
                 <Content>
                     <PointIcon />
-                    <ContentText>+{MissionDetail.entryPoint}P</ContentText>
+                    <ContentText>+{MissionDetail?.entryPoint}P</ContentText>
                 </Content>
             </Block>
 
@@ -172,8 +172,8 @@ export default function MissionDetail() {
                 <Content>
                     <CalendarIcon />
                     <ContentText>
-                        {MissionDetail.startDate[0]}.{MissionDetail.startDate[1]}.{MissionDetail.startDate[2]}
-                        ~ {MissionDetail.endDate[0]}.{MissionDetail.endDate[1]}.{MissionDetail.endDate[2]}
+                        {MissionDetail?.startDate[0]}.{MissionDetail?.startDate[1]}.{MissionDetail?.startDate[2]}
+                        ~ {MissionDetail?.endDate[0]}.{MissionDetail?.endDate[1]}.{MissionDetail?.endDate[2]}
                     </ContentText>
                 </Content>
             </Block>
@@ -183,7 +183,7 @@ export default function MissionDetail() {
                 <Content>
                     <LocalIcon />
                     <ContentText>
-                        {MissionDetail.sidoCode} {MissionDetail.gugunCode}
+                        {MissionDetail?.sidoCode} {MissionDetail?.gugunCode}
                     </ContentText>
                 </Content>
             </Block>
