@@ -72,4 +72,12 @@ public class PromotionServiceImpl implements PromotionService {
         promotionDao.deletePromotion(promotionId);
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public List<PromotionDto> searchByKeyword(String keyword) {
+        List<Promotion> entityList = promotionDao.selectPromotionsByKeyword(keyword);
+        List<PromotionDto> dtoList = entityList.stream().map(entity -> PromotionDto.of(entity)).collect(Collectors.toList());
+        return dtoList;
+    }
+
 }

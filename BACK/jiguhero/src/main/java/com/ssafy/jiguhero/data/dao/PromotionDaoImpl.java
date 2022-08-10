@@ -30,7 +30,7 @@ public class PromotionDaoImpl implements PromotionDao {
 
     @Override
     public List<Promotion> selectPromotions() {
-        List<Promotion> selectedPromotions = promotionRepository.findAll();
+        List<Promotion> selectedPromotions = promotionRepository.findAllByOrderByRegtimeDesc();
         return selectedPromotions;
     }
 
@@ -49,6 +49,12 @@ public class PromotionDaoImpl implements PromotionDao {
     @Override
     public void deletePromotion(Long promotionId) {
         promotionRepository.deleteById(promotionId);
+    }
+
+    @Override
+    public List<Promotion> selectPromotionsByKeyword(String keyword) {
+        List<Promotion> selectedPromotions = promotionRepository.findByTitleContaining(keyword);
+        return selectedPromotions;
     }
 
 }

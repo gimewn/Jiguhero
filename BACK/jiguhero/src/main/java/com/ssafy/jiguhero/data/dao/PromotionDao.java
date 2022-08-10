@@ -17,4 +17,5 @@ public interface PromotionDao {
 
     void deletePromotion(Long promotionId);
 
+    List<Promotion> selectPromotionsByKeyword(String keyword);
 }

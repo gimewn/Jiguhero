@@ -16,4 +16,5 @@ public interface PromotionService {
 
     void deletePromotion(Long promotionId);
 
+    List<PromotionDto> searchByKeyword(String keyword);
 }
