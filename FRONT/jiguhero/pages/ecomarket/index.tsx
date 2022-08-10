@@ -12,6 +12,7 @@ import getGugun from 'pages/api/ecomarket/getGugun';
 import getDong from 'pages/api/ecomarket/getDong';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import PersonPinRoundedIcon from '@mui/icons-material/PersonPinRounded';
+import getReview from "pages/api/place/getReview";
 
 const Div = styled("div")`
   position: relative;
@@ -200,6 +201,7 @@ const SelectBox = styled('select')`
 
 
 export default function FullMap(props:any) {
+
   const router = useRouter();
   const [show, setShow] = useState(false);
   const [choiceP, setChoiceP] = useState([]);
@@ -214,7 +216,17 @@ export default function FullMap(props:any) {
     enabled: !!ChoiceGugun
   })
   const [ChoiceDong, setChoiceDong] = useState(['00', '']);
+  const [reviews, setReviews] = useState([]);
   
+  useEffect(()=>{
+    // HTML5의 geolocation으로 사용할 수 있는지 확인합니다
+    window.kakao.maps.load(function(){moveMyGps()})
+  }, [])
+  useEffect(() => {
+    const FetchReviews = () => {return getReview(choiceP[7])}
+    console.log(FetchReviews)
+  }, [choiceP])
+
   function getFetch(lat, lon, map) {
     var imageSrc =
     "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png";
@@ -303,10 +315,7 @@ export default function FullMap(props:any) {
        }
       })}
   
-  useEffect(()=>{
-    // HTML5의 geolocation으로 사용할 수 있는지 확인합니다
-    moveMyGps()
-  }, [])
+
 
   return (
     <Div>
@@ -358,7 +367,7 @@ export default function FullMap(props:any) {
           </Place>
         ))}
       </PlaceGroup>
-      <Modal show={show} setshow={setShow} data={choiceP}>
+      <Modal show={show} setshow={setShow} data={choiceP} reviews={reviews}>
       </Modal>
       <Mapping id="map" />
     </Div>

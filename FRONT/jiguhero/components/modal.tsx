@@ -6,6 +6,7 @@ import { useState, useEffect } from "react";
 import {ButtonFull} from 'styles/styled'
 import getReview from 'pages/api/place/getReview';
 import postReport from 'pages/api/place/postReport';
+import { useQuery } from '@tanstack/react-query';
 
 const ModalBack = styled('div')`
     position:absolute;
@@ -166,11 +167,12 @@ margin-right:15%;
 // `
 
 export default function Modal(props){
-    const {show, setshow, data} = props;
-    console.log(data)
+    const {show, setshow, data, reviews} = props;
     const [isReport, setReport] = useState(false);
     const [ReportCategory, setReportCategory] = useState('');
     const [ReportContent, setReportContent] = useState('');
+    console.log(reviews)
+
     const ModalContent = show && (
         <>
         <ModalDiv>
@@ -196,6 +198,9 @@ export default function Modal(props){
                 : <></>}
                 <WithTitle>
                     <ConTitle>⭐ 대원들의 리뷰</ConTitle>
+                    {/* {reviews?.map((item) => (<div key={item.reviewId}>
+                        <p>{item.score}</p>
+                    </div>))} */}
                 </WithTitle>
             </ModalBody>
             {isReport ? 
@@ -213,12 +218,16 @@ export default function Modal(props){
             </WithTitle>
                 <RButtonDiv>
                     <ReportButton dColor='#65ACE2' hColor='#65ACE2' style={{margin:'0 10px 0 0'}} onClick={() => setReport(false)}>취소</ReportButton>
-                    <ReportButton dColor="#FF4848" hColor="#FF4848">신고하기</ReportButton>
+                    <ReportButton dColor="#FF4848" hColor="#FF4848" onClick={async () => {
+                if(await postReport(data.placeId, 1)==="success"){
+                    alert("신고해주셔서 감사합니다.")
+                }else{
+                    alert("신고가 접수되지 않았습니다!")
+                }}}>신고하기</ReportButton>
                 </RButtonDiv>
             </PostReport> : 
             <ReportBox Color="#65ACE2" onClick={() => setReport(true)}>
-            <ConTitle onClick={() => {
-                const res = postReport(data.placeId, 1)}}>신고하기</ConTitle>
+            <ConTitle>신고하기</ConTitle>
             </ReportBox>
         }
             
