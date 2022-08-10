@@ -343,7 +343,6 @@ export default function Createmission() {
             <SubmitBtn
               hColor={'#98C064'}
               dColor={'#65ACE2'}
-              variant="contained"
             // onClick={() => router.push("/")}
             >등록</SubmitBtn>
           </BtnContent>

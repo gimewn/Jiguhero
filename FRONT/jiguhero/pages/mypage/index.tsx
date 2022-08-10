@@ -141,17 +141,10 @@ interface Idata {
 }
 
 const Mypage = ({ data }) => {
-  // console.log(props.data)
-<<<<<<< HEAD
-
+  console.log(data)
 
   const { data: userInfo } = useQuery(['mission'], () => { userData() })
-=======
   const router = useRouter()
-  
-  const {data:userInfo} = useQuery(['mission'],()=> {userData()})
->>>>>>> FE/mypage
-  console.log(userInfo)
 
 
   // 탭 전환
@@ -162,15 +155,11 @@ const Mypage = ({ data }) => {
     return (
       <Profile>
         <BgImg>
-<<<<<<< HEAD
-          <Image alt="nitz" src={`${data.session.user.image}`}/>
-=======
-          <img alt="nitz" src={`${data.session.user.image}`} />
->>>>>>> c31e7ec91581cbbd432e8682b10193105f1b2a37
+          {/* <img alt="nitz" src={`${data.session.user.image}`} /> */}
         </BgImg>
         <div>
           <p>빨강</p>
-          <h2>{data.session.user.name}</h2>
+          {/* <h2>{data.session.user.name}</h2> */}
         </div>
         <Box margin="14px 0 0 0">
           <ArrowForwardIosRoundedIcon sx={{ color: blue[300] }} />
@@ -351,7 +340,7 @@ export async function getServerSideProps(context) {
   const session = await getSession(context);
   await session2.prefetchQuery(['session'], () => { return getSession(context) })
   await userInfo2.prefetchQuery(['userInfo'], () => { userData() })
-  await missionInfo2.prefetchQuery(['missionUserInfo'], () => { missionUserData(context) })
+  await missionInfo2.prefetchQuery(['missionUserInfo'], () => { missionUserData() })
   await groundInfo2.prefetchQuery(['groundUserInfo'], () => { groundUserData(context) })
 
 
