@@ -1,7 +1,11 @@
-export default function Mission(){
-    return(
+import NowJoin from "components/NowJoinLists"
+
+
+
+export default function Mission() {
+    return (
         <div>
-            인증!
+            <NowJoin />
         </div>
     )
 }

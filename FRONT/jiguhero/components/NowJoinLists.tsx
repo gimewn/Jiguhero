@@ -1,10 +1,9 @@
 import MissionList from 'components/MissionList';
 import { Pagination } from "@mui/material";
-import { missionLists } from "states/mission";
+import { nowjoinlist } from "states/mission";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import styled from 'styled-components';
-import Link from "next/link";
-import getMission from 'pages/api/mission/index';
+import JoinMission from 'pages/api/mission/joinMission';
 import { dehydrate, Query, QueryClient, QueryClientProvider, useQuery } from "@tanstack/react-query";
 import { getSession, SessionProvider, useSession } from "next-auth/react";
 
@@ -16,19 +15,21 @@ const PagI = styled(Pagination)`
   margin-top: 20px;
 `;
 
+interface IPage {
+  page: number;
+  count: number;
+}
 
-
-export default function MissionLists() {
-  const { data: MISSION } = useQuery(['missions'], getMission)
+export default function NowJoinLists() {
+  const { data: MISSION } = useQuery(['missions'], JoinMission)
   console.log(MISSION)
   const remainder = MISSION?.length % 5;
   const quot = parseInt(MISSION?.length / 5);
-  const page = useRecoilValue(missionLists)
-  const setPage = useSetRecoilState(missionLists)
+  const page = useRecoilValue(nowjoinlist)
+  const setPage = useSetRecoilState(nowjoinlist)
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
   };
-
 
   return (
     <>
@@ -48,7 +49,7 @@ export default function MissionLists() {
 export async function getServerSideProps(context) {
   const missionList = new QueryClient()
   const session = await getSession(context);
-  await missionList.prefetchQuery(['missions'], () => { getMission() })
+  await missionList.prefetchQuery(['missions'], () => { JoinMission() })
 
   return {
     props: {

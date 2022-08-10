@@ -18,7 +18,7 @@ const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       refetchOnWindowFocus: false,
-      refetchOnmount: false,
+      refetchOnMount: false,
       refetchOnReconnect: false,
       retry: false,
       staleTime: 5 * 60 * 1000,
@@ -29,16 +29,24 @@ const queryClient = new QueryClient({
 const Header = styled("div")`
   display: flex;
   justify-content: space-between;
-  margin: 20px 20px 20px 20px;
+  padding:20px;
+  position:fixed;
+  left:0;
+  right:0;
+  z-index:999;
+  background-color: white;
 `;
 const Body = styled("div")`
   display: flex;
   justify-content: center;
   width: 100%;
   height: 100%;
+  overflow: auto;
 `;
 const Container = styled("div")`
   display: flex;
+  position:absolute;
+  top:80px;
   justify-content: center;
   flex-direction: column;
   min-width: 375px;

@@ -3,6 +3,7 @@ import styled from 'styled-components';
 interface IButton {
     dColor: string;
     hColor: string;
+    variant?: string;
 }
 
 export const ButtonFull = styled('button')`

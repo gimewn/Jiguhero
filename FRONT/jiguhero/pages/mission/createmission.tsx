@@ -68,6 +68,7 @@ const BoxInput = styled('input')`
   padding:3px;
   width: 13rem;
   margin-left: 10px;
+  padding: 5px;
 `
 const DateInput = styled(DatePicker)`
   border: #65ACE2 solid 1px ;
@@ -75,9 +76,13 @@ const DateInput = styled(DatePicker)`
   border-radius: 15px;
   width: 100px;
   box-sizing: border-box;
+  padding: 5px;
+  margin-right:9px;
+  margin-left:9px;
 `
 const DateWrapper = styled('div')`
   display: inline-flex;
+
 `
 
 const SelectSido = styled('select')`
@@ -85,7 +90,8 @@ const SelectSido = styled('select')`
     background-color: white;
     border-radius: 15px;
     padding:3px;
-    margin: 0.5rem; 
+    margin: 0.5rem;
+     
 `
 
 const SelectGugun = styled(SelectSido)`
@@ -121,6 +127,7 @@ const PointInput = styled('input')`
   padding:3px;
   width: 13rem;
   margin-left: 10px;
+  padding: 5px;
 `
 const PeopleInput = styled(PointInput)`
 `
@@ -343,7 +350,6 @@ export default function Createmission() {
             <SubmitBtn
               hColor={'#98C064'}
               dColor={'#65ACE2'}
-              variant="contained"
             // onClick={() => router.push("/")}
             >등록</SubmitBtn>
           </BtnContent>

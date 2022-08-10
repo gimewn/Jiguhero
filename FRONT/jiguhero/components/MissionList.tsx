@@ -28,11 +28,11 @@ const List = styled('div')`
   }
 `
 
-interface Ilist {
-  image: string;
-}
+// interface Ilist {
+//   image: string;
+// }
 const ListImg = styled('div')`
-  background-image: url('${(props: Ilist) => props.image}');
+  background-image: url(${props => props.image});
   background-size: cover;
   background-position: center;
   width: 150px;
@@ -82,17 +82,17 @@ const PointBtn = styled('div')`
 interface MissionProps {
   entryPoint: number;
   title: string;
-  starDate: number;
+  startDate: number;
   endDate: number;
-  sidocCode: string;
+  sido: string;
   nowPerson: number;
   maxPerson: number;
-  imageURL: string;
+  repImageURL: string;
   missionId: number;
 }
 
 
-export default function MissionList({ missionId, entryPoint, title, startDate, endDate, sido, nowPerson, maxPerson, imageURL }: MissionProps) {
+export default function MissionList({ missionId, entryPoint, title, startDate, endDate, sido, nowPerson, maxPerson, repImageURL }: MissionProps) {
   const router = useRouter();
   // const missionDates = ({ mission_id }: { mission_id: number }) => {
   //   router.push(`/mission/${mission_id}/details`)
@@ -103,7 +103,7 @@ export default function MissionList({ missionId, entryPoint, title, startDate, e
   return (
     <>
       <List onClick={() => router.push(`/mission/${missionId}`)}>
-        <ListImg image={imageURL} />
+        <ListImg image={repImageURL} />
         <ListContent>
           <div>
             <TextWrapper>

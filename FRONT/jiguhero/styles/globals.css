@@ -42,7 +42,6 @@ body::-webkit-scrollbar {
   width: 0;
 }
 /* @media screen and (max-width: 650px){
-  body{
     padding-bottom:80px;
   }
 } */
@@ -93,4 +92,8 @@ a {
 .swiper-slide{
   width:120px !important;
   margin: 5px;
+}
+
+#__next{
+  height:100vh;
 }
