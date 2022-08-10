@@ -6,7 +6,7 @@ import styled from "styled-components";
 import ArrowForwardIosRoundedIcon from "@mui/icons-material/ArrowForwardIosRounded";
 import Link from "next/link";
 import { ButtonBorder, ButtonFull } from "styles/styled";
-import { theme } from "pages/theme";
+import { theme } from "components/theme";
 import { blue } from "@mui/material/colors";
 import { Pagination } from "@mui/material";
 import { userInfo } from "os";
@@ -20,6 +20,7 @@ import userData from "pages/api/user/[id]";
 import missionUserData from "pages/api/mission/[id]";
 import groundUserData from "pages/api/ground/[id]";
 import { getToken } from "next-auth/jwt";
+import Image from 'next/image';
 
 
 
@@ -133,7 +134,6 @@ const PagI = styled(Pagination)`
 `;
 
 interface Idata {
-
   email: string;
   name: string;
   grade: number;
@@ -162,7 +162,11 @@ const Mypage = ({ data }) => {
     return (
       <Profile>
         <BgImg>
+<<<<<<< HEAD
+          <Image alt="nitz" src={`${data.session.user.image}`}/>
+=======
           <img alt="nitz" src={`${data.session.user.image}`} />
+>>>>>>> c31e7ec91581cbbd432e8682b10193105f1b2a37
         </BgImg>
         <div>
           <p>빨강</p>

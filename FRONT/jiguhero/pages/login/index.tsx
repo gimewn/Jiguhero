@@ -6,6 +6,10 @@ import Head from "node_modules/next/head";
 import styled from "styled-components";
 import Router, { useRouter } from "next/router";
 import React, { useEffect } from "react";
+<<<<<<< HEAD
+import { ParsedUrlQuery } from "querystring";
+import { getSession, signIn, signOut, useSession } from "next-auth/react";
+=======
 import { getSession, signIn, signOut, useSession } from "next-auth/react";
 import { NextPageContext } from "node_modules/next/dist/shared/lib/utils";
 import loginAccess from "pages/api/login";
@@ -13,12 +17,21 @@ import { NextPage } from "next";
 
 
 
+>>>>>>> c31e7ec91581cbbd432e8682b10193105f1b2a37
 
 export default function Login() {
   const { data: session, status } = useSession();
   const loading = status === "loading";
   const router = useRouter()
   const returnUrl = router.query.returnUrl
+<<<<<<< HEAD
+
+  return (
+    <>
+    {session?.accessToken&&(
+      <p>{session.user.email}</p>
+    )}
+=======
   
 
   return (
@@ -26,6 +39,7 @@ export default function Login() {
       {session?.accessToken && (
         <p>{session.user.name}</p>
       )}
+>>>>>>> c31e7ec91581cbbd432e8682b10193105f1b2a37
       <LoginWrapper>
         <Head>
           {/* header 추가 */}
@@ -142,10 +156,13 @@ const SnsLoginNaver = styled("div")`
   width: 20rem;
 `;
 
+<<<<<<< HEAD
+export async function getServerSideProps(context) {
+=======
 
 export async function getServerSideProps(context: NextPageContext) {
+>>>>>>> c31e7ec91581cbbd432e8682b10193105f1b2a37
   const session = await getSession(context)
-
 
   return {
     props: {

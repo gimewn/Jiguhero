@@ -41,10 +41,10 @@ const Mission = styled('div')`
 interface MissionItemProps{
     title:string,
     now:number,
-    id:number
+    id:number,
 }
 
-export default function MissionItem({title, now,id}:MissionItemProps){
+export default function MissionItem({title, now, id}:MissionItemProps){
     const router = useRouter();
     return(
         <Mission onClick={() => {router.push(`mission/${id}`)}}>
