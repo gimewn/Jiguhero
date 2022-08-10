@@ -266,6 +266,7 @@ interface IForm {
 }
 
 export default function Createmission() {
+  const [createImg, setCreateimg] = useState(null);
   const {
     register,
     watch,
@@ -275,31 +276,39 @@ export default function Createmission() {
   } = useForm();
 
   function MissionPicture({ image }) {
-    const [createImg, setCreateimg] = useState(null);
+    console.log(createImg)
     const changeHandler = (e) => {
-      // console.log(e.target.files[0])
       setCreateimg(e.target.files[0]);
     };
     
     return (
+        
       <CameraBtn>
+
         <SUploadImage aria-label="upload picture" component="label">
           <input
             {...register("Img", {
               required: "사진을 등록해주세요",
             })}
+            hidden
             accept="image/*"
             type="file"
             name="file"
             onChange={changeHandler}
-          />
-          <button onClick={()=>{
-           PostMissionImg(createImg)
-          }} >제출</button>
+            />
+        
 
+            {createImg ?
           <CameraBox>
-            <PhotoCamera fontSize="large" />
+             <img src={createImg?.name} alt="" /> 
+             
           </CameraBox>
+             :
+             <CameraBox>
+
+            <PhotoCamera fontSize="large" />
+             </CameraBox>
+          }
         </SUploadImage>
       </CameraBtn>
     );

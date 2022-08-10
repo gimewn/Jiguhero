@@ -44,7 +44,7 @@ export default function Login() {
                     onClick={(e) => {
                       // e.preventDefault();
                       // loginAccess()
-                      // router.push(`http://i7c105.p.ssafy.io:8080/oauth2/authorize/kakao?redirect_uri=http://localhost:3000`)
+                      router.push(`http://i7c105.p.ssafy.io:8080/oauth2/authorize/kakao?redirect_uri=http://localhost:3000`)
                       signIn("kakao", {
                         redirect:true,
                         callbackUrl: `/`
@@ -69,10 +69,7 @@ export default function Login() {
                       
                 
                       
-                      signIn("google", {
-                        redirect:true,
-                        callbackUrl: `/`
-                      });
+              
                     }}
                   >
                     <Image src={GoogleImg} alt="Google" />
