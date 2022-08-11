@@ -87,7 +87,7 @@ const BoxInput = styled('input')`
   background-color: white;
   border-radius: 15px;
   padding:3px;
-  width: 15rem;
+  width: 13rem;
 `
 const SearchButton = styled(SearchRoundedIcon)`
     color:#65ACE2;
@@ -122,26 +122,26 @@ const MissionBlock = styled('div')`
     
 `
 
-//select Box --- 최신등록 순 이름 순 -->Back과 상의..?
-// const OPTIONS = [
-//     { value: "latest", name: "최신 등록순" },
-//     { value: "name", name: "이름순" },
-// ];
-// function SelectBox(props) {
-//     return (
-//         <BoxSelect>
-//             {props.options.map((option) => (
-//                 <option
-//                     key={option.value}
-//                     value={option.value}
-//                 >
-//                     {option.name}
-//                 </option>
-//             ))}
+//select Box --- 최신등록 순 이름 순 
+const OPTIONS = [
+    { value: "latest", name: "최신 등록순" },
+    { value: "name", name: "이름순" },
+];
+function SelectBox(props) {
+    return (
+        <BoxSelect>
+            {props.options.map((option) => (
+                <option
+                    key={option.value}
+                    value={option.value}
+                >
+                    {option.name}
+                </option>
+            ))}
 
-//         </BoxSelect>
-//     )
-// }
+        </BoxSelect>
+    )
+}
 
 //input Box
 function InputBox() {
@@ -212,7 +212,7 @@ export default function Mission() {
             {/* search Bar */}
             <Block>
                 <Content>
-                    {/* <SelectBox options={OPTIONS} /> */}
+                    <SelectBox options={OPTIONS} />
                     <InputBox />
                     <SearchButton />
                 </Content>
