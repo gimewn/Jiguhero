@@ -27,6 +27,7 @@ import { useRouter } from "next/router";
 import getSido from "pages/api/ecomarket/getSido";
 import getGugun from "pages/api/ecomarket/getGugun";
 import getDong from "pages/api/ecomarket/getDong";
+import PostNewMission from "pages/api/mission/postNewMission";
 
 const MissioWrapper = styled("div")`
   display: flex;
@@ -154,9 +155,12 @@ const SubmitBtn = styled(ButtonFull)`
 
 const SUploadImage = styled(IconButton).attrs({ type: "button" })``;
 
-
-
 export default function Createmission() {
+  // 지울거
+
+  const userId = 1;
+  // 지울거
+
   const [createImg, setCreateimg] = useState<File>(null); // 이미지 파일
   const [preview, setPreview] = useState<string>(); // 이미지 미리보기 사진
   const [title, setTitle] = useState(""); // 임무명
@@ -165,36 +169,42 @@ export default function Createmission() {
   const [astartDate, setAstartDate] = useState<Array<string>>(); // 시작일 배열 [요일, 월, 일, 년]
   const [aendDate, setAendDate] = useState<Array<string>>(); // 종료일 배열 [요일, 월, 일, 년]
   const [point, setPoint] = useState<Number>();
-  const [people, setPeople] = useState<Number>()
-  
-  
+  const [people, setPeople] = useState<Number>();
 
   const router = useRouter();
   const [show, setShow] = useState(false);
   const [choiceP, setChoiceP] = useState([]);
   const [data, setData] = useState([]);
-  const {data:sido} = useQuery(['sido'], getSido);
-  const [ChoiceSido, setChoiceSido] = useState(['00', '']);
-  const {data:gugun} = useQuery(['gugun', ChoiceSido], () => getGugun(ChoiceSido[0]), {
-    enabled: !!ChoiceSido,
-  });
-  const [ChoiceGugun, setChoiceGugun] = useState(['00', '']);
-  const {data:dong} = useQuery(['dong', ChoiceGugun], () => getDong(ChoiceGugun[0]), {
-    enabled: !!ChoiceGugun,
-  })
-  const [ChoiceDong, setChoiceDong] = useState(['00', '']);
+  const { data: sido } = useQuery(["sido"], getSido);
+  const [ChoiceSido, setChoiceSido] = useState(["00", ""]);
+  const { data: gugun } = useQuery(
+    ["gugun", ChoiceSido],
+    () => getGugun(ChoiceSido[0]),
+    {
+      enabled: !!ChoiceSido,
+    }
+  );
+  const [ChoiceGugun, setChoiceGugun] = useState(["00", ""]);
+  const { data: dong } = useQuery(
+    ["dong", ChoiceGugun],
+    () => getDong(ChoiceGugun[0]),
+    {
+      enabled: !!ChoiceGugun,
+    }
+  );
+  const [ChoiceDong, setChoiceDong] = useState(["00", ""]);
 
-
-
-  
-
-  const {
-    register,
-    watch,
-    handleSubmit,
-    formState: { errors },
-    setValue,
-  } = useForm();
+  const postdata = {
+    title,
+    astartDate,
+    aendDate,
+    point,
+    people,
+    sido: ChoiceSido[0],
+    gugun: ChoiceGugun[0],
+    dong: ChoiceDong[0],
+    userId,
+  };
 
   // 미션 사진 등록
   function MissionPicture() {
@@ -206,22 +216,21 @@ export default function Createmission() {
         setCreateimg(null);
       }
     };
-    useEffect(()=> {
-      if (createImg){
-        const reader = new FileReader()
-        reader.onloadend = ()=>{
-          setPreview(reader.result as string)
-        }
-        reader.readAsDataURL(createImg)
-      }else{
-        setPreview(null)
+    useEffect(() => {
+      if (createImg) {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          setPreview(reader.result as string);
+        };
+        reader.readAsDataURL(createImg);
+      } else {
+        setPreview(null);
       }
-    },[createImg])
+    }, [createImg]);
     return (
       <CameraBtn>
         <SUploadImage aria-label="upload picture" component="label">
           <input
-            
             hidden
             accept="image/*"
             type="file"
@@ -245,13 +254,18 @@ export default function Createmission() {
 
   // 임무명
   function MissionName() {
-    const onChange = (e) => {
-      setTitle(e.target.value);
-    };
+    // const onChange = (e) => {
+    //   setTitle(e.target.value);
+    // };
     return (
       <div>
         <Text>임무명</Text>
-        <BoxInput onChange={onChange} value={title} />
+        <BoxInput
+          onChange={(e) => {
+            setTitle(e.target.value);
+          }}
+          value={title}
+        />
       </div>
     );
   }
@@ -306,18 +320,17 @@ export default function Createmission() {
           step={500}
           defaultValue={500}
           onBlur={(e) => {
+            e.preventDefault()
             const tmp = Number(e.target.value);
             if (tmp < 500) {
-              e.target.value = '500';
-              
+              e.target.value = "500";
             } else if (tmp > 5000) {
-              e.target.value = '5000';
+              e.target.value = "5000";
             } else if (Number(e.target.value) % 10) {
               e.target.value = `${tmp - (tmp % 10)}`;
             }
             setPoint(Number(e.target.value));
-            return
-
+            return;
           }}
         />
       </>
@@ -329,71 +342,88 @@ export default function Createmission() {
     return (
       <>
         <Text>정원</Text>
-        <PeopleInput type="number" step={10} defaultValue={10}  onBlur={(e:FocusEvent<HTMLInputElement>)=>{
-          const num = Number(e.target.value)
-          if (num<10){
-            e.target.value='10'
-            
-          }else if(num>5000){
-            e.target.value='5000'  
-          }else if (num%10){
-            e.target.value=`${num-(num%10)}`
-          }
-          setPeople(Number(e.target.value))
-          console.log(e.target.value)
-        }} />
+        <PeopleInput
+          type="number"
+          step={10}
+          defaultValue={10}
+          onBlur={(e: FocusEvent<HTMLInputElement>) => {
+            const num = Number(e.target.value);
+            if (num < 10) {
+              e.target.value = "10";
+            } else if (num > 5000) {
+              e.target.value = "5000";
+            } else if (num % 10) {
+              e.target.value = `${num - (num % 10)}`;
+            }
+            setPeople(Number(e.target.value));
+            console.log(e.target.value);
+          }}
+        />
       </>
     );
   }
 
   //지역 설정 ---
-function MissionLocation() {
-  
-
-
-  return (
-    <>
-      <Text>지역</Text>
-      {/* 시도 선택 */}
-      <SelectSido onChange={(e) => {setChoiceSido(e.target.value.split(","))}} >
-      <option value="">
-
-      {ChoiceSido[1] ? ChoiceSido[1] : '시/도'}
-      </option>
-      {sido?.map((item) => (
-            <option key={item['sidoCode']} value={[item['sidoCode'],item['sidoName'] ]}>{item['sidoName']}</option>
+  function MissionLocation() {
+    return (
+      <>
+        <Text>지역</Text>
+        {/* 시도 선택 */}
+        <SelectSido
+          onChange={(e) => {
+            setChoiceSido(e.target.value.split(","));
+          }}
+        >
+          <option value="">{ChoiceSido[1] ? ChoiceSido[1] : "시/도"}</option>
+          {sido?.map((item) => (
+            <option
+              key={item["sidoCode"]}
+              value={[item["sidoCode"], item["sidoName"]]}
+            >
+              {item["sidoName"]}
+            </option>
           ))}
-      </SelectSido>
+        </SelectSido>
 
-      {/* 구군 선택 */}
-      <SelectGugun onChange={(e) => {setChoiceGugun(e.target.value.split(","))}} >
-      <option value="" >
-        
-        {ChoiceGugun[1] ? ChoiceGugun[1] : '시/군/구'}
-        
-       </option>
+        {/* 구군 선택 */}
+        <SelectGugun
+          onChange={(e) => {
+            setChoiceGugun(e.target.value.split(","));
+          }}
+        >
+          <option value="">
+            {ChoiceGugun[1] ? ChoiceGugun[1] : "시/군/구"}
+          </option>
           {gugun?.map((item) => (
-            <option key={item['gugunCode']} value={[item['gugunCode'], item['gugunName'].split(" ")[1]]}  >{item['gugunName'].split(" ")[1]}</option>
+            <option
+              key={item["gugunCode"]}
+              value={[item["gugunCode"], item["gugunName"].split(" ")[1]]}
+            >
+              {item["gugunName"].split(" ")[1]}
+            </option>
           ))}
-      </SelectGugun  >
+        </SelectGugun>
 
-      {/* 동 선택 */}
-      <SelectDong onChange={(e) => {setChoiceDong(e.target.value.split(","))
-       console.log(ChoiceSido,ChoiceGugun,ChoiceDong)
-    }} >
-      <option value="">
-      {ChoiceDong[1] ? ChoiceDong[1] : '읍/면/동'}
-        </option>
+        {/* 동 선택 */}
+        <SelectDong
+          onChange={(e) => {
+            setChoiceDong(e.target.value.split(","));
+            console.log(ChoiceSido, ChoiceGugun, ChoiceDong);
+          }}
+        >
+          <option value="">{ChoiceDong[1] ? ChoiceDong[1] : "읍/면/동"}</option>
           {dong?.map((item) => (
-            <option key={item['dongCode']} value={[item['dongCode'], item['dongName'].split(" ")[2]]}>{item['dongName'].split(" ")[2]}</option>
+            <option
+              key={item["dongCode"]}
+              value={[item["dongCode"], item["dongName"].split(" ")[2]]}
+            >
+              {item["dongName"].split(" ")[2]}
+            </option>
           ))}
-      </SelectDong>
-
-      
-    </>
-  );
-}
-
+        </SelectDong>
+      </>
+    );
+  }
 
   return (
     <>
@@ -456,13 +486,16 @@ function MissionLocation() {
               dColor={"#65ACE2"}
               variant="contained"
               type="submit"
-              // onClick={() => router.push("/")}
+              onClick={() => {
+                PostNewMission(postdata);
+                PostMissionImg(createImg);
+                router.push("/");
+              }}
             >
               등록
             </SubmitBtn>
           </BtnContent>
         </Block>
-
       </MissioWrapper>
     </>
   );
