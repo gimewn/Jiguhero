@@ -4,11 +4,11 @@ import {BASE_URL, Token} from 'pages/api/fetch';
 
 // export default async function missionUserData(req: NextApiRequest) {
 export default async function missionUserData() {
-  const response = await fetch(BASE_URL+'mission/1/details?user_id=1', {
+  const response = await fetch(BASE_URL+'mission/1/details?userId=1', {
     method: "GET",
-    headers: new Headers({
+    headers: {
       Authorization: Token
-    }),
+    },
   });
   const data = await response.json().catch(() => {
 

@@ -58,8 +58,9 @@ const Content = styled("div")`
 const BtnContent = styled("div")`
   display: flex;
   flex-direction: row;
-  align-items: right;
-  justify-content: right;
+  align-items: center;
+  justify-content: center;
+  margin-top: 10px;
   @media screen and (min-width: 360px) {
     width: 400px;
   }
@@ -82,21 +83,17 @@ const BoxInput = styled("input")`
   padding: 3px;
   width: 13rem;
   margin-left: 10px;
+  padding: 5px;
 `;
-const BoxSelect = styled("select")`
-  border: #65ace2 solid 1px;
-  background-color: white;
-  border-radius: 15px;
-  padding: 3px;
-  margin: 0.5rem;
-`;
-
 const DateInput = styled(DatePicker)`
   border: #65ace2 solid 1px;
   background-color: white;
   border-radius: 15px;
   width: 100px;
   box-sizing: border-box;
+  padding: 5px;
+  margin-right: 9px;
+  margin-left: 9px;
 `;
 const DateWrapper = styled("div")`
   display: inline-flex;
@@ -112,18 +109,19 @@ const SelectSido = styled("select")`
 
 const SelectGugun = styled(SelectSido)``;
 
-const SelectDong = styled(SelectSido)``;
-const CameraBox = styled("div")`
-  width: 150px;
-  height: 150px;
+const CameraBox = styled("form")`
+  width: 250px;
+  height: 200px;
   background-color: #ffffff;
-  border-radius: 100px;
+  border-radius: 15px;
   box-shadow: 0px 0px 5px 0px #dadce0 inset;
   border: 0;
   display: flex;
   justify-content: center;
   align-items: center;
-  svg {
+  @media screen and (min-width: 360px) {
+    width: 200px;
+    height: 150px;
   }
   img {
     object-fit: cover;
@@ -145,13 +143,37 @@ const PointInput = styled("input")`
   padding: 3px;
   width: 13rem;
   margin-left: 10px;
+  padding: 5px;
 `;
 const PeopleInput = styled(PointInput)``;
 
-const SubmitBtn = styled(ButtonFull)`
-  width: 3rem;
-  margin-right: 3rem;
+const MissionText = styled("textarea")`
+  border: #65ace2 solid 1px;
+  background-color: white;
+  border-radius: 15px;
+  width: 300px;
+  height: 100px;
+  margin-top: 10px;
 `;
+
+const SubmitBtn = styled(ButtonFull)`
+  width: 300px;
+`;
+
+//임무명
+function MissionName() {
+  const [text, setText] = useState("");
+  const onChange = (event) => {
+    setText(event.target.value);
+    console.log(event.target.value);
+  };
+  return (
+    <div>
+      <Text>임무명</Text>
+      <BoxInput type="text" onChange={onChange} value={text} />
+    </div>
+  );
+}
 
 const SUploadImage = styled(IconButton).attrs({ type: "button" })``;
 
@@ -320,7 +342,7 @@ export default function Createmission() {
           step={500}
           defaultValue={500}
           onBlur={(e) => {
-            e.preventDefault()
+            e.preventDefault();
             const tmp = Number(e.target.value);
             if (tmp < 500) {
               e.target.value = "500";
@@ -432,8 +454,12 @@ export default function Createmission() {
         <title>임무 생성하기 | 지구-방위대</title>
       </Head>
 
-      {/* 모바일 뷰에서 뒤로가기 버튼! */}
-      <Backcomponents name="임무 생성하기"></Backcomponents>
+      <NavBar>
+        <Header>
+          {/* 모바일 뷰에서 뒤로가기 버튼! */}
+          <BackCompo name="임무 생성하기"></BackCompo>
+        </Header>
+      </NavBar>
 
       <MissioWrapper>
         {/* 미션사진추가 */}
@@ -457,6 +483,13 @@ export default function Createmission() {
           </Content>
         </Block>
 
+        {/* 지역 */}
+        <Block>
+          <Content>
+            <MissionLocation />
+          </Content>
+        </Block>
+
         {/* 포인트 */}
         <Block>
           <Content>
@@ -471,12 +504,8 @@ export default function Createmission() {
           </Content>
         </Block>
 
-        {/* 지역 */}
-        <Block>
-          <Content>
-            <MissionLocation />
-          </Content>
-        </Block>
+        {/* 내용쓰기 */}
+        <TextArea />
 
         {/* 등록버튼 */}
         <Block>
