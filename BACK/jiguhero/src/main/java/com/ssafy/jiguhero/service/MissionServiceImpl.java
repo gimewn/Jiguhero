@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -103,19 +104,21 @@ public class MissionServiceImpl implements MissionService {
     @Override
     public void saveMission(MissionDto missionDto, Long userId) {
         Mission mission = new Mission();
+//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
         mission.setRegtime(LocalDateTime.now());
         mission.setTitle(missionDto.getTitle());
-        mission.setStartDate(LocalDateTime.now()); // 바꿔야 함
-        mission.setEndDate(LocalDateTime.now()); // 바꿔야 함
+        mission.setStartDate(LocalDate.parse(missionDto.getStartDate(), DateTimeFormatter.ISO_DATE)); // 바꿔야 함
+        mission.setEndDate(LocalDate.parse(missionDto.getEndDate(), DateTimeFormatter.ISO_DATE)); // 바꿔야 함
         mission.setEntryPoint(missionDto.getEntryPoint());
         mission.setSidoCode(missionDto.getSidoCode());
         mission.setGugunCode(missionDto.getGugunCode());
         mission.setDongCode(missionDto.getDongCode());
-        mission.setNowPerson(missionDto.getNowPerson());
+        mission.setNowPerson(1);
         mission.setMaxPerson(missionDto.getMaxPerson());
-        mission.setFailedPerson(missionDto.getFailedPerson());
-        mission.setLikes(missionDto.getLikes());
-        mission.setHits(missionDto.getHits());
+        mission.setFailedPerson(0);
+        mission.setLikes(0);
+        mission.setHits(0);
         missionDao.insertMission(mission);
 
         Conn_Mission connMission = new Conn_Mission();
@@ -125,7 +128,7 @@ public class MissionServiceImpl implements MissionService {
         connMission.setSuccessRate(0);
         connMission.setMission(mission);
         connMission.setUser(userEntity);
-
+        missionDao.insertConnMission(connMission);
     }
 
     public void joinMission(Long userId, Long missionId){

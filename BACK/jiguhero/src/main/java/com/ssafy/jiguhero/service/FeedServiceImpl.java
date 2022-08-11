@@ -57,9 +57,6 @@ public class FeedServiceImpl implements FeedService {
             feed.setUser(userEntity);
             feed.setMission(missionEntity);
             feedDao.insertFeed(feed);
-            ///////////////////////////////////////////////////// 달성률 계산
-
-            /////////////////////////////////////////////////////
             return 1; // <해당 날짜, 유저>로 등록된 인증샷이 없는 경우 인증샷 등록 완료
         }
         else

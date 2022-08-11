@@ -13,7 +13,6 @@ public class ReviewDto {
     private long reviewId;
     private int score;
     private String content;
-    private long userId;
 
     public static ReviewDto of(Review reviewEntity){
         ReviewDto reviewDto = ModelMapperUtils.getModelMapper().map(reviewEntity, ReviewDto.class);

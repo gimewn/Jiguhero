@@ -20,8 +20,9 @@ public class MissionDto {
     private long missionId;
     private LocalDateTime regtime;
     private String title;
-    private LocalDateTime startDate;
-    private LocalDateTime endDate;
+    private String content;
+    private String startDate;
+    private String endDate;
     private int entryPoint;
     private String sidoCode;
     private String gugunCode;
