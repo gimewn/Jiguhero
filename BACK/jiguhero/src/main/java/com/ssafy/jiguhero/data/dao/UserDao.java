@@ -15,4 +15,8 @@ public interface UserDao {
     // 유저의 nickname 수정하기
     User updateUserNickname(Long userId, String nickname) throws Exception;
 
+    User deleteUser(Long userId) throws Exception;
+
+    void deleteToken(String userEmail) throws Exception;
+
 }
