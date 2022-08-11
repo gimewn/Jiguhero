@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -102,6 +103,7 @@ public class MissionServiceImpl implements MissionService {
     @Override
     public void saveMission(MissionDto missionDto, Long userId) {
         Mission mission = new Mission();
+        mission.setRegtime(LocalDateTime.now());
         mission.setTitle(missionDto.getTitle());
         mission.setStartDate(LocalDateTime.now()); // 바꿔야 함
         mission.setEndDate(LocalDateTime.now()); // 바꿔야 함
@@ -130,6 +132,7 @@ public class MissionServiceImpl implements MissionService {
         Conn_Mission connMission = new Conn_Mission();
         Mission mission = missionDao.selectMissionById(missionId);
         User userEntity = userDao.selectUserById(userId);
+        connMission.setState("BEFORE");
         connMission.setRole(2);
         connMission.setSuccessRate(0);
         connMission.setMission(mission);
@@ -193,6 +196,7 @@ public class MissionServiceImpl implements MissionService {
 
     }
 
+    /*
     @Override
     public FeedDto getFeedById(Long feedId, Long userId){
         User userEntity = userDao.selectUserById(userId);
@@ -209,13 +213,28 @@ public class MissionServiceImpl implements MissionService {
         return dto;
     }
 
+     */
+
+    /*
     @Override
-    public void saveFeed(FeedDto feedDto,Long userId){
+    public int saveFeed(FeedDto feedDto,Long missionId, Long userId){
         Feed feed = new Feed();
-        feed.setContent(feedDto.getContent());
-        missionDao.insertFeed(feed);
+        Mission missionEntity = missionDao.selectMissionById(missionId);
+        User userEntity = userDao.selectUserById(userId);
+
+        if(missionDao.searchFeed(userEntity)==null) {
+            feed.setContent(feedDto.getContent());
+            feed.setRegtime(LocalDate.now());
+            feed.setUser(userEntity);
+            feed.setMission(missionEntity);
+            missionDao.insertFeed(feed);
+            return 1; // <해당 날짜, 유저>로 등록된 인증샷이 없는 경우 인증샷 등록 완료
+        }
+        else
+            return 2; // <해당 날짜, 유저>로 등록된 인증샷이 있는 경우 인증샷 등록 불가
 
     }
+     */
 
     public String getRepMissionImageURL(Long missionId, HttpServletRequest request) {
         Image_Mission imageMission = imageDao.selectRepImageMission(missionDao.selectMissionById(missionId));
@@ -251,4 +270,33 @@ public class MissionServiceImpl implements MissionService {
         return urlList;
     }
 
+    /*
+    @Override
+    public FeedDto changeFeed(FeedDto feedDto, Long userId) throws Exception{
+        User userEntity = userDao.selectUserById(userId);
+
+        if(missionDao.selectFeed(feedDto.getFeedId(), userEntity)!=null) {
+            Feed feed = missionDao.updateFeed(feedDto);
+            FeedDto dto = FeedDto.of(feed);
+            return dto;
+        }
+        else {
+            throw new Exception();
+        }
+    }
+     */
+
+    @Override
+    public List<MissionDto> searchMission(String search, String array) {
+        List<Mission> entityList = missionDao.searchMission(search, array);
+
+        List<MissionDto> dtoList = entityList.stream().map(entity -> MissionDto.of(entity)).collect(Collectors.toList());
+
+        return dtoList;
+    }
+
+    @Override
+    public Float successRateMission(Long missionId, Long userId){
+
+    }
 }

@@ -110,6 +110,7 @@ public class MissionController {
 
     }
 
+    /*
     @ApiOperation(value = "선택된 인증샷의 정보를 반환한다")
     @GetMapping("/{mission_id}/feed/{feed_id}/details")
     public ResponseEntity<FeedDto> getFeed(@PathVariable("feed_id") Long feedId, @RequestParam("user_id") Long userId){
@@ -120,9 +121,47 @@ public class MissionController {
 
     @ApiOperation(value = "인증샷을 등록한다")
     @PostMapping("{mission_id}/feed")
-    public ResponseEntity<String> saveFeed(@RequestBody FeedDto feedDto, @RequestParam("user_id") Long userId){
-        missionService.saveFeed(feedDto,userId);
+    public ResponseEntity<String> insertFeed(@PathVariable("mission_id") Long missionId, @RequestBody FeedDto feedDto, @RequestParam("user_id") Long userId){
+        int result = missionService.saveFeed(feedDto, missionId, userId);
+        if(result==1) {
+            return new ResponseEntity<String>("success", HttpStatus.OK); // 성공적으로 인증샷 등록이 완료된 경우
+        }
+        else{
+            return new ResponseEntity<String>("already", HttpStatus.OK); // 이미 인증샷이 등록되어 있는 경우
+        }
+    }
 
-        return new ResponseEntity<String>("success",HttpStatus.OK);
+    @ApiOperation(value = "해당 인증샷을 수정한다")
+    @PutMapping("/{mission_id}/feed/{feed_id}/details")
+    public ResponseEntity<FeedDto> changeFeed(@RequestBody FeedDto feedDto, @RequestParam("user_id") Long userId){
+        FeedDto feedDtoResult = null;
+        try {
+            feedDtoResult = missionService.changeFeed(feedDto, userId);
+        }
+        catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(feedDtoResult);
+    }
+     */
+
+    @ApiOperation(value = "검색어로 검색한 임무 리스트 목록을 제목순 or 등록순으로 반환한다")
+    @GetMapping("/search")
+    public ResponseEntity<List<MissionDto>> searchMission(@RequestParam("search") String search, @RequestParam("array") String array){
+
+        List<MissionDto> list = missionService.searchMission(search, array);
+
+
+        return ResponseEntity.status(HttpStatus.OK).body(list);
+
+    }
+
+    @ApiOperation(value = "달성률을 반환한다")
+    @GetMapping("/rate")
+    public ResponseEntity<String> successRateMission(@RequestParam("mission_id") Long missionId, @RequestParam("user_id") Long userId){
+
+        missionService.successRateMission(missionId, userId);
+
+
     }
 }

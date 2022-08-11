@@ -67,5 +67,27 @@ public class UserController {
 
         return ResponseEntity.status(HttpStatus.OK).body(userDto);
     }
-    
+
+    @ApiOperation(value = "user_id에 해당하는 유저를 삭제한다.(유저 정보 null로 바꾸기)", response = UserDto.class)
+    @DeleteMapping("/{user_id}")
+    public ResponseEntity<UserDto> deleteUser(@PathVariable("user_id") Long userId) {
+        UserDto userDto = userService.getUserById(userId);
+        // 토큰 지우기
+        try {
+            userService.deleteToken(userDto.getEmail());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        UserDto deletedUser = null;
+        // 회원정보 null로 바꾸기
+        try {
+            deletedUser = userService.deleteUser(userId);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(deletedUser);
+    }
+
 }
