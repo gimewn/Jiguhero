@@ -54,7 +54,6 @@ const TextWrapper = styled('div')`
   margin: 4px;
 `
 
-
 const TitleName = styled('a')`
   font-size: 1rem;
   font-weight: bolder;
@@ -89,7 +88,6 @@ interface MissionProps {
   repImageURL: string;
   missionId: number;
 }
-
 
 export default function MissionList({ missionId, entryPoint, title, startDate, endDate, sidoCode, nowPerson, maxPerson, repImageURL }: MissionProps) {
   const router = useRouter();

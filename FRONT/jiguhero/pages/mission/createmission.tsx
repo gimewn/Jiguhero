@@ -32,20 +32,22 @@ const NavBar = styled('div')`
     display:none;
   }
 `
+
 const Header = styled("div")`
   display: flex;
   justify-content: space-between;
   margin: 0px 5px 0px 20px;
 `;
+const BackCompo = styled(Backcomponents)`
+  margin-top: 10px;
+  margin-bottom: 10px;
+`
 const MissioWrapper = styled('div')`
   display:flex;
   flex-direction: column;
   margin-top: 27px;
 `
-const BackCompo = styled(Backcomponents)`
-  margin-top: 10px;
-  margin-bottom: 10px;
-`
+
 
 const Block = styled('div')`
   margin: 0.4rem;

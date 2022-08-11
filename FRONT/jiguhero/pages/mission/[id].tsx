@@ -1,7 +1,7 @@
 
 import Head from 'next/head';
 import styled from 'styled-components';
-import Backcomponents from 'components/back';
+// import Backcomponents from 'components/back';
 import { dehydrate, Query, QueryClient, QueryClientProvider, useQuery } from "@tanstack/react-query";
 import { getSession, SessionProvider, useSession } from "next-auth/react";
 import MoreVertRoundedIcon from '@mui/icons-material/MoreVertRounded';
@@ -55,10 +55,10 @@ const MobileMore = styled(MoreVertRoundedIcon)`
   }
 `
 
-const BackCompo = styled(Backcomponents)`
-  margin-top: 10px;
-  margin-bottom: 10px;
-`
+// const BackCompo = styled(Backcomponents)`
+//   margin-top: 10px;
+//   margin-bottom: 10px;
+// `
 
 const Block = styled('div')`
   margin-top: 0.4rem;
@@ -267,7 +267,40 @@ const UnderLine = styled('hr')`
 const MissionExplanation = styled('div')`
     display: flex;
 `
+//네브바 
+import ArrowBackIosRoundedIcon from '@mui/icons-material/ArrowBackIosRounded';
+const Title = styled('div')`
+    display:flex;
+    align-items: center;
+    @media only screen and (min-width: 650px) {
+    display:none;
+  }
+`
+const PageTitle = styled('span')`
+    font-weight: bold;
+    font-size:15px;
+    color:#555555;
+    margin-left:10px;
+`
+const BackButton = styled(ArrowBackIosRoundedIcon)`
+    color:#98C064;
+    :hover{
+        cursor: pointer;
+    }
+`
+interface PageName {
+    name: string;
+}
 
+function Back({ name }: PageName) {
+    const router = useRouter()
+    return (
+        <Title className="BackTitle">
+            <BackButton onClick={() => { router.back() }} />
+            <PageTitle>{name}</PageTitle>
+        </Title>
+    )
+}
 //미션 올린 사람 x 모바일 뷰 더보기 모달창
 function MissionUnAuthModal() {
     return (
@@ -340,7 +373,7 @@ export default function MissionDetail() {
                 <NavBar>
                     <Header>
                         {/* 모바일 뷰에서 뒤로가기 버튼! */}
-                        <BackCompo name='임무 상세보기'></BackCompo>
+                        <Back name='임무 상세보기'></Back>
                         {/* 모바일 뷰에서 모달창 */}
 
                         {/* Modal창을 열기 위한 땡땡이*/}
