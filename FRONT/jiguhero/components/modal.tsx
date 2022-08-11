@@ -255,13 +255,18 @@ export default function Modal(props){
     const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
       setPage(value);
     };
-    useEffect(()=>{
+    
+    function FetchReviews(){
         getReview(data['placeId']).then((res) => {
-                setReviews(res)
-              })
+            setReviews(res)
+          })
         setRemainder(reviews.length % 5)
         setQuot(reviews.length / 5)
-    },[reviews])
+    }
+    useEffect(()=>{
+        FetchReviews()
+    },[reviews]);
+
     function Emoji(prop){
         if(prop['index'] === 0){
             return(<EmojiSpan size="20px">{reviewEmoji[prop['score']][prop['index']]}</EmojiSpan>)
@@ -326,17 +331,16 @@ export default function Modal(props){
                     </ReviewBox>
                     </ReviewDiv>
                     ))}
-                    {quot>1 ? <Paging
+                    {quot > 1 ? <Paging
                     count={remainder === 0 ? quot : quot + 1}
                     page={page}
                     onChange={handleChange}
-                /> : <></>}
+                />:<></>}
                 </WithTitle>
             </ModalBody>
             {isReport ? 
             <PostReport Color="white">
             <WithTitle>
-            {/* <Hr /> */}
             <ConTitle>🚨 신고 이유를 선택해주세요</ConTitle>
             <SelectReport onChange={(e) => {setReportCategory(Number(e.target.value))}}>
                 <option value="">--- 신고 사유 ---</option>
@@ -349,13 +353,7 @@ export default function Modal(props){
                 <RButtonDiv>
                     <ReportButton dColor='#65ACE2' hColor='#65ACE2' style={{margin:'0 10px 0 0'}} onClick={() => setReport(false)}>취소</ReportButton>
                     <ReportButton dColor="#FF4848" hColor="#FF4848" onClick={() => {
-                        const result = postReport(data.placeId, 1, ReportCategory, ReportContent)
-                        console.log(result)
-                    // if(result === "success"){
-                    //     alert("신고해주셔서 감사합니다.")
-                    // }else{
-                    //     alert("신고가 접수되지 않았습니다!")
-                    // }
+                        postReport(data.placeId, 1, ReportCategory, ReportContent)
                     }}>신고하기</ReportButton>
                 </RButtonDiv>
             </PostReport> : 
