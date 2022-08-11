@@ -3,7 +3,7 @@ import {BASE_URL, Token} from 'pages/api/fetch';
 
 
 export default async function postReport(placeId, userId, content, score){
-    const response = await fetch(`${BASE_URL}place/report?place_id=${placeId}&user_id=${userId}`, {
+    const response = await fetch(`${BASE_URL}place/review?place_id=${placeId}&user_id=${userId}`, {
         method:'POST',
         headers:{
             "Authorization" : Token,

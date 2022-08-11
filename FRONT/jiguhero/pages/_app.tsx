@@ -49,10 +49,9 @@ const Container = styled("div")`
   display: flex;
   justify-content: center;
   flex-direction: column;
-  min-width: 375px;
-  /* max-width:700px; */
+  width:inherit;
+  max-width: 700px;
   span, p {
-
     align-items: flex-start;
   }
   div {
