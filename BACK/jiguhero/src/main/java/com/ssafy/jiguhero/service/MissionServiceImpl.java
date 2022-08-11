@@ -111,17 +111,17 @@ public class MissionServiceImpl implements MissionService {
         mission.setSidoCode(missionDto.getSidoCode());
         mission.setGugunCode(missionDto.getGugunCode());
         mission.setDongCode(missionDto.getDongCode());
-        mission.setNowPerson(missionDto.getNowPerson());
+        mission.setNowPerson(1);
         mission.setMaxPerson(missionDto.getMaxPerson());
-        mission.setFailedPerson(missionDto.getFailedPerson());
-        mission.setLikes(missionDto.getLikes());
-        mission.setHits(missionDto.getHits());
+        mission.setFailedPerson(0);
+        mission.setLikes(0);
+        mission.setHits(0);
         missionDao.insertMission(mission);
 
         Conn_Mission connMission = new Conn_Mission();
         User userEntity = userDao.selectUserById(userId);
         connMission.setState("BEFORE");
-        connMission.setRole(0);
+        connMission.setRole(1);
         connMission.setSuccessRate(0);
         connMission.setMission(mission);
         connMission.setUser(userEntity);
@@ -138,6 +138,8 @@ public class MissionServiceImpl implements MissionService {
         connMission.setMission(mission);
         connMission.setUser(userEntity);
         missionDao.insertConnMission(connMission);
+
+        mission.setNowPerson(mission.getNowPerson()+1);
 
     }
 
