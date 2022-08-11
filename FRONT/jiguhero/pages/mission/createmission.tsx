@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { ButtonFull, ButtonBorder } from "styles/styled";
 import Backcomponents from "components/back";
 import Head from "next/head";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, FocusEvent } from "react";
 import { FieldErrors, useForm } from "react-hook-form";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -17,10 +17,9 @@ import {
   QueryClientProvider,
   useQuery,
 } from "@tanstack/react-query";
-import { getSession, SessionProvider, useSession } from "next-auth/react";
+
 import PostMission from "pages/api/mission/index";
 
-import getImgUrl from "pages/api/getImgUrl";
 import Image from "next/image";
 import moment from "moment";
 import PostMissionImg from "pages/api/postMissionImg";
@@ -113,6 +112,12 @@ const CameraBox = styled("div")`
   align-items: center;
   svg {
   }
+  img {
+    object-fit: cover;
+    width: 150px;
+    height: 150px;
+    border-radius: 100px;
+  }
 `;
 const CameraBtn = styled("div")`
   display: flex;
@@ -137,93 +142,19 @@ const SubmitBtn = styled(ButtonFull)`
 
 const SUploadImage = styled(IconButton).attrs({ type: "button" })``;
 
-//임무명
-function MissionName() {
-  const [text, setText] = useState("");
-  const onChange = (event) => {
-    setText(event.target.value);
-    // console.log(event.target.value);
-  };
-  return (
-    <div>
-      <Text>임무명</Text>
-      <BoxInput type="text" onChange={onChange} value={text} />
-    </div>
-  );
-}
-
-//활동기간
-function DatePick() {
-  const nowTime = moment().format("YYYY-MM-DD");
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
-
-  // console.log(nowTime);
-  // console.log(startDate, endDate);
-  return (
-    <>
-      <Text>활동기간</Text>
-      <DateWrapper>
-        <DateInput
-          selected={startDate}
-          onChange={(date) => setStartDate(date)}
-          selectsStart
-          locale={locale}
-          startDate={startDate}
-          endDate={endDate}
-          minDate={new Date()}
-          dateFormat="yyyy-MM-dd"
-        />
-        <a> ~</a>
-        <DateInput
-          selected={endDate}
-          onChange={(date) => setEndDate(date)}
-          selectsEnd
-          locale={locale}
-          startDate={startDate}
-          endDate={endDate}
-          minDate={startDate}
-          dateFormat="yyyy-MM-dd"
-        />
-      </DateWrapper>
-    </>
-  );
-}
-//포인트
-function Point() {
-  return (
-    <>
-      <Text>포인트</Text>
-      <PointInput type="number" min="1" max="2000" />
-    </>
-  );
-}
-//정원
-function JoinPeople() {
-  return (
-    <>
-      <Text>정원</Text>
-      <PeopleInput type="number" min="1" />
-    </>
-  );
-}
-
-//미션사진
-
 //지역 설정 ---
 function MissionLocation() {
-  // const [data, setData] = useState([]);
-  // const { data: sido } = useQuery(['sido'], getSido);
-  // const [ChoiceSido, setChoiceSido] = useState('11');
-  // const { data: gugun } = useQuery(['gugun', ChoiceSido], () => getGugun(ChoiceSido), {
-  //   enabled: !!ChoiceSido,
-  // });
-  // const [ChoiceGugun, setChoiceGugun] = useState('11110');
-  // const { data: dong } = useQuery(['dong', ChoiceGugun], () => getDong(ChoiceGugun), {
-  //   enabled: !!ChoiceGugun
-  // })
-  // const [ChoiceDong, setChoiceDong] = useState('');
-  // let search = false;
+  const [data, setData] = useState([]);
+  const [sido, setSido] = useState()
+  const [gugun, setGugun] = useState()
+  const [dong, setDong] = useState()
+
+  const [ChoiceSido, setChoiceSido] = useState('11');
+  
+  const [ChoiceGugun, setChoiceGugun] = useState('11110');
+  
+  const [ChoiceDong, setChoiceDong] = useState('');
+  let search = false;
 
   return (
     <>
@@ -238,7 +169,7 @@ function MissionLocation() {
       <SelectDong></SelectDong>
 
       {/* 윤주님 코드 */}
-      {/* <PlaceGroup>
+      <PlaceGroup>
         {data?.map((item) => (
           <Place
             key={item.placeId}
@@ -256,17 +187,21 @@ function MissionLocation() {
             </WithIcon> : <></>}
           </Place>
         ))}
-      </PlaceGroup> */}
+      </PlaceGroup>
     </>
   );
 }
 
-interface IForm {
-  img: File;
-}
-
 export default function Createmission() {
-  const [createImg, setCreateimg] = useState(null);
+  const [createImg, setCreateimg] = useState<File>(null); // 이미지 파일
+  const [preview, setPreview] = useState<string>(); // 이미지 미리보기 사진
+  const [title, setTitle] = useState(""); // 임무명
+  const [startDate, setStartDate] = useState(new Date()); // 시작일
+  const [endDate, setEndDate] = useState(new Date()); // 종료일
+  const [astartDate, setAstartDate] = useState<Array<string>>(); // 시작일 배열 [요일, 월, 일, 년]
+  const [aendDate, setAendDate] = useState<Array<string>>(); // 종료일 배열 [요일, 월, 일, 년]
+  const [point, setPoint] = useState<Number>();
+  const [people, setPeople] = useState<Number>()
   const {
     register,
     watch,
@@ -275,16 +210,19 @@ export default function Createmission() {
     setValue,
   } = useForm();
 
-  function MissionPicture({ image }) {
-    console.log(createImg)
+  // 미션 사진 등록
+  function MissionPicture() {
     const changeHandler = (e) => {
-      setCreateimg(e.target.files[0]);
+      const file = e.target.files[0];
+      if (file && file.type.substr(0, 5) === "image") {
+        setCreateimg(e.target.files[0]);
+      } else {
+        setCreateimg(null);
+      }
     };
-    
-    return (
-        
-      <CameraBtn>
 
+    return (
+      <CameraBtn>
         <SUploadImage aria-label="upload picture" component="label">
           <input
             {...register("Img", {
@@ -295,24 +233,126 @@ export default function Createmission() {
             type="file"
             name="file"
             onChange={changeHandler}
-            />
-        
+          />
 
-            {createImg ?
-          <CameraBox>
-             <img src={createImg?.name} alt="" /> 
-             
-          </CameraBox>
-             :
-             <CameraBox>
-
-            <PhotoCamera fontSize="large" />
-             </CameraBox>
-          }
+          {createImg ? (
+            <CameraBox>
+              <img src={preview} />
+            </CameraBox>
+          ) : (
+            <CameraBox>
+              <PhotoCamera fontSize="large" />
+            </CameraBox>
+          )}
         </SUploadImage>
       </CameraBtn>
     );
   }
+
+  // 임무명
+  function MissionName() {
+    const onChange = (event) => {
+      setTitle(event.target.value);
+    };
+    return (
+      <div>
+        <Text>임무명</Text>
+        <BoxInput type="text" onChange={onChange} value={title} />
+      </div>
+    );
+  }
+
+  //활동기간
+  function DatePick() {
+    return (
+      <>
+        <Text>활동기간</Text>
+        <DateWrapper>
+          <DateInput
+            selected={startDate}
+            onChange={(date) => {
+              setStartDate(date);
+              setAstartDate(startDate.toDateString().split(" "));
+            }}
+            selectsStart
+            locale={locale}
+            startDate={startDate}
+            endDate={endDate}
+            minDate={new Date()}
+            dateFormat="yyyy-MM-dd"
+          />
+          <a> ~</a>
+          <DateInput
+            selected={endDate}
+            onChange={(date) => {
+              setEndDate(date);
+              setAendDate(endDate.toDateString().split(" "));
+            }}
+            selectsEnd
+            locale={locale}
+            startDate={startDate}
+            endDate={endDate}
+            minDate={startDate}
+            dateFormat="yyyy-MM-dd"
+          />
+        </DateWrapper>
+      </>
+    );
+  }
+
+  //포인트
+  function Point() {
+    return (
+      <>
+        <Text>포인트</Text>
+        <PointInput
+          type="number"
+          min={500}
+          max="5000"
+          step={500}
+          defaultValue={500}
+          onBlur={(e) => {
+            const tmp = Number(e.target.value);
+            if (tmp < 500) {
+              e.target.value = 500;
+              
+            } else if (tmp > 5000) {
+              e.target.value = 5000;
+            } else if (Number(e.target.value) % 10) {
+              e.target.value = tmp - (tmp % 10);
+            }
+            setPoint(Number(e.target.value));
+            return
+
+          }}
+        />
+      </>
+    );
+  }
+
+  //정원
+  function JoinPeople() {
+    return (
+      <>
+        <Text>정원</Text>
+        <PeopleInput defaultValue={10} onBlur={(e:FocusEvent<HTMLInputElement>)=>{
+          const num = Number(e.target.value)
+          if (num<10){
+            e.target.value=10
+            
+          }else if(num>500){
+            e.target.value=500
+            
+          }else if (num%10){
+            e.target.value=num-(num%10)
+          }
+          setPeople(Number(e.target.value))
+  
+        }} />
+      </>
+    );
+  }
+
   return (
     <>
       {/* 헤더 */}
@@ -327,7 +367,7 @@ export default function Createmission() {
         {/* 미션사진추가 */}
         <Block>
           <Content>
-            <MissionPicture  />
+            <MissionPicture />
           </Content>
         </Block>
 
@@ -387,7 +427,7 @@ export default function Createmission() {
 
 export async function getServerSideProps(context) {
   const createmission = new QueryClient();
-  const session = await getSession(context);
+
   await createmission.prefetchQuery(["mission"], () => {
     PostMission();
   });
@@ -395,7 +435,6 @@ export async function getServerSideProps(context) {
   return {
     props: {
       data: {
-        session,
         dehydratedState: dehydrate(createmission),
       },
     },

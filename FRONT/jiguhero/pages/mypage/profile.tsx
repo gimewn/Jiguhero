@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import { dehydrate, QueryClient } from "@tanstack/react-query";
-import { getSession } from "next-auth/react";
 import groundUserData from "pages/api/ground/[id]";
 import missionUserData from "pages/api/mission/[id]";
 import userData from "pages/api/user/[id]";
@@ -74,14 +73,14 @@ export default function Profile({ data }) {
   });
   const onValid = (data: Update) => {
     console.log(data);
-    updateNickname(data.username, data.session.user.userId)
+    // updateNickname(data.username, data.session.user.userId)
   };
   const onInvalid = (errors: FieldErrors) => {
     console.log("실패");
   };
 
   useEffect(() => {
-    setPfimg(data.session.user.image);
+    // setPfimg(data.session.user.image);
   }, []);
 
   return (
@@ -104,7 +103,7 @@ export default function Profile({ data }) {
         id="image"
         onChange={(e: React.SyntheticEvent<HTMLInputElement>) => {
           e.preventDefault();
-          const res = setPfimg(e.target.files[0], data.session.user.userId);
+          // const res = setPfimg(e.target.files[0], data.session.user.userId);
         }}
       />
       
@@ -133,7 +132,7 @@ export default function Profile({ data }) {
       {/* 닉네임 유효성 검사 오류 시 메세지 */}
       <p>{errors.username?.message}</p>
       {/* 나머지 메세지 */}
-      <h4>{data.session.user.name}님, 저희와 함께 지구를 지켜주세요! </h4>
+      {/* <h4>{data.session.user.name}님, 저희와 함께 지구를 지켜주세요! </h4> */}
       <p>
         친환경, 혼자 실천하기 힘들지 않으셨나요? 다른 대원들과 함께라면 친환경
         실천이 훨씬 더 재밌고 쉬워질 거예요! 그래도 정말 떠나셔야 한다면...🥲
@@ -158,10 +157,8 @@ export async function getServerSideProps(context) {
   const userInfo2 = new QueryClient();
   const missionInfo2 = new QueryClient();
   const groundInfo2 = new QueryClient();
-  const session = await getSession(context);
-  await session2.prefetchQuery(["session"], () => {
-    return getSession(context);
-  });
+
+
   await userInfo2.prefetchQuery(["userInfo"], () => {
     userData();
   });
@@ -175,7 +172,7 @@ export async function getServerSideProps(context) {
   return {
     props: {
       data: {
-        session,
+    
         dehydratedState: dehydrate(userInfo2),
       },
     },

@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import renewAccess from "../auth/renewAccess";
+
 
 export default async function groundUserData(req: NextApiRequest) {
 
@@ -12,7 +12,7 @@ export default async function groundUserData(req: NextApiRequest) {
     })
 		
 		const data = await response.json().catch(()=>{
-			renewAccess
+
 		})
       
 

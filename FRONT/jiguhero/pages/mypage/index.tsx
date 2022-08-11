@@ -13,13 +13,12 @@ import { userInfo } from "os";
 import { RecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { missionPage, playedAreaPage, tabpage } from "states/mypage";
 import { dehydrate, Query, QueryClient, QueryClientProvider, useQuery } from "@tanstack/react-query";
-import { getSession, SessionProvider, useSession, signOut } from "next-auth/react";
 import { NextPageContext } from "node_modules/next/dist/shared/lib/utils";
 import { useRouter } from "next/router";
 import userData from "pages/api/user/[id]";
 import missionUserData from "pages/api/mission/[id]";
 import groundUserData from "pages/api/ground/[id]";
-import { getToken } from "next-auth/jwt";
+
 
 
 
@@ -156,11 +155,11 @@ const Mypage = ({ data }) => {
     return (
       <Profile>
         <BgImg>
-          <img alt="nitz" src={`${data.session.user.image}`} />
+          <img alt="nitz" src={``} />
         </BgImg>
         <div>
           <p>빨강</p>
-          <h2>{data.session.user.name}</h2>
+          <h2>{}</h2>
         </div>
         <Box margin="14px 0 0 0">
           <ArrowForwardIosRoundedIcon sx={{ color: blue[300] }} />
@@ -305,10 +304,7 @@ const Mypage = ({ data }) => {
       <Box>{tab ? <PlayingArea /> : <Mission />}</Box>
       <ButtonFull
         onClick={() => {
-          signOut({
-            redirect: true,
-            callbackUrl: `http://localhost:3000/`
-          })
+          
         }}
         dColor={"#FF4848"} hColor={"#FF4848"}>
         로그아웃
@@ -320,13 +316,6 @@ const Mypage = ({ data }) => {
 
 
 
-// const Page = ({ pageProps}) => {
-//   <SessionProvider session={pageProps.session}>
-//     <Mypage />
-//   </SessionProvider>
-
-
-// }
 
 
 
@@ -338,8 +327,8 @@ export async function getServerSideProps(context) {
   const userInfo2 = new QueryClient()
   const missionInfo2 = new QueryClient()
   const groundInfo2 = new QueryClient()
-  const session = await getSession(context);
-  await session2.prefetchQuery(['session'], () => { return getSession(context) })
+
+
   await userInfo2.prefetchQuery(['userInfo'], () => { userData() })
   await missionInfo2.prefetchQuery(['missionUserInfo'], () => { missionUserData(context) })
   await groundInfo2.prefetchQuery(['groundUserInfo'], () => { groundUserData(context) })
@@ -349,7 +338,7 @@ export async function getServerSideProps(context) {
   return {
     props: {
       data: {
-        session,
+
         dehydratedState: dehydrate(userInfo2)
       },
     },
