@@ -60,7 +60,7 @@ public class MissionController {
     }
 
     @ApiOperation(value = "새로운 임무를 등록한다.", response = String.class) // missionServiceImpl 확인!!! Conn_Mission도 추가해야함(임무 작성한 대원 저장 등)
-    @PostMapping("/")
+    @PostMapping
     public ResponseEntity<String> saveMission(@RequestBody MissionDto missionDto, @RequestParam("userId") Long userId) {
 
         missionService.saveMission(missionDto, userId);

@@ -12,7 +12,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Component
 public class GroundDaoImpl implements GroundDao {
@@ -90,25 +89,5 @@ public class GroundDaoImpl implements GroundDao {
     @Override
     public void deleteGroundById(Long groundId) {
         groundRepository.deleteById(groundId);
-    }
-
-    @Override
-    public Optional<Like_Ground> selectLikeGround(Ground groundEntity, User userEntity) {
-        Optional<Like_Ground> likeGroundEntity = likeGroundRepository.findByGroundAndUser(groundEntity, userEntity);
-        if(likeGroundEntity.isPresent()){
-            return likeGroundEntity;
-        } else {
-            return null;
-        }
-    }
-
-    @Override
-    public void insertLikeGround(Like_Ground likeGround) {
-        likeGroundRepository.save(likeGround);
-    }
-
-    @Override
-    public void deleteLikeGround(Ground groundEntity, User userEntity) {
-        likeGroundRepository.deleteByGroundAndUser(groundEntity, userEntity);
     }
 }
