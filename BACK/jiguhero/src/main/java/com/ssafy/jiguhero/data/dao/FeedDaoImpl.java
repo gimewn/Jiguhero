@@ -109,4 +109,10 @@ public class FeedDaoImpl implements FeedDao{
         feedRepository.deleteById(feedId);
     }
 
+    @Override
+    public int countByFeed(Mission mission, User user){
+        int cnt = feedRepository.countAllByMissionAndUser(mission, user);
+
+        return cnt;
+    }
 }

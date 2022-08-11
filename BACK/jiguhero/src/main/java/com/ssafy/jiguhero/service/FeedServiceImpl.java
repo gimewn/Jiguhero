@@ -5,6 +5,7 @@ import com.ssafy.jiguhero.data.dao.ImageDao;
 import com.ssafy.jiguhero.data.dao.MissionDao;
 import com.ssafy.jiguhero.data.dao.UserDao;
 import com.ssafy.jiguhero.data.dto.FeedDto;
+import com.ssafy.jiguhero.data.entity.Conn_Mission;
 import com.ssafy.jiguhero.data.entity.Feed;
 import com.ssafy.jiguhero.data.entity.Mission;
 import com.ssafy.jiguhero.data.entity.User;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 
 @Service
 public class FeedServiceImpl implements FeedService {
@@ -58,7 +60,12 @@ public class FeedServiceImpl implements FeedService {
             feed.setMission(missionEntity);
             feedDao.insertFeed(feed);
             ///////////////////////////////////////////////////// 달성률 계산
+            int days = (int) ChronoUnit.DAYS.between(missionEntity.getStartDate(), LocalDate.now()) + 1;
+            int feeds = feedDao.countByFeed(missionEntity, userEntity);
+            int successRate = (feeds/days)*100;
 
+            Conn_Mission connMission = missionDao.selectConnMission(missionEntity, userEntity);
+            connMission.setSuccessRate(successRate);
             /////////////////////////////////////////////////////
             return 1; // <해당 날짜, 유저>로 등록된 인증샷이 없는 경우 인증샷 등록 완료
         }
