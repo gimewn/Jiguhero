@@ -184,4 +184,27 @@ public class GroundServiceImpl implements GroundService {
         List<PlaceDto> dtoList = placeList.stream().map(entity -> PlaceDto.of(entity)).collect(Collectors.toList());
         return dtoList;
     }
+
+    @Override
+    @Transactional
+    public boolean likeGround(Long groundId, Long userId) {
+        Like_Ground likeGround = new Like_Ground();
+        User userEntity = userDao.selectUserById(userId);
+        Ground groundEntity = groundDao.selectGroundById(groundId);
+
+        if(groundDao.selectLikeGround(groundEntity, userEntity) == null){
+            likeGround.setUser(userEntity);
+            likeGround.setGround(groundEntity);
+            groundDao.insertLikeGround(likeGround);
+            return true;
+        } else {
+            deleteLikeGround(groundEntity, userEntity);
+            return false;
+        }
+
+    }
+
+    public void deleteLikeGround(Ground groundEntity, User userEntity){
+        groundDao.deleteLikeGround(groundEntity, userEntity);
+    }
 }
