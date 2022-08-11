@@ -106,10 +106,10 @@ public class MissionController {
 
     @ApiOperation(value = "해당 임무의 세부 내용을 변경한다", response = String.class)
     @PutMapping("/{mission_id}/details")
-    public ResponseEntity<MissionDto> changeMission(@RequestBody MissionDto missionDto, @RequestParam("user_id") Long userId) {
+    public ResponseEntity<MissionDto> updateMission(@RequestBody MissionDto missionDto, @RequestParam("user_id") Long userId) {
         MissionDto missionDtoResult = null;
         try {
-            missionDtoResult = missionService.changeMission(missionDto, userId);
+            missionDtoResult = missionService.updateMission(missionDto, userId);
         }
         catch (Exception e) {
             throw new RuntimeException(e);

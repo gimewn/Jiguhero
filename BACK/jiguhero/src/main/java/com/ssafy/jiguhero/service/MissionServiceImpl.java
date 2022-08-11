@@ -193,17 +193,19 @@ public class MissionServiceImpl implements MissionService {
     }
 
     @Override
-    public MissionDto changeMission(MissionDto missionDto, Long userId) throws Exception{
+    public MissionDto updateMission(MissionDto missionDto, Long userId) throws Exception{
         Mission missionEntity = missionDao.selectMissionById(missionDto.getMissionId());
         User userEntity = userDao.selectUserById(userId);
 
-        if(missionDao.selectConnMission(missionEntity, userEntity)!=null) {
+        Conn_Mission connMission = missionDao.selectConnMission(missionEntity, userEntity);
+
+        if((connMission != null) && (connMission.getRole() == 1)) {
             Mission mission = missionDao.updateMission(missionDto);
             MissionDto dto = MissionDto.of(mission);
-            return dto;
+            return dto; // 해당 임무를 등록한 사용자이며 임무 변경이 완료된 경우
         }
         else {
-            throw new Exception();
+            throw new Exception(); // 임무 변경이 실패한 경우
         }
 
     }

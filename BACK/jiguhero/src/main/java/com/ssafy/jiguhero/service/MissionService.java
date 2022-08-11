@@ -32,7 +32,7 @@ public interface MissionService {
     int deleteMission(Long missionId, Long userId);
 
 
-    MissionDto changeMission(MissionDto missionDto, Long userId) throws Exception;
+    MissionDto updateMission(MissionDto missionDto, Long userId) throws Exception;
 
     //FeedDto getFeedById(Long feedId, Long userId);
 
