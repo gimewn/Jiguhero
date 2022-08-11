@@ -26,6 +26,7 @@ export default function MissionLists() {
   const remainder = MISSION.length % 5;
   const MissionLen = `${MISSION.length / 5}`
   const quot = parseInt(MissionLen)
+
   const page = useRecoilValue(missionLists)
   const setPage = useSetRecoilState(missionLists)
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
@@ -61,5 +62,4 @@ export async function getServerSideProps(context) {
       },
     },
   };
-
 }

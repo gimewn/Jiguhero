@@ -1,3 +1,4 @@
+
 import Head from 'next/head';
 import styled from 'styled-components';
 import Backcomponents from 'components/back';
@@ -480,4 +481,5 @@ export default function MissionDetail() {
 //     };
 
 // }
+
 

@@ -3,8 +3,6 @@ import styled from 'styled-components';
 import MissionTop3 from 'components/MissionTop3'
 import Map from 'components/map';
 import News from 'components/News';
-import {useQuery} from '@tanstack/react-query';
-import axios from 'axios';
 import { useSession } from 'next-auth/react';
 
 const Mapping = styled('div')`

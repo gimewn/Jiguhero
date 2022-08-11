@@ -7,6 +7,10 @@ import {ButtonFull} from 'styles/styled'
 import getReview from 'pages/api/place/getReview';
 import postReport from 'pages/api/place/postReport';
 import { useQuery } from '@tanstack/react-query';
+import { Pagination } from "@mui/material";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import {reviewlists} from 'states/place';
+import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
 
 const ModalBack = styled('div')`
     position:absolute;
@@ -35,11 +39,9 @@ const ModalDiv = styled('div')`
     border:0;
     border-radius: 20px;
     z-index:999;
+    max-height:90%;
+    /* bottom:5%; */
     overflow:auto;
-    -ms-overflow-style: none; /* for Internet Explorer, Edge */
-    scrollbar-width: none; /* for Firefox */
-    overflow-y: scroll;
-    bottom:5%;
     /* @media only screen and (max-width: 650px) {
         height
   } */
@@ -64,9 +66,10 @@ const ModalBody = styled('div')`
     display: flex;
     flex-direction: column;
     padding:5px 20px 0px 25px;
+    overflow:auto;
     @media only screen and (max-width: 650px) {
-        padding:0 20px 20px 20px;
-  }
+        padding:0 20px 0px 20px;
+    }
 `
 const ModalAddress = styled('p')`
     margin: 5px 5px;
@@ -84,8 +87,6 @@ color:#98c064;
 `
 const ReportBox = styled('div')<{Color:string}>`
     display:flex;
-    position:absolute;
-    bottom:0;
     width:100%;
     flex-direction: column;
     justify-content: center;
@@ -166,13 +167,121 @@ margin-right:15%;
 //     height:1px;
 // `
 
-export default function Modal(props){
-    const {show, setshow, data, reviews} = props;
-    const [isReport, setReport] = useState(false);
-    const [ReportCategory, setReportCategory] = useState('');
-    const [ReportContent, setReportContent] = useState('');
-    console.log(reviews)
+const ReviewDiv = styled('div')`
+display:flex;
+margin-left:30px;
+`
+const ReviewBox = styled('div')`
+    background-color:white;
+    border:1px solid #65ACE2;
+    border-radius: 20px;
+    padding:10px 15px;
+    margin-left:10px;
+    margin-top:10px;
+    span{
+        margin-top: auto;
+        margin-bottom:auto;
+    }
+`
 
+const EmojiSpan = styled('span')<{size:string}>`
+    font-size: ${(props) => props.size};
+    margin: auto 5px auto 0;
+    `
+const Starspan = styled('span')`
+    margin-right:10px;
+`
+
+const Paging = styled(Pagination)`
+    margin: 0 auto;
+`
+const MakeReview = styled('div')`
+    margin-left:30px;
+    margin-top:10px;
+    width:90%;
+`
+const Select = styled('select')`
+    border: 1px solid #98c064;
+    padding:5px;
+    width:30px;
+    margin-left:5px;
+    -moz-appearance:none;  /* Firefox */
+  -webkit-appearance:none;  /* Safari and Chrome */
+  appearance:none;  /* 화살표 없애기 공통*/
+  ::-webkit-scrollbar {
+    display: none; /* for Chrome, Safari, and Opera */
+  }
+  padding: 5px 10px;
+`
+const ReviewArea = styled('textarea')`
+    height:45px;
+    width:80%;
+    border-radius:10px;
+    /* margin: 0px 10px 0px 30px; */
+    padding:10px;
+    margin:0;
+`
+const ReviewWrite = styled('div')`
+    margin-top:10px;
+    display:flex;
+    justify-content: start;
+    align-items: center;
+`
+const ReportReview = styled(CheckRoundedIcon)`
+    /* margin-top:5px; */
+    color:white;
+    background-color: #98c064;
+    margin: auto 10px;
+    border:0;
+    border-radius: 20px;
+    padding:5px;
+    height:35px;
+    width:35px;
+`
+
+export default function Modal(props){
+    const {show, setshow, data} = props;
+    const [isReport, setReport] = useState(false);
+    const [ReportCategory, setReportCategory] = useState(0);
+    const [ReportContent, setReportContent] = useState('');
+    const reviewEmoji = [['', ''], ['😔','실망이에요'], ['😑', '별로예요'], ['😶', '그저 그래요'], ['🤗', '만족해요'], ['🥰', '너무 좋아요']]
+    const [scoreValue, setsScoreValue] = useState(1);
+    const [reviewValue, setReviewValue] = useState('');
+    const [remainder, setRemainder] = useState(0);
+    const [quot, setQuot] = useState(0);
+    const page = useRecoilValue(reviewlists)
+    const setPage = useSetRecoilState(reviewlists)
+    const [reviews, setReviews] = useState([]);
+    const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
+      setPage(value);
+    };
+    
+    function FetchReviews(){
+        getReview(data['placeId']).then((res) => {
+            setReviews(res)
+          })
+        setRemainder(reviews.length % 5)
+        setQuot(reviews.length / 5)
+    }
+    useEffect(()=>{
+        FetchReviews()
+    },[reviews]);
+
+    function Emoji(prop){
+        if(prop['index'] === 0){
+            return(<EmojiSpan size="20px">{reviewEmoji[prop['score']][prop['index']]}</EmojiSpan>)
+        }else{
+            return(<EmojiSpan size="16px">{reviewEmoji[prop['score']][prop['index']]}</EmojiSpan>)
+        }
+    }
+    function Star(score){
+        let res = '';
+        for(let i=0; i<score['score']; i++){
+            res += '⭐'
+        }
+        return <Starspan>{res}</Starspan>
+    }
+    
     const ModalContent = show && (
         <>
         <ModalDiv>
@@ -197,18 +306,43 @@ export default function Modal(props){
                 </WithTitle>
                 : <></>}
                 <WithTitle>
-                    <ConTitle>⭐ 대원들의 리뷰</ConTitle>
-                    {/* {reviews?.map((item) => (<div key={item.reviewId}>
-                        <p>{item.score}</p>
-                    </div>))} */}
+                    <ConTitle>🧡 대원들의 리뷰</ConTitle>
+                    <MakeReview>
+                        이 가게의 평점 : ⭐
+                        <Select onChange={(e) => {
+                            setsScoreValue(Number(e.target.value))}}>
+                            {[1, 2, 3, 4, 5].map((item) => (<option value={item} key={item}>{item}</option>))}
+                        </Select>
+                        <div>
+                        <Emoji score={scoreValue} index={0} />
+                        <Emoji score={scoreValue} index={1} /> 
+                        </div>
+                        <ReviewWrite>
+                        <ReviewArea placeholder='리뷰를 남겨주세요.' onChange={(e)=>{setReportContent(e.target.value)
+                        }}/>
+                        <ReportReview />
+                        </ReviewWrite>
+                    </MakeReview>
+                    {reviews?.map((item) => (<ReviewDiv>
+                        <Emoji score={item.score} index={0} />
+                    <ReviewBox key={item.reviewId}>
+                        <Star score={item.score} />
+                        <span>{item.content}</span>
+                    </ReviewBox>
+                    </ReviewDiv>
+                    ))}
+                    {quot > 1 ? <Paging
+                    count={remainder === 0 ? quot : quot + 1}
+                    page={page}
+                    onChange={handleChange}
+                />:<></>}
                 </WithTitle>
             </ModalBody>
             {isReport ? 
             <PostReport Color="white">
             <WithTitle>
-            {/* <Hr /> */}
             <ConTitle>🚨 신고 이유를 선택해주세요</ConTitle>
-            <SelectReport onChange={(e) => {setReportCategory(e.target.value)}}>
+            <SelectReport onChange={(e) => {setReportCategory(Number(e.target.value))}}>
                 <option value="">--- 신고 사유 ---</option>
                 <option value="1">친환경 관련 가게가 아니에요🧐</option>
                 <option value="2">더 이상 영업을 안 해요😧</option>
@@ -218,12 +352,9 @@ export default function Modal(props){
             </WithTitle>
                 <RButtonDiv>
                     <ReportButton dColor='#65ACE2' hColor='#65ACE2' style={{margin:'0 10px 0 0'}} onClick={() => setReport(false)}>취소</ReportButton>
-                    <ReportButton dColor="#FF4848" hColor="#FF4848" onClick={async () => {
-                if(await postReport(data.placeId, 1)==="success"){
-                    alert("신고해주셔서 감사합니다.")
-                }else{
-                    alert("신고가 접수되지 않았습니다!")
-                }}}>신고하기</ReportButton>
+                    <ReportButton dColor="#FF4848" hColor="#FF4848" onClick={() => {
+                        postReport(data.placeId, 1, ReportCategory, ReportContent)
+                    }}>신고하기</ReportButton>
                 </RButtonDiv>
             </PostReport> : 
             <ReportBox Color="#65ACE2" onClick={() => setReport(true)}>
