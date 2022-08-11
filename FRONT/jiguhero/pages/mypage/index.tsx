@@ -171,8 +171,9 @@ const Mypage = ({ data }) => {
   // 임무
   function Mission() {
     const MissionList = ["하나", "둘", "셋", "넷", "다섯", "여섯"];
-    const remainder = MissionList.length % 3;
-    const quot = MissionList.length / 3;
+    const remainder = MissionList.length % 5;
+    const lenMission = `${MissionList.length / 5}`
+    const quot = parseInt(lenMission)
     const page = useRecoilValue(missionPage);
     const setPage = useSetRecoilState(missionPage);
     const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
@@ -189,7 +190,7 @@ const Mypage = ({ data }) => {
           </Link>
         ))}
         <PagI
-          count={remainder === 0 ? quot : quot + 1}
+          count={remainder === 0 ? Number(quot) : Number(quot) + 1}
           page={page}
           onChange={handleChange}
         />
@@ -207,9 +208,9 @@ const Mypage = ({ data }) => {
       { icon: "🍘", title: "친환경 생활용품점" },
       { icon: "🍨", title: "유기농 디저트 맛집" },
     ];
-    const remainder = PlayedArea.length % 3;
-    const quot = PlayedArea.length / 3;
-
+    const remainder = PlayedArea.length % 5;
+    const lenPlay = `${PlayedArea.length / 5}`;
+    const quot = parseInt(lenPlay)
     const page = useRecoilValue(playedAreaPage);
     const setPage = useSetRecoilState(playedAreaPage);
     const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
@@ -218,7 +219,7 @@ const Mypage = ({ data }) => {
 
     return (
       <>
-        {PlayedArea.slice((page - 1) * 3, page * 3).map((dic) => (
+        {PlayedArea.slice((page - 1) * 5, page * 5).map((dic) => (
           <Link href="/" key={dic.title}>
             <a>
               <Play key={dic.title}>

@@ -23,7 +23,7 @@ const queryClient = new QueryClient({
       refetchOnMount: false,
       refetchOnReconnect: false,
       retry: false,
-      staleTime: 5*60*1000,
+      staleTime: 5 * 60 * 1000,
     },
   },
 });
@@ -44,9 +44,12 @@ const Body = styled("div")`
   width: 100%;
   height: 100%;
   margin-top:80px;
+
 `;
 const Container = styled("div")`
   display: flex;
+  position:absolute;
+  top:80px;
   justify-content: center;
   flex-direction: column;
   min-width: 375px;
@@ -96,9 +99,9 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <RecoilRoot>
       <Head>
-      {/* <script type="text/javascript" src={`//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAOMAP_APPKEY}&libraries=services`}></script> */}
-      <link rel="favicon" href="FRONT\jiguhero\public\favicon.ico" />
-      <title>지구방위대</title>
+        {/* <script type="text/javascript" src={`//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAOMAP_APPKEY}&libraries=services`}></script> */}
+        <link rel="favicon" href="FRONT\jiguhero\public\favicon.ico" />
+        <title>지구방위대</title>
       </Head>
       <Header>
         <Image
@@ -118,10 +121,10 @@ function MyApp({ Component, pageProps }: AppProps) {
           <QueryClientProvider client={queryClient}>
             <Hydrate state={pageProps?.dehydratedState} >
               <SessionProvider session={pageProps?.session}>
-              <Script
-        src={`//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAOMAP_APPKEY}&libraries=services,clusterer&autoload=false`}
-        strategy="beforeInteractive"
-      />
+                <Script
+                  src={`//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAOMAP_APPKEY}&libraries=services,clusterer&autoload=false`}
+                  strategy="beforeInteractive"
+                />
                 <Component {...pageProps} />
               </SessionProvider>
             </Hydrate>

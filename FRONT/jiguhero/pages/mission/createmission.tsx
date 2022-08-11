@@ -14,15 +14,41 @@ import { getSession, SessionProvider, useSession } from "next-auth/react";
 import PostMission from "pages/api/mission/index";
 import moment from "moment"
 
-
+const NavBar = styled('div')`
+  z-index: 999;
+ position: fixed;
+  left: 0;
+  right: 0;
+  top:60px;
+  height: 60px;
+  /* padding: 2rem; */
+  color: white;
+  background: white;
+  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+    @media only screen and (min-width: 650px) {
+    display:none;
+  }
+`
+const Header = styled("div")`
+  display: flex;
+  justify-content: space-between;
+  margin: 0px 5px 0px 20px;
+`;
 const MissioWrapper = styled('div')`
   display:flex;
   flex-direction: column;
-  margin-top: 3rem;
+  margin-top: 27px;
+`
+const BackCompo = styled(Backcomponents)`
+  margin-top: 10px;
+  margin-bottom: 10px;
 `
 
 const Block = styled('div')`
-  margin: 0.5rem;
+  margin: 0.4rem;
 `
 
 const Content = styled('div')`
@@ -44,8 +70,9 @@ const Content = styled('div')`
 const BtnContent = styled('div')`
   display:flex;
   flex-direction: row;
-  align-items: right;
-  justify-content: right;
+  align-items: center;
+  justify-content: center;
+  margin-top: 10px;
     @media screen and (min-width: 360px){
         width:400px;
     }
@@ -68,6 +95,7 @@ const BoxInput = styled('input')`
   padding:3px;
   width: 13rem;
   margin-left: 10px;
+  padding: 5px;
 `
 const DateInput = styled(DatePicker)`
   border: #65ACE2 solid 1px ;
@@ -75,9 +103,13 @@ const DateInput = styled(DatePicker)`
   border-radius: 15px;
   width: 100px;
   box-sizing: border-box;
+  padding: 5px;
+  margin-right:9px;
+  margin-left:9px;
 `
 const DateWrapper = styled('div')`
   display: inline-flex;
+
 `
 
 const SelectSido = styled('select')`
@@ -85,7 +117,8 @@ const SelectSido = styled('select')`
     background-color: white;
     border-radius: 15px;
     padding:3px;
-    margin: 0.5rem; 
+    margin: 0.5rem;
+     
 `
 
 const SelectGugun = styled(SelectSido)`
@@ -95,23 +128,25 @@ const SelectDong = styled(SelectSido)`
 
 `
 const CameraBox = styled('form')`
-  width: 150px;
-  height: 150px;
+  width: 250px;
+  height: 200px;
   background-color: #FFffff;
-  border-radius: 100px;
+  border-radius: 15px;
   box-shadow: 0px 0px 5px 0px #dadce0 inset;
   border: 0;
   display:flex;
   justify-content: center;
   align-items: center;
-  svg {
-
+  @media screen and (min-width: 360px){
+    width: 200px;
+    height: 150px;
   }
 `
 const CameraBtn = styled('div')`
   display: flex;
   justify-content: center;
   align-items: center;
+  
 `
 
 const PointInput = styled('input')`
@@ -121,13 +156,23 @@ const PointInput = styled('input')`
   padding:3px;
   width: 13rem;
   margin-left: 10px;
+  padding: 5px;
 `
 const PeopleInput = styled(PointInput)`
 `
 
+const MissionText = styled('textarea')`
+  border: #65ACE2 solid 1px ;
+  background-color: white;
+  border-radius: 15px;
+  width: 300px;
+  height: 100px;
+  margin-top: 10px;
+`
+
 const SubmitBtn = styled(ButtonFull)`
-  width: 3rem;
-  margin-right: 3rem;
+  width: 300px;
+  
 `
 
 //임무명
@@ -191,19 +236,35 @@ function DatePick() {
 };
 //포인트
 function Point() {
+  const [point, setPoint] = useState(0)
+  const onChange = (event) => {
+    setPoint(event.target.value)
+    console.log(event.target.value)
+  }
   return (
     <>
       <Text>포인트</Text>
-      <PointInput type='number' min="1" max="2000" />
+      <PointInput
+        onChange={onChange}
+        value={point}
+        type='number' min="1" max="2000" />
     </>
   )
 }
 //정원
 function JoinPeople() {
+  const [people, setPeople] = useState(0)
+  const onChange = (event) => {
+    setPeople(event.target.value)
+    console.log(event.target.value)
+  }
   return (
     <>
       <Text>정원</Text>
-      <PeopleInput type='number' min="1" />
+      <PeopleInput
+        onChange={onChange}
+        value={people}
+        type='number' min="1" />
     </>
   )
 }
@@ -226,19 +287,6 @@ function MissionPicture() {
 
 //지역 설정 --- 
 function MissionLocation() {
-  // const [data, setData] = useState([]);
-  // const { data: sido } = useQuery(['sido'], getSido);
-  // const [ChoiceSido, setChoiceSido] = useState('11');
-  // const { data: gugun } = useQuery(['gugun', ChoiceSido], () => getGugun(ChoiceSido), {
-  //   enabled: !!ChoiceSido,
-  // });
-  // const [ChoiceGugun, setChoiceGugun] = useState('11110');
-  // const { data: dong } = useQuery(['dong', ChoiceGugun], () => getDong(ChoiceGugun), {
-  //   enabled: !!ChoiceGugun
-  // })
-  // const [ChoiceDong, setChoiceDong] = useState('');
-  // let search = false;
-
 
   return (
     <>
@@ -255,29 +303,24 @@ function MissionLocation() {
       <SelectDong>
       </SelectDong>
 
+    </>
+  )
+}
 
-      {/* 윤주님 코드 */}
-      {/* <PlaceGroup>
-        {data?.map((item) => (
-          <Place
-            key={item.placeId}
-            onClick={() => {
-              setShow(true);
-              setChoiceP(item);
-            }}
-          >
-            <PlaceTitle className="placeTitle">{item.name}</PlaceTitle>
-            <WithIcon>
-              <LocIcon className="icon" /><PlaceAddress>{item.roadAddress}</PlaceAddress>
-            </WithIcon>
-            {item.content ? <WithIcon>
-              <ConIcon className="icon" /><PlaceContent>{item.content}</PlaceContent>
-            </WithIcon> : <></>}
-          </Place>
-        ))}
-      </PlaceGroup> */}
-
-
+//임무 설명 textarea
+function TextArea() {
+  const [text, setText] = useState('')
+  const onChange = (event) => {
+    setText(event.target.value)
+    console.log(event.target.value)
+  }
+  return (
+    <>
+      <MissionText
+        placeholder='임무 설명을 작성해주세요😎'
+        onChange={onChange}
+        value={text}
+      />
     </>
   )
 }
@@ -290,8 +333,13 @@ export default function Createmission() {
         <title>임무 생성하기 | 지구-방위대</title>
       </Head>
 
-      {/* 모바일 뷰에서 뒤로가기 버튼! */}
-      <Backcomponents name='임무 생성하기'></Backcomponents>
+
+      <NavBar>
+        <Header>
+          {/* 모바일 뷰에서 뒤로가기 버튼! */}
+          <BackCompo name='임무 생성하기'></BackCompo>
+        </Header>
+      </NavBar>
 
       <MissioWrapper>
         {/* 미션사진추가 */}
@@ -315,6 +363,13 @@ export default function Createmission() {
           </Content>
         </Block>
 
+        {/* 지역 */}
+        <Block>
+          <Content>
+            <MissionLocation />
+          </Content>
+        </Block>
+
         {/* 포인트 */}
         <Block>
           <Content>
@@ -329,13 +384,10 @@ export default function Createmission() {
           </Content>
         </Block>
 
-        {/* 지역 */}
-        <Block>
-          <Content>
-            <MissionLocation />
-          </Content>
-        </Block>
 
+
+        {/* 내용쓰기 */}
+        <TextArea />
 
         {/* 등록버튼 */}
         <Block>

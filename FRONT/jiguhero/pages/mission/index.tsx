@@ -10,12 +10,37 @@ import { dehydrate, Query, QueryClient, QueryClientProvider, useQuery } from "@t
 import { getSession, SessionProvider, useSession } from "next-auth/react";
 import getMission from "pages/api/mission/index";
 
+
+const NavBar = styled('div')`
+  z-index: 999;
+ position: fixed;
+  left: 0;
+  right: 0;
+  top:60px;
+  height: 60px;
+  /* padding: 2rem; */
+  color: white;
+  background: white;
+  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+    @media only screen and (min-width: 650px) {
+    display:none;
+  }
+`
+const Header = styled("div")`
+  display: flex;
+  justify-content: space-between;
+  margin: 0px 5px 0px 20px;
+`;
 const BackCompo = styled(Backcomponents)`
   margin-top: 10px;
   margin-bottom: 10px;
 `
 const Block = styled('div')`
   margin: 0.5rem;
+  
 
 `
 const Content = styled('div')`
@@ -62,7 +87,7 @@ const BoxInput = styled('input')`
   background-color: white;
   border-radius: 15px;
   padding:3px;
-  width: 15rem;
+  width: 13rem;
 `
 const SearchButton = styled(SearchRoundedIcon)`
     color:#65ACE2;
@@ -87,28 +112,36 @@ const ListContent = styled('div')`
     @media screen and (min-width:700px){
         width:620px;
     }
+
 `
 
-//select Box --- 최신등록 순 이름 순 -->Back과 상의..?
-// const OPTIONS = [
-//     { value: "latest", name: "최신 등록순" },
-//     { value: "name", name: "이름순" },
-// ];
-// function SelectBox(props) {
-//     return (
-//         <BoxSelect>
-//             {props.options.map((option) => (
-//                 <option
-//                     key={option.value}
-//                     value={option.value}
-//                 >
-//                     {option.name}
-//                 </option>
-//             ))}
+const MissionBlock = styled('div')`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+`
 
-//         </BoxSelect>
-//     )
-// }
+//select Box --- 최신등록 순 이름 순 
+const OPTIONS = [
+    { value: "latest", name: "최신 등록순" },
+    { value: "name", name: "이름순" },
+];
+function SelectBox(props) {
+    return (
+        <BoxSelect>
+            {props.options.map((option) => (
+                <option
+                    key={option.value}
+                    value={option.value}
+                >
+                    {option.name}
+                </option>
+            ))}
+
+        </BoxSelect>
+    )
+}
 
 //input Box
 function InputBox() {
@@ -161,8 +194,12 @@ export default function Mission() {
                 <title>대원들의 임무 | 지구-방위대</title>
             </Head>
 
-            {/* 모바일 뷰에서 뒤로가기 버튼! */}
-            <BackCompo name='대원들의 임무'></BackCompo>
+            <NavBar>
+                <Header>
+                    {/* 모바일 뷰에서 뒤로가기 버튼! */}
+                    <BackCompo name='대원들의 임무'></BackCompo>
+                </Header>
+            </NavBar>
 
             {/* contents! */}
             {/* 임무 버튼 그룹 */}
@@ -175,18 +212,18 @@ export default function Mission() {
             {/* search Bar */}
             <Block>
                 <Content>
-                    {/* <SelectBox options={OPTIONS} /> */}
+                    <SelectBox options={OPTIONS} />
                     <InputBox />
                     <SearchButton />
                 </Content>
             </Block>
 
             {/* 임무 목록들 */}
-            <Block>
+            <MissionBlock>
                 <ListContent>
                     <MissionLIST />
                 </ListContent>
-            </Block>
+            </MissionBlock>
         </>
     )
 }
