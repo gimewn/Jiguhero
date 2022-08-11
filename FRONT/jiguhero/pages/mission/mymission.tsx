@@ -203,6 +203,29 @@ const CertifyFeed = styled('div')`
   justify-content: center;
   align-items: center;
 `
+
+const Text3 = styled('a')`
+  font-size: large;
+  font-weight: bolder;
+  background-color: #fcfca886;
+`
+
+const HeroTextWrapper = styled('div')`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+`
+
+const NoHeroText1 = styled('a')`
+  font-family: PyeongChangPeace-Bold;
+  font-size: 100px;
+  padding: 50px 0 0 0;
+`
+const NoHeroText2 = styled('a')`
+  font-size: medium;
+  font-weight: bold;
+`
 // interface MissionProps {
 //   entryPoint: number;
 //   title: string;
@@ -245,6 +268,7 @@ function NowMission() {
   )
 }
 
+//달성률 & 인증샷 버튼 그룹
 function ButtonGroup() {
   // 탭 전환
   const tab = useRecoilValue(tabpage);
@@ -257,15 +281,15 @@ function ButtonGroup() {
       {/* 탭 전환을 위한 버튼들 */}
       <ButtonWrapper>
         {tabColor ?
-          <AchieveBtn backColor={`#98C064`} onClick={() => { setTabColor(!tabColor) }}>달성률</AchieveBtn>
-          : <AchieveBtn backColor={`#fffff`} onClick={() => { setTabColor(!tabColor) }}>달성률</AchieveBtn>
+          <AchieveBtn backColor={`#98C064`} onClick={() => { setTab(true), setTabColor(!tabColor) }}>달성률</AchieveBtn>
+          : <AchieveBtn backColor={`#fffff`} onClick={() => { setTab(true), setTabColor(!tabColor) }}>달성률</AchieveBtn>
         }
         {tabColor ?
-          <CertifyBtn backColor={`#fffff`} onClick={() => { setTabColor(!tabColor) }}>인증샷</CertifyBtn>
-          : <CertifyBtn backColor={`#98C064`} onClick={() => { setTabColor(!tabColor) }}>인증샷</CertifyBtn>
+          <CertifyBtn backColor={`#fffff`} onClick={() => { setTab(false), setTabColor(!tabColor) }}>인증샷</CertifyBtn>
+          : <CertifyBtn backColor={`#98C064`} onClick={() => { setTab(false), setTabColor(!tabColor) }}>인증샷</CertifyBtn>
         }
       </ButtonWrapper >
-
+      {tab ? <Achievement /> : <Certification />}
     </>
   )
 }
@@ -322,8 +346,8 @@ const itemData = [
   },
 ];
 
-//인증샷 mui 사용함!
-function CertificationLists() {
+//나의 인증샷 (mui 사용함!)
+function MyCertificationLists() {
   return (
     <>
       <CertifyFeed>
@@ -366,15 +390,48 @@ function Achievement() {
         <Text>나의 인증샷</Text>
         <CertifyGoBtn hColor={'#65ACE2'} dColor={'#98C064'}>인증하기</CertifyGoBtn>
       </CertifyWrapper>
+      <MyCertificationLists />
     </>
   )
 }
 
-//다른 사람들의 인증샷을 보여주는 탭
-function Certification() {
 
+//대원들의 인증샷 (mui 사용함!)
+function HeroCertificationLists() {
   return (
     <>
+      <CertifyFeed>
+        <ImageList sx={{ width: 350 }} cols={3} rowHeight={130}>
+          {itemData.map((item) => (
+            <ImageListItem key={item.img}>
+              <img
+                src={`${item.img}?w=164&h=164&fit=crop&auto=format`}
+                srcSet={`${item.img}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
+                alt={item.title}
+                loading="lazy"
+              />
+            </ImageListItem>
+          ))}
+        </ImageList>
+      </CertifyFeed>
+    </>
+  )
+}
+//다른 사람들의 인증샷을 보여주는 탭
+function Certification() {
+  return (
+    <>
+      <HeroTextWrapper>
+        <Text3>📸대원들의 인증샷</Text3>
+      </HeroTextWrapper>
+
+      {/* 인증샷 없으면 */}
+      <HeroTextWrapper>
+        <NoHeroText1>앗!</NoHeroText1>
+        <NoHeroText2>아직 인증한 대원이 없어요😥</NoHeroText2>
+      </HeroTextWrapper>
+      {/* 인증샷 있으면 */}
+      <HeroCertificationLists />
 
     </>
   )
@@ -403,8 +460,7 @@ export default function MyMissionFeed() {
 
       {/* 달성률 인증샷 탭 */}
       <ButtonGroup />
-      <Achievement />
-      <CertificationLists />
+
 
     </>
   )
