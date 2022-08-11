@@ -174,18 +174,21 @@ public class MissionServiceImpl implements MissionService {
 
     @Transactional
     public int deleteMission(Long missionId, Long userId){
-        Conn_Mission connMission = new Conn_Mission();
         User userEntity = userDao.selectUserById(userId);
         Mission missionEntity = missionDao.selectMissionById(missionId);
-
-        if(missionDao.selectConnMission(missionEntity, userEntity)!=null) {
+        
+        Conn_Mission connMission = missionDao.selectConnMission(missionEntity, userEntity);
+        
+        if((connMission != null) && (connMission.getRole() == 1)) {
             missionDao.deleteConnMission(missionEntity);
             missionDao.deleteLikeMission(missionEntity);
             missionDao.deleteMissionById(missionId);
 
-            return 1;
+            return 1; // 해당 임무를 등록한 사용자이며 임무 삭제가 완료된 경우
         }
-        else return 2;
+        else {
+            return 2; // 해당 임무를 등록한 사용자가 아니거나 임무 삭제가 실패한 경우
+        }
 
     }
 

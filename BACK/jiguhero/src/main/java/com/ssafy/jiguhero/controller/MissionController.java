@@ -95,8 +95,12 @@ public class MissionController {
     public ResponseEntity<String> deleteMission(@PathVariable("mission_id") Long missionId, @RequestParam("userId") Long userId) {
         int check = missionService.deleteMission(missionId, userId);
 
-        if(check == 1) return new ResponseEntity<String>("success", HttpStatus.OK);
-        else return new ResponseEntity<String>("unauthorized", HttpStatus.OK);
+        if(check == 1) {
+            return new ResponseEntity<String>("success", HttpStatus.OK);
+        }
+        else {
+            return new ResponseEntity<String>("fail", HttpStatus.OK);
+        }
 
     }
 
