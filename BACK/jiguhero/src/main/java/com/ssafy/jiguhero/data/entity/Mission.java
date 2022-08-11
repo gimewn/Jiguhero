@@ -24,7 +24,7 @@ public class Mission {
     @Column(name = "mission_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long missionId;
-
+    
     private LocalDateTime regtime;
 
     @Column(nullable = false)
@@ -68,10 +68,6 @@ public class Mission {
     ///////////////////////////////////////////////////////////////////
     @OneToMany(mappedBy = "mission")
     List<Feed> feed = new ArrayList<>();
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "userId")
-    private User user;
     ///////////////////////////////////////////////////////////////////
     public static Mission of(MissionDto missionDto) {
         Mission missionEntity = ModelMapperUtils.getModelMapper().map(missionDto, Mission.class);

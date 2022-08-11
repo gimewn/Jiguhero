@@ -36,7 +36,6 @@ public class MissionDto {
 
     private boolean likeCheck;
     private boolean joinCheck;
-    private long userId;
     public static MissionDto of(Mission missionEntity) {
         MissionDto missionDto = ModelMapperUtils.getModelMapper().map(missionEntity, MissionDto.class);
 
