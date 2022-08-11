@@ -23,8 +23,8 @@ interface IPage {
 export default function NowJoinLists() {
   const { data: JoinMissionData } = useQuery(['missions'], JoinMission)
   console.log(JoinMissionData)
-  const remainder = JoinMissionData.length % 5;
-  const JoinLen = `${JoinMissionData.length / 5}`
+  const remainder = JoinMissionData?.length % 5;
+  const JoinLen = `${JoinMissionData?.length / 5}`
   const quot = parseInt(JoinLen)
   const page = useRecoilValue(nowjoinlist)
   const setPage = useSetRecoilState(nowjoinlist)
@@ -34,7 +34,7 @@ export default function NowJoinLists() {
 
   return (
     <>
-      {JoinMissionData.slice((page - 1) * 5, page * 5).map((item, index) => (
+      {JoinMissionData?.slice((page - 1) * 5, page * 5).map((item, index) => (
         <NowJoinList
           key={index} {...item} />
       ))}
