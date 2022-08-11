@@ -36,7 +36,7 @@ const EntireContainer = styled("div")`
   max-width: sm;
 `;
 
-const UploadButton = styled("div")`
+const UploadButton = styled("div")<{dColor:string}>`
     border: ${(props) => props.dColor} solid 1px;
     background-color: white;
     border-radius: 15px;
@@ -61,7 +61,7 @@ interface Update {
 
 export default function Profile({ data }) {
 
-  const [pfimg, setPfimg] = useState();
+  // const [pfimg, setPfimg] = useState();
   const {
     register,
     watch,
@@ -87,7 +87,7 @@ export default function Profile({ data }) {
     <EntireContainer>
          {/*  사진  */}
       <BgImg>
-        <img alt="nitz" src={`${pfimg}`} />
+        {/* <img alt="nitz" src={`${pfimg}`} /> */}
       </BgImg>
       <label htmlFor="image">
         {/* 프로필 사진 변경 버튼 */}
@@ -139,7 +139,7 @@ export default function Profile({ data }) {
       </p>
       {/* 회원탈퇴 버튼 */}
       <ButtonFull
-        Color={"#FF4F4F"}
+        dColor={"#FF4F4F"}
         hColor={"#FF4F4F"}
         onClick={(event) => {
           event.preventDefault()
@@ -163,7 +163,7 @@ export async function getServerSideProps(context) {
     userData();
   });
   await missionInfo2.prefetchQuery(["missionUserInfo"], () => {
-    missionUserData(context);
+    missionUserData();
   });
   await groundInfo2.prefetchQuery(["groundUserInfo"], () => {
     groundUserData(context);

@@ -6,7 +6,7 @@ import styled from "styled-components";
 import ArrowForwardIosRoundedIcon from "@mui/icons-material/ArrowForwardIosRounded";
 import Link from "next/link";
 import { ButtonBorder, ButtonFull } from "styles/styled";
-import { theme } from "pages/theme";
+import { theme } from "components/theme";
 import { blue } from "@mui/material/colors";
 import { Pagination } from "@mui/material";
 import { userInfo } from "os";
@@ -18,7 +18,6 @@ import { useRouter } from "next/router";
 import userData from "pages/api/user/[id]";
 import missionUserData from "pages/api/mission/[id]";
 import groundUserData from "pages/api/ground/[id]";
-
 
 
 
@@ -132,7 +131,6 @@ const PagI = styled(Pagination)`
 `;
 
 interface Idata {
-
   email: string;
   name: string;
   grade: number;
@@ -330,7 +328,7 @@ export async function getServerSideProps(context) {
 
 
   await userInfo2.prefetchQuery(['userInfo'], () => { userData() })
-  await missionInfo2.prefetchQuery(['missionUserInfo'], () => { missionUserData(context) })
+  await missionInfo2.prefetchQuery(['missionUserInfo'], () => { missionUserData() })
   await groundInfo2.prefetchQuery(['groundUserInfo'], () => { groundUserData(context) })
 
 

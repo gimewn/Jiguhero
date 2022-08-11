@@ -23,7 +23,7 @@ export default function MissionLists() {
   const [cate, setCate] = useState("latest")
   const { data: MISSION } = useQuery(['missions'], ()=>{getMission(cate)})
   console.log(MISSION)
-  const remainder = MISSION?.length % 5;
+  const remainder = (MISSION?.length % 5);
   const quot = MISSION?.length / 5;
   const page = useRecoilValue(missionLists)
   const setPage = useSetRecoilState(missionLists)

@@ -12,20 +12,17 @@ import loginAccess from "pages/api/login";
 import { NextPage } from "next";
 
 
-
-
 export default function Login() {
   const { data: session, status } = useSession();
   const loading = status === "loading";
   const router = useRouter()
   const returnUrl = router.query.returnUrl
-  
 
   return (
     <>
-      {session?.accessToken && (
-        <p>{session.user.name}</p>
-      )}
+    {session?.accessToken&&(
+      <p>{session.user.email}</p>
+    )}
       <LoginWrapper>
         <Head>
           {/* header 추가 */}
@@ -139,10 +136,8 @@ const SnsLoginNaver = styled("div")`
   width: 20rem;
 `;
 
-
 export async function getServerSideProps(context: NextPageContext) {
   const session = await getSession(context)
-
 
   return {
     props: {

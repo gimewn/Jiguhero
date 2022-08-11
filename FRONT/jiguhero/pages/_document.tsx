@@ -5,7 +5,6 @@ import Document, {
   NextScript,
   DocumentContext,
 } from "next/document";
-
 import { ServerStyleSheet } from "styled-components";
 
 class MyDocument extends Document {
@@ -38,7 +37,6 @@ class MyDocument extends Document {
     return (
       <Html>
         <Head>
-        <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=1f282e36c86cb161bb7dcfcb1989e998"></script>
         </Head>
         <body>
           <Main />

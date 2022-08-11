@@ -23,6 +23,10 @@ import PostMission from "pages/api/mission/index";
 import Image from "next/image";
 import moment from "moment";
 import PostMissionImg from "pages/api/postMissionImg";
+import { useRouter } from "next/router";
+import getSido from "pages/api/ecomarket/getSido";
+import getGugun from "pages/api/ecomarket/getGugun";
+import getDong from "pages/api/ecomarket/getDong";
 
 const MissioWrapper = styled("div")`
   display: flex;
@@ -78,6 +82,14 @@ const BoxInput = styled("input")`
   width: 13rem;
   margin-left: 10px;
 `;
+const BoxSelect = styled("select")`
+  border: #65ace2 solid 1px;
+  background-color: white;
+  border-radius: 15px;
+  padding: 3px;
+  margin: 0.5rem;
+`;
+
 const DateInput = styled(DatePicker)`
   border: #65ace2 solid 1px;
   background-color: white;
@@ -142,55 +154,7 @@ const SubmitBtn = styled(ButtonFull)`
 
 const SUploadImage = styled(IconButton).attrs({ type: "button" })``;
 
-//지역 설정 ---
-function MissionLocation() {
-  const [data, setData] = useState([]);
-  const [sido, setSido] = useState()
-  const [gugun, setGugun] = useState()
-  const [dong, setDong] = useState()
 
-  const [ChoiceSido, setChoiceSido] = useState('11');
-  
-  const [ChoiceGugun, setChoiceGugun] = useState('11110');
-  
-  const [ChoiceDong, setChoiceDong] = useState('');
-  let search = false;
-
-  return (
-    <>
-      <Text>지역</Text>
-      {/* 시도 선택 */}
-      <SelectSido></SelectSido>
-
-      {/* 구군 선택 */}
-      <SelectGugun></SelectGugun>
-
-      {/* 동 선택 */}
-      <SelectDong></SelectDong>
-
-      {/* 윤주님 코드 */}
-      <PlaceGroup>
-        {data?.map((item) => (
-          <Place
-            key={item.placeId}
-            onClick={() => {
-              setShow(true);
-              setChoiceP(item);
-            }}
-          >
-            <PlaceTitle className="placeTitle">{item.name}</PlaceTitle>
-            <WithIcon>
-              <LocIcon className="icon" /><PlaceAddress>{item.roadAddress}</PlaceAddress>
-            </WithIcon>
-            {item.content ? <WithIcon>
-              <ConIcon className="icon" /><PlaceContent>{item.content}</PlaceContent>
-            </WithIcon> : <></>}
-          </Place>
-        ))}
-      </PlaceGroup>
-    </>
-  );
-}
 
 export default function Createmission() {
   const [createImg, setCreateimg] = useState<File>(null); // 이미지 파일
@@ -202,6 +166,28 @@ export default function Createmission() {
   const [aendDate, setAendDate] = useState<Array<string>>(); // 종료일 배열 [요일, 월, 일, 년]
   const [point, setPoint] = useState<Number>();
   const [people, setPeople] = useState<Number>()
+  
+  
+
+  const router = useRouter();
+  const [show, setShow] = useState(false);
+  const [choiceP, setChoiceP] = useState([]);
+  const [data, setData] = useState([]);
+  const {data:sido} = useQuery(['sido'], getSido);
+  const [ChoiceSido, setChoiceSido] = useState(['00', '']);
+  const {data:gugun} = useQuery(['gugun', ChoiceSido], () => getGugun(ChoiceSido[0]), {
+    enabled: !!ChoiceSido,
+  });
+  const [ChoiceGugun, setChoiceGugun] = useState(['00', '']);
+  const {data:dong} = useQuery(['dong', ChoiceGugun], () => getDong(ChoiceGugun[0]), {
+    enabled: !!ChoiceGugun,
+  })
+  const [ChoiceDong, setChoiceDong] = useState(['00', '']);
+
+
+
+  
+
   const {
     register,
     watch,
@@ -220,14 +206,22 @@ export default function Createmission() {
         setCreateimg(null);
       }
     };
-
+    useEffect(()=> {
+      if (createImg){
+        const reader = new FileReader()
+        reader.onloadend = ()=>{
+          setPreview(reader.result as string)
+        }
+        reader.readAsDataURL(createImg)
+      }else{
+        setPreview(null)
+      }
+    },[createImg])
     return (
       <CameraBtn>
         <SUploadImage aria-label="upload picture" component="label">
           <input
-            {...register("Img", {
-              required: "사진을 등록해주세요",
-            })}
+            
             hidden
             accept="image/*"
             type="file"
@@ -353,6 +347,79 @@ export default function Createmission() {
     );
   }
 
+  //지역 설정 ---
+function MissionLocation() {
+  
+
+  // var geocoder = new window.kakao.maps.services.Geocoder();
+  // // 주소로 좌표를 검색합니다
+  // geocoder.addressSearch(`${ChoiceSido[1]} ${ChoiceGugun[1]} ${ChoiceDong[1]}`, function(result, status) {
+  //   // 정상적으로 검색이 완료됐으면 
+  //   if (status === window.kakao.maps.services.Status.OK) {
+  //     makeMap(result[0].y,  result[0].x);
+  //  }else{
+  //   alert("지역을 선택해주세요.")
+  //   setChoiceSido(['', ''])
+  //   setChoiceGugun(['', ''])
+  //   setChoiceDong(['', ''])
+  //  }
+  // })}
+
+
+  return (
+    <>
+      <Text>지역</Text>
+      {/* 시도 선택 */}
+      <SelectSido onChange={(e) => {setChoiceSido(e.target.value.split(","))}} >
+      <option value="">시/도</option>
+      {sido?.map((item) => (
+            <option key={item['sidoCode']} value={[item['sidoCode'],item['sidoName'] ]}>{item['sidoName']}</option>
+          ))}
+      </SelectSido>
+
+      {/* 구군 선택 */}
+      <SelectGugun onChange={(e) => {setChoiceGugun(e.target.value.split(","))}} >
+      <option value="">시/군/구</option>
+          {gugun?.map((item) => (
+            <option key={item['gugunCode']} value={[item['gugunCode'], item['gugunName'].split(" ")[1]]}>{item['gugunName'].split(" ")[1]}</option>
+          ))}
+      </SelectGugun  >
+
+      {/* 동 선택 */}
+      <SelectDong onChange={(e) => {setChoiceDong(e.target.value.split(","))
+       console.log(ChoiceSido,ChoiceGugun,ChoiceDong)
+    }} >
+      <option value="">읍/면/동</option>
+          {dong?.map((item) => (
+            <option key={item['dongCode']} value={[item['dongCode'], item['dongName'].split(" ")[2]]}>{item['dongName'].split(" ")[2]}</option>
+          ))}
+      </SelectDong>
+
+      {/* 윤주님 코드 */}
+      {/* <PlaceGroup>
+        {data?.map((item) => (
+          <Place
+            key={item.placeId}
+            onClick={() => {
+              setShow(true);
+              setChoiceP(item);
+            }}
+          >
+            <PlaceTitle className="placeTitle">{item.name}</PlaceTitle>
+            <WithIcon>
+              <LocIcon className="icon" /><PlaceAddress>{item.roadAddress}</PlaceAddress>
+            </WithIcon>
+            {item.content ? <WithIcon>
+              <ConIcon className="icon" /><PlaceContent>{item.content}</PlaceContent>
+            </WithIcon> : <></>}
+          </Place>
+        ))}
+      </PlaceGroup> */}
+    </>
+  );
+}
+
+
   return (
     <>
       {/* 헤더 */}
@@ -420,6 +487,7 @@ export default function Createmission() {
             </SubmitBtn>
           </BtnContent>
         </Block>
+
       </MissioWrapper>
     </>
   );

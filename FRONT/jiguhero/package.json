@@ -46,5 +46,8 @@
     "eslint-config-next": "12.2.2",
     "react-query": "^4.0.0",
     "typescript": "4.7.4"
+  },
+  "resolutions": {
+    "terser": "3.14.1"
   }
 }

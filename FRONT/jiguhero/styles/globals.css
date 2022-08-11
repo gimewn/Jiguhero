@@ -94,3 +94,7 @@ a {
   width:120px !important;
   margin: 5px;
 }
+
+#__next{
+  overflow:hidden;
+}
