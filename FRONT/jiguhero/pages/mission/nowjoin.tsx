@@ -102,6 +102,12 @@ const Div = styled('div')`
     padding: 20px;
 `
 
+const ContentsWrapper = styled('div')`
+    @media screen and (max-width: 393px){
+        margin-left: 50px;
+    }
+`
+
 //select Box --- 최신등록 순 이름 순 
 const OPTIONS = [
     { value: "latest", name: "최신 등록순" },
@@ -147,7 +153,7 @@ export default function Mission() {
         <div>
 
             <Head>
-                <title>대원들의 임무 | 지구-방위대</title>
+                <title>참여 중인 임무 | 지구-방위대</title>
             </Head>
 
             <NavBar>
@@ -159,19 +165,23 @@ export default function Mission() {
 
             <Div></Div>
 
-            <Block>
-                <Content>
-                    <SelectBox options={OPTIONS} />
-                    <InputBox />
-                    <SearchButton />
-                </Content>
-            </Block>
+            <ContentsWrapper>
+                <Block>
+                    <Content>
+                        <SelectBox options={OPTIONS} />
+                        <InputBox />
+                        <SearchButton />
+                    </Content>
+                </Block>
 
-            <MissionBlock>
-                <ListContent>
-                    <NowJoin />
-                </ListContent>
-            </MissionBlock>
+                <MissionBlock>
+                    <ListContent>
+                        {/*components의 NowJoinList와 NowJoinLists는 api joinMission.ts에서
+                        //데이터를 받아오는데 api 더미가 없어서 임시로 대원들의 임무리스트에서 확인함.*/}
+                        <NowJoin />
+                    </ListContent>
+                </MissionBlock>
+            </ContentsWrapper>
         </div>
     )
 

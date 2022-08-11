@@ -122,6 +122,13 @@ const MissionBlock = styled('div')`
     
 `
 
+const ContentsWrapper = styled('div')`
+    margin-top: 20px;
+    @media screen and (max-width: 393px){
+        margin-left: 50px;
+    }
+`
+
 //select Box --- 최신등록 순 이름 순 
 const OPTIONS = [
     { value: "latest", name: "최신 등록순" },
@@ -201,29 +208,32 @@ export default function Mission() {
                 </Header>
             </NavBar>
 
-            {/* contents! */}
-            {/* 임무 버튼 그룹 */}
-            <Block>
-                <ButtonContent>
-                    <ButtonBox />
-                </ButtonContent>
-            </Block>
+            <ContentsWrapper>
+                {/* contents! */}
+                {/* 임무 버튼 그룹 */}
+                <Block>
+                    <ButtonContent>
+                        <ButtonBox />
+                    </ButtonContent>
+                </Block>
 
-            {/* search Bar */}
-            <Block>
-                <Content>
-                    <SelectBox options={OPTIONS} />
-                    <InputBox />
-                    <SearchButton />
-                </Content>
-            </Block>
+                {/* search Bar */}
+                <Block>
+                    <Content>
+                        <SelectBox options={OPTIONS} />
+                        <InputBox />
+                        <SearchButton />
+                    </Content>
+                </Block>
 
-            {/* 임무 목록들 */}
-            <MissionBlock>
-                <ListContent>
-                    <MissionLIST />
-                </ListContent>
-            </MissionBlock>
+                {/* 임무 목록들 */}
+
+                <MissionBlock>
+                    <ListContent>
+                        <MissionLIST />
+                    </ListContent>
+                </MissionBlock>
+            </ContentsWrapper>
         </>
     )
 }
