@@ -97,8 +97,18 @@ public class GroundController {
     public ResponseEntity<String> saveLikeGround(@RequestParam("ground_id") Long groundId, @RequestParam("user_id") Long userId){
         if(groundService.likeGround(groundId, userId)){
             return new ResponseEntity<String>("save", HttpStatus.OK);
-        } else{
+        } else {
             return new ResponseEntity<String>("delete", HttpStatus.OK);
+        }
+    }
+
+    @ApiOperation(value = "해당 활동구역에 현재 접속되어있는 유저가 좋아요를 눌렀는지 여부를 반환한다.", response = String.class)
+    @GetMapping("/like")
+    public ResponseEntity<String> getLikeGround(@RequestParam("ground_id") Long groundId, @RequestParam("user_id") Long userId){
+        if(groundService.getLikeGround(groundId, userId)){
+            return new ResponseEntity<String>("true", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<String>("false", HttpStatus.OK);
         }
     }
 }

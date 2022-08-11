@@ -204,6 +204,18 @@ public class GroundServiceImpl implements GroundService {
 
     }
 
+    @Override
+    public boolean getLikeGround(Long groundId, Long userId) {
+        User userEntity = userDao.selectUserById(userId);
+        Ground groundEntity = groundDao.selectGroundById(groundId);
+
+        if(groundDao.selectLikeGround(groundEntity, userEntity) == null){
+            return false;
+        } else {
+            return true;
+        }
+    }
+
     public void deleteLikeGround(Ground groundEntity, User userEntity){
         groundDao.deleteLikeGround(groundEntity, userEntity);
     }
