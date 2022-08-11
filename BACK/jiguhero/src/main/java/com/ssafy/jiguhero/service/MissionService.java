@@ -23,7 +23,7 @@ public interface MissionService {
     // missionId에 해당하는 임무
     MissionDto getMissionById(Long missionId, Long userId, HttpServletRequest request);
 
-    void saveMission(MissionDto missionDto, Long userId);
+    void insertMission(MissionDto missionDto, Long userId);
 
     int joinMission(Long userId, Long missionId);
 

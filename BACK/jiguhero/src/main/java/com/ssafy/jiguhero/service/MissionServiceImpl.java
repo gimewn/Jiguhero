@@ -90,10 +90,10 @@ public class MissionServiceImpl implements MissionService {
         User userEntity = userDao.selectUserById(userId);
         MissionDto dto = MissionDto.of(missionEntity);
         if(missionDao.selectConnMission(missionEntity, userEntity)!=null) {
-            dto.setJoinCheck(true);
+            dto.setJoinCheck(true); // 사용자가 해당 임무에 참여한 경우
         }
         if(missionDao.selectLikeMission(missionEntity, userEntity) != null) {
-            dto.setLikeCheck(true);
+            dto.setLikeCheck(true); // 사용자가 해당 임무를 좋아요한 경우
         }
         dto.setRepImageURL(getRepMissionImageURL(missionId, request));
         dto.setImageURL(getMissionImageURL(missionId, request));
@@ -101,12 +101,12 @@ public class MissionServiceImpl implements MissionService {
     }
 
     @Override
-    public void saveMission(MissionDto missionDto, Long userId) {
+    public void insertMission(MissionDto missionDto, Long userId) {
         Mission mission = new Mission();
         mission.setRegtime(LocalDateTime.now());
         mission.setTitle(missionDto.getTitle());
-        mission.setStartDate(LocalDate.now()); // 바꿔야 함
-        mission.setEndDate(LocalDate.now()); // 바꿔야 함
+        mission.setStartDate(missionDto.getStartDate());
+        mission.setEndDate(missionDto.getEndDate());
         mission.setEntryPoint(missionDto.getEntryPoint());
         mission.setSidoCode(missionDto.getSidoCode());
         mission.setGugunCode(missionDto.getGugunCode());

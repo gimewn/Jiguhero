@@ -61,6 +61,7 @@ public class FeedServiceImpl implements FeedService {
             feed.setUser(userEntity);
             feed.setMission(missionEntity);
             feedDao.insertFeed(feed);
+
             ///////////////////////////////////////////////////// 달성률 계산
             int days = (int) ChronoUnit.DAYS.between(missionEntity.getStartDate(), LocalDate.now()) + 1;
             int feeds = feedDao.countByFeed(missionEntity, userEntity);
@@ -69,6 +70,7 @@ public class FeedServiceImpl implements FeedService {
             Conn_Mission connMission = missionDao.selectConnMission(missionEntity, userEntity);
             connMission.setSuccessRate(successRate);
             /////////////////////////////////////////////////////
+
             return 1; // <해당 날짜, 유저>로 등록된 인증샷이 없는 경우 인증샷 등록 완료
         }
         else
@@ -78,7 +80,7 @@ public class FeedServiceImpl implements FeedService {
 
     @Transactional
     @Override
-    public FeedDto changeFeed(FeedDto feedDto, Long userId) throws Exception{
+    public FeedDto updateFeed(FeedDto feedDto, Long userId) throws Exception{
         User userEntity = userDao.selectUserById(userId);
 
         if(feedDao.selectFeed(feedDto.getFeedId(), userEntity)!=null) {
@@ -101,6 +103,7 @@ public class FeedServiceImpl implements FeedService {
         if(feedDao.selectFeed(missionEntity, userEntity)!=null) {
             feedDao.deleteLikeFeed(feedEntity);
             feedDao.deleteFeed(feedId);
+
             ///////////////////////////////////////////////////// 달성률 계산
             int days = (int) ChronoUnit.DAYS.between(missionEntity.getStartDate(), LocalDate.now()) + 1;
             int feeds = feedDao.countByFeed(missionEntity, userEntity);
@@ -109,6 +112,7 @@ public class FeedServiceImpl implements FeedService {
             Conn_Mission connMission = missionDao.selectConnMission(missionEntity, userEntity);
             connMission.setSuccessRate(successRate);
             /////////////////////////////////////////////////////
+
             return 1; // <해당 날짜, 미션, 유저>로 등록된 인증샷이 있는 경우 인증샷 삭제 완료
         }
         else return 2; // <해당 날짜, 미션, 유저>로 등록된 인증샷이 없는 경우 인증샷 삭제 불가
