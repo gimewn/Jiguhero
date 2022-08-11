@@ -72,5 +72,18 @@ public class UserServiceImpl implements UserService {
         return dto;
     }
 
+    @Override
+    public UserDto deleteUser(Long userId) throws Exception {
+        User entity = userDao.deleteUser(userId);
+        UserDto dto = UserDto.of(entity);
+
+        return dto;
+    }
+
+    @Override
+    public void deleteToken(String userEmail) throws Exception {
+        userDao.deleteToken(userEmail);
+    }
+
 
 }
