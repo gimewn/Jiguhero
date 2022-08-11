@@ -7,6 +7,7 @@ import Link from "next/link";
 import getMission from 'pages/api/mission/index';
 import { dehydrate, Query, QueryClient, QueryClientProvider, useQuery } from "@tanstack/react-query";
 import { getSession, SessionProvider, useSession } from "next-auth/react";
+import PropTypes from 'prop-types';
 
 
 const PagI = styled(Pagination)`
@@ -22,14 +23,13 @@ export default function MissionLists() {
   const { data: MISSION } = useQuery(['missions'], getMission)
   console.log(MISSION)
 
-  const remainder = (MISSION?.length % 5);
-  const quot = MISSION?.length / 5;
+  const remainder = MISSION?.length % 5;
+  const quot = parseInt(String(MISSION?.length / 5))
   const page = useRecoilValue(missionLists)
   const setPage = useSetRecoilState(missionLists)
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
   };
-
 
   return (
     <>
@@ -45,6 +45,7 @@ export default function MissionLists() {
     </>
   )
 }
+
 
 export async function getServerSideProps(context) {
   const missionList = new QueryClient()

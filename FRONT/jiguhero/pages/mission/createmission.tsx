@@ -72,7 +72,7 @@ const BtnContent = styled('div')`
   flex-direction: row;
   align-items: center;
   justify-content: center;
-
+  margin-top: 10px;
     @media screen and (min-width: 360px){
         width:400px;
     }
@@ -128,23 +128,25 @@ const SelectDong = styled(SelectSido)`
 
 `
 const CameraBox = styled('form')`
-  width: 150px;
-  height: 150px;
+  width: 250px;
+  height: 200px;
   background-color: #FFffff;
-  border-radius: 100px;
+  border-radius: 15px;
   box-shadow: 0px 0px 5px 0px #dadce0 inset;
   border: 0;
   display:flex;
   justify-content: center;
   align-items: center;
-  svg {
-
+  @media screen and (min-width: 360px){
+    width: 200px;
+    height: 150px;
   }
 `
 const CameraBtn = styled('div')`
   display: flex;
   justify-content: center;
   align-items: center;
+  
 `
 
 const PointInput = styled('input')`

@@ -1,4 +1,4 @@
-import MissionList from 'components/MissionList';
+import NowJoinList from 'components/NowJoinList';
 import { Pagination } from "@mui/material";
 import { nowjoinlist } from "states/mission";
 import { useRecoilValue, useSetRecoilState } from "recoil";
@@ -21,10 +21,10 @@ interface IPage {
 }
 
 export default function NowJoinLists() {
-  const { data: MISSION } = useQuery(['missions'], JoinMission)
-  console.log(MISSION)
-  const remainder = MISSION?.length % 5;
-  const quot = parseInt(MISSION?.length / 5);
+  const { data: JoinMissionData } = useQuery(['missions'], JoinMission)
+  console.log(JoinMissionData)
+  const remainder = JoinMissionData?.length % 5;
+  const quot = JoinMissionData?.length / 5;
   const page = useRecoilValue(nowjoinlist)
   const setPage = useSetRecoilState(nowjoinlist)
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
@@ -33,8 +33,8 @@ export default function NowJoinLists() {
 
   return (
     <>
-      {MISSION?.slice((page - 1) * 5, page * 5).map((item, index) => (
-        <MissionList
+      {JoinMissionData?.slice((page - 1) * 5, page * 5).map((item, index) => (
+        <NowJoinList
           key={index} {...item} />
       ))}
       <PagI
@@ -47,15 +47,15 @@ export default function NowJoinLists() {
 }
 
 export async function getServerSideProps(context) {
-  const missionList = new QueryClient()
+  const joinList = new QueryClient()
   const session = await getSession(context);
-  await missionList.prefetchQuery(['missions'], () => { JoinMission() })
+  await joinList.prefetchQuery(['missions'], () => { JoinMission() })
 
   return {
     props: {
       data: {
         session,
-        dehydratedState: dehydrate(missionList)
+        dehydratedState: dehydrate(joinList)
       },
     },
   };
