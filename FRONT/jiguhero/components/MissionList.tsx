@@ -19,11 +19,12 @@ const List = styled('div')`
 
   @media screen and (min-width: 360px){
       width:350px;
+
   }
   @media screen and (min-width:450px){
-      width: 400px;
+      width: 350px;
   }
-  @media screen and (min-width: 700px){
+  @media screen and (min-width: 700px) and (max-width:1400){
       width:500px;
   }
 `
@@ -38,7 +39,7 @@ const ListImg = styled('div') <{ image: string }>`
   float: left;
 `
 const ListContent = styled('div')`
-  width: 250px;
+  width: 200px;
   height: 150px;
   border: 1px solid none;
   float: left;

@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 interface ColorProp {
     dColor: string,
-    hColor: string
+    hColor?: string
 }
 export const ButtonFull = styled('button') <{ dColor: string, hColor: string }>`
     background-color: ${(props) => props.dColor};

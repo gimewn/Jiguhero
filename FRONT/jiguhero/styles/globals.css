@@ -96,5 +96,6 @@ a {
 
 #__next{
   overflow:hidden;
-
+  height: 60rem;
+  width: 100%;
 }

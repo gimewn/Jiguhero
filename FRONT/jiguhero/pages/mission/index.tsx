@@ -10,12 +10,37 @@ import { dehydrate, Query, QueryClient, QueryClientProvider, useQuery } from "@t
 import { getSession, SessionProvider, useSession } from "next-auth/react";
 import getMission from "pages/api/mission/index";
 
+
+const NavBar = styled('div')`
+  z-index: 999;
+ position: fixed;
+  left: 0;
+  right: 0;
+  top:60px;
+  height: 60px;
+  /* padding: 2rem; */
+  color: white;
+  background: white;
+  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+    @media only screen and (min-width: 650px) {
+    display:none;
+  }
+`
+const Header = styled("div")`
+  display: flex;
+  justify-content: space-between;
+  margin: 0px 5px 0px 20px;
+`;
 const BackCompo = styled(Backcomponents)`
   margin-top: 10px;
   margin-bottom: 10px;
 `
 const Block = styled('div')`
   margin: 0.5rem;
+  
 
 `
 const Content = styled('div')`
@@ -87,6 +112,14 @@ const ListContent = styled('div')`
     @media screen and (min-width:700px){
         width:620px;
     }
+
+`
+
+const MissionBlock = styled('div')`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
 `
 
 //select Box --- 최신등록 순 이름 순 -->Back과 상의..?
@@ -161,8 +194,12 @@ export default function Mission() {
                 <title>대원들의 임무 | 지구-방위대</title>
             </Head>
 
-            {/* 모바일 뷰에서 뒤로가기 버튼! */}
-            <BackCompo name='대원들의 임무'></BackCompo>
+            <NavBar>
+                <Header>
+                    {/* 모바일 뷰에서 뒤로가기 버튼! */}
+                    <BackCompo name='대원들의 임무'></BackCompo>
+                </Header>
+            </NavBar>
 
             {/* contents! */}
             {/* 임무 버튼 그룹 */}
@@ -182,11 +219,11 @@ export default function Mission() {
             </Block>
 
             {/* 임무 목록들 */}
-            <Block>
+            <MissionBlock>
                 <ListContent>
                     <MissionLIST />
                 </ListContent>
-            </Block>
+            </MissionBlock>
         </>
     )
 }
