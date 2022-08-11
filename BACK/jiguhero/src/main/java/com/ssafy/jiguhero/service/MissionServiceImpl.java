@@ -295,8 +295,4 @@ public class MissionServiceImpl implements MissionService {
         return dtoList;
     }
 
-    @Override
-    public Float successRateMission(Long missionId, Long userId){
-
-    }
 }

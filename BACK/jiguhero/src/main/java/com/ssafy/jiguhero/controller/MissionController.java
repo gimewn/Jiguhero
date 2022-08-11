@@ -156,12 +156,4 @@ public class MissionController {
 
     }
 
-    @ApiOperation(value = "달성률을 반환한다")
-    @GetMapping("/rate")
-    public ResponseEntity<String> successRateMission(@RequestParam("mission_id") Long missionId, @RequestParam("user_id") Long userId){
-
-        missionService.successRateMission(missionId, userId);
-
-
-    }
 }

@@ -101,7 +101,7 @@ public class FeedDaoImpl implements FeedDao{
 
     @Override
     public void deleteLikeFeed(Feed feed){
-        feedRepository.deleteAllByFeed(feed);
+        likeFeedRepository.deleteAllByFeed(feed);
     }
 
     @Override
