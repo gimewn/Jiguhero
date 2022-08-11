@@ -34,15 +34,17 @@ public interface MissionService {
 
     MissionDto changeMission(MissionDto missionDto, Long userId) throws Exception;
 
-    FeedDto getFeedById(Long feedId, Long userId);
+    //FeedDto getFeedById(Long feedId, Long userId);
 
-    void saveFeed(FeedDto feedDto,Long userId);
+    //int saveFeed(FeedDto feedDto, Long missionId, Long userId);
 
     String getRepMissionImageURL(Long missionId, HttpServletRequest request);
 
     List<String> getMissionImageURL(Long missionId, HttpServletRequest request);
 
-    FeedDto changeFeed(FeedDto feedDto, Long userId) throws Exception;
+    //FeedDto changeFeed(FeedDto feedDto, Long userId) throws Exception;
 
     List<MissionDto> searchMission(String search, String array);
+
+    Float successRateMission(Long missionId, Long userId);
 }

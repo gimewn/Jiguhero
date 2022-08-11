@@ -7,6 +7,7 @@ import com.ssafy.jiguhero.data.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -136,7 +137,7 @@ public class MissionDaoImpl implements MissionDao {
         return updatedMission;
     }
 
-
+/*
     @Override
     public Feed selectFeedById(Long feedId){
         Feed selectedFeed = feedRepository.findByFeedId(feedId);
@@ -166,7 +167,8 @@ public class MissionDaoImpl implements MissionDao {
 
     @Override
     public Optional<Feed> selectFeed(Long feedId, User user){
-        Optional<Feed> result = feedRepository.findByFeedIdAndUser(feedId, user);
+        Optional<Feed> result = null;
+        result = feedRepository.findByFeedIdAndUserAndRegtime(feedId, user, LocalDate.now());
         if(result.isPresent()) return result;
         else return null;
     }
@@ -189,6 +191,8 @@ public class MissionDaoImpl implements MissionDao {
         return updatedFeed;
     }
 
+ */
+
     @Override
     public List<Mission> searchMission(String search,String array){
         List<Mission> selectedAllMissions = null;
@@ -200,6 +204,17 @@ public class MissionDaoImpl implements MissionDao {
         }
         return selectedAllMissions;
     }
+
+    /*
+    @Override
+    public Optional<Feed> searchFeed(User user){
+        Optional<Feed> result = null;
+        result = feedRepository.findByUserAndRegtime(user, LocalDate.now());
+        if(result.isPresent()) return result;
+        else return null;
+    }
+
+     */
 
 }
 

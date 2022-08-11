@@ -44,18 +44,21 @@ public interface MissionDao {
 
     Mission updateMission(MissionDto missionDto) throws Exception;
 
-    Feed selectFeedById(Long missionId);
+    //Feed selectFeedById(Long missionId);
 
-    Like_Feed selectLikeFeedByUser(Feed feed, User user);
+    //Like_Feed selectLikeFeedByUser(Feed feed, User user);
 
-    int countByFeed(Feed feed);
+    //int countByFeed(Feed feed);
 
-    void insertFeed(Feed feed);
+    //void insertFeed(Feed feed);
 
-    Optional<Feed> selectFeed(Long feedId, User user);
+    //Optional<Feed> selectFeed(Long feedId, User user);
 
-    Feed updateFeed(FeedDto feedDto) throws Exception;
+    //Feed updateFeed(FeedDto feedDto) throws Exception;
 
     List<Mission> searchMission(String search, String array);
+
+    //Optional<Feed> searchFeed(User user);
+
 
 }

@@ -24,8 +24,7 @@ public class Mission {
     @Column(name = "mission_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long missionId;
-
-    @Column(nullable = false)
+    
     private LocalDateTime regtime;
 
     @Column(nullable = false)
