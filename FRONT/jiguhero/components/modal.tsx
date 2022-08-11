@@ -6,11 +6,20 @@ import { useState, useEffect } from "react";
 import {ButtonFull} from 'styles/styled'
 import getReview from 'pages/api/place/getReview';
 import postReport from 'pages/api/place/postReport';
+import postReview from 'pages/api/place/postReview';
 import { useQuery } from '@tanstack/react-query';
-import { Pagination } from "@mui/material";
+// import { Pagination } from "@mui/material";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import {reviewlists} from 'states/place';
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
+import { Swiper, SwiperSlide } from "swiper/react"; // basic
+import SwiperCore, { Navigation, Pagination } from "swiper";
+import "swiper/css"; //basic
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+import Image from 'next/image';
+
+SwiperCore.use([Navigation, Pagination]);
 
 const ModalBack = styled('div')`
     position:absolute;
@@ -34,7 +43,7 @@ const ModalDiv = styled('div')`
     margin-left: auto; 
     margin-right: auto; 
     top:5%;
-    width:80%;
+    width:85%;
     max-width:700px;
     border:0;
     border-radius: 20px;
@@ -42,10 +51,11 @@ const ModalDiv = styled('div')`
     max-height:90%;
     /* bottom:5%; */
     overflow:auto;
-    /* @media only screen and (max-width: 650px) {
-        height
-  } */
-    
+    -ms-overflow-style: none; /* for Internet Explorer, Edge */
+    scrollbar-width: none; /* for Firefox */
+    ::-webkit-scrollbar {
+    display: none; /* for Chrome, Safari, and Opera */
+}
 `
 const ModalHeader = styled('div')`
     display:flex;
@@ -54,7 +64,7 @@ const ModalHeader = styled('div')`
     padding:20px 20px 0px 25px;
 `
 const HeaderTitle = styled('span')`
-    font-size:1.2rem;
+    font-size:1.5rem;
     font-weight:bold;
     padding: auto;
 `
@@ -66,7 +76,6 @@ const ModalBody = styled('div')`
     display: flex;
     flex-direction: column;
     padding:5px 20px 0px 25px;
-    overflow:auto;
     @media only screen and (max-width: 650px) {
         padding:0 20px 0px 20px;
     }
@@ -192,9 +201,9 @@ const Starspan = styled('span')`
     margin-right:10px;
 `
 
-const Paging = styled(Pagination)`
-    margin: 0 auto;
-`
+// const Paging = styled(Pagination)`
+//     margin: 0 auto;
+// `
 const MakeReview = styled('div')`
     margin-left:30px;
     margin-top:10px;
@@ -238,35 +247,25 @@ const ReportReview = styled(CheckRoundedIcon)`
     height:35px;
     width:35px;
 `
+const ImageDiv = styled('div')``
 
 export default function Modal(props){
-    const {show, setshow, data} = props;
+    const {show, setshow, data, reviews} = props;
     const [isReport, setReport] = useState(false);
     const [ReportCategory, setReportCategory] = useState(0);
     const [ReportContent, setReportContent] = useState('');
     const reviewEmoji = [['', ''], ['😔','실망이에요'], ['😑', '별로예요'], ['😶', '그저 그래요'], ['🤗', '만족해요'], ['🥰', '너무 좋아요']]
     const [scoreValue, setsScoreValue] = useState(1);
     const [reviewValue, setReviewValue] = useState('');
-    const [remainder, setRemainder] = useState(0);
-    const [quot, setQuot] = useState(0);
     const page = useRecoilValue(reviewlists)
     const setPage = useSetRecoilState(reviewlists)
-    const [reviews, setReviews] = useState([]);
     const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
       setPage(value);
     };
-    
-    function FetchReviews(){
-        getReview(data['placeId']).then((res) => {
-            setReviews(res)
-          })
-        setRemainder(reviews.length % 5)
-        setQuot(reviews.length / 5)
-    }
+    const [fetchReview, setFetchReview] = useState(reviews);
     useEffect(()=>{
-        FetchReviews()
-    },[reviews]);
-
+        setFetchReview(reviews)
+    }, [reviews])
     function Emoji(prop){
         if(prop['index'] === 0){
             return(<EmojiSpan size="20px">{reviewEmoji[prop['score']][prop['index']]}</EmojiSpan>)
@@ -281,7 +280,7 @@ export default function Modal(props){
         }
         return <Starspan>{res}</Starspan>
     }
-    
+    console.log(data)
     const ModalContent = show && (
         <>
         <ModalDiv>
@@ -299,6 +298,18 @@ export default function Modal(props){
                 {data.phone ? <WithIcons>
                     <CallIcon /><ModalAddress>{data.phone}</ModalAddress>
                 </WithIcons> : <></>}
+                <ImageDiv>
+                <Swiper
+                    spaceBetween={0}
+                    slidesPerView={5}
+                    scrollbar={{ draggable: true }}
+                    navigation={{
+                    nextEl: '.review-swiper-button-next',
+                    prevEl: '.review-swiper-button-prev',
+                }}>
+                    {data.imageURL.map((item)=>(<SwiperSlide></SwiperSlide>))}
+                </Swiper>
+                </ImageDiv>
                 {data.content ?
                 <WithTitle>
                     <ConTitle>🍀 이 곳은 어떤 곳?</ConTitle>
@@ -318,12 +329,19 @@ export default function Modal(props){
                         <Emoji score={scoreValue} index={1} /> 
                         </div>
                         <ReviewWrite>
-                        <ReviewArea placeholder='리뷰를 남겨주세요.' onChange={(e)=>{setReportContent(e.target.value)
+                        <ReviewArea placeholder='리뷰를 남겨주세요.' onChange={(e)=>{setReviewValue(e.target.value)
                         }}/>
-                        <ReportReview />
+                        <ReportReview onClick={() => {
+                            postReview(data.placeId, 1, reviewValue, scoreValue).then((res) => {
+                                getReview(data.placeId).then((res) => {setFetchReview(res)
+                                })
+                            }
+                            )
+                        }} />
                         </ReviewWrite>
                     </MakeReview>
-                    {reviews?.map((item) => (<ReviewDiv>
+                    <div id='reviews'>
+                    {fetchReview?.map((item) => (<ReviewDiv key={item.reviewId}>
                         <Emoji score={item.score} index={0} />
                     <ReviewBox key={item.reviewId}>
                         <Star score={item.score} />
@@ -331,11 +349,7 @@ export default function Modal(props){
                     </ReviewBox>
                     </ReviewDiv>
                     ))}
-                    {quot > 1 ? <Paging
-                    count={remainder === 0 ? quot : quot + 1}
-                    page={page}
-                    onChange={handleChange}
-                />:<></>}
+                    </div>
                 </WithTitle>
             </ModalBody>
             {isReport ? 
@@ -353,7 +367,7 @@ export default function Modal(props){
                 <RButtonDiv>
                     <ReportButton dColor='#65ACE2' hColor='#65ACE2' style={{margin:'0 10px 0 0'}} onClick={() => setReport(false)}>취소</ReportButton>
                     <ReportButton dColor="#FF4848" hColor="#FF4848" onClick={() => {
-                        postReport(data.placeId, 1, ReportCategory, ReportContent)
+                        postReport(data.placeId, 1, ReportCategory, ReportContent).then((res)=>{setReport(false)})
                     }}>신고하기</ReportButton>
                 </RButtonDiv>
             </PostReport> : 

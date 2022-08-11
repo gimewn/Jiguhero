@@ -33,6 +33,7 @@ const Header = styled("div")`
   justify-content: space-between;
   padding:20px;
   position:fixed;
+  top:0;
   left:0;
   right:0;
   z-index:999;
@@ -49,13 +50,13 @@ const Body = styled("div")`
 const Container = styled("div")`
   display: flex;
   position:absolute;
-  top:80px;
+  /* top:80px; */
   justify-content: center;
   flex-direction: column;
-  min-width: 375px;
-  /* max-width:700px; */
+  width:inherit;
+  padding:0 20px;
+  max-width: 700px;
   span, p {
-
     align-items: flex-start;
   }
   div {
@@ -63,6 +64,7 @@ const Container = styled("div")`
   }
   @media only screen and (max-width: 650px) {
     margin-bottom:80px;
+    margin-top: 20px;
   }
 `
 

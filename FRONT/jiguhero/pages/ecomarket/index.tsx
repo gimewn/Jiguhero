@@ -11,6 +11,7 @@ import getGugun from 'pages/api/ecomarket/getGugun';
 import getDong from 'pages/api/ecomarket/getDong';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import PersonPinRoundedIcon from '@mui/icons-material/PersonPinRounded';
+import getReview from "pages/api/place/getReview";
 import { dehydrate, Query, QueryClient, QueryClientProvider, useQuery } from "@tanstack/react-query";
 import { getSession} from "next-auth/react";
 
@@ -198,8 +199,6 @@ const SelectBox = styled('select')`
   }
 `
 
-
-
 export default function FullMap(props:any) {
 
   const router = useRouter();
@@ -216,16 +215,16 @@ export default function FullMap(props:any) {
     enabled: !!ChoiceGugun
   })
   const [ChoiceDong, setChoiceDong] = useState(['00', '']);
+  const [reviews, setReviews] = useState([]);
   
   useEffect(()=>{
-    // HTML5의 geolocation으로 사용할 수 있는지 확인합니다
     window.kakao.maps.load(function(){moveMyGps()})
   }, [])
-  // useEffect(() => {
-  //   getReview(choiceP['placeId']).then((res) => {
-  //     setReviews(res)
-  //   })
-  // }, [choiceP])
+  useEffect(() => {
+    getReview(choiceP['placeId']).then((res) => {
+      setReviews(res)
+    })
+  }, [choiceP])
 
   function getFetch(lat, lon, map) {
     var imageSrc =
@@ -367,7 +366,7 @@ export default function FullMap(props:any) {
           </Place>
         ))}
       </PlaceGroup>
-      <Modal show={show} setshow={setShow} data={choiceP}>
+      <Modal show={show} setshow={setShow} data={choiceP} reviews={reviews}>
       </Modal>
       <Mapping id="map" />
     </Div>
