@@ -20,7 +20,8 @@ export async function middleware(req: NextRequest, ev: NextFetchEvent) {
 
 
 export const config = {
-	matcher: ['/mission/:path*', '/mypage/:path*', ]
+	// matcher: ['/mission/:path*', '/mypage/:path*', ]
+	matcher: ['/mypage/:path*']
 }
 
 

@@ -6,13 +6,13 @@ import Modal from "components/modal";
 import { Token, BASE_URL } from "pages/api/fetch";
 import LocationOnRoundedIcon from '@mui/icons-material/LocationOnRounded';
 import SourceRoundedIcon from '@mui/icons-material/SourceRounded';
-import { useQuery } from "@tanstack/react-query";
 import getSido from 'pages/api/ecomarket/getSido';
 import getGugun from 'pages/api/ecomarket/getGugun';
 import getDong from 'pages/api/ecomarket/getDong';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import PersonPinRoundedIcon from '@mui/icons-material/PersonPinRounded';
-import getReview from "pages/api/place/getReview";
+import { dehydrate, Query, QueryClient, QueryClientProvider, useQuery } from "@tanstack/react-query";
+import { getSession} from "next-auth/react";
 
 const Div = styled("div")`
   position: relative;
@@ -216,16 +216,16 @@ export default function FullMap(props:any) {
     enabled: !!ChoiceGugun
   })
   const [ChoiceDong, setChoiceDong] = useState(['00', '']);
-  const [reviews, setReviews] = useState([]);
   
   useEffect(()=>{
     // HTML5의 geolocation으로 사용할 수 있는지 확인합니다
     window.kakao.maps.load(function(){moveMyGps()})
   }, [])
-  useEffect(() => {
-    const FetchReviews = () => {return getReview(choiceP[7])}
-    console.log(FetchReviews)
-  }, [choiceP])
+  // useEffect(() => {
+  //   getReview(choiceP['placeId']).then((res) => {
+  //     setReviews(res)
+  //   })
+  // }, [choiceP])
 
   function getFetch(lat, lon, map) {
     var imageSrc =
@@ -327,7 +327,7 @@ export default function FullMap(props:any) {
             }}
           />
         <SelectBox onChange={(e) => {setChoiceSido(e.target.value.split(","))}}>
-          <option value="none">시/도</option>
+          <option value="">시/도</option>
           {sido?.map((item) => (
             <option key={item['sidoCode']} value={[item['sidoCode'],item['sidoName'] ]}>{item['sidoName']}</option>
           ))}
@@ -367,9 +367,25 @@ export default function FullMap(props:any) {
           </Place>
         ))}
       </PlaceGroup>
-      <Modal show={show} setshow={setShow} data={choiceP} reviews={reviews}>
+      <Modal show={show} setshow={setShow} data={choiceP}>
       </Modal>
       <Mapping id="map" />
     </Div>
   );
+}
+
+export async function getServerSideProps(context) {
+  const queryClient = new QueryClient()
+  const session = await getSession(context)
+  await queryClient .prefetchQuery(['sido'], ()=>{getSido()})
+  await queryClient .prefetchQuery(['gugun'], ()=>{getGugun(context)})
+  await queryClient .prefetchQuery(['dong'], ()=>{getDong(context)})
+    return {
+      props: {
+        data: {
+          session,
+          dehydratedState: dehydrate(queryClient )
+        },
+      },
+    };   
 }
