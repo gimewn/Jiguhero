@@ -53,29 +53,29 @@ public class CustomSimpleUrlAuthenticationSuccessHandler extends SimpleUrlAuthen
 
         clearAuthenticationAttributes(request, response);
 
-//        // Cookie 생성
-//        Cookie cookie = new Cookie("refreshToken", tokenMapping.getRefreshToken());
-//        // 만료기한 : 30일
-//        cookie.setMaxAge(30 * 24 * 60 * 60);
-//        // optional properties
-//        cookie.setSecure(true);
-//        cookie.setHttpOnly(true);
-//        cookie.setPath("/");
-//
-//        // add cookie to response
-//        response.addCookie(cookie);
-
-        // add sameSite, domain option in cookie
-        ResponseCookie cookie = ResponseCookie.from("refreshToken", tokenMapping.getRefreshToken())
-                .domain("localhost")
-                .sameSite("None")
-                .secure(true)
-                .path("/")
-                .maxAge(30 * 24 * 60 * 60)
-                .build();
+        // Cookie 생성
+        Cookie cookie = new Cookie("refreshToken", tokenMapping.getRefreshToken());
+        // 만료기한 : 30일
+        cookie.setMaxAge(30 * 24 * 60 * 60);
+        // optional properties
+        cookie.setSecure(true);
+        cookie.setHttpOnly(true);
+        cookie.setPath("/");
 
         // add cookie to response
-        response.setHeader("Set-Cookie", cookie.toString());
+        response.addCookie(cookie);
+
+//        // add sameSite, domain option in cookie
+//        ResponseCookie cookie = ResponseCookie.from("refreshToken", tokenMapping.getRefreshToken())
+//                .domain("i7c105.p.ssafy.io")
+//                .sameSite("None")
+//                .secure(true)
+//                .path("/")
+//                .maxAge(30 * 24 * 60 * 60)
+//                .build();
+//
+//        // add cookie to response
+//        response.setHeader("Set-Cookie", cookie.toString());
 
         getRedirectStrategy().sendRedirect(request, response, targetUrl);
     }
