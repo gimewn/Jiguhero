@@ -245,13 +245,13 @@ export default function Createmission() {
 
   // 임무명
   function MissionName() {
-    const onChange = (event) => {
-      setTitle(event.target.value);
+    const onChange = (e) => {
+      setTitle(e.target.value);
     };
     return (
       <div>
         <Text>임무명</Text>
-        <BoxInput type="text" onChange={onChange} value={title} />
+        <BoxInput onChange={onChange} value={title} />
       </div>
     );
   }
@@ -302,18 +302,18 @@ export default function Createmission() {
         <PointInput
           type="number"
           min={500}
-          max="5000"
+          max={5000}
           step={500}
           defaultValue={500}
           onBlur={(e) => {
             const tmp = Number(e.target.value);
             if (tmp < 500) {
-              e.target.value = 500;
+              e.target.value = '500';
               
             } else if (tmp > 5000) {
-              e.target.value = 5000;
+              e.target.value = '5000';
             } else if (Number(e.target.value) % 10) {
-              e.target.value = tmp - (tmp % 10);
+              e.target.value = `${tmp - (tmp % 10)}`;
             }
             setPoint(Number(e.target.value));
             return
@@ -329,19 +329,18 @@ export default function Createmission() {
     return (
       <>
         <Text>정원</Text>
-        <PeopleInput defaultValue={10} onBlur={(e:FocusEvent<HTMLInputElement>)=>{
+        <PeopleInput type="number" step={10} defaultValue={10}  onBlur={(e:FocusEvent<HTMLInputElement>)=>{
           const num = Number(e.target.value)
           if (num<10){
-            e.target.value=10
+            e.target.value='10'
             
-          }else if(num>500){
-            e.target.value=500
-            
+          }else if(num>5000){
+            e.target.value='5000'  
           }else if (num%10){
-            e.target.value=num-(num%10)
+            e.target.value=`${num-(num%10)}`
           }
           setPeople(Number(e.target.value))
-  
+          console.log(e.target.value)
         }} />
       </>
     );
@@ -351,27 +350,16 @@ export default function Createmission() {
 function MissionLocation() {
   
 
-  // var geocoder = new window.kakao.maps.services.Geocoder();
-  // // 주소로 좌표를 검색합니다
-  // geocoder.addressSearch(`${ChoiceSido[1]} ${ChoiceGugun[1]} ${ChoiceDong[1]}`, function(result, status) {
-  //   // 정상적으로 검색이 완료됐으면 
-  //   if (status === window.kakao.maps.services.Status.OK) {
-  //     makeMap(result[0].y,  result[0].x);
-  //  }else{
-  //   alert("지역을 선택해주세요.")
-  //   setChoiceSido(['', ''])
-  //   setChoiceGugun(['', ''])
-  //   setChoiceDong(['', ''])
-  //  }
-  // })}
-
 
   return (
     <>
       <Text>지역</Text>
       {/* 시도 선택 */}
       <SelectSido onChange={(e) => {setChoiceSido(e.target.value.split(","))}} >
-      <option value="">시/도</option>
+      <option value="">
+
+      {ChoiceSido[1] ? ChoiceSido[1] : '시/도'}
+      </option>
       {sido?.map((item) => (
             <option key={item['sidoCode']} value={[item['sidoCode'],item['sidoName'] ]}>{item['sidoName']}</option>
           ))}
@@ -379,9 +367,13 @@ function MissionLocation() {
 
       {/* 구군 선택 */}
       <SelectGugun onChange={(e) => {setChoiceGugun(e.target.value.split(","))}} >
-      <option value="">시/군/구</option>
+      <option value="" >
+        
+        {ChoiceGugun[1] ? ChoiceGugun[1] : '시/군/구'}
+        
+       </option>
           {gugun?.map((item) => (
-            <option key={item['gugunCode']} value={[item['gugunCode'], item['gugunName'].split(" ")[1]]}>{item['gugunName'].split(" ")[1]}</option>
+            <option key={item['gugunCode']} value={[item['gugunCode'], item['gugunName'].split(" ")[1]]}  >{item['gugunName'].split(" ")[1]}</option>
           ))}
       </SelectGugun  >
 
@@ -389,32 +381,15 @@ function MissionLocation() {
       <SelectDong onChange={(e) => {setChoiceDong(e.target.value.split(","))
        console.log(ChoiceSido,ChoiceGugun,ChoiceDong)
     }} >
-      <option value="">읍/면/동</option>
+      <option value="">
+      {ChoiceDong[1] ? ChoiceDong[1] : '읍/면/동'}
+        </option>
           {dong?.map((item) => (
             <option key={item['dongCode']} value={[item['dongCode'], item['dongName'].split(" ")[2]]}>{item['dongName'].split(" ")[2]}</option>
           ))}
       </SelectDong>
 
-      {/* 윤주님 코드 */}
-      {/* <PlaceGroup>
-        {data?.map((item) => (
-          <Place
-            key={item.placeId}
-            onClick={() => {
-              setShow(true);
-              setChoiceP(item);
-            }}
-          >
-            <PlaceTitle className="placeTitle">{item.name}</PlaceTitle>
-            <WithIcon>
-              <LocIcon className="icon" /><PlaceAddress>{item.roadAddress}</PlaceAddress>
-            </WithIcon>
-            {item.content ? <WithIcon>
-              <ConIcon className="icon" /><PlaceContent>{item.content}</PlaceContent>
-            </WithIcon> : <></>}
-          </Place>
-        ))}
-      </PlaceGroup> */}
+      
     </>
   );
 }
