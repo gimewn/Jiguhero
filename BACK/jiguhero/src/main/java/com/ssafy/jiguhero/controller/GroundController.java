@@ -28,7 +28,7 @@ public class GroundController {
     }
 
     @ApiOperation(value = "user_id에 해당하는 유저가 좋아요한 활동구역 목록을 반환한다.", response = List.class)
-    @GetMapping("/{user_id}/hearts")
+    @GetMapping("/like/{user_id}")
     public ResponseEntity<List<GroundDto>> getLikeGrounds(@PathVariable("user_id") Long userId) {
         List<GroundDto> list = groundService.getLikeGrounds(userId);
 
@@ -91,4 +91,25 @@ public class GroundController {
     public ResponseEntity<String> deleteGround(@RequestParam("ground_id") Long groundId, @RequestParam("user_id") Long userId){
         return new ResponseEntity<String>(String.valueOf(groundService.deleteGround(groundId, userId)), HttpStatus.OK);
     }
+
+    @ApiOperation(value = "해당 활동구역의 '좋아요'를 클릭한다.", response = String.class)
+    @PostMapping("/like")
+    public ResponseEntity<String> saveLikeGround(@RequestParam("ground_id") Long groundId, @RequestParam("user_id") Long userId){
+        if(groundService.likeGround(groundId, userId)){
+            return new ResponseEntity<String>("save", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<String>("delete", HttpStatus.OK);
+        }
+    }
+
+    @ApiOperation(value = "해당 활동구역에 현재 접속되어있는 유저가 좋아요를 눌렀는지 여부를 반환한다.", response = String.class)
+    @GetMapping("/like")
+    public ResponseEntity<String> getLikeGround(@RequestParam("ground_id") Long groundId, @RequestParam("user_id") Long userId){
+        if(groundService.getLikeGround(groundId, userId)){
+            return new ResponseEntity<String>("true", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<String>("false", HttpStatus.OK);
+        }
+    }
+
 }
