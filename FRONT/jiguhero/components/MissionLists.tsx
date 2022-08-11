@@ -7,6 +7,7 @@ import Link from "next/link";
 import getMission from 'pages/api/mission/index';
 import { dehydrate, Query, QueryClient, QueryClientProvider, useQuery } from "@tanstack/react-query";
 import { getSession, SessionProvider, useSession } from "next-auth/react";
+import PropTypes from 'prop-types';
 
 
 const PagI = styled(Pagination)`
@@ -20,13 +21,16 @@ const PagI = styled(Pagination)`
 
 export default function MissionLists() {
   const { data: MISSION } = useQuery(['missions'], getMission)
-  const remainder = (MISSION?.length % 5);
-  const quot = parseInt(String(MISSION?.length / 5));
+  console.log(MISSION)
+  const remainder = MISSION?.length % 5;
+  const MissionLen = `${MISSION?.length / 5}`
+  const quot = parseInt(MissionLen)
   const page = useRecoilValue(missionLists)
   const setPage = useSetRecoilState(missionLists)
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
   };
+
 
   return (
     <>
@@ -35,13 +39,21 @@ export default function MissionLists() {
           key={index} {...item} />
       ))}
       <PagI
-                    count={remainder === 0 ? quot : quot+1}
-                    page={page}
-                    onChange={handleChange}
-                />
+        count={remainder === 0 ? quot : quot + 1}
+        page={page}
+        onChange={handleChange}
+      />
     </>
   )
 }
+//   return (
+//     <>
+//       {MISSION?.map((item, index) => (
+//         <MissionList key={index} {...item} />))}
+//     </>
+//   )
+// }
+
 
 export async function getServerSideProps(context) {
   const missionList = new QueryClient()
@@ -55,5 +67,5 @@ export async function getServerSideProps(context) {
         dehydratedState: dehydrate(missionList)
       },
     },
-  };
+  }
 }

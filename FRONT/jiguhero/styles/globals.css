@@ -42,7 +42,6 @@ body::-webkit-scrollbar {
   width: 0;
 }
 /* @media screen and (max-width: 650px){
-  body{
     padding-bottom:80px;
   }
 } */
@@ -95,10 +94,6 @@ a {
   margin: 5px;
 }
 
-#__next{
-  overflow:hidden;
-}
-
 .gr {
   color: #808080;
 }
@@ -138,7 +133,10 @@ ul.pagination li a.active {
   color: #808080;
 }
 .page-selection {
-  width: 48px;
+  /* width: 48px;
   height: 30px;
   color: #808080;
+*/
+  height: 60rem;
+  width: 100%;
 }

@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { useRouter } from 'next/router';
-import Link from 'next/link';
+
 
 
 const List = styled('div')`
@@ -54,6 +54,7 @@ const TextWrapper = styled('div')`
   margin: 4px;
 `
 
+
 const TitleName = styled('a')`
   font-size: 1rem;
   font-weight: bolder;
@@ -89,7 +90,8 @@ interface MissionProps {
   missionId: number;
 }
 
-export default function MissionList({ missionId, entryPoint, title, startDate, endDate, sidoCode, nowPerson, maxPerson, repImageURL }: MissionProps) {
+
+export default function JoinList({ missionId, entryPoint, title, startDate, endDate, sidoCode, nowPerson, maxPerson, repImageURL }: MissionProps) {
   const router = useRouter();
   // const missionDates = ({ mission_id }: { mission_id: number }) => {
   //   router.push(`/mission/${mission_id}/details`)

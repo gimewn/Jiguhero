@@ -1,6 +1,7 @@
+
 import Head from 'next/head';
 import styled from 'styled-components';
-import Backcomponents from 'components/back';
+// import Backcomponents from 'components/back';
 import { dehydrate, Query, QueryClient, QueryClientProvider, useQuery } from "@tanstack/react-query";
 import { getSession, SessionProvider, useSession } from "next-auth/react";
 import MoreVertRoundedIcon from '@mui/icons-material/MoreVertRounded';
@@ -11,81 +12,101 @@ import CalendarMonthRoundedIcon from '@mui/icons-material/CalendarMonthRounded';
 import { ButtonFull, ButtonBorder } from 'styles/styled';
 import { useRouter } from 'next/router';
 import RoomRoundedIcon from '@mui/icons-material/RoomRounded';
-import Mission from '.';
+import { useState } from 'react';
+import FavoriteRoundedIcon from '@mui/icons-material/FavoriteRounded';
+import FavoriteBorderRoundedIcon from '@mui/icons-material/FavoriteBorderRounded';
 
-const BackCompo = styled(Backcomponents)`
-  margin-top: 10px;
-  margin-bottom: 10px;
+
+const NavBar = styled('header')`
+  z-index: 999;
+ position: fixed;
+  left: 0;
+  right: 0;
+  top:80px;
+  height: 60px;
+
+  background: white;
+  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  @media only screen and (min-width: 650px) {
+    display:none;
+  }
 `
 
+const Header = styled("div")`
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin: 0px 5px 0px 20px;
+`;
+
+const DetailWrapper = styled('div')`
+  margin-top: 60px;
+`
+const MobileMore = styled(MoreVertRoundedIcon)`
+    color: #98C064;
+    :hover{
+        cursor: pointer;
+    }
+      @media only screen and (min-width: 650px) {
+    display:none;
+  }
+`
+
+// const BackCompo = styled(Backcomponents)`
+//   margin-top: 10px;
+//   margin-bottom: 10px;
+// `
+
 const Block = styled('div')`
-  margin: 0.2rem;
+  margin-top: 0.4rem;
 
 `
 const Content = styled('div')`
   display:flex;
   justify-content: left;
-  
-    @media screen and (min-width: 360px){
-        margin-left: 1.5rem;
-    }
-    @media screen and (min-width: 500px){
-        margin-left: 1.5rem;
-    }
-    @media screen and (min-width:700px){
-        margin-left: 3.5rem;
-    }
+  /* margin-left: 20px; */
+  @media only screen and (min-width: 360px) {
+    margin-left: 2.5rem;
+  }
 `
 const ImageBlock = styled('div')`
-    display:flex;
+
+  display:flex;
   flex-direction: row;
   justify-content: center;
     @media screen and (min-width: 360px){
-        width:400px;
+        width:415px;
     }
     @media screen and (min-width: 500px){
-        width:500px;
+        width:450px;
     }
     @media screen and (min-width:700px){
-        width:620px;
+        width:450px;
     }
-`
-const ImageContent = styled('div')`
-    margin-top: 10px;
-  display: flex;
-  flex-direction: column;
-  //임시 이미지를
-  background-image: url('https://cdn.pixabay.com/photo/2017/01/20/00/30/maldives-1993704_960_720.jpg');
-  background-size: cover;
-  background-position: center;
-  height: 300px;
-  border-radius: 10px;
-    @media screen and (min-width: 360px){
-        width:360px;
-        height:360px;
+    img{
+        max-width: 100%;
+        @media screen and (min-width:700px){
+        margin-top: 15px;
     }
-    @media screen and (min-width: 500px){
-        width:500px;
-        height:500px;
-    }
-    @media screen and (min-width:700px){
-        width:500px;
-        height: 500px;
-    }
+        
+}
 `
 
 const PeopleIcon = styled(EmojiPeopleRoundedIcon)`
-    color: #65ACE2;
+    color: #98C064;
     margin-right: 5px;
     margin-left: 5px;
 `
 const PointIcon = styled(MonetizationOnRoundedIcon)`
-    color: #65ACE2;
+    color: #98C064;
     margin-right: 5px;
     margin-left: 5px;
 `
 const CalendarIcon = styled(CalendarMonthRoundedIcon)`
-    color: #65ACE2;
+    color: #98C064;
     margin-right: 5px;
     margin-left: 5px;
 `
@@ -97,7 +118,7 @@ const ContentText = styled('a')`
     font-size: medium;
 `
 const LocalIcon = styled(RoomRoundedIcon)`
-    color: #65ACE2;
+    color: #98C064;
     margin-right: 5px;
     margin-left: 5px;
 `
@@ -113,6 +134,7 @@ const WebBtn = styled(ButtonFull)`
 const BtnContent = styled('div')`
     display:flex;
     justify-content: flex-end;
+    margin: 30px;
     @media only screen and (max-width:650px){
         display: none;
     }
@@ -121,109 +143,376 @@ const BtnContent = styled('div')`
     }
 `
 
+const ModalMore = styled('div')`
+    z-index: 999;
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    left:0;
+    right:0;
+  @media only screen and (min-width: 650px) {
+    display:none;
+  }
+`
+
+
+const LinkBtn = styled('button')`
+    border: 1px solid #7fb5e4;
+    background-color: #7fb5e4;
+    min-width: 150px;
+    color: white;
+    height: 40px;
+    margin: 5px;
+    min-width: 150px;
+    border-radius: 15px;
+    :hover{
+        cursor: pointer;
+    }
+`
+
+const DeleteBtn = styled(LinkBtn)`
+    border: 1px solid coral;
+    background-color: coral;
+    min-width: 150px;
+`
+
+const ModifyBtn = styled(LinkBtn)`
+    min-width: 150px;
+
+`
+
+
+const Div = styled('div')`
+    margin-left:auto;
+    margin-right:15px;
+    position: fixed;
+    right: 1%;
+    top: 15%;
+    display:flex;
+    flex-direction:column;
+    @media only screen and (max-height: 668px) {
+        top: 17%;
+  }
+`
+
+const BorderHeart = styled(FavoriteBorderRoundedIcon)`
+    color: coral;
+    font-size: xx-large;
+    :hover{
+        cursor: pointer;
+    }
+`
+const FullHeart = styled(FavoriteRoundedIcon)`
+    color: coral;
+    font-size: xx-large;
+    :hover{
+        cursor: pointer;
+    }
+`
+
+const LikeBtn = styled('div')`
+    display: flex;
+
+`
+
+const TtitleContent = styled('div')`
+    display:flex;
+    justify-content: space-between;
+    margin: 1.5rem;
+    @media only screen and (min-width: 360px) {
+    margin-left: 2.5rem;
+    margin-right: 2.5rem;
+  }
+`
+const LikeAndJoinWrapper = styled('header')`
+    display: flex;
+    justify-content: center;
+    position: fixed;
+    left: 10%;
+    right: 10%;
+    bottom: 15%;
+    @media only screen and (min-width: 650px) {
+    bottom:5%;
+      }
+`
+
+const JoinBorderBtn = styled(ButtonBorder)`
+    width: 250px;
+    font-size: medium;
+`
+const JoinFullBtn = styled(ButtonFull)`
+    width: 250px;
+    font-size: medium;
+`
+const JoinDiv = styled('div')`
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+`
+const LikeDiv = styled('div')`
+    margin-right: 15px;
+    background-color: white;
+    border: 1px solid coral;
+    border-radius: 10px;
+    padding: 3px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+`
+const UnderLine = styled('hr')`
+    margin: 30px;
+    width:80%;
+`
+const MissionExplanation = styled('div')`
+    display: flex;
+`
+//네브바 
+import ArrowBackIosRoundedIcon from '@mui/icons-material/ArrowBackIosRounded';
+const Title = styled('div')`
+    display:flex;
+    align-items: center;
+    @media only screen and (min-width: 650px) {
+    display:none;
+  }
+`
+const PageTitle = styled('span')`
+    font-weight: bold;
+    font-size:15px;
+    color:#555555;
+    margin-left:10px;
+`
+const BackButton = styled(ArrowBackIosRoundedIcon)`
+    color:#98C064;
+    :hover{
+        cursor: pointer;
+    }
+`
+interface PageName {
+    name: string;
+}
+
+function Back({ name }: PageName) {
+    const router = useRouter()
+    return (
+        <Title className="BackTitle">
+            <BackButton onClick={() => { router.back() }} />
+            <PageTitle>{name}</PageTitle>
+        </Title>
+    )
+}
+//미션 올린 사람 x 모바일 뷰 더보기 모달창
+function MissionUnAuthModal() {
+    return (
+        <Div>
+            <LinkBtn>링크 복사하기</LinkBtn>
+        </Div>
+    )
+}
+
+//미션 올린 사람일 경우 모바일 뷰 더보기 모달창
+function MissionAuthModal() {
+    return (
+        <Div>
+            <ModifyBtn>임무 내용 수정하기</ModifyBtn>
+            <DeleteBtn>임무 삭제하기</DeleteBtn>
+        </Div>
+    )
+}
+
+
+//좋아요 참여중 표시
+function MobileLikeAndJoin() {
+    const [join, setJoin] = useState(false)
+    const [like, setLike] = useState(false)
+    return (
+        <>
+            <LikeAndJoinWrapper >
+                <LikeDiv>
+                    <LikeBtn onClick={() => setLike(!like)}>
+                        {like === false ? <BorderHeart /> : <FullHeart />}
+                    </LikeBtn>
+                </LikeDiv>
+                <JoinDiv onClick={() => setJoin(!join)}>
+                    {join === false ?
+                        <JoinFullBtn
+                            hColor={"#98C064"}
+                            dColor={"#65ACE2"}
+                        >
+                            참여중인 임무입니다</JoinFullBtn>
+                        : <JoinBorderBtn
+                            dColor={"#65ACE2"}>
+                            임무에 참여하기</JoinBorderBtn>
+                    }
+                </JoinDiv>
+            </LikeAndJoinWrapper>
+        </>
+
+    )
+}
+
 
 export default function MissionDetail() {
     const router = useRouter()
     const { data: MissionDetail } = useQuery(['missions'], missionUserData)
     console.log(MissionDetail)
+
+    const [ModalAuth, setModalAuth] = useState(false)
+    const [Auth, setAuth] = useState(false)
+    const [unAuth, setUnAuth] = useState(false)
+    console.log(Auth)
+
     return (
         <>
-            {/* 헤더 */}
-            <Head>
-                <title>임무상세 | 지구-방위대</title>
-            </Head>
+            <div>
+                {/* 헤더 */}
+                <Head>
+                    <title>임무상세 | 지구-방위대</title>
+                </Head>
 
-            {/* 모바일 뷰에서 뒤로가기 버튼! */}
-            <BackCompo name='임무 상세보기'></BackCompo>
+                <NavBar>
+                    <Header>
+                        {/* 모바일 뷰에서 뒤로가기 버튼! */}
+                        <Back name='임무 상세보기'></Back>
+                        {/* 모바일 뷰에서 모달창 */}
 
+                        {/* Modal창을 열기 위한 땡땡이*/}
+                        {/* 게시글 작성자 판별  */}
+                        {ModalAuth === true ?
+                            < MobileMore onClick={() => setAuth(!Auth)} />
+                            :
+                            <MobileMore onClick={() => setUnAuth(!unAuth)} />
+                        }
+                    </Header>
+                </NavBar>
 
-            {/* 미션이미지 */}
-            <Block>
-                <ImageBlock>
-                    <ImageContent />
-                </ImageBlock>
-            </Block>
-
-            {/* 임무타이틀 */}
-            <Block>
-                <Content>
-                    <TitleText>{MissionDetail?.title}</TitleText>
-                </Content>
-            </Block>
-
-            {/* 참여자수/정원 */}
-            <Block>
-                <Content>
-                    < PeopleIcon />
-                    <ContentText>{MissionDetail?.nowPerson} / {MissionDetail?.maxPerson} 명</ContentText>
-                </Content>
-            </Block>
-
-            {/* 포인트 */}
-            <Block>
-                <Content>
-                    <PointIcon />
-                    <ContentText>+{MissionDetail?.entryPoint}P</ContentText>
-                </Content>
-            </Block>
-
-            {/* 활동기간 */}
-            <Block>
-                <Content>
-                    <CalendarIcon />
-                    <ContentText>
-                        {MissionDetail?.startDate[0]}.{MissionDetail?.startDate[1]}.{MissionDetail?.startDate[2]}
-                        ~ {MissionDetail?.endDate[0]}.{MissionDetail?.endDate[1]}.{MissionDetail?.endDate[2]}
-                    </ContentText>
-                </Content>
-            </Block>
-
-            {/* 미션장소 */}
-            <Block>
-                <Content>
-                    <LocalIcon />
-                    <ContentText>
-                        {MissionDetail?.sidoCode} {MissionDetail?.gugunCode}
-                    </ContentText>
-                </Content>
-            </Block>
+                {/* Modal창 */}
+                <ModalMore>
+                    {/* 작성자일 떄 */}
+                    {Auth === true ? <MissionAuthModal /> : null}
+                    {/* 작성자 아닐 때 */}
+                    {unAuth === true ? <MissionUnAuthModal /> : null}
+                </ModalMore>
 
 
-            {/* 웹 뷰에서 수정 삭제 버튼 */}
-            <Block>
-                <BtnContent>
-                    <WebBtn
-                        dColor={"#98C064"}
-                        hColor={"#65ACE2"}
-                        onClick={() => router.push("/mission/createmission")}
-                    >수정</WebBtn>
+                <DetailWrapper>
 
-                    <WebBtn
-                        hColor={"#98C064"}
-                        dColor={"#65ACE2"}
-                        onClick={() => router.push("/mission/createmission")}
-                    >삭제</WebBtn>
-                </BtnContent>
-            </Block>
 
+                    {/* 미션이미지 */}
+                    <ImageBlock>
+                        <img src={MissionDetail?.repImageURL} />
+                    </ImageBlock>
+
+
+                    {/* 임무타이틀 */}
+                    <Block>
+                        <TtitleContent>
+                            <TitleText>{MissionDetail?.title}</TitleText>
+                        </TtitleContent>
+                    </Block>
+
+                    {/* 참여자수/정원 */}
+                    <Block>
+                        <Content>
+                            < PeopleIcon />
+                            <ContentText>{MissionDetail?.nowPerson} / {MissionDetail?.maxPerson} 명</ContentText>
+                        </Content>
+                    </Block>
+
+                    {/* 포인트 */}
+                    <Block>
+                        <Content>
+                            <PointIcon />
+                            <ContentText>+{MissionDetail?.entryPoint}P</ContentText>
+                        </Content>
+                    </Block>
+
+                    {/* 활동기간 */}
+                    <Block>
+                        <Content>
+                            <CalendarIcon />
+                            <ContentText>
+                                {MissionDetail?.startDate[0]}.{MissionDetail?.startDate[1]}.{MissionDetail?.startDate[2]}
+                                ~ {MissionDetail?.endDate[0]}.{MissionDetail?.endDate[1]}.{MissionDetail?.endDate[2]}
+                            </ContentText>
+                        </Content>
+                    </Block>
+
+                    {/* 미션장소 */}
+                    <Block>
+                        <Content>
+                            <LocalIcon />
+                            <ContentText>
+                                {MissionDetail?.sidoCode} {MissionDetail?.gugunCode}
+                            </ContentText>
+                        </Content>
+                    </Block>
+
+                    <Block>
+                        <Content>
+                            <UnderLine />
+                        </Content>
+                    </Block>
+
+
+                    {/* api 추가 생성 후 미션 소개...추가 해주세요... */}
+                    <Block>
+                        <Content>
+                            <MissionExplanation>
+                                안녕하세요 임시입니다
+                                <br />
+                                여기에 api 추가되면 넣어야 해요!
+                                <br></br>
+                                프로젝트 화이티이이잉!
+                            </MissionExplanation>
+                        </Content>
+                    </Block>
+
+
+                    {/* 로그인 시 웹 뷰에서 수정 삭제 버튼 */}
+                    <Block>
+                        <BtnContent>
+                            <WebBtn
+                                dColor={"#98C064"}
+                                hColor={"#65ACE2"}
+                                //임시 라우터
+                                onClick={() => router.push("/mission/createmission")}
+                            >수정</WebBtn>
+
+                            <WebBtn
+                                hColor={"#98C064"}
+                                dColor={"#65ACE2"}
+                                //임시 라우터
+                                onClick={() => router.push("/mission/createmission")}
+                            >삭제</WebBtn>
+                        </BtnContent>
+                    </Block>
+                </DetailWrapper>
+
+                {/* 모바일뷰 좋아요 참여하기 참여중 표시 */}
+                <MobileLikeAndJoin />
+
+            </div>
         </>
     )
 }
 
 
 
-export async function getServerSideProps(context) {
-    const missiondetail = new QueryClient()
-    const session = await getSession(context);
-    await missiondetail.prefetchQuery(['mission'], () => { missionUserData() })
+// export async function getServerSideProps(context) {
+//     const missiondetail = new QueryClient()
+//     const session = await getSession(context);
+//     await missiondetail.prefetchQuery(['missions'], () => { missionUserData() })
 
-    return {
-        props: {
-            data: {
-                session,
-                dehydratedState: dehydrate(missiondetail)
-            },
-        },
-    };
+//     return {
+//         props: {
+//             data: {
+//                 session,
+//                 dehydratedState: dehydrate(missiondetail)
+//             },
+//         },
+//     };
 
-}
+// }
+
+
