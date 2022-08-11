@@ -70,6 +70,9 @@ public class User {
 
     @OneToMany(mappedBy = "user")
     List<Like_Feed> like_feed = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    List<Mission> mission = new ArrayList<>();
     ///////////////////////////////////////////////////////////////////
 
     public static User of(UserDto userDto) {
