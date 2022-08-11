@@ -26,4 +26,8 @@ public interface GroundService {
     String deleteGround(Long groundId, Long userId);
 
     List<PlaceDto> getPlacesByGround(Long groundId);
+
+    boolean likeGround(Long groundId, Long userId);
+
+    boolean getLikeGround(Long groundId, Long userId);
 }
