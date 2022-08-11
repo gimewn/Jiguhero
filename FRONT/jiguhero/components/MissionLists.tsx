@@ -23,8 +23,9 @@ export default function MissionLists() {
   const { data: MISSION } = useQuery(['missions'], getMission)
   console.log(MISSION)
 
-  const remainder = MISSION?.length % 5;
-  const quot = parseInt(String(MISSION?.length / 5))
+  const remainder = MISSION.length % 5;
+  const MissionLen = `${MISSION.length / 5}`
+  const quot = parseInt(MissionLen)
   const page = useRecoilValue(missionLists)
   const setPage = useSetRecoilState(missionLists)
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
@@ -33,7 +34,7 @@ export default function MissionLists() {
 
   return (
     <>
-      {MISSION?.slice((page - 1) * 5, page * 5).map((item, index) => (
+      {MISSION.slice((page - 1) * 5, page * 5).map((item, index) => (
         <MissionList
           key={index} {...item} />
       ))}
