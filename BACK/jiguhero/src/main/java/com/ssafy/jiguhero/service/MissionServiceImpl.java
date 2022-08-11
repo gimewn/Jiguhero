@@ -105,8 +105,8 @@ public class MissionServiceImpl implements MissionService {
         Mission mission = new Mission();
         mission.setRegtime(LocalDateTime.now());
         mission.setTitle(missionDto.getTitle());
-        mission.setStartDate(LocalDateTime.now()); // 바꿔야 함
-        mission.setEndDate(LocalDateTime.now()); // 바꿔야 함
+        mission.setStartDate(LocalDate.now()); // 바꿔야 함
+        mission.setEndDate(LocalDate.now()); // 바꿔야 함
         mission.setEntryPoint(missionDto.getEntryPoint());
         mission.setSidoCode(missionDto.getSidoCode());
         mission.setGugunCode(missionDto.getGugunCode());

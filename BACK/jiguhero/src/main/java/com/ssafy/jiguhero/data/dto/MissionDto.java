@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,8 +21,8 @@ public class MissionDto {
     private long missionId;
     private LocalDateTime regtime;
     private String title;
-    private LocalDateTime startDate;
-    private LocalDateTime endDate;
+    private LocalDate startDate;
+    private LocalDate endDate;
     private int entryPoint;
     private String sidoCode;
     private String gugunCode;
@@ -36,6 +37,7 @@ public class MissionDto {
 
     private boolean likeCheck;
     private boolean joinCheck;
+    private long userId;
     public static MissionDto of(Mission missionEntity) {
         MissionDto missionDto = ModelMapperUtils.getModelMapper().map(missionEntity, MissionDto.class);
 

@@ -11,6 +11,7 @@ import com.ssafy.jiguhero.data.entity.Mission;
 import com.ssafy.jiguhero.data.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
@@ -47,6 +48,7 @@ public class FeedServiceImpl implements FeedService {
         return dto;
     }
 
+    @Transactional
     @Override
     public int insertFeed(FeedDto feedDto,Long missionId, Long userId){
         Feed feed = new Feed();
@@ -74,6 +76,7 @@ public class FeedServiceImpl implements FeedService {
 
     }
 
+    @Transactional
     @Override
     public FeedDto changeFeed(FeedDto feedDto, Long userId) throws Exception{
         User userEntity = userDao.selectUserById(userId);
@@ -88,7 +91,7 @@ public class FeedServiceImpl implements FeedService {
         }
     }
 
-
+    @Transactional
     @Override
     public int deleteFeed(Long feedId, Long userId, Long missionId){
         Mission missionEntity = missionDao.selectMissionById(missionId);
@@ -98,8 +101,16 @@ public class FeedServiceImpl implements FeedService {
         if(feedDao.selectFeed(missionEntity, userEntity)!=null) {
             feedDao.deleteLikeFeed(feedEntity);
             feedDao.deleteFeed(feedId);
-            return 1;
+            ///////////////////////////////////////////////////// 달성률 계산
+            int days = (int) ChronoUnit.DAYS.between(missionEntity.getStartDate(), LocalDate.now()) + 1;
+            int feeds = feedDao.countByFeed(missionEntity, userEntity);
+            int successRate = (feeds/days)*100;
+
+            Conn_Mission connMission = missionDao.selectConnMission(missionEntity, userEntity);
+            connMission.setSuccessRate(successRate);
+            /////////////////////////////////////////////////////
+            return 1; // <해당 날짜, 미션, 유저>로 등록된 인증샷이 있는 경우 인증샷 삭제 완료
         }
-        else return 2;
+        else return 2; // <해당 날짜, 미션, 유저>로 등록된 인증샷이 없는 경우 인증샷 삭제 불가
     }
 }

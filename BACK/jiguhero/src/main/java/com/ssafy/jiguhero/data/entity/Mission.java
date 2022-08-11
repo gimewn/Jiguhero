@@ -9,6 +9,7 @@ import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,11 +33,11 @@ public class Mission {
 
     @Column(nullable = false, name = "start_date")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime startDate;
+    private LocalDate startDate;
 
     @Column(nullable = false, name = "end_date")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime endDate;
+    private LocalDate endDate;
 
     @Column(nullable = false, name = "enrty_point")
     private int entryPoint;
@@ -68,6 +69,10 @@ public class Mission {
     ///////////////////////////////////////////////////////////////////
     @OneToMany(mappedBy = "mission")
     List<Feed> feed = new ArrayList<>();
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "userId")
+    private User user;
     ///////////////////////////////////////////////////////////////////
     public static Mission of(MissionDto missionDto) {
         Mission missionEntity = ModelMapperUtils.getModelMapper().map(missionDto, Mission.class);
