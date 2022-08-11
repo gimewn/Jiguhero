@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.PostConstruct;
+import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -76,12 +77,13 @@ public class ImageServiceImpl implements ImageService {
         map.put("origin_file", originalFileName);
         map.put("save_file", saveFileName);
         map.put("save_folder", File.separator + target + File.separator + today);
+        map.put("date", today);
 
         return map;
     }
 
     @Override
-    public String saveUserImage(MultipartFile file, Long userId) {
+    public String saveUserImage(MultipartFile file, Long userId, HttpServletRequest request) {
         if(file.isEmpty()){
             return "failed";
         }
@@ -105,7 +107,9 @@ public class ImageServiceImpl implements ImageService {
         newImageUser.setUser(userDao.selectUserById(userId));
         imageDao.insertImageUser(newImageUser);
 
-        return map.get("save_file");
+        String url = request.getRequestURL().toString().replace(request.getRequestURI(),"") + "/image/" + map.get("save_file") + "?target=user&date=" + map.get("date");
+
+        return url;
     }
 
     @Override

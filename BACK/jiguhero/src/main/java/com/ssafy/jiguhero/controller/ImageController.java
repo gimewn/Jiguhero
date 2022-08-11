@@ -32,13 +32,13 @@ public class ImageController {
     }
 
     @PostMapping("/user")
-    public ResponseEntity<String> uploadUserImage(@RequestParam("file") MultipartFile file, @RequestParam("userId") Long userId) {
+    public ResponseEntity<String> uploadUserImage(@RequestParam("file") MultipartFile file, @RequestParam("userId") Long userId, HttpServletRequest request) {
         if(file.isEmpty()) {
             return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
         }
-        imageService.saveUserImage(file, userId);
+        String url = imageService.saveUserImage(file, userId, request);
 
-        return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
+        return new ResponseEntity<String>(url, HttpStatus.OK);
     }
 
     @PostMapping("/place")
