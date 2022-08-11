@@ -20,4 +20,14 @@ public interface GroundDao {
     Ground selectGround(Long groundId);
 
     List<Ground> selectGroundByUser(User userEntity);
+
+    void insertGround(Ground groundEntity);
+
+    void insertConnGround(Conn_Ground connGroundEntity);
+
+    List<Conn_Ground> selectConnGroundByGround(Ground groundEntity);
+
+    void deleteConnGroundById(long connGroundId);
+
+    void deleteGroundById(Long groundId);
 }

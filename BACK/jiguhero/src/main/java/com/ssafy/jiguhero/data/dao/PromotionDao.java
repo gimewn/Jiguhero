@@ -14,4 +14,8 @@ public interface PromotionDao {
     Promotion selectPromotion(Long promotionId);
 
     Promotion insertPromotion(Promotion promotion);
+
+    void deletePromotion(Long promotionId);
+
+    List<Promotion> selectPromotionsByKeyword(String keyword);
 }

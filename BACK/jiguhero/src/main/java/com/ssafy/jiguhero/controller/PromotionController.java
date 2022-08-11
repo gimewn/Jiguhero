@@ -43,13 +43,37 @@ public class PromotionController {
 
     @ApiOperation(value = "프로모션 및 이벤트 소식 정보를 등록한다.", response = PromotionDto.class)
     @PostMapping
-    public ResponseEntity<PromotionDto> createPromotion(@RequestParam("file") MultipartFile file, @RequestBody PromotionDto promotionDto){
+    public ResponseEntity<PromotionDto> createPromotion(@RequestBody PromotionDto promotionDto){
         PromotionDto savedPromotion = promotionService.savePromotion(promotionDto);
 
+        return ResponseEntity.status(HttpStatus.OK).body(savedPromotion);
+    }
+
+    @ApiOperation(value = "프로모션 및 이벤트 소식 정보를 수정한다.", response = PromotionDto.class)
+    @PutMapping
+    public ResponseEntity<PromotionDto> updatePromotion(@RequestParam("file") MultipartFile file, @RequestBody PromotionDto promotionDto){
+        PromotionDto updatedPromotion = promotionService.savePromotion(promotionDto);
+
         if(!file.isEmpty()) { // 이미지가 포함되어 있을 경우
-            imageService.savePromotionImage(file, savedPromotion.getPromotionId());
+            imageService.savePromotionImage(file, updatedPromotion.getPromotionId());
         }
 
-        return ResponseEntity.status(HttpStatus.OK).body(savedPromotion);
+        return ResponseEntity.status(HttpStatus.OK).body(updatedPromotion);
+    }
+
+    @ApiOperation(value = "프로모션 및 이벤트 소식 정보를 삭제한다.", response = String.class)
+    @DeleteMapping("/")
+    public ResponseEntity<String> deletePromotion(@RequestParam("promotion_id") Long promotionId){
+        promotionService.deletePromotion(promotionId);
+
+        return ResponseEntity.status(HttpStatus.OK).body("success");
+    }
+
+    @ApiOperation(value = "제목을 통해 프로모션 및 이벤트 소식 정보를 검색한다.", response = String.class)
+    @GetMapping("/search")
+    public ResponseEntity<List<PromotionDto>> searchPromotion(@RequestParam("keyword") String keyword){
+        List<PromotionDto> list = promotionService.searchByKeyword(keyword);
+
+        return ResponseEntity.status(HttpStatus.OK).body(list);
     }
 }

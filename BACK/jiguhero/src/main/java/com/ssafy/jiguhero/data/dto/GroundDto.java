@@ -2,15 +2,14 @@ package com.ssafy.jiguhero.data.dto;
 
 import com.ssafy.jiguhero.data.entity.Ground;
 import com.ssafy.jiguhero.util.ModelMapperUtils;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 public class GroundDto {
@@ -23,6 +22,7 @@ public class GroundDto {
     private int hits;
     private LocalDateTime regtime;
     private Long userId;
+    private List<String> placeIdList;
 
     public static GroundDto of(Ground groundEntity) {
         GroundDto groundDto = ModelMapperUtils.getModelMapper().map(groundEntity, GroundDto.class);

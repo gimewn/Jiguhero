@@ -12,4 +12,5 @@ public interface ImagePromotionRepository extends JpaRepository<Image_Promotion,
 
     Optional<Image_Promotion> findByPromotion(Promotion promotion);
 
+    void deleteAllByPromotion(Promotion promotion);
 }

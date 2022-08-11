@@ -1,12 +1,8 @@
 package com.ssafy.jiguhero.data.dao;
 
-import com.ssafy.jiguhero.data.entity.Conn_Mission;
-import com.ssafy.jiguhero.data.entity.Like_Mission;
-import com.ssafy.jiguhero.data.entity.Mission;
-import com.ssafy.jiguhero.data.entity.User;
-import com.ssafy.jiguhero.data.repository.ConnMissionRepository;
-import com.ssafy.jiguhero.data.repository.LikeMissionRepository;
-import com.ssafy.jiguhero.data.repository.MissionRepository;
+import com.ssafy.jiguhero.data.dto.MissionDto;
+import com.ssafy.jiguhero.data.entity.*;
+import com.ssafy.jiguhero.data.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -19,12 +15,16 @@ public class MissionDaoImpl implements MissionDao {
     private final MissionRepository missionRepository;
     private final LikeMissionRepository likeMissionRepository;
     private final ConnMissionRepository connMissionRepository;
+    private final FeedRepository feedRepository;
+    private final LikeFeedRepository likeFeedRepository;
 
     @Autowired
-    public MissionDaoImpl(MissionRepository missionRepository, LikeMissionRepository likeMissionRepository, ConnMissionRepository connMissionRepository) {
+    public MissionDaoImpl(MissionRepository missionRepository, LikeMissionRepository likeMissionRepository, ConnMissionRepository connMissionRepository, FeedRepository feedRepository, LikeFeedRepository likeFeedRepository) {
         this.missionRepository = missionRepository;
         this.likeMissionRepository = likeMissionRepository;
         this.connMissionRepository = connMissionRepository;
+        this.feedRepository = feedRepository;
+        this.likeFeedRepository = likeFeedRepository;
     }
 
     @Override
@@ -109,6 +109,58 @@ public class MissionDaoImpl implements MissionDao {
     @Override
     public void deleteLikeMission(Mission mission){
         likeMissionRepository.deleteAllByMission(mission);
+    }
+
+    @Override
+    public Mission updateMission(MissionDto missionDto) throws Exception{
+        Optional<Mission> selectedMission = missionRepository.findById(missionDto.getMissionId());
+        Mission updatedMission;
+
+        if(selectedMission.isPresent()) {
+            Mission mission = selectedMission.get();
+            mission.setTitle(missionDto.getTitle());
+            mission.setStartDate(missionDto.getStartDate());
+            mission.setEndDate(missionDto.getEndDate());
+            mission.setEntryPoint(missionDto.getEntryPoint());
+            mission.setSidoCode(missionDto.getSidoCode());
+            mission.setGugunCode(missionDto.getGugunCode());
+            mission.setDongCode(missionDto.getDongCode());
+
+            updatedMission = missionRepository.save(mission);
+        }
+        else {
+            throw new Exception();
+        }
+
+        return updatedMission;
+    }
+
+
+    @Override
+    public Feed selectFeedById(Long feedId){
+        Feed selectedFeed = feedRepository.findByFeedId(feedId);
+
+        return selectedFeed;
+    }
+
+    @Override
+    public Like_Feed selectLikeFeedByUser(Feed feed, User user){
+        Like_Feed selectedFeed = likeFeedRepository.findByFeedAndUser(feed, user);
+
+        return selectedFeed;
+    }
+
+    @Override
+    public int countByFeed(Feed feed){
+        int cnt = likeFeedRepository.countAllByFeed(feed);
+
+        return cnt;
+    }
+
+    @Override
+    public void insertFeed(Feed feed){
+        feedRepository.save(feed);
+
     }
 }
 
