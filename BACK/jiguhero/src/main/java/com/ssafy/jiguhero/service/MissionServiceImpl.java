@@ -108,8 +108,9 @@ public class MissionServiceImpl implements MissionService {
 
         mission.setRegtime(LocalDateTime.now());
         mission.setTitle(missionDto.getTitle());
-        mission.setStartDate(LocalDate.parse(missionDto.getStartDate(), DateTimeFormatter.ISO_DATE)); // 바꿔야 함
-        mission.setEndDate(LocalDate.parse(missionDto.getEndDate(), DateTimeFormatter.ISO_DATE)); // 바꿔야 함
+        mission.setContent(missionDto.getContent());
+        mission.setStartDate(LocalDate.parse(missionDto.getStartDate(), DateTimeFormatter.ISO_DATE));
+        mission.setEndDate(LocalDate.parse(missionDto.getEndDate(), DateTimeFormatter.ISO_DATE));
         mission.setEntryPoint(missionDto.getEntryPoint());
         mission.setSidoCode(missionDto.getSidoCode());
         mission.setGugunCode(missionDto.getGugunCode());
@@ -119,6 +120,7 @@ public class MissionServiceImpl implements MissionService {
         mission.setFailedPerson(0);
         mission.setLikes(0);
         mission.setHits(0);
+        mission.setUser(userDao.selectUserById(userId));
         missionDao.insertMission(mission);
 
         Conn_Mission connMission = new Conn_Mission();
