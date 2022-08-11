@@ -84,6 +84,9 @@ public class ImageServiceImpl implements ImageService {
 
     @Override
     public String saveUserImage(MultipartFile file, Long userId, HttpServletRequest request) {
+        if(file.isEmpty()){
+            return "failed";
+        }
         // 이미 프로필 이미지가 등록되어 있는지 확인
         User user = userDao.selectUserById(userId);
         Image_User imageUser = imageDao.selectImageUser(user);

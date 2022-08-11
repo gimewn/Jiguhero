@@ -13,4 +13,8 @@ public interface PromotionService {
     PromotionDto getPromotion(Long promotionId);
 
     PromotionDto savePromotion(PromotionDto promotionDto);
+
+    void deletePromotion(Long promotionId);
+
+    List<PromotionDto> searchByKeyword(String keyword);
 }

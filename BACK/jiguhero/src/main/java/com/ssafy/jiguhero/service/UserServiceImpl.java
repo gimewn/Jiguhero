@@ -34,6 +34,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public String getProfileImageURL(Long userId, HttpServletRequest request) {
         User user = userDao.selectUserById(userId);
         Image_User imageUser = imageDao.selectImageUser(user);
@@ -59,12 +60,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public Integer checkNicknameDupl(String nickname) {
         if (userDao.existsByNickname(nickname)) return 1;
         else return 0;
     }
 
     @Override
+    @Transactional
     public UserDto changeUserNickname(Long userId, String nickname) throws Exception {
         User entity = userDao.updateUserNickname(userId, nickname);
         UserDto dto = UserDto.of(entity);

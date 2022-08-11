@@ -64,6 +64,14 @@ public class User {
     @OneToOne(mappedBy = "user")
     private Image_User imageUser;
 
+    ///////////////////////////////////////////////////////////////////
+    @OneToMany(mappedBy = "user")
+    List<Feed> feed = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    List<Like_Feed> like_feed = new ArrayList<>();
+    ///////////////////////////////////////////////////////////////////
+
     public static User of(UserDto userDto) {
         User userEntity = ModelMapperUtils.getModelMapper().map(userDto, User.class);
 

@@ -2,15 +2,13 @@ package com.ssafy.jiguhero.data.dto;
 
 import com.ssafy.jiguhero.data.entity.Promotion;
 import com.ssafy.jiguhero.util.ModelMapperUtils;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Getter
 @Setter
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 public class PromotionDto {
