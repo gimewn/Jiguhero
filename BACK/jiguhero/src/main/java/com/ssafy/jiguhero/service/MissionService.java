@@ -46,5 +46,4 @@ public interface MissionService {
 
     List<MissionDto> searchMission(String search, String array);
 
-    Float successRateMission(Long missionId, Long userId);
 }

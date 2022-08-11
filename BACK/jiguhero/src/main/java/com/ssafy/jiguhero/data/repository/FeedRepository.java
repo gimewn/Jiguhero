@@ -18,8 +18,6 @@ public interface FeedRepository extends JpaRepository<Feed, Long> {
 
     Optional<Feed> findByUserAndRegtime(User user, LocalDate regtime);
 
-    void deleteAllByFeed(Feed feed);
-
     Optional<Feed> findByMissionAndUserAndRegtime(Mission mission, User user, LocalDate regtime);
 
 }

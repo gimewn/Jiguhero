@@ -11,4 +11,6 @@ public interface LikeFeedRepository extends JpaRepository<Like_Feed, Long> {
     Like_Feed findByFeedAndUser(Feed feed, User user);
 
     int countAllByFeed(Feed feed);
+
+    void deleteAllByFeed(Feed feed);
 }
