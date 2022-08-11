@@ -5,7 +5,7 @@ export default async function getReview(placeId){
     const response = await fetch(`${BASE_URL}place/review/${placeId}`, {
         method:'get',
         headers:{
-            Authorization : Token
+            "Authorization" : Token
         }
     });
     const data = await response.json().catch(() => {

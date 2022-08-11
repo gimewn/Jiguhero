@@ -184,10 +184,10 @@ const ReviewBox = styled('div')`
     }
 `
 
-const EmojiSpan = styled('span')`
-    font-size:20px;
-    margin: auto 0;
-`
+const EmojiSpan = styled('span')<{size:string}>`
+    font-size: ${(props) => props.size};
+    margin: auto 5px auto 0;
+    `
 const Starspan = styled('span')`
     margin-right:10px;
 `
@@ -219,36 +219,55 @@ const ReviewArea = styled('textarea')`
     border-radius:10px;
     /* margin: 0px 10px 0px 30px; */
     padding:10px;
+    margin:0;
 `
 const ReviewWrite = styled('div')`
-    display:flex;
-    justify-content: center;
     margin-top:10px;
+    display:flex;
+    justify-content: start;
+    align-items: center;
 `
 const ReportReview = styled(CheckRoundedIcon)`
     /* margin-top:5px; */
     color:white;
     background-color: #98c064;
-    margin:0;
+    margin: auto 10px;
+    border:0;
+    border-radius: 20px;
+    padding:5px;
+    height:35px;
+    width:35px;
 `
 
 export default function Modal(props){
-    const {show, setshow, data, reviews} = props;
+    const {show, setshow, data} = props;
     const [isReport, setReport] = useState(false);
-    const [ReportCategory, setReportCategory] = useState('');
+    const [ReportCategory, setReportCategory] = useState(0);
     const [ReportContent, setReportContent] = useState('');
-    const reviewEmoji = ['', '😔', '😑', '😶', '🤗', '🥰']
+    const reviewEmoji = [['', ''], ['😔','실망이에요'], ['😑', '별로예요'], ['😶', '그저 그래요'], ['🤗', '만족해요'], ['🥰', '너무 좋아요']]
     const [scoreValue, setsScoreValue] = useState(1);
     const [reviewValue, setReviewValue] = useState('');
-    const remainder = (reviews?.length % 5);
-    const quot = reviews?.length / 5;
+    const [remainder, setRemainder] = useState(0);
+    const [quot, setQuot] = useState(0);
     const page = useRecoilValue(reviewlists)
     const setPage = useSetRecoilState(reviewlists)
+    const [reviews, setReviews] = useState([]);
     const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
       setPage(value);
     };
-    function Emoji(score){
-        return(<EmojiSpan>{reviewEmoji[score['score']]}</EmojiSpan>)
+    useEffect(()=>{
+        getReview(data['placeId']).then((res) => {
+                setReviews(res)
+              })
+        setRemainder(reviews.length % 5)
+        setQuot(reviews.length / 5)
+    },[reviews])
+    function Emoji(prop){
+        if(prop['index'] === 0){
+            return(<EmojiSpan size="20px">{reviewEmoji[prop['score']][prop['index']]}</EmojiSpan>)
+        }else{
+            return(<EmojiSpan size="16px">{reviewEmoji[prop['score']][prop['index']]}</EmojiSpan>)
+        }
     }
     function Star(score){
         let res = '';
@@ -289,14 +308,18 @@ export default function Modal(props){
                             setsScoreValue(Number(e.target.value))}}>
                             {[1, 2, 3, 4, 5].map((item) => (<option value={item} key={item}>{item}</option>))}
                         </Select>
+                        <div>
+                        <Emoji score={scoreValue} index={0} />
+                        <Emoji score={scoreValue} index={1} /> 
+                        </div>
                         <ReviewWrite>
-                        <Emoji score={scoreValue} />
-                        <ReviewArea placeholder='리뷰를 남겨주세요.' onChange={(e)=>{setReportContent(e.target.value)}}/>
+                        <ReviewArea placeholder='리뷰를 남겨주세요.' onChange={(e)=>{setReportContent(e.target.value)
+                        }}/>
                         <ReportReview />
                         </ReviewWrite>
                     </MakeReview>
                     {reviews?.map((item) => (<ReviewDiv>
-                        <Emoji score={item.score} />
+                        <Emoji score={item.score} index={0} />
                     <ReviewBox key={item.reviewId}>
                         <Star score={item.score} />
                         <span>{item.content}</span>
@@ -315,7 +338,7 @@ export default function Modal(props){
             <WithTitle>
             {/* <Hr /> */}
             <ConTitle>🚨 신고 이유를 선택해주세요</ConTitle>
-            <SelectReport onChange={(e) => {setReportCategory(e.target.value)}}>
+            <SelectReport onChange={(e) => {setReportCategory(Number(e.target.value))}}>
                 <option value="">--- 신고 사유 ---</option>
                 <option value="1">친환경 관련 가게가 아니에요🧐</option>
                 <option value="2">더 이상 영업을 안 해요😧</option>
@@ -325,12 +348,15 @@ export default function Modal(props){
             </WithTitle>
                 <RButtonDiv>
                     <ReportButton dColor='#65ACE2' hColor='#65ACE2' style={{margin:'0 10px 0 0'}} onClick={() => setReport(false)}>취소</ReportButton>
-                    <ReportButton dColor="#FF4848" hColor="#FF4848" onClick={async () => {
-                if(await postReport(data.placeId, 1)==="success"){
-                    alert("신고해주셔서 감사합니다.")
-                }else{
-                    alert("신고가 접수되지 않았습니다!")
-                }}}>신고하기</ReportButton>
+                    <ReportButton dColor="#FF4848" hColor="#FF4848" onClick={() => {
+                        const result = postReport(data.placeId, 1, ReportCategory, ReportContent)
+                        console.log(result)
+                    // if(result === "success"){
+                    //     alert("신고해주셔서 감사합니다.")
+                    // }else{
+                    //     alert("신고가 접수되지 않았습니다!")
+                    // }
+                    }}>신고하기</ReportButton>
                 </RButtonDiv>
             </PostReport> : 
             <ReportBox Color="#65ACE2" onClick={() => setReport(true)}>
