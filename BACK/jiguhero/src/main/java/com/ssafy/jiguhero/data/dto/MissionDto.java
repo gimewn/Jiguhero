@@ -18,6 +18,7 @@ import java.util.List;
 public class MissionDto {
 
     private long missionId;
+    private LocalDateTime regtime;
     private String title;
     private LocalDateTime startDate;
     private LocalDateTime endDate;

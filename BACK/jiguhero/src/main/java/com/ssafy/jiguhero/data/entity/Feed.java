@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +24,9 @@ public class Feed {
     @Column(name = "feed_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long feedId;
+
+    @Column(nullable = true)
+    private LocalDate regtime;
 
     private String content;
 
