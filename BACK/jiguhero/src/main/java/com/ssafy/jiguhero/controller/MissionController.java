@@ -72,9 +72,13 @@ public class MissionController {
     @ApiOperation(value = "해당 임무에 참여한다.", response = String.class)
     @PostMapping("/{mission_id}/details")
     public ResponseEntity<String> saveMission(@RequestParam("userId") Long userId, @RequestParam("missionId") Long missionId) {
-
-        missionService.joinMission(userId, missionId);
-        return new ResponseEntity<String>("success", HttpStatus.OK);
+        int check = missionService.joinMission(userId, missionId);
+        if(check == 1) {
+            return new ResponseEntity<String>("success", HttpStatus.OK);
+        }
+        else {
+            return new ResponseEntity<String>("fail", HttpStatus.OK);
+        }
     }
 
     @ApiOperation(value = "해당 임무의 '좋아요'를 클릭한다.", response = List.class)

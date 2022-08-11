@@ -25,7 +25,7 @@ public interface MissionService {
 
     void saveMission(MissionDto missionDto, Long userId);
 
-    void joinMission(Long userId, Long missionId);
+    int joinMission(Long userId, Long missionId);
 
     int likeMission(Long missionId, Long userId);
 

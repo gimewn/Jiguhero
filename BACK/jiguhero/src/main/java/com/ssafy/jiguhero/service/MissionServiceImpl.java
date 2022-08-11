@@ -128,19 +128,26 @@ public class MissionServiceImpl implements MissionService {
 
     }
 
-    public void joinMission(Long userId, Long missionId){
+    public int joinMission(Long userId, Long missionId){
         Conn_Mission connMission = new Conn_Mission();
         Mission mission = missionDao.selectMissionById(missionId);
         User userEntity = userDao.selectUserById(userId);
-        connMission.setState("BEFORE");
-        connMission.setRole(2);
-        connMission.setSuccessRate(0);
-        connMission.setMission(mission);
-        connMission.setUser(userEntity);
-        missionDao.insertConnMission(connMission);
 
-        mission.setNowPerson(mission.getNowPerson()+1);
+        if(mission.getStartDate().isAfter(LocalDate.now())) {
+            connMission.setState("BEFORE");
+            connMission.setRole(2);
+            connMission.setSuccessRate(0);
+            connMission.setMission(mission);
+            connMission.setUser(userEntity);
+            missionDao.insertConnMission(connMission);
 
+            mission.setNowPerson(mission.getNowPerson() + 1);
+
+            return 1; // 임무가 시작되기 전이며 성공적으로 임무 참여가 완료된 경우
+        }
+        else {
+            return 2; // 임무가 시작되었거나 임무 참여가 실패한 경우
+        }
     }
 
     @Transactional(readOnly = true)
