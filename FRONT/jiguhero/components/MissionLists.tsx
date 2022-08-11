@@ -20,7 +20,7 @@ const PagI = styled(Pagination)`
 
 
 export default function MissionLists() {
-  const { data: MISSION, isLoading } = useQuery(['missions'], getMission)
+  const { data: MISSION } = useQuery(['missions'], getMission)
   console.log(MISSION)
   const remainder = MISSION?.length % 5;
   const MissionLen = `${MISSION?.length / 5}`
@@ -30,6 +30,7 @@ export default function MissionLists() {
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
   };
+
 
   return (
     <>
@@ -45,6 +46,13 @@ export default function MissionLists() {
     </>
   )
 }
+//   return (
+//     <>
+//       {MISSION?.map((item, index) => (
+//         <MissionList key={index} {...item} />))}
+//     </>
+//   )
+// }
 
 
 export async function getServerSideProps(context) {
@@ -59,5 +67,5 @@ export async function getServerSideProps(context) {
         dehydratedState: dehydrate(missionList)
       },
     },
-  };
+  }
 }
