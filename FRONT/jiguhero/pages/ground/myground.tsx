@@ -41,9 +41,6 @@ const GroundPlaceLength = styled('p')`
 `
 const GroundTop = styled('div')`
 margin-left:35px;
-@media only screen and (max-width: 650px) {
-    margin-top:20px;
-  }
 `
 const Input = styled('input')`
 border-radius:10px;
@@ -185,7 +182,6 @@ export default function GroundList(){
                 </SelectBox>
                 <Topbutton>
                     <ButtonFull dColor='#65ace2' hColor='#98c064' style={{marginRight:'10px', fontSize:'13px'}}>활동구역 생성</ButtonFull>
-                    <ButtonFull dColor='#98c064' hColor='#65ace2' style={{fontSize:'13px'}}>나의 활동구역</ButtonFull>
                 </Topbutton>
             </ButtonSelect>
             </GroundTop>
