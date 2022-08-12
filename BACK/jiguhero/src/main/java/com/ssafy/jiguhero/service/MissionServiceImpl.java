@@ -104,12 +104,9 @@ public class MissionServiceImpl implements MissionService {
     @Override
     public void insertMission(MissionDto missionDto, Long userId) {
         Mission mission = new Mission();
-//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
         mission.setRegtime(LocalDateTime.now());
         mission.setTitle(missionDto.getTitle());
-        mission.setStartDate(missionDto.getStartDate());
-        mission.setEndDate(missionDto.getEndDate());
         mission.setContent(missionDto.getContent());
         mission.setStartDate(LocalDate.parse(missionDto.getStartDate(), DateTimeFormatter.ISO_DATE));
         mission.setEndDate(LocalDate.parse(missionDto.getEndDate(), DateTimeFormatter.ISO_DATE));

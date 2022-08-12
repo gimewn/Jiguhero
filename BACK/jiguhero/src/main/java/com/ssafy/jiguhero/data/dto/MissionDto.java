@@ -21,8 +21,6 @@ public class MissionDto {
     private long missionId;
     private LocalDateTime regtime;
     private String title;
-    private LocalDate startDate;
-    private LocalDate endDate;
     private String content;
     private String startDate;
     private String endDate;
