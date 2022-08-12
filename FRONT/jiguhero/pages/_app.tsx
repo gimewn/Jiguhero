@@ -55,7 +55,7 @@ const Container = styled("div")`
   flex-direction: column;
   width:inherit;
   /* padding:0 20px; */
-  max-width: 700px;
+  /* max-width: 700px; */
   span, p {
     align-items: flex-start;
   }

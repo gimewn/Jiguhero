@@ -161,7 +161,7 @@ const TextPositionWrapper = styled('div')`
 `
 const AchieveWrapper = styled('div')`
   display:flex;
-  justify-content: left;
+  justify-content: center;
   max-width: 500px;
 `
 const ProgressWrapper = styled('div')`
@@ -172,14 +172,14 @@ const ProgressWrapper = styled('div')`
   
 `
 const CertifyWrapper = styled('div')`
-  display:flex;
-  justify-content: space-between;
-  margin: 10px 0 0 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `
 const CertifyGoBtn = styled(ButtonFull)`
   padding: 3px 10px;
   border-radius: 10px;
-  margin-left: 25px;
+  margin-left: 140px;
   margin-right: 25px;
 `
 const Text = styled('a')`
@@ -194,7 +194,7 @@ const Text2 = styled('a')`
 
 const Text2Wrapper = styled('div')`
   display: flex;
-  justify-content: right;
+  justify-content: center;
   
   margin: 0 15px 15px 15px;
 `
@@ -235,6 +235,9 @@ const NoHeroText2 = styled('a')`
   font-weight: bold;
 `
 
+const BottomDiv = styled('div')`
+  margin-bottom: 70px;
+`
 
 // interface MissionProps {
 //   entryPoint: number;
@@ -286,6 +289,7 @@ function ButtonGroup() {
 
   //달성률 버튼 클릭하면 연두색 인증샷 버튼 클릭하면 하얀색!
   const [tabColor, setTabColor] = useState(true)
+  console.log(tabColor)
   return (
     <>
       {/* 탭 전환을 위한 버튼들 */}
@@ -382,6 +386,7 @@ function MyCertificationLists() {
 function Achievement() {
   return (
     <>
+
       {/* 달성률 바 */}
       <AchieveWrapper>
         <Text>달성률</Text>
@@ -396,6 +401,7 @@ function Achievement() {
       </Text2Wrapper>
 
       {/* 내 인증샷 모아보기 */}
+
       <CertifyWrapper>
         <Text>나의 인증샷</Text>
         <CertifyGoBtn hColor={'#65ACE2'} dColor={'#98C064'}>인증하기</CertifyGoBtn>
@@ -464,15 +470,13 @@ export default function MyMissionFeed() {
 
       <Div></Div>
       {/* 참여중인 미션 보여줌! */}
-
-
       <ListWrapper>
         <NowMission />
       </ListWrapper>
 
       {/* 달성률 인증샷 탭 */}
       <ButtonGroup />
-
+      <BottomDiv></BottomDiv>
     </>
   )
 }
