@@ -393,7 +393,7 @@ function Achievement() {
       <ProgressWrapper>
         <Progress completed={60} bgColor={'#65ACE2'} />
       </ProgressWrapper>
->
+
 
       {/* 내 인증샷 모아보기 */}
 
