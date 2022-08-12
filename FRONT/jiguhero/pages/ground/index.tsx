@@ -7,7 +7,8 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import Paigination from 'components/pagination';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
-import {ParentsDiv} from 'styles/styled';
+import {ButtonFull, ParentsDiv} from 'styles/styled';
+import { ConIcon } from 'pages/ecomarket';
 
 const Grid = styled('div')`
     display:grid;
@@ -44,6 +45,9 @@ const GroundPlaceLength = styled('p')`
 `
 const GroundTop = styled('div')`
 margin-left:35px;
+@media only screen and (max-width: 650px) {
+    margin-top:20px;
+  }
 `
 const Input = styled('input')`
 border-radius:10px;
@@ -51,6 +55,7 @@ border: 1px solid #888888;
 height:40px;
 width:80%;
 padding: 15px;
+font-size:15px;
 `
 const SearchIcon = styled(SearchRoundedIcon)`
 color:#98c064;
@@ -69,7 +74,6 @@ const NoGround = styled('div')`
 `
 const SelectBox = styled('select')`
   height:40px;
-  margin-left:10px;
   border:1px solid #888888;
   border-radius: 10px;
   padding:10px;
@@ -83,9 +87,10 @@ const SelectBox = styled('select')`
   appearance:none;  /* 화살표 없애기 공통*/
   ::-webkit-scrollbar {
     display: none; /* for Chrome, Safari, and Opera */
+    @media only screen and (max-width: 650px) {
+    width:100%;
+  }
 }
-  
-  /* box-shadow: 0 0 10px #999999; */
   @media only screen and (max-width: 650px) {
     font-size:12px;
   }
@@ -96,15 +101,36 @@ const SelectBox = styled('select')`
     text-overflow: ellipsis;
   }
 `
+const H2 = styled('h2')`
+  @media only screen and (max-width: 650px) {
+    display:none;
+  }
+`
+const ButtonSelect = styled('div')`
+    @media only screen and (min-width: 400px) {
+        display:flex;
+        justify-content: space-between;
+  }
+    margin-top:20px;
+    /* display:'flex', justifyContent:'space-between', marginTop:'20px' */
+`
+const Topbutton = styled('div')`
+    margin-right:30px;
+    @media only screen and (max-width: 400px) {
+        display:flex;
+        justify-content: flex-end;
+        margin-top:20px;
+  }
+`
 
 export default function GroundList(){
     const router = useRouter();
     const [searchItem, setSearchItem] = useState('');
-    const {data:AllGround} = useQuery(['allGround'], getAllGround) //리스트에 나타낼 아이템
-    const [groundList, setGroundList] = useState(AllGround)
+    // const {data:AllGround} = useQuery(['allGround'], getAllGround) //리스트에 나타낼 아이템
+    const [groundList, setGroundList] = useState([])
     useEffect(()=>{
-        setGroundList(AllGround)
-    })
+        getAllGround().then((res) => setGroundList(res))
+    }, [])
     // const [count, setCount] = useState(0); //아이템 총 개수
     // const [currentpage, setCurrentpage] = useState(1); //현재페이지
     // const [postPerPage] = useState(12); //페이지당 아이템 개수
@@ -125,7 +151,9 @@ export default function GroundList(){
 
     function Search(keyword){
         if(keyword === ''){
-            setGroundList(AllGround)
+            getAllGround().then(
+                (res) => setGroundList(res)
+            )
         }else{
             const result = groundList.filter((ground) => {
                 if(ground['title'].includes(keyword)){
@@ -138,25 +166,27 @@ export default function GroundList(){
 
     function Filter(key){
         if(key==="1"){
-            const res = groundList.sort((a, b)=>{
+            let res = [...groundList];
+            res.sort((a, b)=>{
                 return a.groundId - b.groundId
             })
             setGroundList(res)
-            console.log(groundList)
         }else if(key === "2"){
-            const res = groundList.sort((a, b)=>{
+            let res = [...groundList];
+            res.sort((a, b)=>{
                 return a.likes - b.likes
             })
             setGroundList(res)
-            console.log(groundList)
         }else if(key === "3"){
-            const res = groundList.sort((a, b)=>{
+            let res = [...groundList];
+            res.sort((a, b)=>{
                 return a.hits - b.hits
             })
             setGroundList(res)
-            console.log(groundList)
         }else if(key==="0"){
-            setGroundList(AllGround)
+            getAllGround().then(
+                (res) => setGroundList(res)
+            )
         }
     }
 
@@ -164,19 +194,23 @@ export default function GroundList(){
         <ParentsDiv>
             <BackTitle name={'대원들의 활동구역'}/>
             <GroundTop>
+            <H2>🦸🏻 대원들의 활동구역</H2>
             <p style={{fontSize:'15px'}}>테마별로 모아둔 활동구역을 탐색해 보세요 🔍</p>
             <div style={{display:'flex', alignContent:'center'}}>
             <Input placeholder='활동구역 검색하기' value={searchItem} onChange={(e) => {setSearchItem(e.target.value)}} onClick={()=>{Search('')}} />
             <SearchIcon onClick={()=>{Search(searchItem)}} />
             </div>
-            <div>
-                <SelectBox onChange={(e) => {Filter(e.target.value)}}>
-                    <option value={0}>전체 보기</option>
-                    <option value={1}>최신등록순</option>
-                    <option value={2}>좋아요순</option>
-                    <option value={3}>조회순</option>
+            <ButtonSelect>
+                <SelectBox onChange={(e)=>{Filter(e.target.value)}}>
+                    <option value="1">최신등록순</option>
+                    <option value="2">좋아요순</option>
+                    <option value="3">조회순</option>
                 </SelectBox>
-            </div>
+                <Topbutton>
+                    <ButtonFull dColor='#65ace2' hColor='#98c064' style={{marginRight:'10px', fontSize:'13px'}}>활동구역 생성</ButtonFull>
+                    <ButtonFull dColor='#98c064' hColor='#65ace2' style={{fontSize:'13px'}}>나의 활동구역</ButtonFull>
+                </Topbutton>
+            </ButtonSelect>
             </GroundTop>
                 { groundList?.length === 0 ? <NoGround>
                     <p style={{fontSize:'50px'}}>🥲</p>

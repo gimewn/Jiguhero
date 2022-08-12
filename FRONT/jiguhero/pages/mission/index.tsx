@@ -10,10 +10,9 @@ import MissionLIST2 from "components/MissionLists"
 import { dehydrate, Query, QueryClient, QueryClientProvider, useQuery } from "@tanstack/react-query";
 import { getSession, SessionProvider, useSession } from "next-auth/react";
 import getMission from "pages/api/mission/index";
-
+import { ParentsDiv } from 'styles/styled'
 
 const Block = styled('div')`
-  margin: 0.5rem;
 `
 const Content = styled('div')`
   display:flex;
@@ -36,7 +35,7 @@ const ButtonContent = styled('div')`
   align-items: center;
   justify-content: center;
   /* margin-top: 1.8rem; */
-      @media screen and (min-width: 360px){
+      /* @media screen and (min-width: 360px){
         width:400px;
     }
     @media screen and (min-width: 550px){
@@ -44,7 +43,7 @@ const ButtonContent = styled('div')`
     }
     @media screen and (min-width:700px){
         width:620px;
-    }
+    } */
 
 `
 const BoxSelect = styled('select')`
@@ -59,7 +58,7 @@ const BoxInput = styled('input')`
   background-color: white;
   border-radius: 15px;
   padding:3px;
-  width: 13rem;
+  width: 12rem;
 `
 const SearchButton = styled(SearchRoundedIcon)`
     color:#65ACE2;
@@ -75,6 +74,7 @@ const ListContent = styled('div')`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  margin-bottom:10px;
     /* @media screen and (min-width: 360px){
         width:400px;
     }
@@ -87,28 +87,28 @@ const ListContent = styled('div')`
 `
 
 const MissionBlock = styled('div')`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    
-`
-
-const ContentsWrapper = styled('div')`
-    margin-top: 10px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-
-`
-const HiWrapper = styled('div')`
     /* display: flex;
     justify-content: center;
-    align-items: center; */
+    align-items: center;
+    width:100%; */
 `
-const BottomDiv = styled('div')`
-  margin-bottom: 80px;
-`
+
+// const ContentsWrapper = styled('div')`
+//     /* margin-top: 10px;
+//     display: flex;
+//     flex-direction: column;
+//     justify-content: center;
+//     align-items: center; */
+// `
+// const HiWrapper = styled('div')`
+//     /* display: flex;
+//     justify-content: center;
+//     align-items: center; */
+//     width:100vw;
+// `
+// const BottomDiv = styled('div')`
+//   margin-bottom: 80px;
+// `
 //select Box --- 최신등록 순 이름 순 
 const OPTIONS = [
     { value: "latest", name: "최신 등록순" },
@@ -175,48 +175,33 @@ function ButtonBox() {
 //전체 출력 페이지
 export default function Mission() {
     return (
-        <>
+        <ParentsDiv>
             {/* 헤더 */}
             <Head>
                 <title>대원들의 임무 | 지구-방위대</title>
             </Head>
-
-
             {/* 모바일 뷰에서 뒤로가기 버튼! */}
             <Backcomponents name='대원들의 임무'></Backcomponents>
 
-            <HiWrapper>
-                <ContentsWrapper>
-                    {/* contents! */}
-                    {/* 임무 버튼 그룹 */}
-                    <Block>
-                        <ButtonContent>
-                            <ButtonBox />
-                        </ButtonContent>
-                    </Block>
-
-                    {/* search Bar */}
-                    <Block>
-                        <Content>
-                            <SelectBox options={OPTIONS} />
-                            <InputBox />
-                            <SearchButton />
-                        </Content>
-                    </Block>
-
-                    {/* 임무 목록들 */}
-
-                    <MissionBlock>
-                        <ListContent>
-                            <MissionLIST />
-                            <MissionLIST2 />
-                        </ListContent>
-                    </MissionBlock>
-                </ContentsWrapper>
-
-            </HiWrapper>
-            <BottomDiv></BottomDiv>
-        </>
+            <Block style={{ marginBottom: '10px', marginTop: '20px' }}>
+                <ButtonContent>
+                    <ButtonBox />
+                </ButtonContent>
+            </Block>
+            <Block style={{ marginBottom: '10px' }}>
+                <Content>
+                    <SelectBox options={OPTIONS} />
+                    <InputBox />
+                    <SearchButton />
+                </Content>
+            </Block>
+            <MissionBlock>
+                <ListContent>
+                    <MissionLIST />
+                    <MissionLIST2 />
+                </ListContent>
+            </MissionBlock>
+        </ParentsDiv>
     )
 }
 
