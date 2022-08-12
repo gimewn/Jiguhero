@@ -18,8 +18,7 @@ const List = styled('div')`
   }
 
   @media screen and (min-width: 360px){
-      width:350px;
-
+      width:320px;
   }
   @media screen and (min-width:450px){
       width: 350px;

@@ -334,9 +334,7 @@ export default function Modal(props){
                         <ReportReview onClick={() => {
                             postReview(data.placeId, 1, reviewValue, scoreValue).then((res) => {
                                 getReview(data.placeId).then((res) => {setFetchReview(res)
-                                })
-                            }
-                            )
+                                })})
                         }} />
                         </ReviewWrite>
                     </MakeReview>
