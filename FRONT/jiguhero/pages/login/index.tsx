@@ -6,12 +6,11 @@ import Head from "node_modules/next/head";
 import styled from "styled-components";
 import Router, { useRouter } from "next/router";
 import React, { useEffect } from "react";
-import { Main } from "next/document";
-import { ParsedUrlQuery } from "querystring";
 import { getSession, signIn, signOut, useSession } from "next-auth/react";
 import { NextPageContext } from "node_modules/next/dist/shared/lib/utils";
-import { getCookies } from "cookies-next";
-import checkLogin from "./checkLogin";
+import loginAccess from "pages/api/login";
+import { NextPage } from "next";
+
 
 export default function Login() {
   const { data: session, status } = useSession();
@@ -19,14 +18,11 @@ export default function Login() {
   const router = useRouter()
   const returnUrl = router.query.returnUrl
 
-
-  
-
   return (
     <>
-    {session?.accessToken&&(
-      <p>{session.user.name}</p>
-    )}
+      {session?.accessToken && (
+        <p>{session.user.email}</p>
+      )}
       <LoginWrapper>
         <Head>
           {/* header 추가 */}
@@ -39,42 +35,39 @@ export default function Login() {
           {/* 카카오 로그인*/}
           <SnsLoginKakao>
             {!session && (
-              <ul>
-                <li>
-                  <a
-                    onClick={(e) => {
-                      e.preventDefault();
-                      signIn("kakao", {
-                        redirect:true,
-                        callbackUrl: `/`
-                      });
-                    }}
-                  >
-                    <Image src={KakaoImg} alt="Kakao" />
-                  </a>
-                </li>
-              </ul>
+              <a
+                onClick={(e) => {
+                  // e.preventDefault();
+                  // loginAccess()
+                  // router.push(`http://i7c105.p.ssafy.io:8080/oauth2/authorize/kakao?redirect_uri=http://localhost:3000`)
+                  signIn("kakao", {
+                    redirect: true,
+                    callbackUrl: `/`
+                  });
+                }}
+              >
+                <Image src={KakaoImg} alt="Kakao" />
+              </a>
             )}
           </SnsLoginKakao>
 
           {/* 구글 로그인*/}
           <SnsLoginGoogle>
             {!session && (
-              <ul>
-                <li>
-                  <a
-                    onClick={(e) => {
-                      e.preventDefault();
-                      signIn("google", {
-                        redirect:true,
-                        callbackUrl: `/`
-                      });
-                    }}
-                  >
-                    <Image src={GoogleImg} alt="Google" />
-                  </a>
-                </li>
-              </ul>
+              <a
+                onClick={(e) => {
+                  e.preventDefault();
+
+
+
+                  signIn("google", {
+                    redirect: true,
+                    callbackUrl: `/`
+                  });
+                }}
+              >
+                <Image src={GoogleImg} alt="Google" />
+              </a>
             )}
           </SnsLoginGoogle>
 
@@ -88,10 +81,12 @@ export default function Login() {
               </a>
             )}
           </SnsLoginNaver>
-          {session && <button onClick={()=>{signOut({
-            redirect: true,
-            callbackUrl: `http://localhost:3000/`
-          })}}>Logout</button>}
+          {session && <button onClick={() => {
+            signOut({
+              redirect: true,
+              callbackUrl: `http://localhost:3000/`
+            })
+          }}>Logout</button>}
         </main>
       </LoginWrapper>
     </>
@@ -138,7 +133,6 @@ const SnsLoginNaver = styled("div")`
 
 export async function getServerSideProps(context: NextPageContext) {
   const session = await getSession(context)
-
 
   return {
     props: {

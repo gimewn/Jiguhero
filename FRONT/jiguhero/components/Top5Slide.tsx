@@ -1,25 +1,17 @@
 import GroundFive from 'components/groundTop5';
-import styled from 'styled-components';
 import { Swiper, SwiperSlide } from "swiper/react"; // basic
 import SwiperCore, { Navigation, Pagination } from "swiper";
 import "swiper/css"; //basic
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import {useQuery} from '@tanstack/react-query';
-import {Token, BASE_URL} from 'pages/api/fetch';
+import getGround from 'pages/api/main/ground';
+import { dehydrate, Query, QueryClient, QueryClientProvider, useQuery } from "@tanstack/react-query";
+import { getSession, SessionProvider, useSession } from "next-auth/react";
 
 SwiperCore.use([Navigation, Pagination]);
   
 export default function ShowGround5(){
-    const getGround = async() => {
-        return (await fetch(BASE_URL+'home/ground', {
-            method:'get',
-            headers:{
-                Authorization : Token
-            }
-        })).json()
-    }
-    const {data} = useQuery(['ground'], getGround)
+    const {data:groundData} = useQuery(['ground'], getGround)
     return(
         <>
         <Swiper
@@ -45,10 +37,24 @@ export default function ShowGround5(){
           }
       }}
         >
-        {data?.map((item) => (<SwiperSlide key={item.groundId}><GroundFive icon={item.icon} title={item.title} id={item.groundId}/></SwiperSlide>))}
+        {groundData?.map((item) => (<SwiperSlide key={item.groundId}><GroundFive icon={item.icon} title={item.title} id={item.groundId}/></SwiperSlide>))}
         </Swiper>
         <i className="icon-arrow-long-right review-swiper-button-next"></i>
         <i className="icon-arrow-long-left review-swiper-button-prev"></i>
         </>
     )
 }
+export async function getServerSideProps(context) {
+    const ground2 = new QueryClient()
+    const session = await getSession(context);
+    await ground2.prefetchQuery(['ground'], ()=>{getGround()})
+  
+      return {
+        props: {
+          data: {
+            session,
+            dehydratedState: dehydrate(ground2)
+          },
+        },
+      };   
+  }

@@ -2,9 +2,8 @@ import GroundTop5 from 'components/Top5Slide';
 import styled from 'styled-components';
 import MissionTop3 from 'components/MissionTop3'
 import Map from 'components/map';
-import News from 'components/news';
-import {useQuery} from '@tanstack/react-query';
-import axios from 'axios';
+import News from 'components/News';
+import { useSession } from 'next-auth/react';
 
 const Mapping = styled('div')`
   width:100%;
@@ -17,6 +16,11 @@ const Title = styled('p')`
   font-weight: bold;
   font-size: 1.1em;
 `
+const TitleWithOutMargin = styled('p')`
+  font-weight: bold;
+  font-size: 1.1em;
+  margin-top:0px;
+`
 const Block = styled('div')`
 padding: 0px 10px 10px 10px;
 `
@@ -27,10 +31,12 @@ const Content = styled('div')`
 `
 
 export default function Home(){
+  const session = useSession()
+  console.log(session)
   return (
     <>
     <Block>
-      <Title>☘️ 내 주변 친환경 가게를 찾아보자!</Title>
+      <TitleWithOutMargin>☘️ 내 주변 친환경 가게를 찾아보자!</TitleWithOutMargin>
       <Content>
         <Mapping>
         <Map />
