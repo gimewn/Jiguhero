@@ -18,6 +18,8 @@ public interface ImageDao {
 
     Image_Mission insertImageMission(Image_Mission imageMission);
 
+    Image_Mission selectImageMissionById(Long imageId);
+
     // 대표 이미지 반환
     Image_Mission selectRepImageMission(Mission mission);
 

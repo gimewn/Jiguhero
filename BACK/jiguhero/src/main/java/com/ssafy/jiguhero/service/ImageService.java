@@ -21,6 +21,8 @@ public interface ImageService {
 
     String savePromotionImage(MultipartFile file, Long promotionId);
 
+    void deleteMissionImage(Long imageId);
+
     Resource loadImage(String fileName, String saveFolder) throws FileNotFoundException;
 
 }

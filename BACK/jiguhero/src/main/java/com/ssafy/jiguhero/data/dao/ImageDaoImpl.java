@@ -76,6 +76,13 @@ public class ImageDaoImpl implements ImageDao{
     }
 
     @Override
+    public Image_Mission selectImageMissionById(Long imageId) {
+        Image_Mission selectedImageMission = imageMissionRepository.getById(imageId);
+
+        return selectedImageMission;
+    }
+
+    @Override
     public Image_Mission selectRepImageMission(Mission mission) {
         Optional<Image_Mission> selectedImageMission = imageMissionRepository.findByMissionAndRep(mission, true);
 
