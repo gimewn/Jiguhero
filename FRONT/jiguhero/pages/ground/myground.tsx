@@ -6,7 +6,7 @@ import { useRouter } from 'next/router';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import {ButtonFull, ParentsDiv} from 'styles/styled';
 
-const Grid = styled('div')`
+export const Grid = styled('div')`
     display:grid;
     grid-template-columns: repeat(3, 1fr);
     @media only screen and (max-width: 650px) {
@@ -16,15 +16,32 @@ const Grid = styled('div')`
   margin-top:20px;
   margin-right:25px;
 `
-const GroundItem = styled('div')`
+const GroundDiv = styled('div')`
     border: 1px solid #65ace2;
     padding:20px;
     border-radius: 20px;
     margin: 0 10px 20px 10px;
+    :hover{
+        .groundHover{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .groundDefault{
+            display: none;
+        }
+    }
+`
+const GroundItem = styled('div')`
     display:flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
+`
+const GroundHover = styled('div')`
+    display: none;
+    background-color: white;
 `
 const GroundTitle = styled('p')`
     margin:5px auto;
@@ -118,6 +135,11 @@ const Topbutton = styled('div')`
         margin-top:20px;
   }
 `
+const GroundButton = styled(ButtonFull)`
+    width:100%;
+    margin:5px 0;
+    font-size: 15px;
+`
 
 export default function GroundList(){
     const router = useRouter();
@@ -126,7 +148,6 @@ export default function GroundList(){
     useEffect(()=>{
         getMyGround(Number(1)).then((res) => setGroundList(res))
     }, [])
-    console.log(groundList)
     function Search(keyword){
         if(keyword === ''){
             getMyGround(1).then(
@@ -185,7 +206,7 @@ export default function GroundList(){
                     <option value="3">조회순</option>
                 </SelectBox>
                 <Topbutton>
-                    <ButtonFull dColor='#65ace2' hColor='#98c064' style={{marginRight:'10px', fontSize:'13px'}} onClick={() => {router.push(`makeground`)}}>활동구역 생성</ButtonFull>
+                    <ButtonFull dColor='#65ace2' hColor='#98c064' style={{marginRight:'10px', fontSize:'13px'}} onClick={() => {router.push(`createground`)}}>활동구역 생성</ButtonFull>
                 </Topbutton>
             </ButtonSelect>
             </GroundTop>
@@ -196,11 +217,19 @@ export default function GroundList(){
                     <p style={{fontSize:'15px'}}>다른 키워드를 검색해볼까요?</p>
                 </NoGround>: 
                 <Grid>
-                {groundList?.map((item)=>(<GroundItem key={item.groundId} onClick={() => {router.push(`\${item.groundId}`)}}>
-                <GroundIcon>{item.icon}</GroundIcon>
+                {groundList?.map((item)=>(<GroundDiv key={item.groundId}>
+                    <GroundItem className="groundDefault">
+                    <GroundIcon>{item.icon}</GroundIcon>
                 <GroundTitle>{item.title}</GroundTitle>
                 {item.placeIdList ? <GroundPlaceLength>{item.placeIdList.length}개의 장소</GroundPlaceLength> : <GroundPlaceLength>0개의 장소</GroundPlaceLength>}
-                </GroundItem>))}</Grid>}
+                    </GroundItem>
+                    <GroundHover className='groundHover'>
+                        <GroundButton dColor='#98c064' hColor='#65ace2' onClick={() => {router.push(`${item.groundId}`)}}>상세보기</GroundButton>
+                        <GroundButton dColor='#98c064' hColor='#65ace2' onClick={() => {router.push(`${item.groundId}/edit`)}}>구역 수정</GroundButton>
+                    </GroundHover>
+                </GroundDiv>))
+                }
+                </Grid>}
         </ParentsDiv>
     )
 }

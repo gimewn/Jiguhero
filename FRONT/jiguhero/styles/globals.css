@@ -38,6 +38,9 @@ body{
   height:100%;
   width:100%;
 }
+body span, h3, p, h2, h1, h4, h5 {
+  color:#252525;
+}
 body::-webkit-scrollbar {
   width: 0;
 }

@@ -21,7 +21,7 @@ import Image from 'next/image';
 
 SwiperCore.use([Navigation, Pagination]);
 
-const ModalBack = styled('div')`
+export const ModalBack = styled('div')`
     position:absolute;
     background-color: rgba(0, 0, 0, 0.5);
     z-index: 998;
@@ -35,7 +35,7 @@ const WithIcons = styled('div')`
     margin-left:0;
     margin-right:auto;
 `
-const ModalDiv = styled('div')`
+export const ModalDiv = styled('div')`
     position:absolute;
     background-color: white;
     left:0;
@@ -57,21 +57,21 @@ const ModalDiv = styled('div')`
     display: none; /* for Chrome, Safari, and Opera */
 }
 `
-const ModalHeader = styled('div')`
+export const ModalHeader = styled('div')`
     display:flex;
     justify-content: space-between;
     flex-direction: row;
     padding:20px 20px 0px 25px;
 `
-const HeaderTitle = styled('span')`
+export const HeaderTitle = styled('span')`
     font-size:1.5rem;
     font-weight:bold;
     padding: auto;
 `
-const CloseBtn = styled(CloseRoundedIcon)`
+export const CloseBtn = styled(CloseRoundedIcon)`
     color:#65ACE2;
 `
-const ModalBody = styled('div')`
+export const ModalBody = styled('div')`
     margin-top:10px;
     display: flex;
     flex-direction: column;
@@ -280,7 +280,6 @@ export default function Modal(props){
         }
         return <Starspan>{res}</Starspan>
     }
-    console.log(data)
     const ModalContent = show && (
         <>
         <ModalDiv>

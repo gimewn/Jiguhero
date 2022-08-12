@@ -207,7 +207,7 @@ export default function GroundList(){
                     <option value="3">조회순</option>
                 </SelectBox>
                 <Topbutton>
-                    <ButtonFull dColor='#65ace2' hColor='#98c064' style={{marginRight:'10px', fontSize:'13px'}} onClick={() => {router.push(`ground/makeground`)}}>활동구역 생성</ButtonFull>
+                    <ButtonFull dColor='#65ace2' hColor='#98c064' style={{marginRight:'10px', fontSize:'13px'}} onClick={() => {router.push(`ground/createground`)}}>활동구역 생성</ButtonFull>
                     <ButtonFull dColor='#98c064' hColor='#65ace2' style={{fontSize:'13px'}} onClick={() => {router.push(`ground/myground`)}}>나의 활동구역</ButtonFull>
                 </Topbutton>
             </ButtonSelect>

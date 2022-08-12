@@ -36,7 +36,7 @@ export const ParentsDiv = styled('div')`
     max-width:700px;
     padding: 0 20px;
     margin: 0 auto;
-    width:100vw;
+    width:100%;
     @media only screen and (max-width: 650px) {
         margin-top:20px;
         margin-bottom: 80px;
