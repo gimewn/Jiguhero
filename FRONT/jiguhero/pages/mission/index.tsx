@@ -124,6 +124,9 @@ const MissionBlock = styled('div')`
 
 const ContentsWrapper = styled('div')`
     margin-top: 20px;
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
     @media screen and (max-width: 393px){
         margin-left: 50px;
     }
