@@ -12,3 +12,9 @@ export const nowjoinlist = atom({
   key: "nowjoinlist",
   default: 1
 })
+
+
+export const missionTitle = atom({
+  key: "title",
+  default: ""
+})

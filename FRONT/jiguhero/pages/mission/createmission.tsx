@@ -28,6 +28,8 @@ import getSido from "pages/api/ecomarket/getSido";
 import getGugun from "pages/api/ecomarket/getGugun";
 import getDong from "pages/api/ecomarket/getDong";
 import PostNewMission from "pages/api/mission/postNewMission";
+import { RecoilState, useRecoilState } from "recoil";
+import { missionTitle } from "states/mission";
 
 const MissioWrapper = styled("div")`
   display: flex;
@@ -108,6 +110,7 @@ const SelectSido = styled("select")`
 `;
 
 const SelectGugun = styled(SelectSido)``;
+const SelectDong = styled(SelectSido)``;
 
 const CameraBox = styled("form")`
   width: 250px;
@@ -125,9 +128,9 @@ const CameraBox = styled("form")`
   }
   img {
     object-fit: cover;
-    width: 150px;
-    height: 150px;
-    border-radius: 100px;
+    width: 250px;
+    height: 180px;
+    border-radius: 15px;
   }
 `;
 const CameraBtn = styled("div")`
@@ -156,26 +159,40 @@ const MissionText = styled("textarea")`
   margin-top: 10px;
 `;
 
+const NavBar = styled("div")`
+  z-index: 999;
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 60px;
+  height: 60px;
+  /* padding: 2rem; */
+  color: white;
+  background: white;
+  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  @media only screen and (min-width: 650px) {
+    display: none;
+  }
+`;
+
+const Header = styled("div")`
+  display: flex;
+  justify-content: space-between;
+  margin: 0px 5px 0px 20px;
+`;
+
+const BackCompo = styled(Backcomponents)`
+  margin-top: 10px;
+  margin-bottom: 10px;
+`;
 const SubmitBtn = styled(ButtonFull)`
   width: 300px;
 `;
 
-//임무명
-function MissionName() {
-  const [text, setText] = useState("");
-  const onChange = (event) => {
-    setText(event.target.value);
-    console.log(event.target.value);
-  };
-  return (
-    <div>
-      <Text>임무명</Text>
-      <BoxInput type="text" onChange={onChange} value={text} />
-    </div>
-  );
-}
 
-const SUploadImage = styled(IconButton).attrs({ type: "button" })``;
 
 export default function Createmission() {
   // 지울거
@@ -185,14 +202,15 @@ export default function Createmission() {
 
   const [createImg, setCreateimg] = useState<File>(null); // 이미지 파일
   const [preview, setPreview] = useState<string>(); // 이미지 미리보기 사진
+
   const [title, setTitle] = useState(""); // 임무명
   const [startDate, setStartDate] = useState(new Date()); // 시작일
   const [endDate, setEndDate] = useState(new Date()); // 종료일
-  const [astartDate, setAstartDate] = useState<Array<string>>(); // 시작일 배열 [요일, 월, 일, 년]
-  const [aendDate, setAendDate] = useState<Array<string>>(); // 종료일 배열 [요일, 월, 일, 년]
+  const [astartDate, setAstartDate] = useState(["",""]); // 시작일 배열 [요일, 월, 일, 년]
+  const [aendDate, setAendDate] = useState(["",""]); // 종료일 배열 [요일, 월, 일, 년]
   const [point, setPoint] = useState<Number>();
   const [people, setPeople] = useState<Number>();
-
+  const [content, setContent] = useState(""); //내용
   const router = useRouter();
   const [show, setShow] = useState(false);
   const [choiceP, setChoiceP] = useState([]);
@@ -218,14 +236,15 @@ export default function Createmission() {
 
   const postdata = {
     title,
-    astartDate,
-    aendDate,
+    startDate: astartDate[0],
+    endDate: aendDate[0],
     point,
     people,
     sido: ChoiceSido[0],
     gugun: ChoiceGugun[0],
     dong: ChoiceDong[0],
     userId,
+    content,
   };
 
   // 미션 사진 등록
@@ -251,7 +270,7 @@ export default function Createmission() {
     }, [createImg]);
     return (
       <CameraBtn>
-        <SUploadImage aria-label="upload picture" component="label">
+        <IconButton aria-label="upload picture" component="label">
           <input
             hidden
             accept="image/*"
@@ -269,13 +288,14 @@ export default function Createmission() {
               <PhotoCamera fontSize="large" />
             </CameraBox>
           )}
-        </SUploadImage>
+        </IconButton>
       </CameraBtn>
     );
   }
 
   // 임무명
   function MissionName() {
+    
     // const onChange = (e) => {
     //   setTitle(e.target.value);
     // };
@@ -283,8 +303,8 @@ export default function Createmission() {
       <div>
         <Text>임무명</Text>
         <BoxInput
-          onChange={(e) => {
-            setTitle(e.target.value);
+          onChange={(event) => {
+            setTitle(event.target.value);
           }}
           value={title}
         />
@@ -301,8 +321,10 @@ export default function Createmission() {
           <DateInput
             selected={startDate}
             onChange={(date) => {
+              
+              console.log(date.toISOString());
               setStartDate(date);
-              setAstartDate(startDate.toDateString().split(" "));
+              setAstartDate(startDate.toISOString().split("T"));
             }}
             selectsStart
             locale={locale}
@@ -316,7 +338,7 @@ export default function Createmission() {
             selected={endDate}
             onChange={(date) => {
               setEndDate(date);
-              setAendDate(endDate.toDateString().split(" "));
+              setAendDate(endDate.toISOString().split("T"));
             }}
             selectsEnd
             locale={locale}
@@ -430,7 +452,6 @@ export default function Createmission() {
         <SelectDong
           onChange={(e) => {
             setChoiceDong(e.target.value.split(","));
-            console.log(ChoiceSido, ChoiceGugun, ChoiceDong);
           }}
         >
           <option value="">{ChoiceDong[1] ? ChoiceDong[1] : "읍/면/동"}</option>
@@ -443,6 +464,24 @@ export default function Createmission() {
             </option>
           ))}
         </SelectDong>
+      </>
+    );
+  }
+
+  //임무내용
+  function TextArea() {
+    
+    const onChange = (event) => {
+      setContent(event.target.value);
+      console.log(event.target.value);
+    };
+    return (
+      <>
+        <MissionText
+          placeholder="임무 설명을 작성해주세요😎"
+          onChange={onChange}
+          value={content}
+        />
       </>
     );
   }
@@ -496,6 +535,7 @@ export default function Createmission() {
             <Point />
           </Content>
         </Block>
+        
 
         {/* 정원 */}
         <Block>
@@ -515,9 +555,10 @@ export default function Createmission() {
               dColor={"#65ACE2"}
               variant="contained"
               type="submit"
-              onClick={() => {
-                PostNewMission(postdata);
-                PostMissionImg(createImg);
+              onClick={async () => {
+                
+                await PostNewMission(postdata);
+                await PostMissionImg(createImg);
                 router.push("/");
               }}
             >
@@ -533,9 +574,9 @@ export default function Createmission() {
 export async function getServerSideProps(context) {
   const createmission = new QueryClient();
 
-  await createmission.prefetchQuery(["mission"], () => {
-    PostMission();
-  });
+  // await createmission.prefetchQuery(["mission"], () => {
+  
+  // });
 
   return {
     props: {

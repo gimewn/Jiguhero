@@ -2,29 +2,30 @@ import { BASE_URL, Token } from "pages/api/fetch";
 
 
 const PostNewMission = async (postdata) => {
-
-  const ImgForm = new FormData();
   
-  ImgForm.append("title", postdata.title);
-  ImgForm.append("startDate", postdata.astartDate);
-  ImgForm.append("endDate", postdata.aendDate );
-  ImgForm.append("sidoCode", postdata.sido);
-  ImgForm.append("gugunCode", postdata.gugun);
-  ImgForm.append("dongCode", postdata.dong);
-  ImgForm.append("entryPoint", postdata.point);
+  let Form = new FormData();
 
+  Form["title"]= postdata.title
+  Form["startDate"] =postdata.startDate
+  Form["endDate"]= postdata.endDate 
+  Form["sidoCode"]= postdata.sido
+  Form["gugunCode"]= postdata.gugun
+  Form["dongCode"]= postdata.dong
+  Form["entryPoint"]= postdata.point
+  Form["maxPerson"]= postdata.people
+  Form["content"]= postdata.content
 
+  
   await fetch(`${BASE_URL}mission?userId=${postdata.userId}`, {
     method: "POST",
     headers: {
       Authorization: Token,
+      "Content-Type": "application/json",
     },
-    body: ImgForm,
-  })
-    .then((response) => {
+    body: JSON.stringify(Form),
+  }) .then((response) => {
         console.log("Success:", response);
     })
-
     .catch((error) => {
       console.error("Error:", error);
     });

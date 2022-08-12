@@ -3,7 +3,6 @@ import Head from 'next/head';
 import styled from 'styled-components';
 import Backcomponents from 'components/back';
 import { dehydrate, Query, QueryClient, QueryClientProvider, useQuery } from "@tanstack/react-query";
-import { getSession, SessionProvider, useSession } from "next-auth/react";
 import MoreVertRoundedIcon from '@mui/icons-material/MoreVertRounded';
 import missionUserData from 'pages/api/mission/[id]';
 import EmojiPeopleRoundedIcon from '@mui/icons-material/EmojiPeopleRounded';
@@ -468,13 +467,13 @@ export default function MissionDetail() {
 
 // export async function getServerSideProps(context) {
 //     const missiondetail = new QueryClient()
-//     const session = await getSession(context);
+
 //     await missiondetail.prefetchQuery(['missions'], () => { missionUserData() })
 
 //     return {
 //         props: {
 //             data: {
-//                 session,
+//              
 //                 dehydratedState: dehydrate(missiondetail)
 //             },
 //         },

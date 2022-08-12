@@ -6,7 +6,6 @@ import styled from 'styled-components';
 import Link from "next/link";
 import getMission from 'pages/api/mission/index';
 import { dehydrate, Query, QueryClient, QueryClientProvider, useQuery } from "@tanstack/react-query";
-import { getSession, SessionProvider, useSession } from "next-auth/react";
 import PropTypes from 'prop-types';
 
 
@@ -19,21 +18,22 @@ const PagI = styled(Pagination)`
 
 
 
-export default function MissionLists() {
-  const { data: MISSION, isLoading } = useQuery(['missions'], getMission)
-  console.log(MISSION)
-  const remainder = MISSION?.length % 5;
-  const MissionLen = `${MISSION?.length / 5}`
-  const quot = parseInt(MissionLen)
-  const page = useRecoilValue(missionLists)
-  const setPage = useSetRecoilState(missionLists)
-  const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
-    setPage(value);
-  };
+export default  function MissionLists({selector}) {
+  
+  const { data: Missions, isLoading } = useQuery<string[]>(['missions'],  ()=>{ return getMission(selector)} )
+
+  // const remainder = Missions.length % 5;
+  // const MissionLen = `${Missions.length / 5}`
+  // const quot = parseInt(MissionLen)
+  // const page = useRecoilValue(missionLists)
+  // const setPage = useSetRecoilState(missionLists)
+  // const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
+  //   setPage(value);
+  // };
 
   return (
     <>
-      {MISSION?.slice((page - 1) * 5, page * 5).map((item, index) => (
+      {/* {Missions.slice((page - 1) * 5, page * 5).map((item, index) => (
         <MissionList
           key={index} {...item} />
       ))}
@@ -41,23 +41,23 @@ export default function MissionLists() {
         count={remainder === 0 ? quot : quot + 1}
         page={page}
         onChange={handleChange}
-      />
+      /> */}
     </>
   )
 }
 
 
-export async function getServerSideProps(context) {
-  const missionList = new QueryClient()
-  const session = await getSession(context);
-  await missionList.prefetchQuery(['missions'], () => { getMission("latest") })
+// export async function getServerSideProps(context) {
+//   const missionList = new QueryClient()
+  
+//   await missionList.prefetchQuery(['missions'], () => { getMission("latest") })
 
-  return {
-    props: {
-      data: {
-        session,
-        dehydratedState: dehydrate(missionList)
-      },
-    },
-  };
-}
+//   return {
+//     props: {
+//       data: {
+    
+//         dehydratedState: dehydrate(missionList)
+//       },
+//     },
+//   };
+// }
