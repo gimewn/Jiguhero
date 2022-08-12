@@ -159,7 +159,6 @@ public class MissionController {
 
         List<MissionDto> list = missionService.searchMission(search, array);
 
-
         return ResponseEntity.status(HttpStatus.OK).body(list);
 
     }

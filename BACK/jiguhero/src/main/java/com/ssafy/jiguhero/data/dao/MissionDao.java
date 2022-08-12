@@ -60,5 +60,11 @@ public interface MissionDao {
 
     //Optional<Feed> searchFeed(User user);
 
+    List<Conn_Mission> selectAllConnMissionByMission(Mission mission);
 
+    void updateConnMissionStart(Conn_Mission connMission);
+
+    void updateConnMissionEnd(Conn_Mission connMission);
+
+    void providePoint(Conn_Mission connMission);
 }

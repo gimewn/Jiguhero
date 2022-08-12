@@ -21,14 +21,16 @@ public class MissionDaoImpl implements MissionDao {
     private final ConnMissionRepository connMissionRepository;
     private final FeedRepository feedRepository;
     private final LikeFeedRepository likeFeedRepository;
+    private final UserRepository userRepository;
 
     @Autowired
-    public MissionDaoImpl(MissionRepository missionRepository, LikeMissionRepository likeMissionRepository, ConnMissionRepository connMissionRepository, FeedRepository feedRepository, LikeFeedRepository likeFeedRepository) {
+    public MissionDaoImpl(MissionRepository missionRepository, LikeMissionRepository likeMissionRepository, ConnMissionRepository connMissionRepository, FeedRepository feedRepository, LikeFeedRepository likeFeedRepository, UserRepository userRepository) {
         this.missionRepository = missionRepository;
         this.likeMissionRepository = likeMissionRepository;
         this.connMissionRepository = connMissionRepository;
         this.feedRepository = feedRepository;
         this.likeFeedRepository = likeFeedRepository;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -218,6 +220,55 @@ public class MissionDaoImpl implements MissionDao {
     }
 
      */
+
+    @Override
+    public List<Conn_Mission> selectAllConnMissionByMission(Mission mission){
+        List<Conn_Mission> connMissions = connMissionRepository.findAllByMission(mission);
+
+        return connMissions;
+    }
+
+    @Override
+    public void updateConnMissionStart(Conn_Mission connMission){
+
+        connMission.setState("RUN");
+        Conn_Mission result = connMissionRepository.save(connMission);
+
+    }
+
+    @Override
+    public void updateConnMissionEnd(Conn_Mission connMission){
+
+        Mission missionEntity = connMission.getMission();
+
+        if(connMission.getSuccessRate()>=80) {
+            connMission.setState("SUCCESS");
+        }
+        else {
+            connMission.setState("FAILED");
+            missionEntity.setFailedPerson(missionEntity.getFailedPerson()+1);
+        }
+        connMissionRepository.save(connMission);
+
+    }
+
+    @Override
+    public void providePoint(Conn_Mission connMission){
+        User userEntity = connMission.getUser();
+        Mission missionEntity =connMission.getMission();
+
+        int allSuccessUser = missionEntity.getNowPerson() - missionEntity.getFailedPerson();
+        int totalPoint = missionEntity.getEntryPoint() * missionEntity.getEntryPoint();
+        int providePoint = totalPoint / allSuccessUser;
+
+        if(connMission.getState() == "SUCCESS"){
+            userEntity.setPoint(userEntity.getPoint() + providePoint);
+            userRepository.save(userEntity);
+
+            connMission.setState("END");
+            connMissionRepository.save(connMission);
+        }
+    }
 
 }
 
