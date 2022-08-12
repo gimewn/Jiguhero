@@ -32,7 +32,7 @@ public class MissionDto {
     private int likes;
     private int hits;
     private String repImageURL;
-    private List<String> imageURL = new ArrayList<>();
+    private List<List<String>> imageURL = new ArrayList<>();
 
     private boolean likeCheck;
     private boolean joinCheck;

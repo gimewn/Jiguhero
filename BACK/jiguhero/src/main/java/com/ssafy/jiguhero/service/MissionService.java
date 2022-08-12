@@ -40,7 +40,7 @@ public interface MissionService {
 
     String getRepMissionImageURL(Long missionId, HttpServletRequest request);
 
-    List<String> getMissionImageURL(Long missionId, HttpServletRequest request);
+    List<List<String>> getMissionImageURL(Long missionId, HttpServletRequest request);
 
     //FeedDto changeFeed(FeedDto feedDto, Long userId) throws Exception;
 
