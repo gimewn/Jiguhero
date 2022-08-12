@@ -7,6 +7,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import Paigination from 'components/pagination';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
+import {ParentsDiv} from 'styles/styled';
 
 const Grid = styled('div')`
     display:grid;
@@ -160,7 +161,7 @@ export default function GroundList(){
     }
 
     return(
-        <div style={{maxWidth:'700px', padding:'0 20px', margin:'0 auto', width:'100%'}}>
+        <ParentsDiv>
             <BackTitle name={'대원들의 활동구역'}/>
             <GroundTop>
             <p style={{fontSize:'15px'}}>테마별로 모아둔 활동구역을 탐색해 보세요 🔍</p>
@@ -192,6 +193,6 @@ export default function GroundList(){
             
             {/* <Paigination page={currentpage} count={count} setPage={setPage} /> */}
             
-        </div>
+        </ParentsDiv>
     )
 }

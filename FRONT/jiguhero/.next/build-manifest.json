@@ -30,6 +30,11 @@
       "static/chunks/main.js",
       "static/chunks/pages/_error.js"
     ],
+    "/ecomarket": [
+      "static/chunks/webpack.js",
+      "static/chunks/main.js",
+      "static/chunks/pages/ecomarket.js"
+    ],
     "/ground": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
