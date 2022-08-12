@@ -4,6 +4,7 @@ import MissionTop3 from 'components/MissionTop3'
 import Map from 'components/map';
 import News from 'components/News';
 import { useSession } from 'next-auth/react';
+import {ParentsDiv} from 'styles/styled';
 
 const Mapping = styled('div')`
   width:100%;
@@ -32,9 +33,8 @@ const Content = styled('div')`
 
 export default function Home(){
   const session = useSession()
-  console.log(session)
   return (
-    <>
+    <ParentsDiv>
     <Block>
       <TitleWithOutMargin>☘️ 내 주변 친환경 가게를 찾아보자!</TitleWithOutMargin>
       <Content>
@@ -61,6 +61,6 @@ export default function Home(){
         <News />
       </Content>
     </Block>
-    </>
+    </ParentsDiv>
   )
 }
