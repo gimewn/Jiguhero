@@ -16,6 +16,11 @@ const Title = styled('p')`
   font-weight: bold;
   font-size: 1.1em;
 `
+const TitleWithOutMargin = styled('p')`
+  font-weight: bold;
+  font-size: 1.1em;
+  margin-top:0px;
+`
 const Block = styled('div')`
 padding: 0px 10px 10px 10px;
 `
@@ -31,7 +36,7 @@ export default function Home(){
   return (
     <>
     <Block>
-      <Title>☘️ 내 주변 친환경 가게를 찾아보자!</Title>
+      <TitleWithOutMargin>☘️ 내 주변 친환경 가게를 찾아보자!</TitleWithOutMargin>
       <Content>
         <Mapping>
         <Map />

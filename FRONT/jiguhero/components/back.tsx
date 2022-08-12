@@ -26,7 +26,7 @@ const NavBar = styled('div')`
 const Header = styled("div")`
   display: flex;
   justify-content: space-between;
-  margin: 0px 5px 0px 20px;
+  /* margin: 0px 5px 0px 20px; */
 `;
 
 const Title = styled('div')`
@@ -35,6 +35,7 @@ const Title = styled('div')`
     @media only screen and (min-width: 650px) {
     display:none;
   }
+  margin-left:20px;
 `
 const PageTitle = styled('span')`
     font-weight: bold;
