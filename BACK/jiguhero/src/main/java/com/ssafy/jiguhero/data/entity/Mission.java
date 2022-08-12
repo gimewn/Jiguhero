@@ -35,11 +35,11 @@ public class Mission {
     private String content;
 
     @Column(nullable = false, name = "start_date")
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate startDate;
 
     @Column(nullable = false, name = "end_date")
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate endDate;
 
     @Column(nullable = false, name = "enrty_point")
