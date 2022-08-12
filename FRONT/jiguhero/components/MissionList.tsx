@@ -110,7 +110,7 @@ export default function MissionList({ missionId, entryPoint, title, startDate, e
               <Name>{sidoCode}</Name>
             </TextWrapper>
             <TextWrapper>
-              <Date>{startDate[0]}.{startDate[1]}.{startDate[2]}~{endDate[0]}.{endDate[1]}.{endDate[2]}</Date>
+              <Date>{startDate}~{endDate}</Date>
             </TextWrapper>
             <TextWrapper>
               <JoinPeople>{nowPerson} / {maxPerson}명</JoinPeople>

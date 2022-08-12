@@ -7,6 +7,8 @@ import { tabpage } from "states/mypage";
 import { RecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import React, { useState } from 'react';
 import ProgressBar from "@ramonak/react-progress-bar";
+import ImageList from '@mui/material/ImageList';
+import ImageListItem from '@mui/material/ImageListItem';
 
 const NavBar = styled('div')`
   z-index: 999;
@@ -153,42 +155,90 @@ const CertifyBtn = styled('button')`
     cursor: pointer;
   }
 `
+const TextPositionWrapper = styled('div')`
+  justify-content: center;
+  align-items: center;
+`
 const AchieveWrapper = styled('div')`
   display:flex;
-  justify-content: left;
-
+  justify-content: center;
+  max-width: 500px;
+`
+const ProgressWrapper = styled('div')`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 10px 0;
+  
 `
 const CertifyWrapper = styled('div')`
-  display:flex;
-  justify-content: space-between;
-
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `
 const CertifyGoBtn = styled(ButtonFull)`
   padding: 3px 10px;
   border-radius: 10px;
-  margin-left: 25px;
+  margin-left: 140px;
   margin-right: 25px;
 `
 const Text = styled('a')`
-  font-size: small;
-  font-weight: bold;
+  font-size: 15px;
+  font-weight: bolder;
   margin-left: 25px;
   margin-right: 25px;
 `
-
-const Progress = styled(ProgressBar)`
-  width: 250px;
-  /* .wrapper{
-    width: 250px;
-  }
-  .barCompleted{
-    background-color: #65ACE2;
-    width: ${(props) => props.completed};
-  }
-  .container{
-    background-color: black;
-  } */
+const Text2 = styled('a')`
+  font-size: 13px;
 `
+
+const Text2Wrapper = styled('div')`
+  display: flex;
+  justify-content: center;
+  
+  margin: 0 15px 15px 15px;
+`
+
+//진행률바 라이브러리 이용
+const Progress = styled(ProgressBar)`
+  max-width: 350px;
+  width: 90%;
+  
+`
+
+const CertifyFeed = styled('div')`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`
+
+const Text3 = styled('a')`
+  font-size: large;
+  font-weight: bolder;
+  background-color: #fcfca886;
+`
+
+const HeroTextWrapper = styled('div')`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+`
+
+const NoHeroText1 = styled('a')`
+  font-family: PyeongChangPeace-Bold;
+  font-size: 100px;
+  padding: 50px 0 0 0;
+`
+const NoHeroText2 = styled('a')`
+  font-size: medium;
+  font-weight: bold;
+`
+
+const BottomDiv = styled('div')`
+  margin-bottom: 70px;
+`
+
 // interface MissionProps {
 //   entryPoint: number;
 //   title: string;
@@ -231,6 +281,7 @@ function NowMission() {
   )
 }
 
+//달성률 & 인증샷 버튼 그룹
 function ButtonGroup() {
   // 탭 전환
   const tab = useRecoilValue(tabpage);
@@ -238,48 +289,165 @@ function ButtonGroup() {
 
   //달성률 버튼 클릭하면 연두색 인증샷 버튼 클릭하면 하얀색!
   const [tabColor, setTabColor] = useState(true)
+  console.log(tabColor)
   return (
     <>
       {/* 탭 전환을 위한 버튼들 */}
       <ButtonWrapper>
         {tabColor ?
-          <AchieveBtn backColor={`#98C064`} onClick={() => { setTabColor(!tabColor) }}>달성률</AchieveBtn>
-          : <AchieveBtn backColor={`#fffff`} onClick={() => { setTabColor(!tabColor) }}>달성률</AchieveBtn>
+          <AchieveBtn backColor={`#98C064`} onClick={() => { setTab(true), setTabColor(!tabColor) }}>달성률</AchieveBtn>
+          : <AchieveBtn backColor={`#fffff`} onClick={() => { setTab(true), setTabColor(!tabColor) }}>달성률</AchieveBtn>
         }
         {tabColor ?
-          <CertifyBtn backColor={`#fffff`} onClick={() => { setTabColor(!tabColor) }}>인증샷</CertifyBtn>
-          : <CertifyBtn backColor={`#98C064`} onClick={() => { setTabColor(!tabColor) }}>인증샷</CertifyBtn>
+          <CertifyBtn backColor={`#fffff`} onClick={() => { setTab(false), setTabColor(!tabColor) }}>인증샷</CertifyBtn>
+          : <CertifyBtn backColor={`#98C064`} onClick={() => { setTab(false), setTabColor(!tabColor) }}>인증샷</CertifyBtn>
         }
       </ButtonWrapper >
-
+      {tab ? <Achievement /> : <Certification />}
     </>
   )
 }
+
+//임시 더미파일들
+const itemData = [
+  {
+    img: 'https://images.unsplash.com/photo-1551963831-b3b1ca40c98e',
+    title: 'Breakfast',
+  },
+  {
+    img: 'https://images.unsplash.com/photo-1551782450-a2132b4ba21d',
+    title: 'Burger',
+  },
+  {
+    img: 'https://images.unsplash.com/photo-1522770179533-24471fcdba45',
+    title: 'Camera',
+  },
+  {
+    img: 'https://images.unsplash.com/photo-1444418776041-9c7e33cc5a9c',
+    title: 'Coffee',
+  },
+  {
+    img: 'https://images.unsplash.com/photo-1533827432537-70133748f5c8',
+    title: 'Hats',
+  },
+  {
+    img: 'https://images.unsplash.com/photo-1558642452-9d2a7deb7f62',
+    title: 'Honey',
+  },
+  {
+    img: 'https://images.unsplash.com/photo-1516802273409-68526ee1bdd6',
+    title: 'Basketball',
+  },
+  {
+    img: 'https://images.unsplash.com/photo-1518756131217-31eb79b20e8f',
+    title: 'Fern',
+  },
+  {
+    img: 'https://images.unsplash.com/photo-1597645587822-e99fa5d45d25',
+    title: 'Mushrooms',
+  },
+  {
+    img: 'https://images.unsplash.com/photo-1567306301408-9b74779a11af',
+    title: 'Tomato basil',
+  },
+  {
+    img: 'https://images.unsplash.com/photo-1471357674240-e1a485acb3e1',
+    title: 'Sea star',
+  },
+  {
+    img: 'https://images.unsplash.com/photo-1589118949245-7d38baf380d6',
+    title: 'Bike',
+  },
+];
+
+//나의 인증샷 (mui 사용함!)
+function MyCertificationLists() {
+  return (
+    <>
+      <CertifyFeed>
+        <ImageList sx={{ width: 350 }} cols={3} rowHeight={130}>
+          {itemData.map((item) => (
+            <ImageListItem key={item.img}>
+              <img
+                src={`${item.img}?w=164&h=164&fit=crop&auto=format`}
+                srcSet={`${item.img}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
+                alt={item.title}
+                loading="lazy"
+              />
+            </ImageListItem>
+          ))}
+        </ImageList>
+      </CertifyFeed>
+    </>
+  );
+}
+
 //달성률과 나의 인증샷 보여주는 탭
 function Achievement() {
   return (
     <>
+
       {/* 달성률 바 */}
       <AchieveWrapper>
         <Text>달성률</Text>
-        <Progress completed={60} />
       </AchieveWrapper>
 
+      <ProgressWrapper>
+        <Progress completed={60} bgColor={'#65ACE2'} />
+      </ProgressWrapper>
+
+      <Text2Wrapper>
+        <Text2>~일만 더 인증하면 성공이에요!</Text2>
+      </Text2Wrapper>
+
       {/* 내 인증샷 모아보기 */}
+
       <CertifyWrapper>
         <Text>나의 인증샷</Text>
         <CertifyGoBtn hColor={'#65ACE2'} dColor={'#98C064'}>인증하기</CertifyGoBtn>
       </CertifyWrapper>
-
+      <MyCertificationLists />
     </>
   )
 }
 
-//다른 사람들의 인증샷을 보여주는 탭
-function Certification() {
 
+//대원들의 인증샷 (mui 사용함!)
+function HeroCertificationLists() {
   return (
     <>
+      <CertifyFeed>
+        <ImageList sx={{ width: 350 }} cols={3} rowHeight={130}>
+          {itemData.map((item) => (
+            <ImageListItem key={item.img}>
+              <img
+                src={`${item.img}?w=164&h=164&fit=crop&auto=format`}
+                srcSet={`${item.img}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
+                alt={item.title}
+                loading="lazy"
+              />
+            </ImageListItem>
+          ))}
+        </ImageList>
+      </CertifyFeed>
+    </>
+  )
+}
+//다른 사람들의 인증샷을 보여주는 탭
+function Certification() {
+  return (
+    <>
+      <HeroTextWrapper>
+        <Text3>📸대원들의 인증샷</Text3>
+      </HeroTextWrapper>
+
+      {/* 인증샷 없으면 */}
+      <HeroTextWrapper>
+        <NoHeroText1>앗!</NoHeroText1>
+        <NoHeroText2>아직 인증한 대원이 없어요😥</NoHeroText2>
+      </HeroTextWrapper>
+      {/* 인증샷 있으면 */}
+      <HeroCertificationLists />
 
     </>
   )
@@ -308,9 +476,7 @@ export default function MyMissionFeed() {
 
       {/* 달성률 인증샷 탭 */}
       <ButtonGroup />
-
-      <Achievement />
-
+      <BottomDiv></BottomDiv>
     </>
   )
 }

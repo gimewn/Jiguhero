@@ -14,38 +14,11 @@ import { getSession, SessionProvider, useSession } from "next-auth/react";
 import PostMission from "pages/api/mission/index";
 import moment from "moment"
 
-const NavBar = styled('div')`
-  z-index: 999;
- position: fixed;
-  left: 0;
-  right: 0;
-  top:60px;
-  height: 60px;
-  /* padding: 2rem; */
-  color: white;
-  background: white;
-  font-weight: bold;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-    @media only screen and (min-width: 650px) {
-    display:none;
-  }
-`
 
-const Header = styled("div")`
-  display: flex;
-  justify-content: space-between;
-  margin: 0px 5px 0px 20px;
-`;
-const BackCompo = styled(Backcomponents)`
-  margin-top: 10px;
-  margin-bottom: 10px;
-`
 const MissioWrapper = styled('div')`
   display:flex;
   flex-direction: column;
-  margin-top: 27px;
+  margin-top: 10px;
 `
 
 
@@ -176,7 +149,9 @@ const SubmitBtn = styled(ButtonFull)`
   width: 300px;
   
 `
-
+const BottomDiv = styled('div')`
+  margin-bottom: 80px;
+`
 //임무명
 function MissionName() {
   const [text, setText] = useState('')
@@ -336,12 +311,9 @@ export default function Createmission() {
       </Head>
 
 
-      <NavBar>
-        <Header>
-          {/* 모바일 뷰에서 뒤로가기 버튼! */}
-          <BackCompo name='임무 생성하기'></BackCompo>
-        </Header>
-      </NavBar>
+      {/* 모바일 뷰에서 뒤로가기 버튼! */}
+      <Backcomponents name='임무 생성하기'></Backcomponents>
+
 
       <MissioWrapper>
         {/* 미션사진추가 */}
@@ -402,6 +374,8 @@ export default function Createmission() {
           </BtnContent>
         </Block>
       </MissioWrapper>
+
+      <BottomDiv></BottomDiv>
 
     </>
   )
