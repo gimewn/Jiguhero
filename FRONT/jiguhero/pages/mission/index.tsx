@@ -207,7 +207,6 @@ export default function Mission() {
                     <BackCompo name='대원들의 임무'></BackCompo>
                 </Header>
             </NavBar>
-
             <ContentsWrapper>
                 {/* contents! */}
                 {/* 임무 버튼 그룹 */}

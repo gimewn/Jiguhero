@@ -37,4 +37,7 @@ export const ParentsDiv = styled('div')`
     padding: 0 20px;
     margin: 0 auto;
     width:100%;
+    @media only screen and (max-width: 650px) {
+        margin-bottom: 80px;
+  }
 `
