@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -103,10 +104,15 @@ public class MissionServiceImpl implements MissionService {
     @Override
     public void insertMission(MissionDto missionDto, Long userId) {
         Mission mission = new Mission();
+//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
         mission.setRegtime(LocalDateTime.now());
         mission.setTitle(missionDto.getTitle());
         mission.setStartDate(missionDto.getStartDate());
         mission.setEndDate(missionDto.getEndDate());
+        mission.setContent(missionDto.getContent());
+        mission.setStartDate(LocalDate.parse(missionDto.getStartDate(), DateTimeFormatter.ISO_DATE));
+        mission.setEndDate(LocalDate.parse(missionDto.getEndDate(), DateTimeFormatter.ISO_DATE));
         mission.setEntryPoint(missionDto.getEntryPoint());
         mission.setSidoCode(missionDto.getSidoCode());
         mission.setGugunCode(missionDto.getGugunCode());
@@ -116,6 +122,7 @@ public class MissionServiceImpl implements MissionService {
         mission.setFailedPerson(0);
         mission.setLikes(0);
         mission.setHits(0);
+        mission.setUser(userDao.selectUserById(userId));
         missionDao.insertMission(mission);
 
         Conn_Mission connMission = new Conn_Mission();
@@ -125,7 +132,7 @@ public class MissionServiceImpl implements MissionService {
         connMission.setSuccessRate(0);
         connMission.setMission(mission);
         connMission.setUser(userEntity);
-
+        missionDao.insertConnMission(connMission);
     }
 
     public int joinMission(Long userId, Long missionId){

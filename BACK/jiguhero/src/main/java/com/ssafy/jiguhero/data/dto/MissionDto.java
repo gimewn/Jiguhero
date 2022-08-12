@@ -23,6 +23,9 @@ public class MissionDto {
     private String title;
     private LocalDate startDate;
     private LocalDate endDate;
+    private String content;
+    private String startDate;
+    private String endDate;
     private int entryPoint;
     private String sidoCode;
     private String gugunCode;

@@ -31,6 +31,9 @@ public class Mission {
     @Column(nullable = false)
     private String title;
 
+    @Column(nullable = true)
+    private String content;
+
     @Column(nullable = false, name = "start_date")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDate startDate;

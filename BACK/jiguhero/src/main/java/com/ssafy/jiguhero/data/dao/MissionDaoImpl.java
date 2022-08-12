@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
@@ -117,12 +119,13 @@ public class MissionDaoImpl implements MissionDao {
     public Mission updateMission(MissionDto missionDto) throws Exception{
         Optional<Mission> selectedMission = missionRepository.findById(missionDto.getMissionId());
         Mission updatedMission;
+//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
         if(selectedMission.isPresent()) {
             Mission mission = selectedMission.get();
             mission.setTitle(missionDto.getTitle());
-            mission.setStartDate(missionDto.getStartDate());
-            mission.setEndDate(missionDto.getEndDate());
+            mission.setStartDate(LocalDate.parse(missionDto.getStartDate(), DateTimeFormatter.ISO_DATE));
+            mission.setEndDate(LocalDate.parse(missionDto.getEndDate(), DateTimeFormatter.ISO_DATE));
             mission.setEntryPoint(missionDto.getEntryPoint());
             mission.setSidoCode(missionDto.getSidoCode());
             mission.setGugunCode(missionDto.getGugunCode());
