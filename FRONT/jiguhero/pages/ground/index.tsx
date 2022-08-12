@@ -7,6 +7,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import Paigination from 'components/pagination';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
+import {ParentsDiv} from 'styles/styled';
 
 const Grid = styled('div')`
     display:grid;
@@ -101,6 +102,9 @@ export default function GroundList(){
     const [searchItem, setSearchItem] = useState('');
     const {data:AllGround} = useQuery(['allGround'], getAllGround) //리스트에 나타낼 아이템
     const [groundList, setGroundList] = useState(AllGround)
+    useEffect(()=>{
+        setGroundList(AllGround)
+    })
     // const [count, setCount] = useState(0); //아이템 총 개수
     // const [currentpage, setCurrentpage] = useState(1); //현재페이지
     // const [postPerPage] = useState(12); //페이지당 아이템 개수
@@ -157,7 +161,7 @@ export default function GroundList(){
     }
 
     return(
-        <div>
+        <ParentsDiv>
             <BackTitle name={'대원들의 활동구역'}/>
             <GroundTop>
             <p style={{fontSize:'15px'}}>테마별로 모아둔 활동구역을 탐색해 보세요 🔍</p>
@@ -189,6 +193,6 @@ export default function GroundList(){
             
             {/* <Paigination page={currentpage} count={count} setPage={setPage} /> */}
             
-        </div>
+        </ParentsDiv>
     )
 }
