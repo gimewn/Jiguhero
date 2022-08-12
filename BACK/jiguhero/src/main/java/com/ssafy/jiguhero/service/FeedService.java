@@ -8,7 +8,7 @@ public interface FeedService {
 
     int insertFeed(FeedDto feedDto, Long missionId, Long userId);
 
-    FeedDto changeFeed(FeedDto feedDto, Long userId) throws Exception;
+    FeedDto updateFeed(FeedDto feedDto, Long userId) throws Exception;
 
     int deleteFeed(Long feedId, Long userId, Long missionId);
 

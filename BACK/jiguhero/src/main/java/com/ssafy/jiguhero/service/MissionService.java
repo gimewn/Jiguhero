@@ -23,16 +23,16 @@ public interface MissionService {
     // missionId에 해당하는 임무
     MissionDto getMissionById(Long missionId, Long userId, HttpServletRequest request);
 
-    void saveMission(MissionDto missionDto, Long userId);
+    void insertMission(MissionDto missionDto, Long userId);
 
-    void joinMission(Long userId, Long missionId);
+    int joinMission(Long userId, Long missionId);
 
     int likeMission(Long missionId, Long userId);
 
     int deleteMission(Long missionId, Long userId);
 
 
-    MissionDto changeMission(MissionDto missionDto, Long userId) throws Exception;
+    MissionDto updateMission(MissionDto missionDto, Long userId) throws Exception;
 
     //FeedDto getFeedById(Long feedId, Long userId);
 

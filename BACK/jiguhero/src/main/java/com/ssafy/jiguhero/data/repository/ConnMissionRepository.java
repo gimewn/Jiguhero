@@ -16,7 +16,7 @@ public interface ConnMissionRepository extends JpaRepository<Conn_Mission, Long>
     // user에 해당하는 join_mission 인스터스 목록
     List<Conn_Mission> findAllByUser(User user);
 
-    Optional<Conn_Mission> findByMissionAndUser(Mission mission, User user);
+    Conn_Mission findByMissionAndUser(Mission mission, User user);
 
     void deleteAllByMission(Mission mission);
 

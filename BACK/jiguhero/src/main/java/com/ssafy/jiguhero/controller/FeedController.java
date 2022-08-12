@@ -40,7 +40,7 @@ public class FeedController {
     public ResponseEntity<FeedDto> updateFeed(@RequestBody FeedDto feedDto, @RequestParam("user_id") Long userId){
         FeedDto feedDtoResult = null;
         try {
-            feedDtoResult = feedService.changeFeed(feedDto, userId);
+            feedDtoResult = feedService.updateFeed(feedDto, userId);
         }
         catch (Exception e) {
             throw new RuntimeException(e);

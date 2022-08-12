@@ -94,9 +94,9 @@ public class MissionDaoImpl implements MissionDao {
     }
 
     @Override
-    public Optional<Conn_Mission> selectConnMission(Mission mission, User user){
-        Optional<Conn_Mission> connMission = connMissionRepository.findByMissionAndUser(mission, user);
-        if(connMission.isPresent()) return connMission;
+    public Conn_Mission selectConnMission(Mission mission, User user){
+        Conn_Mission connMission = connMissionRepository.findByMissionAndUser(mission, user);
+        if(connMission!=null) return connMission;
         else return null;
     }
 

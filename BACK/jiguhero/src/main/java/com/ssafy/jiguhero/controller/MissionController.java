@@ -63,7 +63,7 @@ public class MissionController {
     @PostMapping
     public ResponseEntity<String> saveMission(@RequestBody MissionDto missionDto, @RequestParam("userId") Long userId) {
 
-        missionService.saveMission(missionDto, userId);
+        missionService.insertMission(missionDto, userId);
 
         return new ResponseEntity<String>("success", HttpStatus.OK);
         // missionServiceImpl 확인!!! Conn_Mission도 추가해야함(임무 작성한 대원 저장 등)
@@ -72,9 +72,13 @@ public class MissionController {
     @ApiOperation(value = "해당 임무에 참여한다.", response = String.class)
     @PostMapping("/{mission_id}/details")
     public ResponseEntity<String> saveMission(@RequestParam("userId") Long userId, @RequestParam("missionId") Long missionId) {
-
-        missionService.joinMission(userId, missionId);
-        return new ResponseEntity<String>("success", HttpStatus.OK);
+        int check = missionService.joinMission(userId, missionId);
+        if(check == 1) {
+            return new ResponseEntity<String>("success", HttpStatus.OK);
+        }
+        else {
+            return new ResponseEntity<String>("fail", HttpStatus.OK);
+        }
     }
 
     @ApiOperation(value = "해당 임무의 '좋아요'를 클릭한다.", response = List.class)
@@ -91,17 +95,21 @@ public class MissionController {
     public ResponseEntity<String> deleteMission(@PathVariable("mission_id") Long missionId, @RequestParam("userId") Long userId) {
         int check = missionService.deleteMission(missionId, userId);
 
-        if(check == 1) return new ResponseEntity<String>("success", HttpStatus.OK);
-        else return new ResponseEntity<String>("unauthorized", HttpStatus.OK);
+        if(check == 1) {
+            return new ResponseEntity<String>("success", HttpStatus.OK);
+        }
+        else {
+            return new ResponseEntity<String>("fail", HttpStatus.OK);
+        }
 
     }
 
     @ApiOperation(value = "해당 임무의 세부 내용을 변경한다", response = String.class)
     @PutMapping("/{mission_id}/details")
-    public ResponseEntity<MissionDto> changeMission(@RequestBody MissionDto missionDto, @RequestParam("user_id") Long userId) {
+    public ResponseEntity<MissionDto> updateMission(@RequestBody MissionDto missionDto, @RequestParam("user_id") Long userId) {
         MissionDto missionDtoResult = null;
         try {
-            missionDtoResult = missionService.changeMission(missionDto, userId);
+            missionDtoResult = missionService.updateMission(missionDto, userId);
         }
         catch (Exception e) {
             throw new RuntimeException(e);

@@ -30,4 +30,6 @@ public interface FeedDao {
 
     void deleteFeed(Long feedId);
 
+    int countByFeed(Mission mission, User user);
+
 }

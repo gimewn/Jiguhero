@@ -34,7 +34,7 @@ public interface MissionDao {
 
     void deleteLikeMission(Mission mission, User user);
 
-    Optional<Conn_Mission> selectConnMission(Mission mission, User user);
+    Conn_Mission selectConnMission(Mission mission, User user);
 
     void deleteConnMission(Mission mission);
 

@@ -91,10 +91,10 @@ public class MissionServiceImpl implements MissionService {
         User userEntity = userDao.selectUserById(userId);
         MissionDto dto = MissionDto.of(missionEntity);
         if(missionDao.selectConnMission(missionEntity, userEntity)!=null) {
-            dto.setJoinCheck(true);
+            dto.setJoinCheck(true); // 사용자가 해당 임무에 참여한 경우
         }
         if(missionDao.selectLikeMission(missionEntity, userEntity) != null) {
-            dto.setLikeCheck(true);
+            dto.setLikeCheck(true); // 사용자가 해당 임무를 좋아요한 경우
         }
         dto.setRepImageURL(getRepMissionImageURL(missionId, request));
         dto.setImageURL(getMissionImageURL(missionId, request));
@@ -102,12 +102,14 @@ public class MissionServiceImpl implements MissionService {
     }
 
     @Override
-    public void saveMission(MissionDto missionDto, Long userId) {
+    public void insertMission(MissionDto missionDto, Long userId) {
         Mission mission = new Mission();
 //        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
         mission.setRegtime(LocalDateTime.now());
         mission.setTitle(missionDto.getTitle());
+        mission.setStartDate(missionDto.getStartDate());
+        mission.setEndDate(missionDto.getEndDate());
         mission.setContent(missionDto.getContent());
         mission.setStartDate(LocalDate.parse(missionDto.getStartDate(), DateTimeFormatter.ISO_DATE));
         mission.setEndDate(LocalDate.parse(missionDto.getEndDate(), DateTimeFormatter.ISO_DATE));
@@ -126,24 +128,33 @@ public class MissionServiceImpl implements MissionService {
         Conn_Mission connMission = new Conn_Mission();
         User userEntity = userDao.selectUserById(userId);
         connMission.setState("BEFORE");
-        connMission.setRole(0);
+        connMission.setRole(1);
         connMission.setSuccessRate(0);
         connMission.setMission(mission);
         connMission.setUser(userEntity);
         missionDao.insertConnMission(connMission);
     }
 
-    public void joinMission(Long userId, Long missionId){
+    public int joinMission(Long userId, Long missionId){
         Conn_Mission connMission = new Conn_Mission();
         Mission mission = missionDao.selectMissionById(missionId);
         User userEntity = userDao.selectUserById(userId);
-        connMission.setState("BEFORE");
-        connMission.setRole(2);
-        connMission.setSuccessRate(0);
-        connMission.setMission(mission);
-        connMission.setUser(userEntity);
-        missionDao.insertConnMission(connMission);
 
+        if(mission.getStartDate().isAfter(LocalDate.now())) {
+            connMission.setState("BEFORE");
+            connMission.setRole(2);
+            connMission.setSuccessRate(0);
+            connMission.setMission(mission);
+            connMission.setUser(userEntity);
+            missionDao.insertConnMission(connMission);
+
+            mission.setNowPerson(mission.getNowPerson() + 1);
+
+            return 1; // 임무가 시작되기 전이며 성공적으로 임무 참여가 완료된 경우
+        }
+        else {
+            return 2; // 임무가 시작되었거나 임무 참여가 실패한 경우
+        }
     }
 
     @Transactional(readOnly = true)
@@ -170,33 +181,38 @@ public class MissionServiceImpl implements MissionService {
 
     @Transactional
     public int deleteMission(Long missionId, Long userId){
-        Conn_Mission connMission = new Conn_Mission();
         User userEntity = userDao.selectUserById(userId);
         Mission missionEntity = missionDao.selectMissionById(missionId);
-
-        if(missionDao.selectConnMission(missionEntity, userEntity)!=null) {
+        
+        Conn_Mission connMission = missionDao.selectConnMission(missionEntity, userEntity);
+        
+        if((connMission != null) && (connMission.getRole() == 1)) {
             missionDao.deleteConnMission(missionEntity);
             missionDao.deleteLikeMission(missionEntity);
             missionDao.deleteMissionById(missionId);
 
-            return 1;
+            return 1; // 해당 임무를 등록한 사용자이며 임무 삭제가 완료된 경우
         }
-        else return 2;
+        else {
+            return 2; // 해당 임무를 등록한 사용자가 아니거나 임무 삭제가 실패한 경우
+        }
 
     }
 
     @Override
-    public MissionDto changeMission(MissionDto missionDto, Long userId) throws Exception{
+    public MissionDto updateMission(MissionDto missionDto, Long userId) throws Exception{
         Mission missionEntity = missionDao.selectMissionById(missionDto.getMissionId());
         User userEntity = userDao.selectUserById(userId);
 
-        if(missionDao.selectConnMission(missionEntity, userEntity)!=null) {
+        Conn_Mission connMission = missionDao.selectConnMission(missionEntity, userEntity);
+
+        if((connMission != null) && (connMission.getRole() == 1)) {
             Mission mission = missionDao.updateMission(missionDto);
             MissionDto dto = MissionDto.of(mission);
-            return dto;
+            return dto; // 해당 임무를 등록한 사용자이며 임무 변경이 완료된 경우
         }
         else {
-            throw new Exception();
+            throw new Exception(); // 임무 변경이 실패한 경우
         }
 
     }
