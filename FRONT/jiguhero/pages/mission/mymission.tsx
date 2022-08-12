@@ -155,21 +155,26 @@ const CertifyBtn = styled('button')`
     cursor: pointer;
   }
 `
+const TextPositionWrapper = styled('div')`
+  justify-content: center;
+  align-items: center;
+`
 const AchieveWrapper = styled('div')`
   display:flex;
   justify-content: left;
+  max-width: 500px;
 `
 const ProgressWrapper = styled('div')`
   display: flex;
   justify-content: center;
   align-items: center;
   margin: 10px 0;
+  
 `
 const CertifyWrapper = styled('div')`
   display:flex;
   justify-content: space-between;
   margin: 10px 0 0 0;
-
 `
 const CertifyGoBtn = styled(ButtonFull)`
   padding: 3px 10px;
@@ -190,12 +195,15 @@ const Text2 = styled('a')`
 const Text2Wrapper = styled('div')`
   display: flex;
   justify-content: right;
+  
   margin: 0 15px 15px 15px;
 `
 
 //진행률바 라이브러리 이용
 const Progress = styled(ProgressBar)`
+  max-width: 350px;
   width: 90%;
+  
 `
 
 const CertifyFeed = styled('div')`
@@ -226,6 +234,8 @@ const NoHeroText2 = styled('a')`
   font-size: medium;
   font-weight: bold;
 `
+
+
 // interface MissionProps {
 //   entryPoint: number;
 //   title: string;
@@ -454,13 +464,14 @@ export default function MyMissionFeed() {
 
       <Div></Div>
       {/* 참여중인 미션 보여줌! */}
+
+
       <ListWrapper>
         <NowMission />
       </ListWrapper>
 
       {/* 달성률 인증샷 탭 */}
       <ButtonGroup />
-
 
     </>
   )
