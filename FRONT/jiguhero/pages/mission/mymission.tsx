@@ -155,14 +155,10 @@ const CertifyBtn = styled('button')`
     cursor: pointer;
   }
 `
-const TextPositionWrapper = styled('div')`
-  justify-content: center;
-  align-items: center;
-`
 const AchieveWrapper = styled('div')`
   display:flex;
   justify-content: center;
-  max-width: 500px;
+  /* max-width: 500px; */
 `
 const ProgressWrapper = styled('div')`
   display: flex;
@@ -190,12 +186,13 @@ const Text = styled('a')`
 `
 const Text2 = styled('a')`
   font-size: 13px;
+  margin-left: 4rem;
+  margin-right:1rem;
 `
 
 const Text2Wrapper = styled('div')`
   display: flex;
   justify-content: center;
-  
   margin: 0 15px 15px 15px;
 `
 
@@ -390,15 +387,13 @@ function Achievement() {
       {/* 달성률 바 */}
       <AchieveWrapper>
         <Text>달성률</Text>
+        <Text2>~일만 더 인증하면 성공이에요!</Text2>
       </AchieveWrapper>
 
       <ProgressWrapper>
         <Progress completed={60} bgColor={'#65ACE2'} />
       </ProgressWrapper>
-
-      <Text2Wrapper>
-        <Text2>~일만 더 인증하면 성공이에요!</Text2>
-      </Text2Wrapper>
+>
 
       {/* 내 인증샷 모아보기 */}
 
