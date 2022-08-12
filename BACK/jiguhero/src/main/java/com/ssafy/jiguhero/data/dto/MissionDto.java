@@ -2,10 +2,7 @@ package com.ssafy.jiguhero.data.dto;
 
 import com.ssafy.jiguhero.data.entity.Mission;
 import com.ssafy.jiguhero.util.ModelMapperUtils;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -16,6 +13,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class MissionDto {
 
     private long missionId;
@@ -44,6 +42,5 @@ public class MissionDto {
 
         return missionDto;
     }
-
 
 }
