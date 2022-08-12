@@ -1,6 +1,6 @@
 import BackTitle from 'components/back';
 import styled from 'styled-components';
-import getAllGround from 'pages/api/ground/getAllGround';
+import getMyGround from 'pages/api/ground/getMyGround';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
@@ -41,6 +41,9 @@ const GroundPlaceLength = styled('p')`
 `
 const GroundTop = styled('div')`
 margin-left:35px;
+@media only screen and (max-width: 650px) {
+    margin-top:20px;
+  }
 `
 const Input = styled('input')`
 border-radius:10px;
@@ -121,11 +124,12 @@ export default function GroundList(){
     const [searchItem, setSearchItem] = useState('');
     const [groundList, setGroundList] = useState([])
     useEffect(()=>{
-        getAllGround().then((res) => setGroundList(res))
+        getMyGround(Number(1)).then((res) => setGroundList(res))
     }, [])
+    console.log(groundList)
     function Search(keyword){
         if(keyword === ''){
-            getAllGround().then(
+            getMyGround(1).then(
                 (res) => setGroundList(res)
             )
         }else{
@@ -158,7 +162,7 @@ export default function GroundList(){
             })
             setGroundList(res)
         }else if(key==="0"){
-            getAllGround().then(
+            getMyGround(1).then(
                 (res) => setGroundList(res)
             )
         }
@@ -181,7 +185,7 @@ export default function GroundList(){
                     <option value="3">조회순</option>
                 </SelectBox>
                 <Topbutton>
-                    <ButtonFull dColor='#65ace2' hColor='#98c064' style={{marginRight:'10px', fontSize:'13px'}}>활동구역 생성</ButtonFull>
+                    <ButtonFull dColor='#65ace2' hColor='#98c064' style={{marginRight:'10px', fontSize:'13px'}} onClick={() => {router.push(`makeground`)}}>활동구역 생성</ButtonFull>
                 </Topbutton>
             </ButtonSelect>
             </GroundTop>
@@ -192,7 +196,7 @@ export default function GroundList(){
                     <p style={{fontSize:'15px'}}>다른 키워드를 검색해볼까요?</p>
                 </NoGround>: 
                 <Grid>
-                {groundList?.map((item)=>(<GroundItem key={item.groundId} onClick={() => {router.push(`ground/${item.groundId}`)}}>
+                {groundList?.map((item)=>(<GroundItem key={item.groundId} onClick={() => {router.push(`\${item.groundId}`)}}>
                 <GroundIcon>{item.icon}</GroundIcon>
                 <GroundTitle>{item.title}</GroundTitle>
                 {item.placeIdList ? <GroundPlaceLength>{item.placeIdList.length}개의 장소</GroundPlaceLength> : <GroundPlaceLength>0개의 장소</GroundPlaceLength>}

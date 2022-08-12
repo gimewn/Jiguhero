@@ -101,7 +101,7 @@ const SelectBox = styled('select')`
     text-overflow: ellipsis;
   }
 `
-const H2 = styled('h2')`
+export const H2 = styled('h2')`
   @media only screen and (max-width: 650px) {
     display:none;
   }
@@ -197,7 +197,7 @@ export default function GroundList(){
             <H2>🦸🏻 대원들의 활동구역</H2>
             <p style={{fontSize:'15px'}}>테마별로 모아둔 활동구역을 탐색해 보세요 🔍</p>
             <div style={{display:'flex', alignContent:'center'}}>
-            <Input placeholder='활동구역 검색하기' value={searchItem} onChange={(e) => {setSearchItem(e.target.value)}} onClick={()=>{Search('')}} />
+            <Input placeholder='활동구역 검색하기' value={searchItem} onChange={(e) => {setSearchItem(e.target.value)}} />
             <SearchIcon onClick={()=>{Search(searchItem)}} />
             </div>
             <ButtonSelect>
@@ -207,8 +207,8 @@ export default function GroundList(){
                     <option value="3">조회순</option>
                 </SelectBox>
                 <Topbutton>
-                    <ButtonFull dColor='#65ace2' hColor='#98c064' style={{marginRight:'10px', fontSize:'13px'}}>활동구역 생성</ButtonFull>
-                    <ButtonFull dColor='#98c064' hColor='#65ace2' style={{fontSize:'13px'}}>나의 활동구역</ButtonFull>
+                    <ButtonFull dColor='#65ace2' hColor='#98c064' style={{marginRight:'10px', fontSize:'13px'}} onClick={() => {router.push(`ground/makeground`)}}>활동구역 생성</ButtonFull>
+                    <ButtonFull dColor='#98c064' hColor='#65ace2' style={{fontSize:'13px'}} onClick={() => {router.push(`ground/myground`)}}>나의 활동구역</ButtonFull>
                 </Topbutton>
             </ButtonSelect>
             </GroundTop>

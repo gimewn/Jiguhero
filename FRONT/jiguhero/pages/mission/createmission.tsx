@@ -315,7 +315,7 @@ export default function Createmission() {
       <Backcomponents name='임무 생성하기'></Backcomponents>
 
 
-      <MissioWrapper>
+      <MissioWrapper style={{marginTop:'30px'}}>
         {/* 미션사진추가 */}
         <Block>
           <Content>
