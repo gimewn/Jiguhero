@@ -160,7 +160,7 @@ export default function GroundList(){
     }
 
     return(
-        <div>
+        <div style={{maxWidth:'700px', padding:'0 20px', margin:'0 auto', width:'100%'}}>
             <BackTitle name={'대원들의 활동구역'}/>
             <GroundTop>
             <p style={{fontSize:'15px'}}>테마별로 모아둔 활동구역을 탐색해 보세요 🔍</p>

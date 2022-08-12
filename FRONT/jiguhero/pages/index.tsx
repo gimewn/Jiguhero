@@ -34,7 +34,7 @@ export default function Home(){
   const session = useSession()
   console.log(session)
   return (
-    <>
+    <div style={{maxWidth:'700px', padding:'0 20px', margin:'0 auto', width:'100%'}}>
     <Block>
       <TitleWithOutMargin>☘️ 내 주변 친환경 가게를 찾아보자!</TitleWithOutMargin>
       <Content>
@@ -61,6 +61,6 @@ export default function Home(){
         <News />
       </Content>
     </Block>
-    </>
+    </div>
   )
 }
