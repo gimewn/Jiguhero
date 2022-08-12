@@ -31,6 +31,7 @@ export default  function MissionLists({selector}) {
   //   setPage(value);
   // };
 
+
   return (
     <>
       {/* {Missions.slice((page - 1) * 5, page * 5).map((item, index) => (
@@ -45,6 +46,13 @@ export default  function MissionLists({selector}) {
     </>
   )
 }
+//   return (
+//     <>
+//       {MISSION?.map((item, index) => (
+//         <MissionList key={index} {...item} />))}
+//     </>
+//   )
+// }
 
 
 // export async function getServerSideProps(context) {

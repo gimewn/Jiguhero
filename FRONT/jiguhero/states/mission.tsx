@@ -13,8 +13,7 @@ export const nowjoinlist = atom({
   default: 1
 })
 
-
-export const missionTitle = atom({
-  key: "title",
-  default: ""
+export const tabpage = atom({
+  key: "tabpage",
+  default: true
 })

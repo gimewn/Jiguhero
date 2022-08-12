@@ -31,3 +31,10 @@ export const ButtonBorder = styled('button') <{ dColor: string }>`
         cursor: pointer;
     }
 `
+
+export const ParentsDiv = styled('div')`
+    max-width:700px;
+    padding: 0 20px;
+    margin: 0 auto;
+    width:100%;
+`

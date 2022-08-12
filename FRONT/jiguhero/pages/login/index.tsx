@@ -6,23 +6,19 @@ import Head from "node_modules/next/head";
 import styled from "styled-components";
 import Router, { useRouter } from "next/router";
 import React, { useEffect } from "react";
-import { getSession, signIn, signOut, useSession } from "next-auth/react";
 import { NextPageContext } from "node_modules/next/dist/shared/lib/utils";
 import loginAccess from "pages/api/login";
 import { NextPage } from "next";
 
 
 export default function Login() {
-  const { data: session, status } = useSession();
-  const loading = status === "loading";
+
+
   const router = useRouter()
   const returnUrl = router.query.returnUrl
 
   return (
     <>
-    {session?.accessToken&&(
-      <p>{session.user.email}</p>
-    )}
       <LoginWrapper>
         <Head>
           {/* header 추가 */}
@@ -34,64 +30,46 @@ export default function Login() {
 
           {/* 카카오 로그인*/}
           <SnsLoginKakao>
-            {!session && (
+            
               <ul>
                 <li>
                   <a
-                    onClick={(e) => {
-                      // e.preventDefault();
-                      // loginAccess()
-                      router.push(`http://i7c105.p.ssafy.io:8080/oauth2/authorize/kakao?redirect_uri=http://localhost:3000`)
-                      signIn("kakao", {
-                        redirect:true,
-                        callbackUrl: `/`
-                      });
-                    }}
+                    href="http://i7c105.p.ssafy.io:8080/oauth2/authorize/kakao?redirect_uri=http://localhost:3000"
                   >
                     <Image src={KakaoImg} alt="Kakao" />
                   </a>
                 </li>
               </ul>
-            )}
+            
           </SnsLoginKakao>
 
           {/* 구글 로그인*/}
           <SnsLoginGoogle>
-            {!session && (
+           
               <ul>
                 <li>
                   <a
-                    onClick={(e) => {
-                      e.preventDefault();
-                      
-                
-                      
-              
-                    }}
+                    href="http://i7c105.p.ssafy.io:8080/oauth2/authorize/google?redirect_uri=http://localhost:3000"
                   >
                     <Image src={GoogleImg} alt="Google" />
                   </a>
                 </li>
               </ul>
-            )}
+            
           </SnsLoginGoogle>
 
           <SnsLoginNaver>
-            {!session && (
+          
               <a
-                className="btn btn-block social-btn kakao"
-                href={`${process.env.NAVER_AUTH_URL}`}
+              href="http://i7c105.p.ssafy.io:8080/oauth2/authorize/naver?redirect_uri=http://localhost:3000"
               >
                 <Image src={NaverImg} alt="Naver" />
               </a>
-            )}
+            
           </SnsLoginNaver>
-          {session && <button onClick={() => {
-            signOut({
-              redirect: true,
-              callbackUrl: `http://localhost:3000/`
-            })
-          }}>Logout</button>}
+           <button onClick={() => {
+            
+          }}>Logout</button>
         </main>
       </LoginWrapper>
     </>
@@ -136,12 +114,10 @@ const SnsLoginNaver = styled("div")`
   width: 20rem;
 `;
 
-export async function getServerSideProps(context: NextPageContext) {
-  const session = await getSession(context)
+// export async function getServerSideProps(context: NextPageContext) {
+  
 
-  return {
-    props: {
-      data: 1,
-    },
-  };
-}
+//   return {
+    
+//   };
+// }

@@ -7,7 +7,6 @@ import styled from "styled-components";
 import logo from "public/logo.png";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { SessionProvider } from "next-auth/react";
 import {
   QueryClient,
   QueryClientProvider,
@@ -33,6 +32,7 @@ const Header = styled("div")`
   justify-content: space-between;
   padding:20px;
   position:fixed;
+  top:0;
   left:0;
   right:0;
   z-index:999;
@@ -49,13 +49,13 @@ const Body = styled("div")`
 const Container = styled("div")`
   display: flex;
   position:absolute;
-  top:80px;
+  /* top:80px; */
   justify-content: center;
   flex-direction: column;
-  min-width: 375px;
-  /* max-width:700px; */
+  width:inherit;
+  /* padding:0 20px;
+  max-width: 700px; */
   span, p {
-
     align-items: flex-start;
   }
   div {
@@ -63,6 +63,7 @@ const Container = styled("div")`
   }
   @media only screen and (max-width: 650px) {
     margin-bottom:80px;
+    margin-top: 20px;
   }
 `
 
@@ -120,13 +121,11 @@ function MyApp({ Component, pageProps }: AppProps) {
         <Container>
           <QueryClientProvider client={queryClient}>
             <Hydrate state={pageProps?.dehydratedState} >
-              <SessionProvider session={pageProps?.session}>
                 <Script
                   src={`//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAOMAP_APPKEY}&libraries=services,clusterer&autoload=false`}
                   strategy="beforeInteractive"
                 />
                 <Component {...pageProps} />
-              </SessionProvider>
             </Hydrate>
           </QueryClientProvider>
         </Container>

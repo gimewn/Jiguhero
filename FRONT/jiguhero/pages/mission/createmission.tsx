@@ -28,13 +28,14 @@ import getSido from "pages/api/ecomarket/getSido";
 import getGugun from "pages/api/ecomarket/getGugun";
 import getDong from "pages/api/ecomarket/getDong";
 import PostNewMission from "pages/api/mission/postNewMission";
-import { RecoilState, useRecoilState } from "recoil";
-import { missionTitle } from "states/mission";
 
 const MissioWrapper = styled("div")`
   display: flex;
-  flex-direction: column;
-  margin-top: 3rem;
+  justify-content: space-between;
+  align-items: center;
+  @media only screen and (min-width: 650px) {
+    display: none;
+  }
 `;
 
 const Block = styled("div")`
@@ -192,8 +193,6 @@ const SubmitBtn = styled(ButtonFull)`
   width: 300px;
 `;
 
-
-
 export default function Createmission() {
   // 지울거
 
@@ -206,15 +205,12 @@ export default function Createmission() {
   const [title, setTitle] = useState(""); // 임무명
   const [startDate, setStartDate] = useState(new Date()); // 시작일
   const [endDate, setEndDate] = useState(new Date()); // 종료일
-  const [astartDate, setAstartDate] = useState(["",""]); // 시작일 배열 [요일, 월, 일, 년]
-  const [aendDate, setAendDate] = useState(["",""]); // 종료일 배열 [요일, 월, 일, 년]
+  const [astartDate, setAstartDate] = useState(["", ""]); // 시작일 배열 [요일, 월, 일, 년]
+  const [aendDate, setAendDate] = useState(["", ""]); // 종료일 배열 [요일, 월, 일, 년]
   const [point, setPoint] = useState<Number>();
   const [people, setPeople] = useState<Number>();
   const [content, setContent] = useState(""); //내용
   const router = useRouter();
-  const [show, setShow] = useState(false);
-  const [choiceP, setChoiceP] = useState([]);
-  const [data, setData] = useState([]);
   const { data: sido } = useQuery(["sido"], getSido);
   const [ChoiceSido, setChoiceSido] = useState(["00", ""]);
   const { data: gugun } = useQuery(
@@ -295,10 +291,6 @@ export default function Createmission() {
 
   // 임무명
   function MissionName() {
-    
-    // const onChange = (e) => {
-    //   setTitle(e.target.value);
-    // };
     return (
       <div>
         <Text>임무명</Text>
@@ -321,7 +313,6 @@ export default function Createmission() {
           <DateInput
             selected={startDate}
             onChange={(date) => {
-              
               console.log(date.toISOString());
               setStartDate(date);
               setAstartDate(startDate.toISOString().split("T"));
@@ -470,7 +461,6 @@ export default function Createmission() {
 
   //임무내용
   function TextArea() {
-    
     const onChange = (event) => {
       setContent(event.target.value);
       console.log(event.target.value);
@@ -535,7 +525,6 @@ export default function Createmission() {
             <Point />
           </Content>
         </Block>
-        
 
         {/* 정원 */}
         <Block>
@@ -556,7 +545,6 @@ export default function Createmission() {
               variant="contained"
               type="submit"
               onClick={async () => {
-                
                 await PostNewMission(postdata);
                 await PostMissionImg(createImg);
                 router.push("/");
@@ -571,12 +559,13 @@ export default function Createmission() {
   );
 }
 
-export async function getServerSideProps(context) {
+export async function getServerSideProps() {
+
   const createmission = new QueryClient();
 
-  // await createmission.prefetchQuery(["mission"], () => {
-  
-  // });
+  await createmission.prefetchQuery(["mission"], () => {
+
+  });
 
   return {
     props: {
