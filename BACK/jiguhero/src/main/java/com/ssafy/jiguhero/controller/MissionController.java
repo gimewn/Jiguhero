@@ -59,13 +59,13 @@ public class MissionController {
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
-    @ApiOperation(value = "새로운 임무를 등록한다.", response = String.class) // missionServiceImpl 확인!!! Conn_Mission도 추가해야함(임무 작성한 대원 저장 등)
+    @ApiOperation(value = "새로운 임무를 등록한다.", response = Long.class) // missionServiceImpl 확인!!! Conn_Mission도 추가해야함(임무 작성한 대원 저장 등)
     @PostMapping
-    public ResponseEntity<String> saveMission(@RequestBody MissionDto missionDto, @RequestParam("userId") Long userId) {
+    public ResponseEntity<Long> saveMission(@RequestBody MissionDto missionDto, @RequestParam("userId") Long userId) {
 
-        missionService.insertMission(missionDto, userId);
+        Long savedMissionId = missionService.insertMission(missionDto, userId);
 
-        return new ResponseEntity<String>("success", HttpStatus.OK);
+        return new ResponseEntity<Long>(savedMissionId, HttpStatus.OK);
         // missionServiceImpl 확인!!! Conn_Mission도 추가해야함(임무 작성한 대원 저장 등)
     }
 

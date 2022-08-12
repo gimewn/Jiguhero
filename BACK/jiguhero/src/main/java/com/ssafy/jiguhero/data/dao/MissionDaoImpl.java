@@ -67,8 +67,10 @@ public class MissionDaoImpl implements MissionDao {
     }
 
     @Override
-    public void insertMission(Mission mission){
-        missionRepository.save(mission);
+    public Mission insertMission(Mission mission){
+        Mission savedMission = missionRepository.save(mission);
+
+        return savedMission;
     }
 
     @Override
