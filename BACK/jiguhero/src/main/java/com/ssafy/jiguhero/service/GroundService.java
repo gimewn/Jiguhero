@@ -30,4 +30,6 @@ public interface GroundService {
     boolean likeGround(Long groundId, Long userId);
 
     boolean getLikeGround(Long groundId, Long userId);
+
+    void modifyGround(GroundDto groundDto, Long userId, Long groundId);
 }

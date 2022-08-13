@@ -71,6 +71,13 @@ public class GroundController {
         return new ResponseEntity<String>("success", HttpStatus.OK);
     }
 
+    @ApiOperation(value = "홛동구역을 수정한다.", response = String.class)
+    @PutMapping("/")
+    public ResponseEntity<String> modifyGround(@RequestBody GroundDto groundDto, @RequestParam("user_id") Long userId, @RequestParam("ground_id") Long groundId){
+        groundService.modifyGround(groundDto, userId, groundId);
+        return new ResponseEntity<String>("success", HttpStatus.OK);
+    }
+
     @ApiOperation(value = "활동구역에 장소를 추가한다.", response = String.class)
     @PostMapping("/place")
     public ResponseEntity<String> addGround(@RequestParam("place_id") String placeId, @RequestParam("ground_id") Long groundId, @RequestParam("user_id") Long userId){

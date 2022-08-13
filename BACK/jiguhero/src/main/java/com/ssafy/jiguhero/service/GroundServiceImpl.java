@@ -10,8 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.swing.text.html.Option;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -95,13 +97,6 @@ public class GroundServiceImpl implements GroundService {
 
         groundDao.insertGround(groundEntity);
 
-        for(String placeId : groundDto.getPlaceIdList()){
-            Place placeEntity = placeDao.selectPlaceById(placeId);
-            Conn_Ground connGroundEntity = new Conn_Ground();
-            connGroundEntity.setGround(groundEntity);
-            connGroundEntity.setPlace(placeEntity);
-            groundDao.insertConnGround(connGroundEntity);
-        }
     }
 
     @Override
@@ -214,6 +209,22 @@ public class GroundServiceImpl implements GroundService {
         } else {
             return true;
         }
+    }
+
+    @Override
+    @Transactional
+    public void modifyGround(GroundDto groundDto, Long userId, Long groundId) {
+        Optional<Ground> groundEntity = groundDao.findById(groundId);
+
+        if(groundEntity.isPresent()){
+            Ground updateGround = groundEntity.get();
+            updateGround.setTitle(groundDto.getTitle());
+            updateGround.setContent(groundDto.getContent());
+            updateGround.setIcon(groundDto.getIcon());
+
+            groundDao.modifyGround(updateGround);
+        }
+
     }
 
     public void deleteLikeGround(Ground groundEntity, User userEntity){
