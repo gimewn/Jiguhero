@@ -152,9 +152,7 @@ public class MissionDaoImpl implements MissionDao {
         if(selectedMission.isPresent()) {
             Mission mission = selectedMission.get();
             mission.setTitle(missionDto.getTitle());
-            mission.setStartDate(LocalDate.parse(missionDto.getStartDate(), DateTimeFormatter.ISO_DATE));
-            mission.setEndDate(LocalDate.parse(missionDto.getEndDate(), DateTimeFormatter.ISO_DATE));
-            mission.setEntryPoint(missionDto.getEntryPoint());
+            mission.setContent(missionDto.getContent());
             mission.setSidoCode(missionDto.getSidoCode());
             mission.setGugunCode(missionDto.getGugunCode());
             mission.setDongCode(missionDto.getDongCode());
