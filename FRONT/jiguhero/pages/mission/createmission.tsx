@@ -18,7 +18,7 @@ import moment from "moment"
 const MissioWrapper = styled('div')`
   display:flex;
   flex-direction: column;
-  margin-top: 10px;
+  margin-top: 30px;
 `
 
 
@@ -151,6 +151,11 @@ const SubmitBtn = styled(ButtonFull)`
 `
 const BottomDiv = styled('div')`
   margin-bottom: 80px;
+`
+const H2 = styled('h2')`
+  @media only screen and (max-width: 650px) {
+    display:none;
+  }
 `
 //임무명
 function MissionName() {
@@ -316,6 +321,7 @@ export default function Createmission() {
 
 
       <MissioWrapper>
+        <H2>🦸🏻 대원들의 임무 생성하기</H2>
         {/* 미션사진추가 */}
         <Block>
           <Content>

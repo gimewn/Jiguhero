@@ -10,6 +10,7 @@ import { getSession, SessionProvider, useSession } from "next-auth/react";
 import PropTypes from 'prop-types';
 
 
+
 const PagI = styled(Pagination)`
   display: flex;
   justify-content: center;

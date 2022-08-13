@@ -313,6 +313,7 @@ function Back({ name }: PageName) {
 function MissionUnAuthModal() {
     return (
         <Div>
+            {/* 클릭 시 링크 복사하는 기능 추가 */}
             <LinkBtn>링크 복사하기</LinkBtn>
         </Div>
     )
@@ -322,7 +323,9 @@ function MissionUnAuthModal() {
 function MissionAuthModal() {
     return (
         <Div>
+            {/* 클릭 시 임무 수정 페이지로 이동하는 기능 추가 */}
             <ModifyBtn>임무 내용 수정하기</ModifyBtn>
+            {/* 클릭 시 임무 삭제하는 기능 추가 */}
             <DeleteBtn>임무 삭제하기</DeleteBtn>
         </Div>
     )
@@ -466,11 +469,7 @@ export default function MissionDetail() {
                     <Block>
                         <Content>
                             <MissionExplanation>
-                                안녕하세요 임시입니다
-                                <br />
-                                여기에 api 추가되면 넣어야 해요!
-                                <br></br>
-                                프로젝트 화이티이이잉!
+                                {MissionDetail?.content}
                             </MissionExplanation>
                         </Content>
                     </Block>

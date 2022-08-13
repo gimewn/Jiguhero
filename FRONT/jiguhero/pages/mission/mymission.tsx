@@ -190,11 +190,7 @@ const Text2 = styled('a')`
   margin-right:1rem;
 `
 
-const Text2Wrapper = styled('div')`
-  display: flex;
-  justify-content: center;
-  margin: 0 15px 15px 15px;
-`
+
 
 //진행률바 라이브러리 이용
 const Progress = styled(ProgressBar)`
@@ -356,7 +352,9 @@ const itemData = [
     title: 'Bike',
   },
 ];
+function MyMobileView() {
 
+}
 //나의 인증샷 (mui 사용함!)
 function MyCertificationLists() {
   return (

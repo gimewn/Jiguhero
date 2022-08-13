@@ -19,31 +19,12 @@ const Content = styled('div')`
   flex-direction: row;
   align-items: center;
   justify-content: center;
-    /* @media screen and (min-width: 360px){
-        width:400px;
-    }
-    @media screen and (min-width: 550px){
-        width:500px;
-    }
-    @media screen and (min-width:700px){
-        width:620px;
-    } */
 `
 const ButtonContent = styled('div')`
   display:flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  /* margin-top: 1.8rem; */
-      /* @media screen and (min-width: 360px){
-        width:400px;
-    }
-    @media screen and (min-width: 550px){
-        width:500px;
-    }
-    @media screen and (min-width:700px){
-        width:620px;
-    } */
 
 `
 const BoxSelect = styled('select')`
@@ -75,40 +56,26 @@ const ListContent = styled('div')`
   align-items: center;
   justify-content: center;
   margin-bottom:10px;
-    /* @media screen and (min-width: 360px){
-        width:400px;
-    }
-    @media screen and (min-width: 550px){
-        width:500px;
-    }
-    @media screen and (min-width:700px){
-        width:620px;
-    } */
+
 `
 
 const MissionBlock = styled('div')`
-    /* display: flex;
-    justify-content: center;
-    align-items: center;
-    width:100%; */
 `
 
-// const ContentsWrapper = styled('div')`
-//     /* margin-top: 10px;
-//     display: flex;
-//     flex-direction: column;
-//     justify-content: center;
-//     align-items: center; */
-// `
-// const HiWrapper = styled('div')`
-//     /* display: flex;
-//     justify-content: center;
-//     align-items: center; */
-//     width:100vw;
-// `
-// const BottomDiv = styled('div')`
-//   margin-bottom: 80px;
-// `
+const H2 = styled('h2')`
+  @media only screen and (max-width: 650px) {
+    display:none;
+  }
+`
+
+const MissionTop = styled('div')`
+margin-left:35px;
+@media only screen and (max-width: 650px) {
+    margin-top:20px;
+  }
+`
+
+
 //select Box --- 최신등록 순 이름 순 
 const OPTIONS = [
     { value: "latest", name: "최신 등록순" },
@@ -182,7 +149,9 @@ export default function Mission() {
             </Head>
             {/* 모바일 뷰에서 뒤로가기 버튼! */}
             <Backcomponents name='대원들의 임무'></Backcomponents>
-
+            <MissionTop>
+                <H2>🦸🏻 대원들의 임무</H2>
+            </MissionTop>
             <Block style={{ marginBottom: '10px', marginTop: '20px' }}>
                 <ButtonContent>
                     <ButtonBox />

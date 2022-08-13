@@ -18,7 +18,7 @@ const List = styled('div')`
   }
 
   @media screen and (min-width: 360px){
-      width:350px;
+      width:320px;
 
   }
   @media screen and (min-width:450px){
@@ -74,7 +74,7 @@ const PointBtn = styled('div')`
   color: white;
   font-size: x-small;
   margin-left:auto;
-  margin-right:15px;
+  margin-right:8px;
 `
 
 interface MissionProps {
@@ -112,7 +112,7 @@ export default function JoinList({ missionId, entryPoint, title, startDate, endD
               <Name>{sidoCode}</Name>
             </TextWrapper>
             <TextWrapper>
-              <Date>{startDate[0]}.{startDate[1]}.{startDate[2]}~{endDate[0]}.{endDate[1]}.{endDate[2]}</Date>
+              <Date>{startDate}~{endDate}</Date>
             </TextWrapper>
             <TextWrapper>
               <JoinPeople>{nowPerson} / {maxPerson}명</JoinPeople>

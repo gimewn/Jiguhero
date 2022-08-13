@@ -72,7 +72,7 @@ const PointBtn = styled('div')`
   color: white;
   font-size: x-small;
   margin-left:auto;
-  margin-right:15px;
+  margin-right:8px;
 `
 
 interface MissionProps {
