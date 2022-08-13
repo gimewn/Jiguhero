@@ -21,5 +21,4 @@ public interface ConnMissionRepository extends JpaRepository<Conn_Mission, Long>
     void deleteAllByMission(Mission mission);
 
     List<Conn_Mission> findAllByMission(Mission mission);
-
 }

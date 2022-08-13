@@ -95,8 +95,13 @@ public class MissionDaoImpl implements MissionDao {
     @Override
     public Optional<Like_Mission> selectLikeMission(Mission mission, User user){
         Optional<Like_Mission> likeMission = likeMissionRepository.findByMissionAndUser(mission, user);
-        if(likeMission.isPresent()) return likeMission;
-        else return null;
+
+        if(likeMission.isPresent()) {
+            return likeMission;
+        }
+        else {
+            return null;
+        }
     }
 
     @Override
@@ -112,8 +117,13 @@ public class MissionDaoImpl implements MissionDao {
     @Override
     public Conn_Mission selectConnMission(Mission mission, User user){
         Conn_Mission connMission = connMissionRepository.findByMissionAndUser(mission, user);
-        if(connMission!=null) return connMission;
-        else return null;
+
+        if(connMission!=null) {
+            return connMission;
+        }
+        else {
+            return null;
+        }
     }
 
     @Override
@@ -135,7 +145,7 @@ public class MissionDaoImpl implements MissionDao {
     public Mission updateMission(MissionDto missionDto) throws Exception{
         Optional<Mission> selectedMission = missionRepository.findById(missionDto.getMissionId());
         Mission updatedMission;
-//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+//      DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
         if(selectedMission.isPresent()) {
             Mission mission = selectedMission.get();
@@ -156,62 +166,6 @@ public class MissionDaoImpl implements MissionDao {
         return updatedMission;
     }
 
-/*
-    @Override
-    public Feed selectFeedById(Long feedId){
-        Feed selectedFeed = feedRepository.findByFeedId(feedId);
-
-        return selectedFeed;
-    }
-
-    @Override
-    public Like_Feed selectLikeFeedByUser(Feed feed, User user){
-        Like_Feed selectedFeed = likeFeedRepository.findByFeedAndUser(feed, user);
-
-        return selectedFeed;
-    }
-
-    @Override
-    public int countByFeed(Feed feed){
-        int cnt = likeFeedRepository.countAllByFeed(feed);
-
-        return cnt;
-    }
-
-    @Override
-    public void insertFeed(Feed feed){
-        feedRepository.save(feed);
-
-    }
-
-    @Override
-    public Optional<Feed> selectFeed(Long feedId, User user){
-        Optional<Feed> result = null;
-        result = feedRepository.findByFeedIdAndUserAndRegtime(feedId, user, LocalDate.now());
-        if(result.isPresent()) return result;
-        else return null;
-    }
-
-    @Override
-    public Feed updateFeed(FeedDto feedDto) throws Exception{
-        Optional<Feed> selectedFeed = feedRepository.findById(feedDto.getFeedId());
-        Feed updatedFeed;
-
-        if(selectedFeed.isPresent()) {
-            Feed feed = selectedFeed.get();
-            feed.setContent(feedDto.getContent());
-
-            updatedFeed = feedRepository.save(feed);
-        }
-        else {
-            throw new Exception();
-        }
-
-        return updatedFeed;
-    }
-
- */
-
     @Override
     public List<Mission> searchMission(String search,String array){
         List<Mission> selectedAllMissions = null;
@@ -224,19 +178,9 @@ public class MissionDaoImpl implements MissionDao {
         else {
             selectedAllMissions = missionRepository.findAllByTitleContainingOrderByRegtimeDesc(search);
         }
+
         return selectedAllMissions;
     }
-
-    /*
-    @Override
-    public Optional<Feed> searchFeed(User user){
-        Optional<Feed> result = null;
-        result = feedRepository.findByUserAndRegtime(user, LocalDate.now());
-        if(result.isPresent()) return result;
-        else return null;
-    }
-
-     */
 
     @Override
     public List<Conn_Mission> selectAllConnMissionByMission(Mission mission){
@@ -247,7 +191,6 @@ public class MissionDaoImpl implements MissionDao {
 
     @Override
     public void updateConnMissionStart(Conn_Mission connMission){
-
         connMission.setState("RUN");
         Conn_Mission result = connMissionRepository.save(connMission);
 
@@ -255,7 +198,6 @@ public class MissionDaoImpl implements MissionDao {
 
     @Override
     public void updateConnMissionEnd(Conn_Mission connMission){
-
         Mission missionEntity = connMission.getMission();
 
         if(connMission.getSuccessRate()>=80) {
@@ -265,8 +207,8 @@ public class MissionDaoImpl implements MissionDao {
             connMission.setState("FAILED");
             missionEntity.setFailedPerson(missionEntity.getFailedPerson()+1);
         }
-        connMissionRepository.save(connMission);
 
+        connMissionRepository.save(connMission);
     }
 
     @Override
@@ -286,6 +228,5 @@ public class MissionDaoImpl implements MissionDao {
             connMissionRepository.save(connMission);
         }
     }
-
 }
 

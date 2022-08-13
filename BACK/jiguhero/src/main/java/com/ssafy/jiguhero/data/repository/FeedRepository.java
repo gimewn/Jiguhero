@@ -21,5 +21,4 @@ public interface FeedRepository extends JpaRepository<Feed, Long> {
     Optional<Feed> findByMissionAndUserAndRegtime(Mission mission, User user, LocalDate regtime);
 
     int countAllByMissionAndUser(Mission mission, User user);
-
 }

@@ -46,27 +46,16 @@ public interface MissionDao {
 
     Mission updateMission(MissionDto missionDto) throws Exception;
 
-    //Feed selectFeedById(Long missionId);
-
-    //Like_Feed selectLikeFeedByUser(Feed feed, User user);
-
-    //int countByFeed(Feed feed);
-
-    //void insertFeed(Feed feed);
-
-    //Optional<Feed> selectFeed(Long feedId, User user);
-
-    //Feed updateFeed(FeedDto feedDto) throws Exception;
-
     List<Mission> searchMission(String search, String array);
-
-    //Optional<Feed> searchFeed(User user);
 
     List<Conn_Mission> selectAllConnMissionByMission(Mission mission);
 
+    // 임무의 시작 여부 확인
     void updateConnMissionStart(Conn_Mission connMission);
 
+    // 임무의 종료 여부 확인
     void updateConnMissionEnd(Conn_Mission connMission);
 
+    // 종료된 임무의 미션에 성공한 유저에게 포인트 지급
     void providePoint(Conn_Mission connMission);
 }

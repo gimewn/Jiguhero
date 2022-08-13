@@ -3,7 +3,6 @@ package com.ssafy.jiguhero.service;
 import com.ssafy.jiguhero.data.dao.ImageDao;
 import com.ssafy.jiguhero.data.dao.MissionDao;
 import com.ssafy.jiguhero.data.dao.UserDao;
-import com.ssafy.jiguhero.data.dto.FeedDto;
 import com.ssafy.jiguhero.data.dto.MissionDto;
 import com.ssafy.jiguhero.data.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -168,15 +167,17 @@ public class MissionServiceImpl implements MissionService {
         User userEntity = userDao.selectUserById(userId);
         Mission missionEntity = missionDao.selectMissionById(missionId);
 
-        if(missionDao.selectLikeMission(missionEntity, userEntity) == null) {
+        if(missionDao.selectLikeMission(missionEntity, userEntity) == null) { // 임무의 좋아요 클릭 여부 체크
             likeMission.setUser(userEntity);
             likeMission.setMission(missionEntity);
             missionDao.insertLikeMission(likeMission);
-            return 1;
+
+            return 1; // 임무의 좋아요를 클릭한 경우
         }
         else {
             deleteLikeMission(missionEntity, userEntity);
-            return 2;
+
+            return 2; // 임무의 좋아요를 취소한 경우
         }
     }
 
@@ -222,46 +223,6 @@ public class MissionServiceImpl implements MissionService {
 
     }
 
-    /*
-    @Override
-    public FeedDto getFeedById(Long feedId, Long userId){
-        User userEntity = userDao.selectUserById(userId);
-        Feed feedEntity = missionDao.selectFeedById(feedId);
-        FeedDto dto = FeedDto.of(feedEntity);
-
-        int cnt = missionDao.countByFeed(feedEntity);
-        dto.setLikeCnt(cnt);
-
-        if(missionDao.selectLikeFeedByUser(feedEntity, userEntity)!=null){
-            dto.setLikeCheck(true);
-        }
-
-        return dto;
-    }
-
-     */
-
-    /*
-    @Override
-    public int saveFeed(FeedDto feedDto,Long missionId, Long userId){
-        Feed feed = new Feed();
-        Mission missionEntity = missionDao.selectMissionById(missionId);
-        User userEntity = userDao.selectUserById(userId);
-
-        if(missionDao.searchFeed(userEntity)==null) {
-            feed.setContent(feedDto.getContent());
-            feed.setRegtime(LocalDate.now());
-            feed.setUser(userEntity);
-            feed.setMission(missionEntity);
-            missionDao.insertFeed(feed);
-            return 1; // <해당 날짜, 유저>로 등록된 인증샷이 없는 경우 인증샷 등록 완료
-        }
-        else
-            return 2; // <해당 날짜, 유저>로 등록된 인증샷이 있는 경우 인증샷 등록 불가
-
-    }
-     */
-
     public String getRepMissionImageURL(Long missionId, HttpServletRequest request) {
         Image_Mission imageMission = imageDao.selectRepImageMission(missionDao.selectMissionById(missionId));
 
@@ -296,22 +257,6 @@ public class MissionServiceImpl implements MissionService {
         return urlList;
     }
 
-    /*
-    @Override
-    public FeedDto changeFeed(FeedDto feedDto, Long userId) throws Exception{
-        User userEntity = userDao.selectUserById(userId);
-
-        if(missionDao.selectFeed(feedDto.getFeedId(), userEntity)!=null) {
-            Feed feed = missionDao.updateFeed(feedDto);
-            FeedDto dto = FeedDto.of(feed);
-            return dto;
-        }
-        else {
-            throw new Exception();
-        }
-    }
-     */
-
     @Override
     public List<MissionDto> searchMission(String search, String array) {
         List<Mission> entityList = missionDao.searchMission(search, array);
@@ -321,4 +266,14 @@ public class MissionServiceImpl implements MissionService {
         return dtoList;
     }
 
+    @Override
+    public int searchSuccessRate(Long missionId, Long userId){
+        Mission missionEntity = missionDao.selectMissionById(missionId);
+        User userEntity = userDao.selectUserById(userId);
+        Conn_Mission connMissionEntity = missionDao.selectConnMission(missionEntity, userEntity);
+
+        int result = connMissionEntity.getSuccessRate();
+
+        return result;
+    }
 }
