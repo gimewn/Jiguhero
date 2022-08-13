@@ -89,4 +89,9 @@ public class UserDaoImpl implements UserDao {
     public void deleteToken(String userEmail) throws Exception {
         tokenRepository.deleteById(userEmail);
     }
+
+    @Override
+    public void updatePoint(User user) {
+        userRepository.save(user);
+    }
 }

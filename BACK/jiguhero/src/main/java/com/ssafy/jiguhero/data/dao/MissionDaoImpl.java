@@ -21,14 +21,16 @@ public class MissionDaoImpl implements MissionDao {
     private final ConnMissionRepository connMissionRepository;
     private final FeedRepository feedRepository;
     private final LikeFeedRepository likeFeedRepository;
+    private final UserRepository userRepository;
 
     @Autowired
-    public MissionDaoImpl(MissionRepository missionRepository, LikeMissionRepository likeMissionRepository, ConnMissionRepository connMissionRepository, FeedRepository feedRepository, LikeFeedRepository likeFeedRepository) {
+    public MissionDaoImpl(MissionRepository missionRepository, LikeMissionRepository likeMissionRepository, ConnMissionRepository connMissionRepository, FeedRepository feedRepository, LikeFeedRepository likeFeedRepository, UserRepository userRepository) {
         this.missionRepository = missionRepository;
         this.likeMissionRepository = likeMissionRepository;
         this.connMissionRepository = connMissionRepository;
         this.feedRepository = feedRepository;
         this.likeFeedRepository = likeFeedRepository;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -60,8 +62,22 @@ public class MissionDaoImpl implements MissionDao {
     }
 
     @Override
-    public List<Mission> selectAllMission() {
+    public List<Mission> selectAllMission(){
         List<Mission> selectedAllMissions = missionRepository.findAll();
+
+        return selectedAllMissions;
+    }
+
+    @Override
+    public List<Mission> selectAllMission(String array) {
+        List<Mission> selectedAllMissions = null;
+
+        if(array=="hits") {
+            selectedAllMissions = missionRepository.findAllByOrderByHitsDesc();
+        }
+        else {
+            selectedAllMissions = missionRepository.findAllByOrderByRegtimeDesc();
+        }
 
         return selectedAllMissions;
     }
@@ -81,8 +97,13 @@ public class MissionDaoImpl implements MissionDao {
     @Override
     public Optional<Like_Mission> selectLikeMission(Mission mission, User user){
         Optional<Like_Mission> likeMission = likeMissionRepository.findByMissionAndUser(mission, user);
-        if(likeMission.isPresent()) return likeMission;
-        else return null;
+
+        if(likeMission.isPresent()) {
+            return likeMission;
+        }
+        else {
+            return null;
+        }
     }
 
     @Override
@@ -98,8 +119,13 @@ public class MissionDaoImpl implements MissionDao {
     @Override
     public Conn_Mission selectConnMission(Mission mission, User user){
         Conn_Mission connMission = connMissionRepository.findByMissionAndUser(mission, user);
-        if(connMission!=null) return connMission;
-        else return null;
+
+        if(connMission!=null) {
+            return connMission;
+        }
+        else {
+            return null;
+        }
     }
 
     @Override
@@ -121,7 +147,7 @@ public class MissionDaoImpl implements MissionDao {
     public Mission updateMission(MissionDto missionDto) throws Exception{
         Optional<Mission> selectedMission = missionRepository.findById(missionDto.getMissionId());
         Mission updatedMission;
-//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+//      DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
         if(selectedMission.isPresent()) {
             Mission mission = selectedMission.get();
@@ -142,84 +168,67 @@ public class MissionDaoImpl implements MissionDao {
         return updatedMission;
     }
 
-/*
-    @Override
-    public Feed selectFeedById(Long feedId){
-        Feed selectedFeed = feedRepository.findByFeedId(feedId);
-
-        return selectedFeed;
-    }
-
-    @Override
-    public Like_Feed selectLikeFeedByUser(Feed feed, User user){
-        Like_Feed selectedFeed = likeFeedRepository.findByFeedAndUser(feed, user);
-
-        return selectedFeed;
-    }
-
-    @Override
-    public int countByFeed(Feed feed){
-        int cnt = likeFeedRepository.countAllByFeed(feed);
-
-        return cnt;
-    }
-
-    @Override
-    public void insertFeed(Feed feed){
-        feedRepository.save(feed);
-
-    }
-
-    @Override
-    public Optional<Feed> selectFeed(Long feedId, User user){
-        Optional<Feed> result = null;
-        result = feedRepository.findByFeedIdAndUserAndRegtime(feedId, user, LocalDate.now());
-        if(result.isPresent()) return result;
-        else return null;
-    }
-
-    @Override
-    public Feed updateFeed(FeedDto feedDto) throws Exception{
-        Optional<Feed> selectedFeed = feedRepository.findById(feedDto.getFeedId());
-        Feed updatedFeed;
-
-        if(selectedFeed.isPresent()) {
-            Feed feed = selectedFeed.get();
-            feed.setContent(feedDto.getContent());
-
-            updatedFeed = feedRepository.save(feed);
-        }
-        else {
-            throw new Exception();
-        }
-
-        return updatedFeed;
-    }
-
- */
-
     @Override
     public List<Mission> searchMission(String search,String array){
         List<Mission> selectedAllMissions = null;
         if(array=="title") {
             selectedAllMissions = missionRepository.findAllByTitleContainingOrderByTitleAsc(search);
         }
-        else {
-            selectedAllMissions = missionRepository.findAllByTitleContainingOrderByRegtimeAsc(search);
+        else if(array == "hits") {
+            selectedAllMissions = missionRepository.findAllByTitleContainingOrderByHitsDesc(search);
         }
+        else {
+            selectedAllMissions = missionRepository.findAllByTitleContainingOrderByRegtimeDesc(search);
+        }
+
         return selectedAllMissions;
     }
 
-    /*
     @Override
-    public Optional<Feed> searchFeed(User user){
-        Optional<Feed> result = null;
-        result = feedRepository.findByUserAndRegtime(user, LocalDate.now());
-        if(result.isPresent()) return result;
-        else return null;
+    public List<Conn_Mission> selectAllConnMissionByMission(Mission mission){
+        List<Conn_Mission> connMissions = connMissionRepository.findAllByMission(mission);
+
+        return connMissions;
     }
 
-     */
+    @Override
+    public void updateConnMissionStart(Conn_Mission connMission){
+        connMission.setState("RUN");
+        Conn_Mission result = connMissionRepository.save(connMission);
 
+    }
+
+    @Override
+    public void updateConnMissionEnd(Conn_Mission connMission){
+        Mission missionEntity = connMission.getMission();
+
+        if(connMission.getSuccessRate()>=80) {
+            connMission.setState("SUCCESS");
+        }
+        else {
+            connMission.setState("FAILED");
+            missionEntity.setFailedPerson(missionEntity.getFailedPerson()+1);
+        }
+
+        connMissionRepository.save(connMission);
+    }
+
+    @Override
+    public void providePoint(Conn_Mission connMission){
+        User userEntity = connMission.getUser();
+        Mission missionEntity =connMission.getMission();
+
+        int allSuccessUser = missionEntity.getNowPerson() - missionEntity.getFailedPerson();
+        int totalPoint = missionEntity.getEntryPoint() * missionEntity.getEntryPoint();
+        int providePoint = totalPoint / allSuccessUser;
+
+        if(connMission.getState() == "SUCCESS"){
+            userEntity.setPoint(userEntity.getPoint() + providePoint);
+            userRepository.save(userEntity);
+
+            connMission.setState("END");
+            connMissionRepository.save(connMission);
+        }
+    }
 }
 

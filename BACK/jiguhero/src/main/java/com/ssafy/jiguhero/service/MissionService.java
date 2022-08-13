@@ -2,6 +2,7 @@ package com.ssafy.jiguhero.service;
 
 import com.ssafy.jiguhero.data.dto.FeedDto;
 import com.ssafy.jiguhero.data.dto.MissionDto;
+import com.ssafy.jiguhero.data.entity.User;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
@@ -18,32 +19,32 @@ public interface MissionService {
     List<MissionDto> getJoinMissions(Long userId);
 
     // 전체 임무 목록
-    List<MissionDto> getAllMissions(HttpServletRequest request);
+    List<MissionDto> getAllMissions(HttpServletRequest request, String array);
 
     // missionId에 해당하는 임무
     MissionDto getMissionById(Long missionId, Long userId, HttpServletRequest request);
 
+    // 임무 등록
     Long insertMission(MissionDto missionDto, Long userId);
 
+    // 임무 참여
     int joinMission(Long userId, Long missionId);
 
+    // 임무 좋아요 클릭
     int likeMission(Long missionId, Long userId);
 
+    // 임무 삭제
     int deleteMission(Long missionId, Long userId);
 
-
+    // 임무 수정
     MissionDto updateMission(MissionDto missionDto, Long userId) throws Exception;
-
-    //FeedDto getFeedById(Long feedId, Long userId);
-
-    //int saveFeed(FeedDto feedDto, Long missionId, Long userId);
 
     String getRepMissionImageURL(Long missionId, HttpServletRequest request);
 
     List<List<String>> getMissionImageURL(Long missionId, HttpServletRequest request);
 
-    //FeedDto changeFeed(FeedDto feedDto, Long userId) throws Exception;
-
+    // 검색어를 만족하는 임무 목록
     List<MissionDto> searchMission(String search, String array);
 
+    int searchSuccessRate(Long missionId, Long userId);
 }
