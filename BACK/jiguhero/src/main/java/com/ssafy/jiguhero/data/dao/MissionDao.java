@@ -26,7 +26,7 @@ public interface MissionDao {
 
     List<Mission> selectAllMission(String array);
 
-    void insertMission(Mission mission);
+    Mission insertMission(Mission mission);
 
     void insertConnMission(Conn_Mission connMission);
 

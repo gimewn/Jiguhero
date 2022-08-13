@@ -25,7 +25,7 @@ public interface MissionService {
     MissionDto getMissionById(Long missionId, Long userId, HttpServletRequest request);
 
     // 임무 등록
-    void insertMission(MissionDto missionDto, Long userId);
+    Long insertMission(MissionDto missionDto, Long userId);
 
     // 임무 참여
     int joinMission(Long userId, Long missionId);

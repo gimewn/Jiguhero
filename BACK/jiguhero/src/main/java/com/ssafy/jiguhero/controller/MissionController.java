@@ -59,12 +59,12 @@ public class MissionController {
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
-    @ApiOperation(value = "임무를 등록한다.", response = String.class)
+    @ApiOperation(value = "임무를 등록한다.", response = Long.class)
     @PostMapping
-    public ResponseEntity<String> saveMission(@RequestBody MissionDto missionDto, @RequestParam("userId") Long userId) {
-        missionService.insertMission(missionDto, userId);
+    public ResponseEntity<Long> saveMission(@RequestBody MissionDto missionDto, @RequestParam("userId") Long userId) {
+        Long savedMissionId = missionService.insertMission(missionDto, userId);
 
-        return new ResponseEntity<String>("success", HttpStatus.OK);
+        return new ResponseEntity<Long>(savedMissionId, HttpStatus.OK);
     }
 
     @ApiOperation(value = "임무에 참여한다.", response = String.class)

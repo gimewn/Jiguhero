@@ -105,7 +105,7 @@ public class MissionServiceImpl implements MissionService {
     }
 
     @Override
-    public void insertMission(MissionDto missionDto, Long userId) {
+    public Long insertMission(MissionDto missionDto, Long userId) {
         Mission mission = new Mission();
 
         mission.setRegtime(LocalDateTime.now());
@@ -123,7 +123,7 @@ public class MissionServiceImpl implements MissionService {
         mission.setLikes(0);
         mission.setHits(0);
         mission.setUser(userDao.selectUserById(userId));
-        missionDao.insertMission(mission);
+        Mission insertedMission = missionDao.insertMission(mission);
 
         Conn_Mission connMission = new Conn_Mission();
         User userEntity = userDao.selectUserById(userId);
@@ -133,6 +133,8 @@ public class MissionServiceImpl implements MissionService {
         connMission.setMission(mission);
         connMission.setUser(userEntity);
         missionDao.insertConnMission(connMission);
+
+        return insertedMission.getMissionId();
     }
 
     public int joinMission(Long userId, Long missionId){
