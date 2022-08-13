@@ -112,4 +112,14 @@ public class GroundDaoImpl implements GroundDao {
         likeGroundRepository.deleteByGroundAndUser(groundEntity, userEntity);
     }
 
+    @Override
+    public void modifyGround(Ground groundEntity) {
+        groundRepository.save(groundEntity);
+    }
+
+    @Override
+    public Optional<Ground> findById(Long groundId) {
+        return groundRepository.findById(groundId);
+    }
+
 }

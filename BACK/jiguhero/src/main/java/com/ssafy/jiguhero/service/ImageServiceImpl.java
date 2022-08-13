@@ -182,6 +182,16 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
+    public void deleteMissionImage(Long imageId) {
+        Image_Mission imageMission = imageDao.selectImageMissionById(imageId);
+        try {
+            imageDao.deleteImageMission(imageMission);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
     public Resource loadImage(String fileName, String saveFolder) throws FileNotFoundException {
         try {
             Path filePath = Path.of(this.dirPath + File.separator + saveFolder + File.separator + fileName);

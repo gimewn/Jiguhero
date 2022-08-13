@@ -101,6 +101,7 @@ public class MissionServiceImpl implements MissionService {
         }
         dto.setRepImageURL(getRepMissionImageURL(missionId, request));
         dto.setImageURL(getMissionImageURL(missionId, request));
+
         return dto;
     }
 
@@ -240,11 +241,13 @@ public class MissionServiceImpl implements MissionService {
     }
 
     @Override
-    public List<String> getMissionImageURL(Long missionId, HttpServletRequest request) {
+    public List<List<String>> getMissionImageURL(Long missionId, HttpServletRequest request) {
         List<Image_Mission> imageMissions = imageDao.selectImageMissions(missionDao.selectMissionById(missionId));
-        List<String> urlList = new ArrayList<>();
+        List<List<String>> urlList = new ArrayList<>();
 
         for (Image_Mission imageMission : imageMissions) {
+            List<String> data = new ArrayList<>();
+            Long imageId = imageMission.getImageId();
             String saveFile = imageMission.getSaveFile();
             String saveFolder = imageMission.getSaveFolder();
             String sep = saveFolder.substring(0,1);
@@ -253,7 +256,9 @@ public class MissionServiceImpl implements MissionService {
             String date = saveFolder.split(sep)[2];
             String url = request.getRequestURL().toString().replace(request.getRequestURI(),"") + "/image/" + saveFile + "?target=" + target + "&date=" + date;
 
-            urlList.add(url);
+            data.add(imageId.toString());
+            data.add(url);
+            urlList.add(data);
         }
 
         return urlList;
