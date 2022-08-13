@@ -90,7 +90,7 @@ public class MissionServiceImpl implements MissionService {
         Mission missionEntity = missionDao.selectMissionById(missionId);
         User userEntity = userDao.selectUserById(userId);
 
-        missionEntity.setHits(missionEntity.getHits()+1);
+        missionEntity.setHits(missionEntity.getHits()+1); // 조회수 +1
         missionDao.insertMission(missionEntity);
 
         MissionDto dto = MissionDto.of(missionEntity);
@@ -138,18 +138,22 @@ public class MissionServiceImpl implements MissionService {
 
     public int joinMission(Long userId, Long missionId){
         Conn_Mission connMission = new Conn_Mission();
-        Mission mission = missionDao.selectMissionById(missionId);
+        Mission missionEntity = missionDao.selectMissionById(missionId);
         User userEntity = userDao.selectUserById(userId);
 
-        if(mission.getStartDate().isAfter(LocalDate.now())) {
+        if(missionEntity.getStartDate().isAfter(LocalDate.now())) {
             connMission.setState("BEFORE");
             connMission.setRole(2);
             connMission.setSuccessRate(0);
-            connMission.setMission(mission);
+            connMission.setMission(missionEntity);
             connMission.setUser(userEntity);
             missionDao.insertConnMission(connMission);
 
-            mission.setNowPerson(mission.getNowPerson() + 1);
+            missionEntity.setNowPerson(missionEntity.getNowPerson() + 1);
+            missionDao.insertMission(missionEntity);
+
+            userEntity.setPoint(userEntity.getPoint() - missionEntity.getEntryPoint());
+            userDao.updatePoint(userEntity);
 
             return 1; // 임무가 시작되기 전이며 성공적으로 임무 참여가 완료된 경우
         }
