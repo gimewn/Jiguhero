@@ -21,4 +21,6 @@ public interface PlaceService {
     void deleteReview(Long reviewId);
 
     List<String> getPlaceImageURL(String placeId, HttpServletRequest request);
+
+    void savePlace(PlaceDto placeDto);
 }

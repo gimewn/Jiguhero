@@ -2,16 +2,14 @@ package com.ssafy.jiguhero.data.dto;
 
 import com.ssafy.jiguhero.data.entity.Place;
 import com.ssafy.jiguhero.util.ModelMapperUtils;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Getter
 @Setter
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 public class PlaceDto implements Comparable<PlaceDto> {

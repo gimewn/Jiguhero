@@ -68,13 +68,20 @@ public class PlaceServiceImpl implements PlaceService{
             String sep = saveFolder.substring(0,1);
             if (sep.equals("\\")) sep = "\\\\";
             String target = saveFolder.split(sep)[1];
-            String date = saveFolder.split(sep)[2];
+            String date = saveFolder.   split(sep)[2];
             String url = request.getRequestURL().toString().replace(request.getRequestURI(),"") + "/image/" + saveFile + "?target=" + target + "&date=" + date;
 
             urlList.add(url);
         }
 
         return urlList;
+    }
+
+    @Override
+    @Transactional
+    public void savePlace(PlaceDto placeDto) {
+        Place placeEntity = Place.of(placeDto);
+        placeDao.savePlace(placeEntity);
     }
 
     @Override
