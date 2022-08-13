@@ -89,6 +89,10 @@ public class MissionServiceImpl implements MissionService {
     public MissionDto getMissionById(Long missionId, Long userId, HttpServletRequest request) {
         Mission missionEntity = missionDao.selectMissionById(missionId);
         User userEntity = userDao.selectUserById(userId);
+
+        missionEntity.setHits(missionEntity.getHits()+1);
+        missionDao.insertMission(missionEntity);
+
         MissionDto dto = MissionDto.of(missionEntity);
         if(missionDao.selectConnMission(missionEntity, userEntity)!=null) {
             dto.setJoinCheck(true); // 사용자가 해당 임무에 참여한 경우

@@ -24,8 +24,8 @@ public interface MissionRepository extends JpaRepository<Mission, Long> {
 
     List<Mission> findAllByTitleContainingOrderByHitsDesc(String search);
 
-    List<Mission> findAllOrderByHitsDesc();
+    List<Mission> findAllByOrderByHitsDesc();
 
-    List<Mission> findAllOrderByRegtimeDesc();
+    List<Mission> findAllByOrderByRegtimeDesc();
 
 }

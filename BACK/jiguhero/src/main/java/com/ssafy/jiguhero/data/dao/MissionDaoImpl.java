@@ -73,10 +73,10 @@ public class MissionDaoImpl implements MissionDao {
         List<Mission> selectedAllMissions = null;
 
         if(array=="hits") {
-            selectedAllMissions = missionRepository.findAllOrderByHitsDesc();
+            selectedAllMissions = missionRepository.findAllByOrderByHitsDesc();
         }
         else {
-            selectedAllMissions = missionRepository.findAllOrderByRegtimeDesc();
+            selectedAllMissions = missionRepository.findAllByOrderByRegtimeDesc();
         }
 
         return selectedAllMissions;
