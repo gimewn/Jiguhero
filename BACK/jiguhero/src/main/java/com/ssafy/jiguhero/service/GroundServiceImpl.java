@@ -22,12 +22,14 @@ public class GroundServiceImpl implements GroundService {
     private final GroundDao groundDao;
     private final UserDao userDao;
     private final PlaceDao placeDao;
+    private final PlaceServiceImpl placeService;
 
     @Autowired
-    public GroundServiceImpl(GroundDao groundDao, UserDao userDao, PlaceDao placeDao) {
+    public GroundServiceImpl(GroundDao groundDao, UserDao userDao, PlaceDao placeDao, PlaceServiceImpl placeService) {
         this.groundDao = groundDao;
         this.userDao = userDao;
         this.placeDao = placeDao;
+        this.placeService = placeService;
     }
 
     @Override
@@ -61,6 +63,13 @@ public class GroundServiceImpl implements GroundService {
     public List<GroundDto> getGrounds() {
         List<Ground> entityList = groundDao.selectGrounds();
         List<GroundDto> dtoList = entityList.stream().map(entity -> GroundDto.of(entity)).collect(Collectors.toList());
+
+        for(GroundDto groundDto : dtoList){
+            long groundId = groundDto.getGroundId();
+            int count = placeService.getPlaces(groundId).size();
+            groundDto.setCount(count);
+        }
+
         return dtoList;
     }
 

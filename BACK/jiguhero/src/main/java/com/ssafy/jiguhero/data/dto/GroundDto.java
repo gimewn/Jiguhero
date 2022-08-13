@@ -22,7 +22,7 @@ public class GroundDto {
     private int hits;
     private LocalDateTime regtime;
     private Long userId;
-    private List<String> placeIdList;
+    private int count;
 
     public static GroundDto of(Ground groundEntity) {
         GroundDto groundDto = ModelMapperUtils.getModelMapper().map(groundEntity, GroundDto.class);
