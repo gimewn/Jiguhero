@@ -24,6 +24,8 @@ public interface MissionDao {
     // 전체 all_mission 인스터스 목록
     List<Mission> selectAllMission();
 
+    List<Mission> selectAllMission(String array);
+
     void insertMission(Mission mission);
 
     void insertConnMission(Conn_Mission connMission);

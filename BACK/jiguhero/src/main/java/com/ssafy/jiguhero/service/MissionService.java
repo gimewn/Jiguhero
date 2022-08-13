@@ -18,7 +18,7 @@ public interface MissionService {
     List<MissionDto> getJoinMissions(Long userId);
 
     // 전체 임무 목록
-    List<MissionDto> getAllMissions(HttpServletRequest request);
+    List<MissionDto> getAllMissions(HttpServletRequest request, String array);
 
     // missionId에 해당하는 임무
     MissionDto getMissionById(Long missionId, Long userId, HttpServletRequest request);

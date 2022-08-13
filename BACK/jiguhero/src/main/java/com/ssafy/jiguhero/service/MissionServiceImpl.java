@@ -72,8 +72,8 @@ public class MissionServiceImpl implements MissionService {
     }
 
     @Override
-    public List<MissionDto> getAllMissions(HttpServletRequest request) {
-        List<Mission> entityList = missionDao.selectAllMission();
+    public List<MissionDto> getAllMissions(HttpServletRequest request, String array) {
+        List<Mission> entityList = missionDao.selectAllMission(array);
         List<MissionDto> dtoList = entityList.stream().map(entity -> MissionDto.of(entity)).collect(Collectors.toList());
 
         for (MissionDto dto : dtoList) {

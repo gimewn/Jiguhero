@@ -62,8 +62,22 @@ public class MissionDaoImpl implements MissionDao {
     }
 
     @Override
-    public List<Mission> selectAllMission() {
+    public List<Mission> selectAllMission(){
         List<Mission> selectedAllMissions = missionRepository.findAll();
+
+        return selectedAllMissions;
+    }
+
+    @Override
+    public List<Mission> selectAllMission(String array) {
+        List<Mission> selectedAllMissions = null;
+
+        if(array=="hits") {
+            selectedAllMissions = missionRepository.findAllOrderByHitsDesc();
+        }
+        else {
+            selectedAllMissions = missionRepository.findAllOrderByRegtimeDesc();
+        }
 
         return selectedAllMissions;
     }
@@ -204,8 +218,11 @@ public class MissionDaoImpl implements MissionDao {
         if(array=="title") {
             selectedAllMissions = missionRepository.findAllByTitleContainingOrderByTitleAsc(search);
         }
+        else if(array == "hits") {
+            selectedAllMissions = missionRepository.findAllByTitleContainingOrderByHitsDesc(search);
+        }
         else {
-            selectedAllMissions = missionRepository.findAllByTitleContainingOrderByRegtimeAsc(search);
+            selectedAllMissions = missionRepository.findAllByTitleContainingOrderByRegtimeDesc(search);
         }
         return selectedAllMissions;
     }

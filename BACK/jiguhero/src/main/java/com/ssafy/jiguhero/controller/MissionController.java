@@ -45,8 +45,8 @@ public class MissionController {
 
     @ApiOperation(value = "전체 임무 리스트를 반환한다.", response = List.class)
     @GetMapping()
-    public ResponseEntity<List<MissionDto>> getAllMissions(HttpServletRequest request) {
-        List<MissionDto> list = missionService.getAllMissions(request);
+    public ResponseEntity<List<MissionDto>> getAllMissions(HttpServletRequest request, @RequestParam("array") String array) {
+        List<MissionDto> list = missionService.getAllMissions(request, array);
 
         return ResponseEntity.status(HttpStatus.OK).body(list);
     }
@@ -153,7 +153,7 @@ public class MissionController {
     }
      */
 
-    @ApiOperation(value = "검색어로 검색한 임무 리스트 목록을 제목순 or 등록순으로 반환한다")
+    @ApiOperation(value = "검색어로 검색한 임무 리스트 목록을 제목순(title) or 조회순(hits) or 등록순(time)으로 반환한다")
     @GetMapping("/search")
     public ResponseEntity<List<MissionDto>> searchMission(@RequestParam("search") String search, @RequestParam("array") String array){
 

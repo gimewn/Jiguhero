@@ -20,6 +20,12 @@ public interface MissionRepository extends JpaRepository<Mission, Long> {
 
     List<Mission> findAllByTitleContainingOrderByTitleAsc(String search);
 
-    List<Mission> findAllByTitleContainingOrderByRegtimeAsc(String search);
+    List<Mission> findAllByTitleContainingOrderByRegtimeDesc(String search);
+
+    List<Mission> findAllByTitleContainingOrderByHitsDesc(String search);
+
+    List<Mission> findAllOrderByHitsDesc();
+
+    List<Mission> findAllOrderByRegtimeDesc();
 
 }
