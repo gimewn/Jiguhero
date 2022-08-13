@@ -87,6 +87,13 @@ public class GroundServiceImpl implements GroundService {
         User userEntity = userDao.selectUserById(userId);
         List<Ground> entityList = groundDao.selectGroundByUser(userEntity);
         List<GroundDto> dtoList = entityList.stream().map(entity -> GroundDto.of(entity)).collect(Collectors.toList());
+
+        for(GroundDto groundDto : dtoList){
+            long groundId = groundDto.getGroundId();
+            int count = placeService.getPlaces(groundId).size();
+            groundDto.setCount(count);
+        }
+
         return dtoList;
     }
 
