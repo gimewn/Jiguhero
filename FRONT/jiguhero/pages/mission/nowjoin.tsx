@@ -50,12 +50,6 @@ const SearchButton = styled(SearchRoundedIcon)`
     margin: 0.5rem;
 `
 
-const Div = styled('div')`
-    padding: 20px;
-    @media only screen and (min-width: 650px) {
-    display:none;
-  }
-`
 
 const H2 = styled('h2')`
   @media only screen and (max-width: 650px) {
@@ -117,7 +111,7 @@ export default function Mission() {
             {/* 모바일 뷰에서 뒤로가기 버튼! */}
             <Backcomponents name='참여 중인 임무 모아보기'></Backcomponents>
 
-            <Div></Div>
+
             <MissionTop>
                 <H2>🦸🏻 참여 중인 임무</H2>
             </MissionTop>

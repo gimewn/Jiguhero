@@ -1,11 +1,12 @@
 import styled from "styled-components";
 import { ButtonFull, ButtonBorder } from 'styles/styled';
 import Backcomponents from 'components/back';
+import MissionModal from 'components/MissionModal';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { tabpage } from "states/mypage";
 import { RecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ProgressBar from "@ramonak/react-progress-bar";
 import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
@@ -379,6 +380,25 @@ function MyCertificationLists() {
 
 //달성률과 나의 인증샷 보여주는 탭
 function Achievement() {
+  const [Modal, setModal] = useState(false)
+  useEffect(() => {
+    if (Modal === false) {
+      console.log('hihi', Modal)
+    } else {
+      document.body.style.cssText = `
+      position: fixed; 
+      top: -${window.scrollY}px;
+      overflow-y: scroll;
+      width: 100%;`;
+      return () => {
+        const scrollY = document.body.style.top;
+        document.body.style.cssText = '';
+        window.scrollTo(0, parseInt(scrollY || '0', 10) * -1);
+        console.log('bye', Modal)
+      };
+    }
+  }, [Modal]);
+
   return (
     <>
 
@@ -397,7 +417,8 @@ function Achievement() {
 
       <CertifyWrapper>
         <Text>나의 인증샷</Text>
-        <CertifyGoBtn hColor={'#65ACE2'} dColor={'#98C064'}>인증하기</CertifyGoBtn>
+        <CertifyGoBtn hColor={'#65ACE2'} dColor={'#98C064'} onClick={() => setModal(true)}>인증하기</CertifyGoBtn>
+        <MissionModal show={Modal} setShow={setModal} />
       </CertifyWrapper>
       <MyCertificationLists />
     </>
