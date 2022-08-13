@@ -108,7 +108,7 @@ public class MissionController {
 
     @ApiOperation(value = "임무의 세부 내용을 변경한다", response = String.class)
     @PutMapping("/{mission_id}/details")
-    public ResponseEntity<MissionDto> updateMission(@RequestBody MissionDto missionDto, @RequestParam("user_id") Long userId) {
+    public ResponseEntity<MissionDto> updateMission(@RequestBody MissionDto missionDto, @RequestParam("userId") Long userId) {
         MissionDto missionDtoResult = null;
 
         try {
@@ -131,7 +131,7 @@ public class MissionController {
 
     @ApiOperation(value = "임무의 달성률을 반환한다")
     @GetMapping("/{mission_id}/rate")
-    public ResponseEntity<Integer> successRateMission(@PathVariable("mission_id") Long missionId, @RequestParam("user_id") Long userId){
+    public ResponseEntity<Integer> successRateMission(@PathVariable("mission_id") Long missionId, @RequestParam("userId") Long userId){
         int list = missionService.searchSuccessRate(missionId, userId);
 
         return ResponseEntity.status(HttpStatus.OK).body(list);

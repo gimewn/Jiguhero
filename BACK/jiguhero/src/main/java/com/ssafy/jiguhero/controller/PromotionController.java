@@ -63,7 +63,7 @@ public class PromotionController {
 
     @ApiOperation(value = "프로모션 및 이벤트 소식 정보를 삭제한다.", response = String.class)
     @DeleteMapping("/")
-    public ResponseEntity<String> deletePromotion(@RequestParam("promotion_id") Long promotionId){
+    public ResponseEntity<String> deletePromotion(@RequestParam("promotionId") Long promotionId){
         promotionService.deletePromotion(promotionId);
 
         return ResponseEntity.status(HttpStatus.OK).body("success");

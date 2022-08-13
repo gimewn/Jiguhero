@@ -25,7 +25,7 @@ public class FeedController {
 
     @ApiOperation(value = "인증샷을 등록한다")
     @PostMapping("/")
-    public ResponseEntity<String> insertFeed(@RequestParam("mission_id") Long missionId, @RequestBody FeedDto feedDto, @RequestParam("user_id") Long userId){
+    public ResponseEntity<String> insertFeed(@RequestParam("missionId") Long missionId, @RequestBody FeedDto feedDto, @RequestParam("userId") Long userId){
         int result = feedService.insertFeed(feedDto, missionId, userId);
         if(result==1) {
             return new ResponseEntity<String>("success", HttpStatus.OK); // 성공적으로 인증샷 등록이 완료된 경우
@@ -37,7 +37,7 @@ public class FeedController {
 
     @ApiOperation(value = "인증샷을 수정한다")
     @PutMapping("/{feed_id}")
-    public ResponseEntity<FeedDto> updateFeed(@RequestBody FeedDto feedDto, @RequestParam("user_id") Long userId){
+    public ResponseEntity<FeedDto> updateFeed(@RequestBody FeedDto feedDto, @RequestParam("userId") Long userId){
         FeedDto feedDtoResult = null;
         try {
             feedDtoResult = feedService.updateFeed(feedDto, userId);
@@ -50,7 +50,7 @@ public class FeedController {
 
     @ApiOperation(value = "인증샷을 삭제한다")
     @DeleteMapping("/{feed_id}")
-    public ResponseEntity<String> deleteFeed(@PathVariable("feed_id") Long feedId, @RequestParam("userId") Long userId, @RequestParam("mission_id") Long missionId) {
+    public ResponseEntity<String> deleteFeed(@PathVariable("feed_id") Long feedId, @RequestParam("userId") Long userId, @RequestParam("missionId") Long missionId) {
         int check = feedService.deleteFeed(feedId, userId, missionId);
 
         if(check == 1) {
@@ -64,7 +64,7 @@ public class FeedController {
 
     @ApiOperation(value = "인증샷(1개)의 정보를 가져온다")
     @GetMapping("/{feed_id}")
-    public ResponseEntity<FeedDto> getFeed(@PathVariable("feed_id") Long feedId, @RequestParam("user_id") Long userId){
+    public ResponseEntity<FeedDto> getFeed(@PathVariable("feed_id") Long feedId, @RequestParam("userId") Long userId){
         FeedDto result = feedService.getFeedById(feedId, userId);
 
         return ResponseEntity.status(HttpStatus.OK).body(result);

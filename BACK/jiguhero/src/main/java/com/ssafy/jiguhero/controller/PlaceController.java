@@ -54,8 +54,8 @@ public class PlaceController {
     @PostMapping("/review")
     public ResponseEntity<String> saveReview(
             @RequestBody ReviewDto review,
-            @RequestParam("place_id") String placeId,
-            @RequestParam("user_id") Long userId){
+            @RequestParam("placeId") String placeId,
+            @RequestParam("userId") Long userId){
         placeService.saveReview(review, placeId, userId);
 
         return new ResponseEntity<String>("success", HttpStatus.OK);
@@ -71,8 +71,8 @@ public class PlaceController {
     @PostMapping("/report")
     public ResponseEntity<String> saveReport(
             @RequestBody ReportDto report,
-            @RequestParam("place_id") String placeId,
-            @RequestParam("user_id") Long userId){
+            @RequestParam("placeId") String placeId,
+            @RequestParam("userId") Long userId){
         placeService.saveReport(report, placeId, userId);
 
         return new ResponseEntity<String>("success", HttpStatus.OK);
