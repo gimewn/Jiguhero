@@ -7,11 +7,8 @@ import { tabpage } from "states/mypage";
 import { RecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import React, { useState } from 'react';
 import ProgressBar from "@ramonak/react-progress-bar";
-<<<<<<< HEAD
-=======
 import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
->>>>>>> c6fd418499a98888cdcdabe4c0d5596a9e51ce3c
 
 const NavBar = styled('div')`
   z-index: 999;
@@ -158,17 +155,6 @@ const CertifyBtn = styled('button')`
     cursor: pointer;
   }
 `
-<<<<<<< HEAD
-const AchieveWrapper = styled('div')`
-  display:flex;
-  justify-content: left;
-
-`
-const CertifyWrapper = styled('div')`
-  display:flex;
-  justify-content: space-between;
-
-=======
 const TextPositionWrapper = styled('div')`
   justify-content: center;
   align-items: center;
@@ -189,36 +175,10 @@ const CertifyWrapper = styled('div')`
   display: flex;
   justify-content: center;
   align-items: center;
->>>>>>> c6fd418499a98888cdcdabe4c0d5596a9e51ce3c
 `
 const CertifyGoBtn = styled(ButtonFull)`
   padding: 3px 10px;
   border-radius: 10px;
-<<<<<<< HEAD
-  margin-left: 25px;
-  margin-right: 25px;
-`
-const Text = styled('a')`
-  font-size: small;
-  font-weight: bold;
-  margin-left: 25px;
-  margin-right: 25px;
-`
-
-const Progress = styled(ProgressBar)`
-  width: 250px;
-  /* .wrapper{
-    width: 250px;
-  }
-  .barCompleted{
-    background-color: #65ACE2;
-    width: ${(props) => props.completed};
-  }
-  .container{
-    background-color: black;
-  } */
-`
-=======
   margin-left: 140px;
   margin-right: 25px;
 `
@@ -279,7 +239,6 @@ const BottomDiv = styled('div')`
   margin-bottom: 70px;
 `
 
->>>>>>> c6fd418499a98888cdcdabe4c0d5596a9e51ce3c
 // interface MissionProps {
 //   entryPoint: number;
 //   title: string;
@@ -322,10 +281,7 @@ function NowMission() {
   )
 }
 
-<<<<<<< HEAD
-=======
 //달성률 & 인증샷 버튼 그룹
->>>>>>> c6fd418499a98888cdcdabe4c0d5596a9e51ce3c
 function ButtonGroup() {
   // 탭 전환
   const tab = useRecoilValue(tabpage);
@@ -333,29 +289,12 @@ function ButtonGroup() {
 
   //달성률 버튼 클릭하면 연두색 인증샷 버튼 클릭하면 하얀색!
   const [tabColor, setTabColor] = useState(true)
-<<<<<<< HEAD
-=======
   console.log(tabColor)
->>>>>>> c6fd418499a98888cdcdabe4c0d5596a9e51ce3c
   return (
     <>
       {/* 탭 전환을 위한 버튼들 */}
       <ButtonWrapper>
         {tabColor ?
-<<<<<<< HEAD
-          <AchieveBtn backColor={`#98C064`} onClick={() => { setTabColor(!tabColor) }}>달성률</AchieveBtn>
-          : <AchieveBtn backColor={`#fffff`} onClick={() => { setTabColor(!tabColor) }}>달성률</AchieveBtn>
-        }
-        {tabColor ?
-          <CertifyBtn backColor={`#fffff`} onClick={() => { setTabColor(!tabColor) }}>인증샷</CertifyBtn>
-          : <CertifyBtn backColor={`#98C064`} onClick={() => { setTabColor(!tabColor) }}>인증샷</CertifyBtn>
-        }
-      </ButtonWrapper >
-
-    </>
-  )
-}
-=======
           <AchieveBtn backColor={`#98C064`} onClick={() => { setTab(true), setTabColor(!tabColor) }}>달성률</AchieveBtn>
           : <AchieveBtn backColor={`#fffff`} onClick={() => { setTab(true), setTabColor(!tabColor) }}>달성률</AchieveBtn>
         }
@@ -443,20 +382,10 @@ function MyCertificationLists() {
   );
 }
 
->>>>>>> c6fd418499a98888cdcdabe4c0d5596a9e51ce3c
 //달성률과 나의 인증샷 보여주는 탭
 function Achievement() {
   return (
     <>
-<<<<<<< HEAD
-      {/* 달성률 바 */}
-      <AchieveWrapper>
-        <Text>달성률</Text>
-        <Progress completed={60} />
-      </AchieveWrapper>
-
-      {/* 내 인증샷 모아보기 */}
-=======
 
       {/* 달성률 바 */}
       <AchieveWrapper>
@@ -473,27 +402,15 @@ function Achievement() {
 
       {/* 내 인증샷 모아보기 */}
 
->>>>>>> c6fd418499a98888cdcdabe4c0d5596a9e51ce3c
       <CertifyWrapper>
         <Text>나의 인증샷</Text>
         <CertifyGoBtn hColor={'#65ACE2'} dColor={'#98C064'}>인증하기</CertifyGoBtn>
       </CertifyWrapper>
-<<<<<<< HEAD
-
-=======
       <MyCertificationLists />
->>>>>>> c6fd418499a98888cdcdabe4c0d5596a9e51ce3c
     </>
   )
 }
 
-<<<<<<< HEAD
-//다른 사람들의 인증샷을 보여주는 탭
-function Certification() {
-
-  return (
-    <>
-=======
 
 //대원들의 인증샷 (mui 사용함!)
 function HeroCertificationLists() {
@@ -531,7 +448,6 @@ function Certification() {
       </HeroTextWrapper>
       {/* 인증샷 있으면 */}
       <HeroCertificationLists />
->>>>>>> c6fd418499a98888cdcdabe4c0d5596a9e51ce3c
 
     </>
   )
@@ -560,13 +476,7 @@ export default function MyMissionFeed() {
 
       {/* 달성률 인증샷 탭 */}
       <ButtonGroup />
-<<<<<<< HEAD
-
-      <Achievement />
-
-=======
       <BottomDiv></BottomDiv>
->>>>>>> c6fd418499a98888cdcdabe4c0d5596a9e51ce3c
     </>
   )
 }
