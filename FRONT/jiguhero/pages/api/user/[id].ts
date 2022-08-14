@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import renewAccess from "../auth/renewAccess";
+
 
 export default async function userData() {
 
@@ -11,7 +11,7 @@ export default async function userData() {
       })
     })
     .then(res => res.json().catch(()=>{
-      renewAccess
+
     }))
 		
 		// const data = await response.json().catch(()=>{

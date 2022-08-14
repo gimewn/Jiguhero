@@ -1,4 +1,4 @@
-import renewAccess from "../auth/renewAccess";
+
 
 
 
@@ -15,7 +15,7 @@ export default async function loginAccess() {
     }),
   });
   const data = await response.json().catch(()=>{
-    renewAccess
+
   })
     return data
 }

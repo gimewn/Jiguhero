@@ -1,5 +1,4 @@
-import renewAccess from "../auth/renewAccess";
-import {BASE_URL, Token} from 'pages/api/fetch';
+import { BASE_URL, Token } from "pages/api/fetch";
 
 
 export default async function postReport(placeId, userId, category, content){
@@ -15,7 +14,7 @@ export default async function postReport(placeId, userId, category, content){
         })
     });
     const data = await response.json().catch(() => {
-        renewAccess;
+
     })
     return data
 }

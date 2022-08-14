@@ -389,13 +389,12 @@ export default function Createmission() {
 
 export async function getServerSideProps(context) {
   const createmission = new QueryClient()
-  const session = await getSession(context);
   await createmission.prefetchQuery(['mission'], () => { PostMission() })
 
   return {
     props: {
       data: {
-        session,
+
         dehydratedState: dehydrate(createmission)
       },
     },

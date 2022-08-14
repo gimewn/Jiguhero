@@ -24,6 +24,7 @@ const Menu = styled('div')`
 
 export default function UnderlineLink() {
   const router = useRouter();
+  const token = router?.query.token
   return (
     <Menu id="NavBar">
       <Link href="/" className="navMenu">
@@ -39,7 +40,9 @@ export default function UnderlineLink() {
         <a className={router.pathname == "/mission/nowjoin" ? "active" : ""}>임무 인증</a>
       </Link>
       <Link href="/mypage" className="navMenu">
-        <a className={router.pathname == "/mypage" ? "active" : ""}>마이페이지</a>
+        {token ? (
+          <a className={router.pathname == "/mypage" ? "active" : ""}>마이페이지</a>
+        ) : (<a className={router.pathname == "/login" ? "active" : ""}>로그인</a>)}
       </Link>
     </Menu>
   );

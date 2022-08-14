@@ -7,7 +7,6 @@ import styled from "styled-components";
 import logo from "public/logo.png";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { SessionProvider } from "next-auth/react";
 import {
   QueryClient,
   QueryClientProvider,
@@ -47,7 +46,7 @@ const Body = styled("div")`
   margin-top:80px;
 `;
 const Container = styled("div")`
-  display: flex;
+display: flex;
   position:absolute;
   /* top:80px; */
   justify-content: center;
@@ -121,13 +120,11 @@ function MyApp({ Component, pageProps }: AppProps) {
         <Container>
           <QueryClientProvider client={queryClient}>
             <Hydrate state={pageProps?.dehydratedState} >
-              <SessionProvider session={pageProps?.session}>
                 <Script
-                  src={`//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAOMAP_APPKEY}&libraries=services,clusterer&autoload=false`}
+                  src={`//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAOMAP_APPKEY}&libraries=services&autoload=false`}
                   strategy="beforeInteractive"
                 />
                 <Component {...pageProps} />
-              </SessionProvider>
             </Hydrate>
           </QueryClientProvider>
         </Container>

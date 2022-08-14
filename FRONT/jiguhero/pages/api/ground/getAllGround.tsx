@@ -1,4 +1,3 @@
-import renewAccess from "../auth/renewAccess";
 import {BASE_URL, Token} from 'pages/api/fetch';
 
 export default async function getAllGround(){
@@ -8,8 +7,6 @@ export default async function getAllGround(){
             Authorization : Token
         }
     });
-    const data = await response.json().catch(() => {
-        renewAccess;
-    })
+    const data = await response.json()
     return data
 }

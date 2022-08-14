@@ -11,6 +11,8 @@ import Pagination from 'components/pagination';
 
 
 
+
+
 export default function MissionLists() {
 
   const { data: MISSION } = useQuery(['missions'], getMission)
@@ -39,7 +41,7 @@ export default function MissionLists() {
 export async function getServerSideProps(context) {
   const missionList = new QueryClient()
   const session = await getSession(context);
-  await missionList.prefetchQuery(['missions'], () => { getMission() })
+  await missionList.prefetchQuery(['missions'], () => { getMission(context) })
 
   return {
     props: {
@@ -50,3 +52,4 @@ export async function getServerSideProps(context) {
     },
   }
 }
+

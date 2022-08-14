@@ -1,23 +1,27 @@
-import GroundTop5 from 'components/Top5Slide';
-import styled from 'styled-components';
-import MissionTop3 from 'components/MissionTop3'
-import Map from 'components/map';
-import News from 'components/News';
+import GroundTop5 from "components/Top5Slide";
+import styled from "styled-components";
+import MissionTop3 from "components/MissionTop3";
+import Map from "components/map";
+import News from "components/News";
+import { ParentsDiv } from "styles/styled";
+import { useRouter } from "next/router";
+import { useRecoilState } from "recoil";
+import { UserIn } from "states/user";
+import { useEffect } from "react";
 import { useSession } from 'next-auth/react';
-import { ParentsDiv } from 'styles/styled';
-import { useRouter } from 'next/router';
 
-const Mapping = styled('div')`
-  width:100%;
-  height:270px;
-  @media screen and (min-width:600px){
-    height:400px;
+
+const Mapping = styled("div")`
+  width: 100%;
+  height: 270px;
+  @media screen and (min-width: 600px) {
+    height: 400px;
   }
-`
-const Title = styled('p')`
+`;
+const Title = styled("p")`
   font-weight: bold;
   font-size: 1.1em;
-`
+`;
 const TitleWithOutMargin = styled('p')`
   font-weight: bold;
   font-size: 1.1em;
@@ -30,15 +34,23 @@ const Content = styled('div')`
   display:flex;
   flex-direction: column;
   align-items: center;
-`
+
+  `
 
 export default function Home() {
-  const session = useSession()
-  const router = useRouter()
+  const router = useRouter();
+  const token = router?.query.token;
+  const register = router?.query.REGISTER;
+  const [userInfo, setUserInfo] = useRecoilState(UserIn);
+  if (register === "REQUIRED") {
+    router.push(`/user/${router.query.userid}`)
+  }
   return (
     <ParentsDiv>
       <Block>
-        <TitleWithOutMargin>☘️ 내 주변 친환경 가게를 찾아보자!</TitleWithOutMargin>
+        <TitleWithOutMargin>
+          ☘️ 내 주변 친환경 가게를 찾아보자!
+        </TitleWithOutMargin>
         <Content>
           <Mapping>
             <Map />
@@ -59,10 +71,11 @@ export default function Home() {
       </Block>
       <Block>
         <Title onClick={() => router.push("/news")}>📰 대원들을 위한 친환경 소식</Title>
+
         <Content>
           <News />
         </Content>
       </Block>
     </ParentsDiv>
-  )
+  );
 }
