@@ -40,6 +40,7 @@ public class MissionServiceImpl implements MissionService {
         return dtoList;
     }
 
+    @Transactional
     @Override
     public List<MissionDto> getLikeMissions(Long userId) {
         User userEntity = userDao.selectUserById(userId);
@@ -55,6 +56,7 @@ public class MissionServiceImpl implements MissionService {
         return dtoList;
     }
 
+    @Transactional
     @Override
     public List<MissionDto> getJoinMissions(Long userId) {
         User userEntity = userDao.selectUserById(userId);
@@ -165,7 +167,7 @@ public class MissionServiceImpl implements MissionService {
         }
     }
 
-    @Transactional(readOnly = true)
+    @Transactional
     public int likeMission(Long missionId, Long userId){
         Like_Mission likeMission = new Like_Mission();
         User userEntity = userDao.selectUserById(userId);
@@ -288,8 +290,14 @@ public class MissionServiceImpl implements MissionService {
         User userEntity = userDao.selectUserById(userId);
         Conn_Mission connMissionEntity = missionDao.selectConnMission(missionEntity, userEntity);
 
-        int result = connMissionEntity.getSuccessRate();
+        int result;
 
+        if(connMissionEntity != null) {
+            result = connMissionEntity.getSuccessRate();
+        }
+        else {
+            result = -1;
+        }
         return result;
     }
 }
