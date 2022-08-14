@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController
@@ -52,8 +53,8 @@ public class HomeController {
 
     @ApiOperation(value = "최신등록된 소식 Top3 목록을 반환한다.", response = List.class)
     @GetMapping("/promotion")
-    public ResponseEntity<List<PromotionDto>> getTop3Promotions() {
-        List<PromotionDto> list = promotionService.getTop3Regtime();
+    public ResponseEntity<List<PromotionDto>> getTop3Promotions(HttpServletRequest request) {
+        List<PromotionDto> list = promotionService.getTop3Regtime(request);
 
         return ResponseEntity.status(HttpStatus.OK).body(list);
     }

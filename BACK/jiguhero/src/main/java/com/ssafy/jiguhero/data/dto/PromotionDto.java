@@ -18,6 +18,7 @@ public class PromotionDto {
     private int category;
     private String content;
     private LocalDateTime regtime;
+    private String imageURL;
 
     public static PromotionDto of(Promotion promotionEntity) {
         PromotionDto promotionDto = ModelMapperUtils.getModelMapper().map(promotionEntity, PromotionDto.class);
