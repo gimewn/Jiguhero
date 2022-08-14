@@ -17,3 +17,8 @@ export const tabpage = atom({
   key: "tabpage",
   default: true
 })
+
+export const searchText = atom({
+  key: "searchText",
+  default: "",
+})

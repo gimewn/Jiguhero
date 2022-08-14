@@ -1,12 +1,12 @@
 import { BASE_URL, Token } from "pages/api/fetch";
 
 
-const PostMissionImg = async (createImg, missionId, userId) => {
+const signinUserImg = async (userImg, userId) => {
   const ImgForm = new FormData();
-  ImgForm.append("file", createImg);
+  ImgForm.append("file", userImg);
   // console.log(ImgForm)
 
-  await fetch(`${BASE_URL}image/mission?userId=${userId}&missionId=${missionId}&rep=0`, {
+  await fetch(`${BASE_URL}image/user?userId=${userId}`, {
     method: "POST",
     headers: {
       Authorization: Token,
@@ -23,4 +23,4 @@ const PostMissionImg = async (createImg, missionId, userId) => {
     });
 };
 
-export default PostMissionImg;
+export default signinUserImg;

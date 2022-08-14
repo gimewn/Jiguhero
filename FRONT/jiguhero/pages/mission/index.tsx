@@ -2,10 +2,9 @@ import styled from "styled-components";
 import { ButtonFull, ButtonBorder } from "styles/styled";
 import Backcomponents from "components/back";
 import Head from "next/head";
-import React, { useState } from "react";
+import React, { memo, useEffect, useState } from "react";
 import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
 import { useRouter } from "next/router";
-import MissionLIST from "components/MissionLists";
 import {
   dehydrate,
   Query,
@@ -13,10 +12,15 @@ import {
   QueryClientProvider,
   useQuery,
 } from "@tanstack/react-query";
-import { getSession, SessionProvider, useSession } from "next-auth/react";
 import getMission from "pages/api/mission/index";
 import MissionLists from "components/MissionLists";
 import { setUncaughtExceptionCaptureCallback } from "process";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { Pagination } from "@mui/material";
+import { missionLists, searchText } from "states/mission";
+import MissionList from "components/MissionList";
+import getSido from "pages/api/ecomarket/getSido";
+import searchMission from "pages/api/mission/searchMission";
 
 const NavBar = styled("div")`
   z-index: 999;
@@ -96,6 +100,9 @@ const BoxInput = styled("input")`
 const SearchButton = styled(SearchRoundedIcon)`
   color: #65ace2;
   margin: 0.5rem;
+  :hover {
+    cursor: pointer;
+  }
 `;
 const ButtonGroup = styled("div")`
   button {
@@ -131,7 +138,12 @@ const ContentsWrapper = styled("div")`
   }
 `;
 
-
+const PagI = styled(Pagination)`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+`;
 
 //mission Button
 function ButtonBox() {
@@ -159,43 +171,35 @@ function ButtonBox() {
 }
 
 //전체 출력 페이지
-export default function Mission() {
-  const [cate, setCate] = useState("time")
-  const { data: Missions, isLoading } = useQuery<string[]>(['missions'],  ()=>{ return getMission(cate)} )
-    //input Box
-  function InputBox() {
-    const [text, setText] = useState("");
-    const onChange = (event) => {
-      setText(event.target.value);
-      // console.log(event.target.value)
-    };
-    return (
-      <div>
-        <BoxInput
-          type="text"
-          placeholder="검색어를 입력해주세요."
-          onChange={onChange}
-          value={text}
-        />
-      </div>
-    );
-  }
+
+export default function Mission({ data }) {
+  const [cate, setCate] = useState<string>("time"); // 카테고리 최신순, 조회순, 이름순
+  const [flag, setFlag] = useState(false) // false 검색어 없는 전체 목록, true 검색어 있는 목록
+  const [cmd, setCmd] = useState<string>('');
+  
+  const { data: Missions, isLoading } = useQuery(
+    ["missions", {cmd, cate}],
+    searchMission
+  );
+
+  // useEffect(() => {
+  //   getMission({});
+  // }, [cate]);
 
   //select Box --- 최신등록 순 이름 순
-const OPTIONS = [
+  const OPTIONS = [
     { value: "time", name: "최신 등록순" },
     { value: "title", name: "이름순" },
+    { value: "hits", name: "조회순" },
   ];
   function SelectBox(props) {
     return (
-      <BoxSelect onChange={(e)=>{
-          setCate(e.target.value)
-          
-
-
-      }
-          
-      } >
+      <BoxSelect
+        onChange={(e) => {
+          e.preventDefault()
+          setCate(e.target.value);
+        }}
+      >
         {props.options.map((option) => (
           <option key={option.value} value={option.value}>
             {option.name}
@@ -205,7 +209,79 @@ const OPTIONS = [
     );
   }
 
+  function MissionLists({ selector }) {
 
+    
+    if(flag){
+      const {data:Missions} = useQuery(
+      ["missions", {cmd,cate}],
+      searchMission
+      )
+    }else{
+      const { data: Missions, isLoading } = useQuery(
+        ["missions", {cate}],
+        getMission, {
+          
+        }
+      );
+    }
+    
+
+    const remainder = Missions?.length % 5;
+    const MissionLen = `${Missions?.length / 5}`;
+    const quot = parseInt(MissionLen);
+    const page = useRecoilValue(missionLists);
+    const setPage = useSetRecoilState(missionLists);
+    const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
+      setPage(value);
+    };
+    
+
+    return (
+      <>
+        {Missions?.slice((page - 1) * 5, page * 5).map((item, index) => (
+          <MissionList key={index} {...item} />
+        ))}
+        {remainder && (
+          <PagI
+          count={remainder === 0 ? quot : quot + 1}
+          page={page}
+          onChange={handleChange}
+        />
+        )}
+        
+      </>
+    );
+  }
+
+  const SearchInput = () => {
+    // const [text,setText] = useRecoilState(searchText)
+    const [tmp, setTmp] = useState<string>();
+
+    return (
+      <>
+        <div>
+          <BoxInput
+            type="text"
+            id="search"
+            placeholder="검색어를 입력해주세요."
+            onChange={(e) => {
+              e.preventDefault();
+              setTmp(e.target.value);
+            }}
+            value={tmp}
+          />
+        </div>
+        <SearchButton
+          onClick={(e) => {
+            e.preventDefault();
+            // setText(tmp)
+            setCmd(tmp);
+          }}
+        />
+      </>
+    );
+  };
 
   return (
     <>
@@ -234,8 +310,7 @@ const OPTIONS = [
         <Block>
           <Content>
             <SelectBox options={OPTIONS} />
-            <InputBox />
-            <SearchButton />
+            <SearchInput />
           </Content>
         </Block>
 
@@ -253,16 +328,11 @@ const OPTIONS = [
 
 export async function getServerSideProps(context) {
   const missionList = new QueryClient();
-  await missionList.prefetchQuery(["mission"], () => {
-    return getMission("time");
-  });
-
+  await missionList.prefetchQuery(["missions", [null, "time"]], getMission);
+  // console.log(dehydrate(missionList).queries[0].state.data)
   return {
     props: {
-      data: {
-
-        dehydratedState: dehydrate(missionList),
-      },
+      dehydratedState: dehydrate(missionList)
     },
   };
 }

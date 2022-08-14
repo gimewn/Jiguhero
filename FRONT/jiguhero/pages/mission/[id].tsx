@@ -21,7 +21,7 @@ const NavBar = styled('header')`
  position: fixed;
   left: 0;
   right: 0;
-  top:80px;
+  top:60px;
   height: 60px;
 
   background: white;
@@ -42,7 +42,10 @@ const Header = styled("div")`
 `;
 
 const DetailWrapper = styled('div')`
-  margin-top: 60px;
+  margin-top: 20px;
+  margin-bottom: 160px;
+  max-width: 500px;
+
 `
 const MobileMore = styled(MoreVertRoundedIcon)`
     color: #98C064;
@@ -229,7 +232,7 @@ const LikeAndJoinWrapper = styled('header')`
     position: fixed;
     left: 10%;
     right: 10%;
-    bottom: 15%;
+    bottom: 13%;
     @media only screen and (min-width: 650px) {
     bottom:5%;
       }
@@ -286,6 +289,11 @@ const BackButton = styled(ArrowBackIosRoundedIcon)`
     :hover{
         cursor: pointer;
     }
+`
+
+const HiDetail = styled('div')`
+    display: flex;
+    justify-content: center;
 `
 interface PageName {
     name: string;
@@ -363,7 +371,7 @@ export default function MissionDetail() {
 
     return (
         <>
-            <div>
+            <HiDetail>
                 {/* 헤더 */}
                 <Head>
                     <title>임무상세 | 지구-방위대</title>
@@ -395,7 +403,6 @@ export default function MissionDetail() {
 
 
                 <DetailWrapper>
-
 
                     {/* 미션이미지 */}
                     <ImageBlock>
@@ -431,8 +438,8 @@ export default function MissionDetail() {
                         <Content>
                             <CalendarIcon />
                             <ContentText>
-                                {MissionDetail?.startDate[0]}.{MissionDetail?.startDate[1]}.{MissionDetail?.startDate[2]}
-                                ~ {MissionDetail?.endDate[0]}.{MissionDetail?.endDate[1]}.{MissionDetail?.endDate[2]}
+                                {MissionDetail?.startDate}
+                                ~ {MissionDetail?.endDate}
                             </ContentText>
                         </Content>
                     </Block>
@@ -491,7 +498,7 @@ export default function MissionDetail() {
                 {/* 모바일뷰 좋아요 참여하기 참여중 표시 */}
                 <MobileLikeAndJoin />
 
-            </div>
+            </HiDetail>
         </>
     )
 }

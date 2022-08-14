@@ -19,7 +19,6 @@ import {
 } from "@tanstack/react-query";
 
 import PostMission from "pages/api/mission/index";
-
 import Image from "next/image";
 import moment from "moment";
 import PostMissionImg from "pages/api/postMissionImg";
@@ -160,38 +159,17 @@ const MissionText = styled("textarea")`
   margin-top: 10px;
 `;
 
-const NavBar = styled("div")`
-  z-index: 999;
-  position: fixed;
-  left: 0;
-  right: 0;
-  top: 60px;
-  height: 60px;
-  /* padding: 2rem; */
-  color: white;
-  background: white;
-  font-weight: bold;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  @media only screen and (min-width: 650px) {
-    display: none;
-  }
-`;
-
-const Header = styled("div")`
-  display: flex;
-  justify-content: space-between;
-  margin: 0px 5px 0px 20px;
-`;
-
-const BackCompo = styled(Backcomponents)`
-  margin-top: 10px;
-  margin-bottom: 10px;
-`;
 const SubmitBtn = styled(ButtonFull)`
   width: 300px;
-`;
+  
+`
+const BottomDiv = styled('div')`
+  margin-bottom: 80px;
+`
+
+
+
+
 
 export default function Createmission() {
   // 지울거
@@ -483,12 +461,10 @@ export default function Createmission() {
         <title>임무 생성하기 | 지구-방위대</title>
       </Head>
 
-      <NavBar>
-        <Header>
-          {/* 모바일 뷰에서 뒤로가기 버튼! */}
-          <BackCompo name="임무 생성하기"></BackCompo>
-        </Header>
-      </NavBar>
+
+      {/* 모바일 뷰에서 뒤로가기 버튼! */}
+      <Backcomponents name='임무 생성하기'></Backcomponents>
+
 
       <MissioWrapper>
         {/* 미션사진추가 */}
@@ -545,8 +521,8 @@ export default function Createmission() {
               variant="contained"
               type="submit"
               onClick={async () => {
-                await PostNewMission(postdata);
-                await PostMissionImg(createImg);
+                const data = await PostNewMission(postdata);
+                await PostMissionImg(createImg, data, userId);
                 router.push("/");
               }}
             >
@@ -555,6 +531,7 @@ export default function Createmission() {
           </BtnContent>
         </Block>
       </MissioWrapper>
+
     </>
   );
 }

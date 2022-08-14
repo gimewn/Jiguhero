@@ -7,6 +7,7 @@ import Link from "next/link";
 import getMission from 'pages/api/mission/index';
 import { dehydrate, Query, QueryClient, QueryClientProvider, useQuery } from "@tanstack/react-query";
 import PropTypes from 'prop-types';
+import searchMission from 'pages/api/mission/searchMission';
 
 
 const PagI = styled(Pagination)`
@@ -18,23 +19,25 @@ const PagI = styled(Pagination)`
 
 
 
+
 export default  function MissionLists({selector}) {
   
-  const { data: Missions, isLoading } = useQuery<string[]>(['missions'],  ()=>{ return getMission(selector)} )
+  const { data: Missions, isLoading } = useQuery<string[]>(['missions'],  ()=>{ return searchMission('', 'time')} )
 
-  // const remainder = Missions.length % 5;
-  // const MissionLen = `${Missions.length / 5}`
-  // const quot = parseInt(MissionLen)
-  // const page = useRecoilValue(missionLists)
-  // const setPage = useSetRecoilState(missionLists)
-  // const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
-  //   setPage(value);
-  // };
+  const remainder = Missions.length % 5;
+  const MissionLen = `${Missions.length / 5}`
+  const quot = parseInt(MissionLen)
+  const page = useRecoilValue(missionLists)
+  const setPage = useSetRecoilState(missionLists)
+  const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
+    setPage(value);
+  };
+
 
 
   return (
     <>
-      {/* {Missions.slice((page - 1) * 5, page * 5).map((item, index) => (
+      {Missions.slice((page - 1) * 5, page * 5).map((item, index) => (
         <MissionList
           key={index} {...item} />
       ))}
@@ -42,7 +45,7 @@ export default  function MissionLists({selector}) {
         count={remainder === 0 ? quot : quot + 1}
         page={page}
         onChange={handleChange}
-      /> */}
+      />
     </>
   )
 }
@@ -53,7 +56,6 @@ export default  function MissionLists({selector}) {
 //     </>
 //   )
 // }
-
 
 // export async function getServerSideProps(context) {
 //   const missionList = new QueryClient()

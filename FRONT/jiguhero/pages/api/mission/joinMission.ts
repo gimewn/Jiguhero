@@ -2,9 +2,10 @@
 import { BASE_URL, Token } from 'pages/api/fetch';
 
 
-export default async function JoinMission() {
-    //api 더미 없어서 일단 mission에서 받아옴
-    const response = await fetch(BASE_URL+'mission/', {
+export default async function JoinMission(userId) {
+    
+
+    const response = await fetch(`${BASE_URL}mission/${userId}/joins`, {
         method:'GET',
         headers:{
             Authorization : Token

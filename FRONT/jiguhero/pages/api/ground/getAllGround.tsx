@@ -1,4 +1,3 @@
-
 import {BASE_URL, Token} from 'pages/api/fetch';
 
 export default async function getAllGround(){

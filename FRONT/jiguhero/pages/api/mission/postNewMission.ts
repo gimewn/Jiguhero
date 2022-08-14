@@ -16,19 +16,19 @@ const PostNewMission = async (postdata) => {
   Form["content"]= postdata.content
 
   
-  await fetch(`${BASE_URL}mission?userId=${postdata.userId}`, {
+  const response = await fetch(`${BASE_URL}mission?userId=${postdata.userId}`, {
     method: "POST",
     headers: {
       Authorization: Token,
       "Content-Type": "application/json",
     },
     body: JSON.stringify(Form),
-  }) .then((response) => {
-        console.log("Success:", response);
-    })
-    .catch((error) => {
+  }) 
+  
+  const data = await response.json().catch((error) => {
       console.error("Error:", error);
     });
+  return data
 };
 
 export default PostNewMission;

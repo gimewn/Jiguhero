@@ -10,12 +10,9 @@ import { NextPageContext } from "node_modules/next/dist/shared/lib/utils";
 import loginAccess from "pages/api/login";
 import { NextPage } from "next";
 
-
 export default function Login() {
-
-
-  const router = useRouter()
-  const returnUrl = router.query.returnUrl
+  const router = useRouter();
+  const returnUrl = router.query.returnUrl;
 
   return (
     <>
@@ -30,46 +27,32 @@ export default function Login() {
 
           {/* 카카오 로그인*/}
           <SnsLoginKakao>
-            
-              <ul>
-                <li>
-                  <a
-                    href="http://i7c105.p.ssafy.io:8080/oauth2/authorize/kakao?redirect_uri=http://localhost:3000"
-                  >
-                    <Image src={KakaoImg} alt="Kakao" />
-                  </a>
-                </li>
-              </ul>
-            
+            <ul>
+              <li>
+                <a href="http://i7c105.p.ssafy.io:8080/oauth2/authorize/kakao?redirect_uri=http://localhost:3000">
+                  <Image src={KakaoImg} alt="Kakao" />
+                </a>
+              </li>
+            </ul>
           </SnsLoginKakao>
 
           {/* 구글 로그인*/}
           <SnsLoginGoogle>
-           
-              <ul>
-                <li>
-                  <a
-                    href="http://i7c105.p.ssafy.io:8080/oauth2/authorize/google?redirect_uri=http://localhost:3000"
-                  >
-                    <Image src={GoogleImg} alt="Google" />
-                  </a>
-                </li>
-              </ul>
-            
+            <ul>
+              <li>
+                <a href="http://i7c105.p.ssafy.io:8080/oauth2/authorize/google?redirect_uri=http://localhost:3000">
+                  <Image src={GoogleImg} alt="Google" />
+                </a>
+              </li>
+            </ul>
           </SnsLoginGoogle>
 
           <SnsLoginNaver>
-          
-              <a
-              href="http://i7c105.p.ssafy.io:8080/oauth2/authorize/naver?redirect_uri=http://localhost:3000"
-              >
-                <Image src={NaverImg} alt="Naver" />
-              </a>
-            
+            <a href="http://i7c105.p.ssafy.io:8080/oauth2/authorize/naver?redirect_uri=http://localhost:3000">
+              <Image src={NaverImg} alt="Naver" />
+            </a>
           </SnsLoginNaver>
-           <button onClick={() => {
-            
-          }}>Logout</button>
+          <button onClick={() => {}}>Logout</button>
         </main>
       </LoginWrapper>
     </>
@@ -115,9 +98,8 @@ const SnsLoginNaver = styled("div")`
 `;
 
 // export async function getServerSideProps(context: NextPageContext) {
-  
 
 //   return {
-    
+
 //   };
 // }

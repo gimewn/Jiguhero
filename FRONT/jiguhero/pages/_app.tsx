@@ -44,7 +44,6 @@ const Body = styled("div")`
   width: 100%;
   height: 100%;
   margin-top:80px;
-
 `;
 const Container = styled("div")`
   display: flex;
@@ -60,6 +59,7 @@ const Container = styled("div")`
   }
   div {
     align-items: center;
+    /* justify-content: center; */
   }
   @media only screen and (max-width: 650px) {
     margin-bottom:80px;
