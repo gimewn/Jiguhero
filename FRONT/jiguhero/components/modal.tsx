@@ -18,14 +18,11 @@ import "swiper/css"; //basic
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import Image from 'next/image';
-<<<<<<< HEAD
-=======
 import postImg from 'pages/api/place/postImg';
 import IconButton from "@mui/material/IconButton";
 import PhotoCamera from "@mui/icons-material/PhotoCamera";
 import getImgList from 'pages/api/place/getImgList';
 import deleteReview from 'pages/api/place/deleteReview';
->>>>>>> f77d0a544892c403360790cc1333dd3dd946b22a
 
 SwiperCore.use([Navigation, Pagination]);
 
@@ -71,11 +68,7 @@ export const ModalHeader = styled('div')`
     flex-direction: row;
     padding:20px 20px 0px 25px;
 `
-<<<<<<< HEAD
-const HeaderTitle = styled('span')`
-=======
 export const HeaderTitle = styled('span')`
->>>>>>> f77d0a544892c403360790cc1333dd3dd946b22a
     font-size:1.5rem;
     font-weight:bold;
     padding: auto;
@@ -260,12 +253,7 @@ const ReportReview = styled(CheckRoundedIcon)`
     height:35px;
     width:35px;
 `
-const ImageDiv = styled('div')``
 
-<<<<<<< HEAD
-export default function Modal(props){
-    const {show, setshow, data, reviews} = props;
-=======
 const CameraBox = styled("div")`
   width: 150px;
   height: 150px;
@@ -324,29 +312,12 @@ const DeleteBtn = styled('button')`
 
 export default function Modal(props) {
     const { show, setshow, data, reviews } = props;
->>>>>>> f77d0a544892c403360790cc1333dd3dd946b22a
     const [isReport, setReport] = useState(false);
     const [ReportCategory, setReportCategory] = useState(0);
     const [ReportContent, setReportContent] = useState('');
     const reviewEmoji = [['', ''], ['😔', '실망이에요'], ['😑', '별로예요'], ['😶', '그저 그래요'], ['🤗', '만족해요'], ['🥰', '너무 좋아요']]
     const [scoreValue, setsScoreValue] = useState(1);
     const [reviewValue, setReviewValue] = useState('');
-<<<<<<< HEAD
-    const page = useRecoilValue(reviewlists)
-    const setPage = useSetRecoilState(reviewlists)
-    const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
-      setPage(value);
-    };
-    const [fetchReview, setFetchReview] = useState(reviews);
-    useEffect(()=>{
-        setFetchReview(reviews)
-    }, [reviews])
-    function Emoji(prop){
-        if(prop['index'] === 0){
-            return(<EmojiSpan size="20px">{reviewEmoji[prop['score']][prop['index']]}</EmojiSpan>)
-        }else{
-            return(<EmojiSpan size="16px">{reviewEmoji[prop['score']][prop['index']]}</EmojiSpan>)
-=======
     const [imgList, setImgList] = useState<Array<string>>();
     const [placeImg, setPlaceImg] = useState<File>();
     const [preview, setPreview] = useState<string>(); // 이미지 미리보기 사진
@@ -391,7 +362,6 @@ export default function Modal(props) {
             return (<EmojiSpan size="20px">{reviewEmoji[prop['score']][prop['index']]}</EmojiSpan>)
         } else {
             return (<EmojiSpan size="16px">{reviewEmoji[prop['score']][prop['index']]}</EmojiSpan>)
->>>>>>> f77d0a544892c403360790cc1333dd3dd946b22a
         }
     }
     function Star(score) {
@@ -401,11 +371,7 @@ export default function Modal(props) {
         }
         return <Starspan>{res}</Starspan>
     }
-<<<<<<< HEAD
-    console.log(data)
-=======
 
->>>>>>> f77d0a544892c403360790cc1333dd3dd946b22a
     const ModalContent = show && (
         <>
         <ModalDiv>
@@ -456,18 +422,6 @@ export default function Modal(props) {
                 {data.phone ? <WithIcons>
                     <CallIcon /><ModalAddress>{data.phone}</ModalAddress>
                 </WithIcons> : <></>}
-                <ImageDiv>
-                <Swiper
-                    spaceBetween={0}
-                    slidesPerView={5}
-                    scrollbar={{ draggable: true }}
-                    navigation={{
-                    nextEl: '.review-swiper-button-next',
-                    prevEl: '.review-swiper-button-prev',
-                }}>
-                    {data.imageURL.map((item)=>(<SwiperSlide></SwiperSlide>))}
-                </Swiper>
-                </ImageDiv>
                 {data.content ?
                 <WithTitle>
                     <ConTitle>🍀 이 곳은 어떤 곳?</ConTitle>

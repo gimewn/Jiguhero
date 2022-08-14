@@ -88,7 +88,6 @@ export default function MakeGround(){
                 </PickerDiv>
                 <PostButton dColor="#65ace2" hColor='#98c064' onClick={()=>{
                     postGround(1, groundEmoji, groundTitle, groundContent).then((res) => {
-                        console.log(res)
                         router.push(`myground`)
                     }
                     )

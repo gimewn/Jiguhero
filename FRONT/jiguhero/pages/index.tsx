@@ -31,6 +31,9 @@ padding: 0px 10px 10px 10px;
 `
 const Content = styled('div')`
   display:flex;
+  flex-direction: column;
+  align-items: center;
+
   `
 
 export default function Home() {
