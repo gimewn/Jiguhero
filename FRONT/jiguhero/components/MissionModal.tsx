@@ -95,6 +95,7 @@ const ModalBack = styled('div')`
     height:100%;
     width:100%;
     overflow:hidden;
+    top:0%;
 `
 export default function MissionModal(props) {
   const { show, setShow } = props;

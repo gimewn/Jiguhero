@@ -6,7 +6,6 @@ import React, { useState } from 'react';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import { useRouter } from 'next/router';
 import MissionLIST from "components/MissionLists"
-import MissionLIST2 from "components/MissionLists"
 import { dehydrate, Query, QueryClient, QueryClientProvider, useQuery } from "@tanstack/react-query";
 import { getSession, SessionProvider, useSession } from "next-auth/react";
 import getMission from "pages/api/mission/index";
@@ -167,7 +166,6 @@ export default function Mission() {
             <MissionBlock>
                 <ListContent>
                     <MissionLIST />
-                    <MissionLIST2 />
                 </ListContent>
             </MissionBlock>
         </ParentsDiv>

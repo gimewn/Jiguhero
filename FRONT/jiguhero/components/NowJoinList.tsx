@@ -8,16 +8,16 @@ const List = styled('div')`
   border-radius: 15px;
   height: 150px;
   display:flex;
-  flex-direction: row;
+  /* flex-direction: row;
   align-items: center;
-  justify-content: center;
+  justify-content: center; */
   overflow: hidden;
   margin: 5px;
   :hover{
     cursor: pointer;
   }
 
-  @media screen and (min-width: 360px){
+  /* @media screen and (min-width: 360px){
       width:320px;
 
   }
@@ -26,7 +26,7 @@ const List = styled('div')`
   }
   @media screen and (min-width: 700px) and (max-width:1400){
       width:500px;
-  }
+  } */
 `
 
 const ListImg = styled('div') <{ image: string }>`
@@ -42,7 +42,7 @@ const ListContent = styled('div')`
   width: 200px;
   height: 150px;
   border: 1px solid none;
-  float: left;
+  /* float: left; */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -51,16 +51,20 @@ const ListContent = styled('div')`
 `
 
 const TextWrapper = styled('div')`
-  margin: 4px;
+  margin-left: 15px;
+  margin-right: auto;
 `
 
 
-const TitleName = styled('a')`
+const TitleName = styled('h1')`
   font-size: 1rem;
   font-weight: bolder;
+  margin:0;
 `
-const Name = styled('a')`
+const Name = styled('p')`
 font-size: 0.75rem;
+  margin-top: 5px;
+  margin-bottom: 0;
 `
 const Date = styled(Name)`
 `
@@ -74,7 +78,7 @@ const PointBtn = styled('div')`
   color: white;
   font-size: x-small;
   margin-left:auto;
-  margin-right:8px;
+  margin-right:15px;
 `
 
 interface MissionProps {
@@ -104,20 +108,14 @@ export default function JoinList({ missionId, entryPoint, title, startDate, endD
       <List onClick={() => router.push(`/mission/${missionId}`)}>
         <ListImg image={repImageURL} />
         <ListContent>
-          <div>
-            <TextWrapper>
-              <TitleName>{title}</TitleName>
-            </TextWrapper>
-            <TextWrapper>
-              <Name>{sidoCode}</Name>
-            </TextWrapper>
-            <TextWrapper>
-              <Date>{startDate}~{endDate}</Date>
-            </TextWrapper>
-            <TextWrapper>
-              <JoinPeople>{nowPerson} / {maxPerson}명</JoinPeople>
-            </TextWrapper>
-          </div>
+
+          <TextWrapper>
+            <TitleName>{title}</TitleName>
+            <Name>{sidoCode}</Name>
+            <Date>{startDate}~{endDate}</Date>
+            <JoinPeople>{nowPerson} / {maxPerson}명</JoinPeople>
+          </TextWrapper>
+
           <PointBtn>+{entryPoint}</PointBtn>
         </ListContent>
       </List>
