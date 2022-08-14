@@ -55,7 +55,7 @@ const BtnContent = styled("div")`
   justify-content: flex-end;
   margin-top: 10px;
   @media screen and (min-width: 700px) {
-    margin-right: 3.5rem;
+    /* margin-right: 3.5rem; */
   }
 `;
 export default function NewsDetail() {
