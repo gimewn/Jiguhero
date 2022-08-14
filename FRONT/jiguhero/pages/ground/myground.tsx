@@ -5,6 +5,8 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import {ButtonFull, ParentsDiv} from 'styles/styled';
+import { DeleteBtn } from './[id]/edit';
+import deleteGround from 'pages/api/ground/deleteGround';
 
 export const Grid = styled('div')`
     display:grid;
@@ -20,7 +22,11 @@ const GroundDiv = styled('div')`
     border: 1px solid #65ace2;
     padding:20px;
     border-radius: 20px;
-    margin: 0 10px 20px 10px;
+    margin: 20px 10px;
+    height:90%;
+    display:flex;
+    position:relative;
+    justify-content: center;
     :hover{
         .groundHover{
             display: flex;
@@ -47,6 +53,8 @@ const GroundTitle = styled('p')`
     margin:5px auto;
     font-weight: bold;
     font-size: 15px;
+    text-align: center;
+    word-break: keep-all;
 `
 const GroundIcon = styled('p')`
     margin:0;
@@ -140,6 +148,9 @@ const GroundButton = styled(ButtonFull)`
     margin:5px 0;
     font-size: 15px;
 `
+const DeleteB = styled(DeleteBtn)`
+z-index:999;
+`
 
 export default function GroundList(){
     const router = useRouter();
@@ -167,7 +178,7 @@ export default function GroundList(){
         if(key==="1"){
             let res = [...groundList];
             res.sort((a, b)=>{
-                return a.groundId - b.groundId
+                return b.groundId - a.groundId
             })
             setGroundList(res)
         }else if(key === "2"){
@@ -201,12 +212,13 @@ export default function GroundList(){
             </div>
             <ButtonSelect>
                 <SelectBox onChange={(e)=>{Filter(e.target.value)}}>
+                    <option value="0">전체 보기</option>
                     <option value="1">최신등록순</option>
                     <option value="2">좋아요순</option>
                     <option value="3">조회순</option>
                 </SelectBox>
                 <Topbutton>
-                    <ButtonFull dColor='#65ace2' hColor='#98c064' style={{marginRight:'10px', fontSize:'13px'}} onClick={() => {router.push(`createground`)}}>활동구역 생성</ButtonFull>
+                    <ButtonFull dColor='#65ace2' hColor='#98c064' style={{marginRight:'10px', fontSize:'15px'}} onClick={() => {router.push(`createground`)}}>활동구역 생성</ButtonFull>
                 </Topbutton>
             </ButtonSelect>
             </GroundTop>
@@ -218,14 +230,21 @@ export default function GroundList(){
                 </NoGround>: 
                 <Grid>
                 {groundList?.map((item)=>(<GroundDiv key={item.groundId}>
+                    <DeleteB 
+                            onClick={()=>{
+                                if(confirm('삭제하시겠습니까?') === true){
+                                    deleteGround(item.groundId, 1)
+                                }
+                            }}  />
                     <GroundItem className="groundDefault">
                     <GroundIcon>{item.icon}</GroundIcon>
                 <GroundTitle>{item.title}</GroundTitle>
-                {item.placeIdList ? <GroundPlaceLength>{item.placeIdList.length}개의 장소</GroundPlaceLength> : <GroundPlaceLength>0개의 장소</GroundPlaceLength>}
+                <GroundPlaceLength>{item.count}개의 장소</GroundPlaceLength>
                     </GroundItem>
                     <GroundHover className='groundHover'>
-                        <GroundButton dColor='#98c064' hColor='#65ace2' onClick={() => {router.push(`${item.groundId}`)}}>상세보기</GroundButton>
-                        <GroundButton dColor='#98c064' hColor='#65ace2' onClick={() => {router.push(`${item.groundId}/edit`)}}>구역 수정</GroundButton>
+                        <GroundButton dColor='#98c064' hColor='#65ace2' onClick={() => {router.push(`${item.groundId}`)
+                    console.log(item)}}>상세보기</GroundButton>
+                        <GroundButton dColor='#98c064' hColor='#65ace2' onClick={() => {router.push(`${item.groundId}/edit`)}}>수정하기</GroundButton>
                     </GroundHover>
                 </GroundDiv>))
                 }

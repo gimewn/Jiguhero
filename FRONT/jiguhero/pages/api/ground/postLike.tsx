@@ -2,18 +2,14 @@ import renewAccess from "../auth/renewAccess";
 import {BASE_URL, Token} from 'pages/api/fetch';
 
 
-export default async function postReport(placeId, userId, content, score){
-    const response = await fetch(`${BASE_URL}place/review?placeId=${placeId}&userId=${userId}`, {
+export default async function postGround(groundId, userId){
+
+    const response = await fetch(`${BASE_URL}ground/like?groundId=${groundId}&userId=${userId}`, {
         method:'POST',
         headers:{
             "Authorization" : Token,
             "Content-Type": "application/json"
-        },
-        body:JSON.stringify({
-            "content": content,
-            "score": score,
-            "userId":userId
-        })
+        }
     });
     const data = await response.json().catch(() => {
         renewAccess;

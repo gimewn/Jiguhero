@@ -6,6 +6,7 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import dynamic from 'next/dynamic';
 import postGround from 'pages/api/ground/postGround';
+import { useRouter } from 'next/router';
 
 export const Picker = dynamic(() => import('emoji-picker-react'), { ssr: false });
 
@@ -22,7 +23,10 @@ export const Title = styled('p')`
     font-weight:bold;
 `
 export const ContentDiv = styled('div')`
-    margin-left:40px;
+    margin-left:35px;
+    margin-right:40px;
+    /* margin-right:auto; */
+    /* width:100%; */
 `
 export const Input = styled('input')`
     border:1px solid #888888;
@@ -32,7 +36,7 @@ export const Input = styled('input')`
     font-size:15px;
     @media only screen and (max-width: 650px) {
         width:100%;
-        margin-right:60px;
+        margin-rigt:60px;
   }
 `
 export const PickerDiv = styled('div')`
@@ -54,6 +58,7 @@ export const PostButton = styled(ButtonFull)`
     }
 `
 export default function MakeGround(){
+    const router = useRouter();
     const [groundEmoji, setgroundEmoji] = useState<string>();
     const [groundTitle, setGroundTitle] = useState<string>();
     const [groundContent, setGroundContent] = useState<string>();
@@ -66,11 +71,9 @@ export default function MakeGround(){
             <H2>🍀 활동구역 생성</H2>
             <ContentDiv>
                 <Title>구역 이름</Title>
-                <Input placeholder='구역의 이름을 설정해주세요' onChange={(e) => {setGroundTitle(e.target.value)
-                console.log(groundTitle)}} />
+                <Input placeholder='구역의 이름을 설정해주세요' onChange={(e) => {setGroundTitle(e.target.value)}} />
                 <Title>구역 설명</Title>
-                <Input placeholder='구역에 대한 설명을 적어주세요' onChange={(e) => {setGroundContent(e.target.value)
-                console.log(groundContent)}}  />
+                <Input placeholder='구역에 대한 설명을 적어주세요' onChange={(e) => {setGroundContent(e.target.value)}}  />
                 <Title style={{marginBottom:'0px'}}>대표 아이콘</Title>
                 <p style={{margin:'5px 0 10px 0'}}>활동구역을 대표할 아이콘을 선택해 주세요</p>
                 <PickerDiv>
@@ -84,7 +87,11 @@ export default function MakeGround(){
                 <Picker onEmojiClick={onEmojiClick} pickerStyle={{width:'100%', margin:'10px 0'}} />
                 </PickerDiv>
                 <PostButton dColor="#65ace2" hColor='#98c064' onClick={()=>{
-                    postGround(1, groundEmoji, groundTitle, groundContent)
+                    postGround(1, groundEmoji, groundTitle, groundContent).then((res) => {
+                        console.log(res)
+                        router.push(`myground`)
+                    }
+                    )
                 }}> 활동구역 등록 </PostButton>
             </ContentDiv>
         </ParentsDiv>

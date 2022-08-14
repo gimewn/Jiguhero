@@ -18,10 +18,15 @@ import "swiper/css"; //basic
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import Image from 'next/image';
+import postImg from 'pages/api/place/postImg';
+import IconButton from "@mui/material/IconButton";
+import PhotoCamera from "@mui/icons-material/PhotoCamera";
+import getImgList from 'pages/api/place/getImgList';
+import deleteReview from 'pages/api/place/deleteReview';
 
 SwiperCore.use([Navigation, Pagination]);
 
-export const ModalBack = styled('div')`
+const ModalBack = styled('div')`
     position:absolute;
     background-color: rgba(0, 0, 0, 0.5);
     z-index: 998;
@@ -225,6 +230,7 @@ const Select = styled('select')`
 const ReviewArea = styled('textarea')`
     height:45px;
     width:80%;
+    font-size:15px;
     border-radius:10px;
     /* margin: 0px 10px 0px 30px; */
     padding:10px;
@@ -247,7 +253,62 @@ const ReportReview = styled(CheckRoundedIcon)`
     height:35px;
     width:35px;
 `
-const ImageDiv = styled('div')``
+
+const CameraBox = styled("div")`
+  width: 150px;
+  height: 150px;
+  background-color: #ffffff;
+  border-radius: 100px;
+  /* box-shadow: 0px 0px 5px 0px #dadce0 inset; */
+  border: 1px solid #98c064;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  svg {
+  }
+  img {
+    object-fit: cover;
+    width: 150px;
+    height: 150px;
+    border-radius: 100px;
+  }
+`;
+const CameraBtn = styled("div")`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color:#98c064;
+  margin: 0 0 20px 0;
+  position:relative;
+`;
+const ImgPostBtn = styled('button')`
+    position:absolute;
+    z-index:999;
+    bottom:20px;
+    right:5px;
+    border:0;
+    border-radius: 30px;
+    background-color:#65ACE2;
+    padding:15px;
+    color:white;
+`
+const Img = styled('img')`
+    width:120px;
+    height:120px;
+    object-fit: cover;
+    margin-bottom:20px;
+    border:0;
+    border-radius:10px;
+
+`
+const DeleteBtn = styled('button')`
+    background-color:#FF4848;
+    color:white;
+    border:0;
+    border-radius: 10px;
+    padding:3px 10px;
+    margin: auto 0 auto 10px;
+`
 
 export default function Modal(props){
     const {show, setshow, data, reviews} = props;
@@ -257,12 +318,42 @@ export default function Modal(props){
     const reviewEmoji = [['', ''], ['😔','실망이에요'], ['😑', '별로예요'], ['😶', '그저 그래요'], ['🤗', '만족해요'], ['🥰', '너무 좋아요']]
     const [scoreValue, setsScoreValue] = useState(1);
     const [reviewValue, setReviewValue] = useState('');
-    const page = useRecoilValue(reviewlists)
-    const setPage = useSetRecoilState(reviewlists)
-    const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
-      setPage(value);
-    };
-    const [fetchReview, setFetchReview] = useState(reviews);
+    const [imgList, setImgList] = useState<Array<string>>();
+    const [placeImg, setPlaceImg] = useState<File>();
+    const [preview, setPreview] = useState<string>(); // 이미지 미리보기 사진
+    const changeHandler = (e) => {
+        const file = e.target.files[0];
+        if (file && file.type.substr(0, 5) === "image") {
+          setPlaceImg(file);
+        } else {
+            setPlaceImg(null)
+        }
+      };
+      function getImg(){
+        getImgList(data.placeId).then((result) => setImgList(result.imageURL))
+      }
+
+      const [fetchReview, setFetchReview] = useState(reviews);
+
+      useEffect(() => {
+        if (placeImg) {
+          const reader = new FileReader();
+          reader.onloadend = () => {
+            setPreview(reader.result as string);
+          };
+          reader.readAsDataURL(placeImg);
+        } else {
+          setPreview(null);
+        }
+        if(data.placeId){
+            getImg()
+        }
+      }, [placeImg]);
+      useEffect(()=>{
+        if(data.placeId){
+            getImg()
+        }
+      })
     useEffect(()=>{
         setFetchReview(reviews)
     }, [reviews])
@@ -280,6 +371,7 @@ export default function Modal(props){
         }
         return <Starspan>{res}</Starspan>
     }
+
     const ModalContent = show && (
         <>
         <ModalDiv>
@@ -288,6 +380,39 @@ export default function Modal(props){
                 <CloseBtn onClick={() => setshow(false)}/>
             </ModalHeader>
             <ModalBody>
+            <CameraBtn>
+            <ImgPostBtn onClick={()=>{postImg(placeImg, data.placeId, 1).then((res)=>{setPlaceImg(null)})}}>OK</ImgPostBtn>
+            <IconButton aria-label="upload picture" component="label">
+                <input
+                    hidden
+                    accept="image/*"
+                    type="file"
+                    name="file"
+                    onChange={changeHandler}
+                />
+                {placeImg ? (
+                    <CameraBox>
+                    <img src={preview} />
+                    </CameraBox>
+                ) : (
+                    <CameraBox>
+                    <PhotoCamera fontSize="large" style={{color:'#98c064'}}/>
+                    </CameraBox>
+                )}
+                </IconButton>
+            </CameraBtn>
+                <Swiper
+                    spaceBetween={0}
+                    slidesPerView="auto"
+                    scrollbar={{ draggable: true }}
+                    navigation={{
+                    nextEl: '.review-swiper-button-next',
+                    prevEl: '.review-swiper-button-prev',
+                }}>
+                    {imgList?.map((item, i)=>(<SwiperSlide key={i}>
+                        <Img src={item} />
+                    </SwiperSlide>))}
+                </Swiper>
                 {data.roadAddress ? <WithIcons>
                     <LocIcon /><ModalAddress>{data.roadAddress}</ModalAddress>
                 </WithIcons> : <></>}
@@ -297,18 +422,6 @@ export default function Modal(props){
                 {data.phone ? <WithIcons>
                     <CallIcon /><ModalAddress>{data.phone}</ModalAddress>
                 </WithIcons> : <></>}
-                <ImageDiv>
-                <Swiper
-                    spaceBetween={0}
-                    slidesPerView={5}
-                    scrollbar={{ draggable: true }}
-                    navigation={{
-                    nextEl: '.review-swiper-button-next',
-                    prevEl: '.review-swiper-button-prev',
-                }}>
-                    {data.imageURL.map((item)=>(<SwiperSlide></SwiperSlide>))}
-                </Swiper>
-                </ImageDiv>
                 {data.content ?
                 <WithTitle>
                     <ConTitle>🍀 이 곳은 어떤 곳?</ConTitle>
@@ -343,6 +456,15 @@ export default function Modal(props){
                     <ReviewBox key={item.reviewId}>
                         <Star score={item.score} />
                         <span>{item.content}</span>
+                    {item.userId === 1 ? <DeleteBtn onClick={()=>{
+                        if(confirm("삭제하시겠습니까?" )=== true){
+                            deleteReview(item.reviewId).then((res) => {
+                                getReview(data.placeId).then((res) => {setFetchReview(res)
+                                })
+                            }
+                            )
+                        }
+                    }}>삭제</DeleteBtn> : <></>}
                     </ReviewBox>
                     </ReviewDiv>
                     ))}

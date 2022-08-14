@@ -123,7 +123,7 @@ function MyApp({ Component, pageProps }: AppProps) {
             <Hydrate state={pageProps?.dehydratedState} >
               <SessionProvider session={pageProps?.session}>
                 <Script
-                  src={`//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAOMAP_APPKEY}&libraries=services,clusterer&autoload=false`}
+                  src={`//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAOMAP_APPKEY}&libraries=services&autoload=false`}
                   strategy="beforeInteractive"
                 />
                 <Component {...pageProps} />

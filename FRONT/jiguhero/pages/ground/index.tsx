@@ -16,24 +16,25 @@ const Grid = styled('div')`
     @media only screen and (max-width: 650px) {
         grid-template-columns: repeat(2, 1fr);
   }
-  margin-left:25px;
-  margin-top:20px;
-  margin-right:25px;
+  margin: 20px 25px;
 `
 const GroundItem = styled('div')`
     border: 1px solid #65ace2;
     padding:20px;
     border-radius: 20px;
-    margin: 0 10px 20px 10px;
+    margin: 20px 10px;
     display:flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    height:90%;
 `
 const GroundTitle = styled('p')`
     margin:5px auto;
     font-weight: bold;
     font-size: 15px;
+    word-break: keep-all;
+    text-align: center;
 `
 const GroundIcon = styled('p')`
     margin:0;
@@ -129,7 +130,9 @@ export default function GroundList(){
     // const {data:AllGround} = useQuery(['allGround'], getAllGround) //리스트에 나타낼 아이템
     const [groundList, setGroundList] = useState([])
     useEffect(()=>{
-        getAllGround().then((res) => setGroundList(res))
+        getAllGround().then((res) => {
+            console.log(res)
+            setGroundList(res)})
     }, [])
     // const [count, setCount] = useState(0); //아이템 총 개수
     // const [currentpage, setCurrentpage] = useState(1); //현재페이지
@@ -168,7 +171,7 @@ export default function GroundList(){
         if(key==="1"){
             let res = [...groundList];
             res.sort((a, b)=>{
-                return a.groundId - b.groundId
+                return b.groundId - a.groundId
             })
             setGroundList(res)
         }else if(key === "2"){
@@ -202,13 +205,14 @@ export default function GroundList(){
             </div>
             <ButtonSelect>
                 <SelectBox onChange={(e)=>{Filter(e.target.value)}}>
+                    <option value="0">전체 보기</option>
                     <option value="1">최신등록순</option>
                     <option value="2">좋아요순</option>
                     <option value="3">조회순</option>
                 </SelectBox>
                 <Topbutton>
-                    <ButtonFull dColor='#65ace2' hColor='#98c064' style={{marginRight:'10px', fontSize:'13px'}} onClick={() => {router.push(`ground/createground`)}}>활동구역 생성</ButtonFull>
-                    <ButtonFull dColor='#98c064' hColor='#65ace2' style={{fontSize:'13px'}} onClick={() => {router.push(`ground/myground`)}}>나의 활동구역</ButtonFull>
+                    <ButtonFull dColor='#65ace2' hColor='#98c064' style={{marginRight:'10px', fontSize:'15px'}} onClick={() => {router.push(`ground/createground`)}}>활동구역 생성</ButtonFull>
+                    <ButtonFull dColor='#98c064' hColor='#65ace2' style={{fontSize:'15px'}} onClick={() => {router.push(`ground/myground`)}}>나의 활동구역</ButtonFull>
                 </Topbutton>
             </ButtonSelect>
             </GroundTop>
@@ -222,7 +226,7 @@ export default function GroundList(){
                 {groundList?.map((item)=>(<GroundItem key={item.groundId} onClick={() => {router.push(`ground/${item.groundId}`)}}>
                 <GroundIcon>{item.icon}</GroundIcon>
                 <GroundTitle>{item.title}</GroundTitle>
-                {item.placeIdList ? <GroundPlaceLength>{item.placeIdList.length}개의 장소</GroundPlaceLength> : <GroundPlaceLength>0개의 장소</GroundPlaceLength>}
+                <GroundPlaceLength>{item.count}개의 장소</GroundPlaceLength>
                 </GroundItem>))}</Grid>}
             
             {/* <Paigination page={currentpage} count={count} setPage={setPage} /> */}
