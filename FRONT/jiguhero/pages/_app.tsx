@@ -52,8 +52,13 @@ const Container = styled("div")`
   justify-content: center;
   flex-direction: column;
   width:inherit;
+<<<<<<< HEAD
   /* padding:0 20px;
   max-width: 700px; */
+=======
+  /* padding:0 20px; */
+  /* max-width: 700px; */
+>>>>>>> f77d0a544892c403360790cc1333dd3dd946b22a
   span, p {
     align-items: flex-start;
   }
@@ -122,7 +127,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           <QueryClientProvider client={queryClient}>
             <Hydrate state={pageProps?.dehydratedState} >
                 <Script
-                  src={`//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAOMAP_APPKEY}&libraries=services,clusterer&autoload=false`}
+                  src={`//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAOMAP_APPKEY}&libraries=services&autoload=false`}
                   strategy="beforeInteractive"
                 />
                 <Component {...pageProps} />

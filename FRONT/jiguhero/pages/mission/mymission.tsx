@@ -1,4 +1,5 @@
 import styled from "styled-components";
+<<<<<<< HEAD
 import { ButtonFull, ButtonBorder } from 'styles/styled';
 import Backcomponents from 'components/back';
 import Head from 'next/head';
@@ -41,6 +42,20 @@ const BackCompo = styled(Backcomponents)`
   margin-top: 10px;
   margin-bottom: 10px;
 `
+=======
+import { ButtonFull, ButtonBorder, ParentsDiv } from 'styles/styled';
+import Backcomponents from 'components/back';
+import MissionModal from 'components/MissionModal';
+import Head from 'next/head';
+import { useRouter } from 'next/router';
+import { missionTabpage } from "states/mission";
+import { RecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import React, { useState, useEffect } from 'react';
+import ProgressBar from "@ramonak/react-progress-bar";
+import ImageList from '@mui/material/ImageList';
+import ImageListItem from '@mui/material/ImageListItem';
+
+>>>>>>> f77d0a544892c403360790cc1333dd3dd946b22a
 const Div = styled('div')`
     padding: 18px;
 `
@@ -48,27 +63,46 @@ const Div = styled('div')`
 const List = styled('div')`
   border: 1px solid #98C064;
   border-radius: 15px;
+<<<<<<< HEAD
   height: 150px;
   display:flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
+=======
+  width: auto;
+  height: auto;
+  display:flex;
+  /* flex-direction: row; */
+  /* align-items: center;
+  justify-content: center; */
+>>>>>>> f77d0a544892c403360790cc1333dd3dd946b22a
   overflow: hidden;
   margin: 5px;
   :hover{
     cursor: pointer;
   }
 
+<<<<<<< HEAD
   @media screen and (min-width: 360px){
       width:350px;
 
+=======
+  /* @media screen and (min-width: 360px){
+      width:350px;
+>>>>>>> f77d0a544892c403360790cc1333dd3dd946b22a
   }
   @media screen and (min-width:450px){
       width: 350px;
   }
   @media screen and (min-width: 700px) and (max-width:1400){
+<<<<<<< HEAD
       width:500px;
   }
+=======
+      width:800px;
+  } */
+>>>>>>> f77d0a544892c403360790cc1333dd3dd946b22a
 `
 /* const ListImg = styled('div') <{ image: string }>` * /
 /* background-image: url('${(props) => props.image}'); */
@@ -85,7 +119,11 @@ const ListContent = styled('div')`
   width: 200px;
   height: 150px;
   border: 1px solid none;
+<<<<<<< HEAD
   float: left;
+=======
+  /* float: left; */
+>>>>>>> f77d0a544892c403360790cc1333dd3dd946b22a
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -94,6 +132,7 @@ const ListContent = styled('div')`
 `
 
 const TextWrapper = styled('div')`
+<<<<<<< HEAD
   margin: 4px;
 `
 
@@ -103,6 +142,21 @@ const TitleName = styled('a')`
 `
 const Name = styled('a')`
   font-size: 0.75rem;
+=======
+  margin-left: 15px;
+  margin-right: auto;
+`
+
+const TitleName = styled('h2')`
+  font-size: 1rem;
+  font-weight: bolder;
+  margin: 0;
+`
+const Name = styled('p')`
+  font-size: 0.75rem;
+  margin-top: 5px;
+  margin-bottom: 0;
+>>>>>>> f77d0a544892c403360790cc1333dd3dd946b22a
 `
 const Date = styled(Name)`
   `
@@ -129,6 +183,7 @@ const ButtonWrapper = styled('div')`
   margin: 20px;
 `
 
+<<<<<<< HEAD
 interface IBackColor {
   backColor: string,
 }
@@ -140,11 +195,20 @@ const AchieveBtn = styled('button')`
   padding-left:10px;
   padding-right:10px;
   text-shadow: -1px 0px black, 0px 1px black, 1px 0px black, 0px -1px black;
+=======
+
+const AchieveFullBtn = styled(ButtonFull)`
+  font-size: medium;
+  border-radius: 10px;
+  padding: 3px 10px;
+  /* text-shadow: -1px 0px black, 0px 1px black, 1px 0px black, 0px -1px black; */
+>>>>>>> f77d0a544892c403360790cc1333dd3dd946b22a
   :hover{
     cursor: pointer;
   }
 `
 
+<<<<<<< HEAD
 const CertifyBtn = styled('button')`
   border: solid 1px;
   border: solid 1px black;
@@ -177,6 +241,25 @@ const AchieveWrapper = styled('div')`
   display:flex;
   justify-content: center;
   max-width: 500px;
+=======
+const CertifyFullBtn = styled(AchieveFullBtn)`
+`
+const AchieveBorderBtn = styled(ButtonBorder)`
+  font-size: medium;
+  border-radius: 10px;
+  padding: 3px 10px;
+    :hover{
+    cursor: pointer;
+  }
+`
+const CertifyBorderBtn = styled(AchieveBorderBtn)`
+`
+
+const AchieveWrapper = styled('div')`
+  display:flex;
+  justify-content: center;
+  /* max-width: 500px; */
+>>>>>>> f77d0a544892c403360790cc1333dd3dd946b22a
 `
 const ProgressWrapper = styled('div')`
   display: flex;
@@ -189,11 +272,15 @@ const CertifyWrapper = styled('div')`
   display: flex;
   justify-content: center;
   align-items: center;
+<<<<<<< HEAD
 >>>>>>> c6fd418499a98888cdcdabe4c0d5596a9e51ce3c
+=======
+>>>>>>> f77d0a544892c403360790cc1333dd3dd946b22a
 `
 const CertifyGoBtn = styled(ButtonFull)`
   padding: 3px 10px;
   border-radius: 10px;
+<<<<<<< HEAD
 <<<<<<< HEAD
   margin-left: 25px;
   margin-right: 25px;
@@ -219,6 +306,8 @@ const Progress = styled(ProgressBar)`
   } */
 `
 =======
+=======
+>>>>>>> f77d0a544892c403360790cc1333dd3dd946b22a
   margin-left: 140px;
   margin-right: 25px;
 `
@@ -230,6 +319,7 @@ const Text = styled('a')`
 `
 const Text2 = styled('a')`
   font-size: 13px;
+<<<<<<< HEAD
 `
 
 const Text2Wrapper = styled('div')`
@@ -238,6 +328,13 @@ const Text2Wrapper = styled('div')`
   
   margin: 0 15px 15px 15px;
 `
+=======
+  margin-left: 4rem;
+  margin-right:1rem;
+`
+
+
+>>>>>>> f77d0a544892c403360790cc1333dd3dd946b22a
 
 //진행률바 라이브러리 이용
 const Progress = styled(ProgressBar)`
@@ -279,7 +376,10 @@ const BottomDiv = styled('div')`
   margin-bottom: 70px;
 `
 
+<<<<<<< HEAD
 >>>>>>> c6fd418499a98888cdcdabe4c0d5596a9e51ce3c
+=======
+>>>>>>> f77d0a544892c403360790cc1333dd3dd946b22a
 // interface MissionProps {
 //   entryPoint: number;
 //   title: string;
@@ -296,6 +396,7 @@ const BottomDiv = styled('div')`
 function NowMission() {
   const router = useRouter();
   return (
+<<<<<<< HEAD
     <>
       <List onClick={() => router.push(`/ mission / `)}>
         {/* <ListImg image={repImageURL} /> */}
@@ -337,11 +438,40 @@ function ButtonGroup() {
 =======
   console.log(tabColor)
 >>>>>>> c6fd418499a98888cdcdabe4c0d5596a9e51ce3c
+=======
+    <List onClick={() => router.push(`1`)}>
+      {/* <ListImg image={repImageURL} /> */}
+      <ListImg />
+      <ListContent>
+        <TextWrapper>
+          <TitleName>제목</TitleName>
+          <Name>지역</Name>
+          <Date>시작 날짜~끝 날짜</Date>
+          <JoinPeople>1 / 5명</JoinPeople>
+        </TextWrapper>
+        {/* </div> */}
+        <PointBtn>+200</PointBtn>
+      </ListContent>
+    </List>
+  )
+}
+
+//달성률 & 인증샷 버튼 그룹
+function ButtonGroup() {
+  // 탭 전환
+  const tab = useRecoilValue(missionTabpage);
+  const setTab = useSetRecoilState(missionTabpage);
+
+  //달성률 버튼 클릭하면 연두색 인증샷 버튼 클릭하면 하얀색!
+  const [tabColor, setTabColor] = useState(true)
+  console.log(tabColor)
+>>>>>>> f77d0a544892c403360790cc1333dd3dd946b22a
   return (
     <>
       {/* 탭 전환을 위한 버튼들 */}
       <ButtonWrapper>
         {tabColor ?
+<<<<<<< HEAD
 <<<<<<< HEAD
           <AchieveBtn backColor={`#98C064`} onClick={() => { setTabColor(!tabColor) }}>달성률</AchieveBtn>
           : <AchieveBtn backColor={`#fffff`} onClick={() => { setTabColor(!tabColor) }}>달성률</AchieveBtn>
@@ -362,6 +492,14 @@ function ButtonGroup() {
         {tabColor ?
           <CertifyBtn backColor={`#fffff`} onClick={() => { setTab(false), setTabColor(!tabColor) }}>인증샷</CertifyBtn>
           : <CertifyBtn backColor={`#98C064`} onClick={() => { setTab(false), setTabColor(!tabColor) }}>인증샷</CertifyBtn>
+=======
+          <AchieveFullBtn dColor={'#98C064'} hColor={'98C064'} onClick={() => { setTab(true), setTabColor(!tabColor) }}>달성률</AchieveFullBtn>
+          : <AchieveBorderBtn dColor={'#65ACE2'} onClick={() => { setTab(true), setTabColor(!tabColor) }}>달성률</AchieveBorderBtn>
+        }
+        {tabColor ?
+          <CertifyBorderBtn dColor={' #65ACE2'} onClick={() => { setTab(false), setTabColor(!tabColor) }}>인증샷</CertifyBorderBtn>
+          : <CertifyFullBtn dColor={'#98C064'} hColor={'98C064'} onClick={() => { setTab(false), setTabColor(!tabColor) }}>인증샷</CertifyFullBtn>
+>>>>>>> f77d0a544892c403360790cc1333dd3dd946b22a
         }
       </ButtonWrapper >
       {tab ? <Achievement /> : <Certification />}
@@ -420,7 +558,13 @@ const itemData = [
     title: 'Bike',
   },
 ];
+<<<<<<< HEAD
 
+=======
+function MyMobileView() {
+
+}
+>>>>>>> f77d0a544892c403360790cc1333dd3dd946b22a
 //나의 인증샷 (mui 사용함!)
 function MyCertificationLists() {
   return (
@@ -443,6 +587,7 @@ function MyCertificationLists() {
   );
 }
 
+<<<<<<< HEAD
 >>>>>>> c6fd418499a98888cdcdabe4c0d5596a9e51ce3c
 //달성률과 나의 인증샷 보여주는 탭
 function Achievement() {
@@ -457,16 +602,46 @@ function Achievement() {
 
       {/* 내 인증샷 모아보기 */}
 =======
+=======
+//달성률과 나의 인증샷 보여주는 탭
+function Achievement() {
+  const [Modal, setModal] = useState(false)
+  useEffect(() => {
+    if (Modal === false) {
+      console.log('hihi', Modal)
+    } else {
+      document.body.style.cssText = `
+      position: fixed; 
+      top: -${window.scrollY}px;
+      overflow-y: scroll;
+      width: 100%;`;
+      return () => {
+        const scrollY = document.body.style.top;
+        document.body.style.cssText = '';
+        window.scrollTo(0, parseInt(scrollY || '0', 10) * -1);
+        console.log('bye', Modal)
+      };
+    }
+  }, [Modal]);
+
+  return (
+    <>
+>>>>>>> f77d0a544892c403360790cc1333dd3dd946b22a
 
       {/* 달성률 바 */}
       <AchieveWrapper>
         <Text>달성률</Text>
+<<<<<<< HEAD
+=======
+        <Text2>~일만 더 인증하면 성공이에요!</Text2>
+>>>>>>> f77d0a544892c403360790cc1333dd3dd946b22a
       </AchieveWrapper>
 
       <ProgressWrapper>
         <Progress completed={60} bgColor={'#65ACE2'} />
       </ProgressWrapper>
 
+<<<<<<< HEAD
       <Text2Wrapper>
         <Text2>~일만 더 인증하면 성공이에요!</Text2>
       </Text2Wrapper>
@@ -483,10 +658,22 @@ function Achievement() {
 =======
       <MyCertificationLists />
 >>>>>>> c6fd418499a98888cdcdabe4c0d5596a9e51ce3c
+=======
+
+      {/* 내 인증샷 모아보기 */}
+
+      <CertifyWrapper>
+        <Text>나의 인증샷</Text>
+        <CertifyGoBtn hColor={'#65ACE2'} dColor={'#98C064'} onClick={() => setModal(true)}>인증하기</CertifyGoBtn>
+        <MissionModal show={Modal} setShow={setModal} />
+      </CertifyWrapper>
+      <MyCertificationLists />
+>>>>>>> f77d0a544892c403360790cc1333dd3dd946b22a
     </>
   )
 }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 //다른 사람들의 인증샷을 보여주는 탭
 function Certification() {
@@ -494,6 +681,8 @@ function Certification() {
   return (
     <>
 =======
+=======
+>>>>>>> f77d0a544892c403360790cc1333dd3dd946b22a
 
 //대원들의 인증샷 (mui 사용함!)
 function HeroCertificationLists() {
@@ -531,7 +720,10 @@ function Certification() {
       </HeroTextWrapper>
       {/* 인증샷 있으면 */}
       <HeroCertificationLists />
+<<<<<<< HEAD
 >>>>>>> c6fd418499a98888cdcdabe4c0d5596a9e51ce3c
+=======
+>>>>>>> f77d0a544892c403360790cc1333dd3dd946b22a
 
     </>
   )
@@ -544,6 +736,7 @@ export default function MyMissionFeed() {
       <Head>
         <title>나의 임무 | 지구-방위대</title>
       </Head>
+<<<<<<< HEAD
       {/* 네브바 */}
       <NavBar>
         <Header>
@@ -551,6 +744,12 @@ export default function MyMissionFeed() {
           <BackCompo name='나의 임무'></BackCompo>
         </Header>
       </NavBar>
+=======
+      {/* 모바일 뷰에서 뒤로가기 버튼! */}
+      <Backcomponents name='나의 임무'></Backcomponents>
+
+
+>>>>>>> f77d0a544892c403360790cc1333dd3dd946b22a
 
       <Div></Div>
       {/* 참여중인 미션 보여줌! */}
@@ -561,12 +760,16 @@ export default function MyMissionFeed() {
       {/* 달성률 인증샷 탭 */}
       <ButtonGroup />
 <<<<<<< HEAD
+<<<<<<< HEAD
 
       <Achievement />
 
 =======
       <BottomDiv></BottomDiv>
 >>>>>>> c6fd418499a98888cdcdabe4c0d5596a9e51ce3c
+=======
+      <BottomDiv></BottomDiv>
+>>>>>>> f77d0a544892c403360790cc1333dd3dd946b22a
     </>
   )
 }

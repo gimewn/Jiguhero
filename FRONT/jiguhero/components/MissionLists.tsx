@@ -1,24 +1,22 @@
 import MissionList from 'components/MissionList';
-import { Pagination } from "@mui/material";
 import { missionLists } from "states/mission";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import styled from 'styled-components';
-import Link from "next/link";
 import getMission from 'pages/api/mission/index';
 import { dehydrate, Query, QueryClient, QueryClientProvider, useQuery } from "@tanstack/react-query";
+<<<<<<< HEAD
 import PropTypes from 'prop-types';
 import searchMission from 'pages/api/mission/searchMission';
-
-
-const PagI = styled(Pagination)`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 20px;
-`;
+=======
+import { getSession, SessionProvider, useSession } from "next-auth/react";
+import { useEffect, useState } from 'react';
+import Pagination from 'components/pagination';
+>>>>>>> f77d0a544892c403360790cc1333dd3dd946b22a
 
 
 
+
+<<<<<<< HEAD
 
 export default  function MissionLists({selector}) {
   
@@ -46,8 +44,30 @@ export default  function MissionLists({selector}) {
         page={page}
         onChange={handleChange}
       />
+=======
+export default function MissionLists() {
+
+  const { data: MISSION } = useQuery(['missions'], getMission)
+  console.log(MISSION)
+  const [page, setPage] = useState(1);
+  const handlePageChange = (page) => {
+    setPage(page)
+    console.log(page)
+  }
+  const count: number = MISSION?.length
+  useEffect(() => {
+    console.log(count)
+  }, [count])
+
+  const AllMissionList = count !== undefined && (
+    <>
+      {MISSION?.map((item, index) => (
+        <MissionList key={index} {...item} />))}
+      <Pagination page={page} totalcount={count} setPage={handlePageChange} />
+>>>>>>> f77d0a544892c403360790cc1333dd3dd946b22a
     </>
   )
+  return AllMissionList
 }
 //   return (
 //     <>
@@ -62,6 +82,7 @@ export default  function MissionLists({selector}) {
   
 //   await missionList.prefetchQuery(['missions'], () => { getMission("latest") })
 
+<<<<<<< HEAD
 //   return {
 //     props: {
 //       data: {
@@ -71,3 +92,19 @@ export default  function MissionLists({selector}) {
 //     },
 //   };
 // }
+=======
+export async function getServerSideProps(context) {
+  const missionList = new QueryClient()
+  const session = await getSession(context);
+  await missionList.prefetchQuery(['missions'], () => { getMission() })
+
+  return {
+    props: {
+      data: {
+        session,
+        dehydratedState: dehydrate(missionList)
+      },
+    },
+  }
+}
+>>>>>>> f77d0a544892c403360790cc1333dd3dd946b22a
