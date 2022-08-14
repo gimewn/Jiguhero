@@ -21,67 +21,36 @@ import { missionLists, searchText } from "states/mission";
 import MissionList from "components/MissionList";
 import getSido from "pages/api/ecomarket/getSido";
 import searchMission from "pages/api/mission/searchMission";
+import { ParentsDiv } from 'styles/styled'
 
-const NavBar = styled("div")`
-  z-index: 999;
-  position: fixed;
-  left: 0;
-  right: 0;
-  top: 60px;
-  height: 60px;
-  /* padding: 2rem; */
-  color: white;
-  background: white;
-  font-weight: bold;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  @media only screen and (min-width: 650px) {
-    display: none;
+const H2 = styled('h2')`
+  @media only screen and (max-width: 650px) {
+    display:none;
   }
-`;
-const Header = styled("div")`
-  display: flex;
-  justify-content: space-between;
-  margin: 0px 5px 0px 20px;
-`;
-const BackCompo = styled(Backcomponents)`
-  margin-top: 10px;
-  margin-bottom: 10px;
-`;
+`
+
+const MissionTop = styled('div')`
+margin-left:35px;
+@media only screen and (max-width: 650px) {
+    margin-top:20px;
+  }
+`
+
 const Block = styled("div")`
-  margin: 0.5rem;
 `;
 const Content = styled("div")`
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  @media screen and (min-width: 360px) {
-    width: 400px;
-  }
-  @media screen and (min-width: 550px) {
-    width: 500px;
-  }
-  @media screen and (min-width: 700px) {
-    width: 620px;
-  }
+
 `;
 const ButtonContent = styled("div")`
-  display: flex;
+  display:flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  margin-top: 1.8rem;
-  @media screen and (min-width: 360px) {
-    width: 400px;
-  }
-  @media screen and (min-width: 550px) {
-    width: 500px;
-  }
-  @media screen and (min-width: 700px) {
-    width: 620px;
-  }
+
 `;
 const BoxSelect = styled("select")`
   border: #65ace2 solid 1px;
@@ -95,7 +64,7 @@ const BoxInput = styled("input")`
   background-color: white;
   border-radius: 15px;
   padding: 3px;
-  width: 13rem;
+  width: 12rem;
 `;
 const SearchButton = styled(SearchRoundedIcon)`
   color: #65ace2;
@@ -114,29 +83,13 @@ const ListContent = styled("div")`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  @media screen and (min-width: 360px) {
-    width: 400px;
-  }
-  @media screen and (min-width: 550px) {
-    width: 500px;
-  }
-  @media screen and (min-width: 700px) {
-    width: 620px;
-  }
+  margin-bottom:10px;
 `;
 
 const MissionBlock = styled("div")`
-  display: flex;
-  justify-content: center;
-  align-items: center;
+
 `;
 
-const ContentsWrapper = styled("div")`
-  margin-top: 20px;
-  @media screen and (max-width: 393px) {
-    margin-left: 50px;
-  }
-`;
 
 const PagI = styled(Pagination)`
   display: flex;
@@ -176,9 +129,9 @@ export default function Mission({ data }) {
   const [cate, setCate] = useState<string>("time"); // 카테고리 최신순, 조회순, 이름순
   const [flag, setFlag] = useState(false) // false 검색어 없는 전체 목록, true 검색어 있는 목록
   const [cmd, setCmd] = useState<string>('');
-  
+
   const { data: Missions, isLoading } = useQuery(
-    ["missions", {cmd, cate}],
+    ["missions", { cmd, cate }],
     searchMission
   );
 
@@ -211,21 +164,21 @@ export default function Mission({ data }) {
 
   function MissionLists({ selector }) {
 
-    
-    if(flag){
-      const {data:Missions} = useQuery(
-      ["missions", {cmd,cate}],
-      searchMission
+
+    if (flag) {
+      const { data: Missions } = useQuery(
+        ["missions", { cmd, cate }],
+        searchMission
       )
-    }else{
+    } else {
       const { data: Missions, isLoading } = useQuery(
-        ["missions", {cate}],
+        ["missions", { cate }],
         getMission, {
-          
-        }
+
+      }
       );
     }
-    
+
 
     const remainder = Missions?.length % 5;
     const MissionLen = `${Missions?.length / 5}`;
@@ -235,7 +188,7 @@ export default function Mission({ data }) {
     const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
       setPage(value);
     };
-    
+
 
     return (
       <>
@@ -244,12 +197,12 @@ export default function Mission({ data }) {
         ))}
         {remainder && (
           <PagI
-          count={remainder === 0 ? quot : quot + 1}
-          page={page}
-          onChange={handleChange}
-        />
+            count={remainder === 0 ? quot : quot + 1}
+            page={page}
+            onChange={handleChange}
+          />
         )}
-        
+
       </>
     );
   }
@@ -284,45 +237,46 @@ export default function Mission({ data }) {
   };
 
   return (
-    <>
+    <ParentsDiv>
       {/* 헤더 */}
       <Head>
         <title>대원들의 임무 | 지구-방위대</title>
       </Head>
 
-      <NavBar>
-        <Header>
-          {/* 모바일 뷰에서 뒤로가기 버튼! */}
-          <BackCompo name="대원들의 임무"></BackCompo>
-        </Header>
-      </NavBar>
 
-      <ContentsWrapper>
-        {/* contents! */}
-        {/* 임무 버튼 그룹 */}
-        <Block>
-          <ButtonContent>
-            <ButtonBox />
-          </ButtonContent>
-        </Block>
+      {/* 모바일 뷰에서 뒤로가기 버튼! */}
+      <Backcomponents name="대원들의 임무"></Backcomponents>
+      <MissionTop>
+        <H2>🦸🏻 대원들의 임무</H2>
+      </MissionTop>
 
-        {/* search Bar */}
-        <Block>
-          <Content>
-            <SelectBox options={OPTIONS} />
-            <SearchInput />
-          </Content>
-        </Block>
 
-        {/* 임무 목록들 */}
 
-        <MissionBlock>
-          <ListContent>
-            <MissionLists selector={cate} />
-          </ListContent>
-        </MissionBlock>
-      </ContentsWrapper>
-    </>
+      {/* contents! */}
+      {/* 임무 버튼 그룹 */}
+      <Block style={{ marginBottom: '10px', marginTop: '20px' }}>
+        <ButtonContent>
+          <ButtonBox />
+        </ButtonContent>
+      </Block>
+
+      {/* search Bar */}
+      <Block style={{ marginBottom: '10px' }}>
+        <Content>
+          <SelectBox options={OPTIONS} />
+          <SearchInput />
+        </Content>
+      </Block>
+
+      {/* 임무 목록들 */}
+
+      <MissionBlock>
+        <ListContent>
+          <MissionLists selector={cate} />
+        </ListContent>
+      </MissionBlock>
+
+    </ParentsDiv>
   );
 }
 

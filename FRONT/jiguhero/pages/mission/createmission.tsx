@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { ButtonFull, ButtonBorder } from "styles/styled";
+import { ButtonFull, ButtonBorder, ParentsDiv } from "styles/styled";
 import Backcomponents from "components/back";
 import Head from "next/head";
 import React, { useEffect, useState, FocusEvent } from "react";
@@ -28,17 +28,30 @@ import getGugun from "pages/api/ecomarket/getGugun";
 import getDong from "pages/api/ecomarket/getDong";
 import PostNewMission from "pages/api/mission/postNewMission";
 
-const MissioWrapper = styled("div")`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  @media only screen and (min-width: 650px) {
-    display: none;
+const H2 = styled('h2')`
+  @media only screen and (max-width: 650px) {
+    display:none;
   }
-`;
+`
+
+
+// const MissioWrapper = styled("div")`
+//   display: flex;
+//   justify-content: space-between;
+//   align-items: center;
+//   @media only screen and (min-width: 650px) {
+//     display: none;
+//   }
+// `;
+const MissioWrapper = styled('div')`
+  display:flex;
+  flex-direction: column;
+  margin-top: 30px;
+`
+
 
 const Block = styled("div")`
-  margin: 0.5rem;
+  margin: 0.4rem;
 `;
 
 const Content = styled("div")`
@@ -107,6 +120,7 @@ const SelectSido = styled("select")`
   border-radius: 15px;
   padding: 3px;
   margin: 0.5rem;
+
 `;
 
 const SelectGugun = styled(SelectSido)``;
@@ -454,7 +468,7 @@ export default function Createmission() {
   }
 
   return (
-    <>
+    <ParentsDiv>
       {/* 헤더 */}
       <Head>
         <title>임무 생성하기 | 지구-방위대</title>
@@ -467,6 +481,7 @@ export default function Createmission() {
 
       <MissioWrapper>
         <H2>🦸🏻 대원들의 임무 생성하기</H2>
+
         {/* 미션사진추가 */}
         <Block>
           <Content>
@@ -518,7 +533,7 @@ export default function Createmission() {
             <SubmitBtn
               hColor={"#98C064"}
               dColor={"#65ACE2"}
-              variant="contained"
+              // variant="contained"
               type="submit"
               onClick={async () => {
                 const data = await PostNewMission(postdata);
@@ -530,11 +545,11 @@ export default function Createmission() {
             </SubmitBtn>
           </BtnContent>
         </Block>
-      </MissioWrapper>
 
+      </MissioWrapper>
       <BottomDiv></BottomDiv>
 
-    </>
+    </ParentsDiv>
   );
 }
 

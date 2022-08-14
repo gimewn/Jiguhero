@@ -10,6 +10,7 @@ import { UserIn } from "states/user";
 import { useEffect } from "react";
 import { useSession } from 'next-auth/react';
 
+
 const Mapping = styled("div")`
   width: 100%;
   height: 270px;
@@ -41,7 +42,7 @@ export default function Home() {
   const token = router?.query.token;
   const register = router?.query.REGISTER;
   const [userInfo, setUserInfo] = useRecoilState(UserIn);
-  if(register==="REQUIRED"){
+  if (register === "REQUIRED") {
     router.push(`/user/${router.query.userid}`)
   }
   return (
@@ -69,7 +70,8 @@ export default function Home() {
         </Content>
       </Block>
       <Block>
-        <Title>📰 대원들을 위한 친환경 소식</Title>
+        <Title onClick={() => router.push("/news")}>📰 대원들을 위한 친환경 소식</Title>
+
         <Content>
           <News />
         </Content>
