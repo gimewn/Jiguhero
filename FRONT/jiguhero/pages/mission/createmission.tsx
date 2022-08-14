@@ -19,7 +19,6 @@ import {
 } from "@tanstack/react-query";
 
 import PostMission from "pages/api/mission/index";
-<<<<<<< HEAD
 import Image from "next/image";
 import moment from "moment";
 import PostMissionImg from "pages/api/postMissionImg";
@@ -41,21 +40,6 @@ const MissioWrapper = styled("div")`
 const Block = styled("div")`
   margin: 0.5rem;
 `;
-=======
-import moment from "moment"
-
-
-const MissioWrapper = styled('div')`
-  display:flex;
-  flex-direction: column;
-  margin-top: 30px;
-`
-
-
-const Block = styled('div')`
-  margin: 0.4rem;
-`
->>>>>>> f77d0a544892c403360790cc1333dd3dd946b22a
 
 const Content = styled("div")`
   display: flex;
@@ -182,34 +166,6 @@ const SubmitBtn = styled(ButtonFull)`
 const BottomDiv = styled('div')`
   margin-bottom: 80px;
 `
-<<<<<<< HEAD
-
-=======
-const H2 = styled('h2')`
-  @media only screen and (max-width: 650px) {
-    display:none;
-  }
-`
-//임무명
-function MissionName() {
-  const [text, setText] = useState('')
-  const onChange = (event) => {
-    setText(event.target.value)
-    console.log(event.target.value)
-  }
-  return (
-    <div>
-      <Text>
-        임무명
-      </Text>
-      <BoxInput
-        type="text"
-        onChange={onChange}
-        value={text} />
-    </div>
-  )
-}
->>>>>>> f77d0a544892c403360790cc1333dd3dd946b22a
 
 
 
