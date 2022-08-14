@@ -108,9 +108,9 @@ public class MissionController {
 
     @ApiOperation(value = "임무의 세부 내용을 변경한다", response = String.class)
     @PutMapping("/{mission_id}/details")
-    public ResponseEntity<MissionDto> updateMission(@RequestBody MissionDto missionDto, @RequestParam("userId") Long userId) {
+    public ResponseEntity<MissionDto> updateMission(@PathVariable("mission_id") Long missionId, @RequestBody MissionDto missionDto, @RequestParam("userId") Long userId) {
         MissionDto missionDtoResult = null;
-
+        missionDto.setMissionId(missionId);
         try {
             missionDtoResult = missionService.updateMission(missionDto, userId);
         }

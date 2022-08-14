@@ -138,6 +138,7 @@ public class MissionServiceImpl implements MissionService {
         return insertedMission.getMissionId();
     }
 
+    @Transactional
     public int joinMission(Long userId, Long missionId){
         Conn_Mission connMission = new Conn_Mission();
         Mission missionEntity = missionDao.selectMissionById(missionId);
@@ -228,6 +229,7 @@ public class MissionServiceImpl implements MissionService {
 
     public String getRepMissionImageURL(Long missionId, HttpServletRequest request) {
         Image_Mission imageMission = imageDao.selectRepImageMission(missionDao.selectMissionById(missionId));
+        if (imageMission == null) return null;
 
         String saveFile = imageMission.getSaveFile();
         String saveFolder = imageMission.getSaveFolder();

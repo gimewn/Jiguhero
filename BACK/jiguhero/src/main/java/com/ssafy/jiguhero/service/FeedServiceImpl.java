@@ -111,6 +111,7 @@ public class FeedServiceImpl implements FeedService {
 
             Conn_Mission connMission = missionDao.selectConnMission(missionEntity, userEntity);
             connMission.setSuccessRate(successRate);
+            missionDao.insertConnMission(connMission);
             /////////////////////////////////////////////////////
 
             return 1; // <해당 날짜, 미션, 유저>로 등록된 인증샷이 있는 경우 인증샷 삭제 완료
