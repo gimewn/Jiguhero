@@ -4,7 +4,7 @@ import { ButtonFull, ButtonBorder } from 'styles/styled';
 import Backcomponents from 'components/back';
 import Head from 'next/head';
 import styled from 'styled-components';
-import getNews from 'pages/api/main/news';
+import getNews from 'pages/api/news/index';
 import { dehydrate, Query, QueryClient, QueryClientProvider, useQuery } from "@tanstack/react-query";
 import { getSession, SessionProvider, useSession } from "next-auth/react";
 import Pagination from 'components/pagination';
@@ -316,17 +316,17 @@ export default function News() {
 }
 
 
-export async function getServerSideProps(context) {
-    const promotionList = new QueryClient()
-    const session = await getSession(context);
-    await promotionList.prefetchQuery(['promotions'], () => { getNews() })
+// export async function getServerSideProps(context) {
+//     const promotionList = new QueryClient()
+//     const session = await getSession(context);
+//     await promotionList.prefetchQuery(['promotions'], () => { getNews() })
 
-    return {
-        props: {
-            data: {
-                session,
-                dehydratedState: dehydrate(promotionList)
-            },
-        },
-    }
-}
+//     return {
+//         props: {
+//             data: {
+//                 session,
+//                 dehydratedState: dehydrate(promotionList)
+//             },
+//         },
+//     }
+// }
