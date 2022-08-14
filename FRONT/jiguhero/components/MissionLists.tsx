@@ -25,7 +25,7 @@ export default function MissionLists() {
     console.log(count)
   }, [count])
 
-  const AllMissionList = count && (
+  const AllMissionList = count !== undefined && (
     <>
       {MISSION?.map((item, index) => (
         <MissionList key={index} {...item} />))}

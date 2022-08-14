@@ -376,7 +376,7 @@ export default function Createmission() {
               hColor={'#98C064'}
               dColor={'#65ACE2'}
             // onClick={() => router.push("/")}
-            >등록</SubmitBtn>
+            >수정</SubmitBtn>
           </BtnContent>
         </Block>
       </MissioWrapper>

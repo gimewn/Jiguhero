@@ -24,7 +24,7 @@ export default function NowJoinLists() {
     console.log(count)
   }, [count])
 
-  const JoinMissionList = count && (
+  const JoinMissionList = count !== undefined && (
     <>
       {MISSION?.map((item, index) => (
         <NowJoinList key={index} {...item} />))}
