@@ -251,12 +251,12 @@ function ButtonGroup() {
       {/* 탭 전환을 위한 버튼들 */}
       <ButtonWrapper>
         {tabColor ?
-          <AchieveFullBtn dColor={'#98C064'} hColor={'98C064'} onClick={() => { setTab(true), setTabColor(!tabColor) }}>달성률</AchieveFullBtn>
+          <AchieveFullBtn dColor={'#98C064'} hColor={'#98C064'} onClick={() => { setTab(true), setTabColor(!tabColor) }}>달성률</AchieveFullBtn>
           : <AchieveBorderBtn dColor={'#65ACE2'} onClick={() => { setTab(true), setTabColor(!tabColor) }}>달성률</AchieveBorderBtn>
         }
         {tabColor ?
           <CertifyBorderBtn dColor={' #65ACE2'} onClick={() => { setTab(false), setTabColor(!tabColor) }}>인증샷</CertifyBorderBtn>
-          : <CertifyFullBtn dColor={'#98C064'} hColor={'98C064'} onClick={() => { setTab(false), setTabColor(!tabColor) }}>인증샷</CertifyFullBtn>
+          : <CertifyFullBtn dColor={'#98C064'} hColor={'#98C064'} onClick={() => { setTab(false), setTabColor(!tabColor) }}>인증샷</CertifyFullBtn>
         }
       </ButtonWrapper >
       {tab ? <Achievement /> : <Certification />}
