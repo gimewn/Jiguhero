@@ -6,20 +6,22 @@ import styled from "styled-components";
 import ArrowForwardIosRoundedIcon from "@mui/icons-material/ArrowForwardIosRounded";
 import Link from "next/link";
 import { ButtonBorder, ButtonFull } from "styles/styled";
-import { theme } from "pages/theme";
+import { theme } from "components/theme";
 import { blue } from "@mui/material/colors";
 import { Pagination } from "@mui/material";
 import { userInfo } from "os";
 import { RecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import { missionPage, playedAreaPage,tabpage } from "states/mypage";
+import { missionPage, playedAreaPage, tabpage } from "states/mypage";
 import { dehydrate, Query, QueryClient, QueryClientProvider, useQuery } from "@tanstack/react-query";
-import { getSession, SessionProvider, useSession } from "next-auth/react";
+import { getSession, SessionProvider, useSession, signOut } from "next-auth/react";
 import { NextPageContext } from "node_modules/next/dist/shared/lib/utils";
 import { useRouter } from "next/router";
 import userData from "pages/api/user/[id]";
 import missionUserData from "pages/api/mission/[id]";
 import groundUserData from "pages/api/ground/[id]";
 import { getToken } from "next-auth/jwt";
+import Image from 'next/image';
+
 
 
 const Profile = styled("div")`
@@ -132,19 +134,17 @@ const PagI = styled(Pagination)`
 `;
 
 interface Idata {
-
   email: string;
   name: string;
   grade: number;
   point: number;
 }
 
-const Mypage = ({data}) => {
-  // console.log(props.data)
+const Mypage = ({ data }) => {
+  console.log(data)
 
-  
-  const {data:userInfo} = useQuery(['mission'],()=> {userData()})
-  console.log(userInfo)
+  const { data: userInfo } = useQuery(['mission'], () => { userData() })
+  const router = useRouter()
 
 
   // 탭 전환
@@ -155,11 +155,11 @@ const Mypage = ({data}) => {
     return (
       <Profile>
         <BgImg>
-          <img alt="nitz" src={`${data.session.user.image}`}/>
+          {/* <img alt="nitz" src={`${data.session.user.image}`} /> */}
         </BgImg>
         <div>
           <p>빨강</p>
-          <h2>{data.session.user.name}</h2>
+          {/* <h2>{data.session.user.name}</h2> */}
         </div>
         <Box margin="14px 0 0 0">
           <ArrowForwardIosRoundedIcon sx={{ color: blue[300] }} />
@@ -171,8 +171,9 @@ const Mypage = ({data}) => {
   // 임무
   function Mission() {
     const MissionList = ["하나", "둘", "셋", "넷", "다섯", "여섯"];
-    const remainder = MissionList.length % 3;
-    const quot = parseInt(MissionList.length / 3);
+    const remainder = MissionList.length % 5;
+    const lenMission = `${MissionList.length / 5}`
+    const quot = parseInt(lenMission)
     const page = useRecoilValue(missionPage);
     const setPage = useSetRecoilState(missionPage);
     const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
@@ -189,7 +190,7 @@ const Mypage = ({data}) => {
           </Link>
         ))}
         <PagI
-          count={remainder === 0 ? quot : quot + 1}
+          count={remainder === 0 ? Number(quot) : Number(quot) + 1}
           page={page}
           onChange={handleChange}
         />
@@ -207,9 +208,9 @@ const Mypage = ({data}) => {
       { icon: "🍘", title: "친환경 생활용품점" },
       { icon: "🍨", title: "유기농 디저트 맛집" },
     ];
-    const remainder = PlayedArea.length % 3;
-    const quot = parseInt(PlayedArea.length / 3);
-
+    const remainder = PlayedArea.length % 5;
+    const lenPlay = `${PlayedArea.length / 5}`;
+    const quot = parseInt(lenPlay)
     const page = useRecoilValue(playedAreaPage);
     const setPage = useSetRecoilState(playedAreaPage);
     const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
@@ -218,7 +219,7 @@ const Mypage = ({data}) => {
 
     return (
       <>
-        {PlayedArea.slice((page - 1) * 3, page * 3).map((dic) => (
+        {PlayedArea.slice((page - 1) * 5, page * 5).map((dic) => (
           <Link href="/" key={dic.title}>
             <a>
               <Play key={dic.title}>
@@ -241,7 +242,7 @@ const Mypage = ({data}) => {
   const onClickBox = (
     event: React.MouseEvent<HTMLDivElement, MouseEvent>
   ) => {
-    
+    router.push('/mypage/profile')
   };
 
   return (
@@ -302,7 +303,14 @@ const Mypage = ({data}) => {
         )}
       </ButtonGroup>
       <Box>{tab ? <PlayingArea /> : <Mission />}</Box>
-      <ButtonFull dColor={"#FF4848"} hColor={"#FF4848"}>
+      <ButtonFull
+        onClick={() => {
+          signOut({
+            redirect: true,
+            callbackUrl: `http://localhost:3000/`
+          })
+        }}
+        dColor={"#FF4848"} hColor={"#FF4848"}>
         로그아웃
       </ButtonFull>
     </EntireContainer>
@@ -331,22 +339,22 @@ export async function getServerSideProps(context) {
   const missionInfo2 = new QueryClient()
   const groundInfo2 = new QueryClient()
   const session = await getSession(context);
-  await session2.prefetchQuery(['session'], ()=> {return getSession(context)})
-  await userInfo2.prefetchQuery(['userInfo'], ()=>{userData()})
-  await missionInfo2.prefetchQuery(['missionUserInfo'], ()=>{missionUserData(context)})
-  await groundInfo2.prefetchQuery(['groundUserInfo'], ()=>{groundUserData(context)})
+  await session2.prefetchQuery(['session'], () => { return getSession(context) })
+  await userInfo2.prefetchQuery(['userInfo'], () => { userData() })
+  await missionInfo2.prefetchQuery(['missionUserInfo'], () => { missionUserData() })
+  await groundInfo2.prefetchQuery(['groundUserInfo'], () => { groundUserData(context) })
 
 
 
-    return {
-      props: {
-        data: {
-          session,
-          dehydratedState: dehydrate(userInfo2)
-        },
+  return {
+    props: {
+      data: {
+        session,
+        dehydratedState: dehydrate(userInfo2)
       },
-    };
-  
+    },
+  };
+
 }
 
 export default Mypage;

@@ -2,17 +2,13 @@ import { useRouter } from 'next/router';
 import styled from 'styled-components';
 
 interface NewsProps{
-    id:number,
     category:number,
-    // image:string,
     title:string,
     content:string,
     key:number
 }
 
 const NewsDiv = styled('div')`
-    /* background: url('${(props) => props.image}') no-repeat center; */
-    /* background-size: cover; */
     position:relative;
     height: 150px;
     margin: 10px 0;
@@ -46,7 +42,7 @@ const Title = styled('div')`
         color:#252525;
     }
     position: absolute;
-    left:20px;
+    left:25px;
 `
 
 const Item = styled('div')`
