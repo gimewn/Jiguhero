@@ -13,7 +13,8 @@ import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import PersonPinRoundedIcon from '@mui/icons-material/PersonPinRounded';
 import getReview from "pages/api/place/getReview";
 import { dehydrate, Query, QueryClient, QueryClientProvider, useQuery } from "@tanstack/react-query";
-import { getSession } from "next-auth/react";
+import { getSession} from "next-auth/react";
+import { InfoBtn } from "pages/ground/[id]";
 
 const Div = styled("div")`
   position: relative;
@@ -31,7 +32,7 @@ export const WithIcon = styled('div')`
   display:flex;
   align-items: baseline;
 `
-const Content = styled("div")`
+export const Content = styled("div")`
   z-index: 995;
   position: absolute;
   top: 20px;
@@ -39,8 +40,8 @@ const Content = styled("div")`
   display:flex;
   @media only screen and (max-width: 650px) {
     flex-direction: column;
-    left:0;
-    right:0;
+    left:15px;
+    right:15px;
     padding:0 auto;
   }
 `;
@@ -60,7 +61,7 @@ const Content = styled("div")`
 //     background-color: #d1e5f5;
 //   }
 // `;
-const PlaceGroup = styled("div")`
+export const PlaceGroup = styled("div")`
   position: absolute;
   z-index: 996;
   width: inherit;
@@ -84,7 +85,8 @@ const PlaceGroup = styled("div")`
     width: 0;
   }
 `;
-const Place = styled("div")`
+export const Place = styled("div")`
+  position:relative;
   background-color: white;
   box-shadow: 0 0 10px #999999;
   padding: 15px 25px;
@@ -101,6 +103,9 @@ const Place = styled("div")`
       color: #252525;
     }
     .icon{
+      color:white;
+    }
+    .detailBtn{
       color:white;
     }
   }
@@ -139,25 +144,25 @@ const SearchBox = styled('div')`
     margin:0;
   }
   @media only screen and (max-width: 400px) {
-    width:90%;
+    width:100%;
   }
 `
-const PlaceTitle = styled("p")`
+export const PlaceTitle = styled("p")`
   font-size: 18px;
   font-weight: bold;
   color: #65ace2;
 `;
-const PlaceAddress = styled("p")`
+export const PlaceAddress = styled("p")`
   font-size: 15px;
 `;
-const PlaceContent = styled("p")`
+export const PlaceContent = styled("p")`
   font-size: 15px;
   display:block;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 `;
-const Back = styled(ArrowBackIosRoundedIcon)`
+export const Back = styled(ArrowBackIosRoundedIcon)`
   color: #98c064;
 `;
 
@@ -353,10 +358,13 @@ export default function FullMap(props: any) {
           <Place
             key={item.placeId}
             onClick={() => {
-              setShow(true);
               setChoiceP(item);
+              makeMap(item.lat, item.lng);
             }}
           >
+            <InfoBtn className='detailBtn'
+            onClick={()=>{setShow(true)}}
+            />
             <PlaceTitle className="placeTitle">{item.name}</PlaceTitle>
             <WithIcon>
               <LocIcon className="icon" /><PlaceAddress>{item.roadAddress}</PlaceAddress>
