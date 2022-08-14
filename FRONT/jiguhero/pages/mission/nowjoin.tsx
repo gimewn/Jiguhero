@@ -4,55 +4,16 @@ import Head from 'next/head';
 import Backcomponents from 'components/back';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import React, { useState } from 'react';
+import { ParentsDiv } from 'styles/styled'
 
-const NavBar = styled('div')`
-  z-index: 999;
- position: fixed;
-  left: 0;
-  right: 0;
-  top:60px;
-  height: 60px;
-  /* padding: 2rem; */
-  color: white;
-  background: white;
-  font-weight: bold;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-    @media only screen and (min-width: 650px) {
-    display:none;
-  }
-`
-const Header = styled("div")`
-  display: flex;
-  justify-content: space-between;
-  margin: 0px 5px 0px 20px;
-`;
-
-const BackCompo = styled(Backcomponents)`
-  margin-top: 10px;
-  margin-bottom: 10px;
-`
 
 const Block = styled('div')`
-  margin: 0.5rem;
-  
-
 `
 const Content = styled('div')`
   display:flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
-    @media screen and (min-width: 360px){
-        width:400px;
-    }
-    @media screen and (min-width: 550px){
-        width:500px;
-    }
-    @media screen and (min-width:700px){
-        width:620px;
-    }
 `
 
 const ListContent = styled('div')`
@@ -60,16 +21,7 @@ const ListContent = styled('div')`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-    @media screen and (min-width: 360px){
-        width:400px;
-    }
-    @media screen and (min-width: 550px){
-        width:500px;
-    }
-    @media screen and (min-width:700px){
-        width:620px;
-    }
-
+  margin-bottom:10px;
 `
 
 const MissionBlock = styled('div')`
@@ -90,7 +42,7 @@ const BoxInput = styled('input')`
   background-color: white;
   border-radius: 15px;
   padding:3px;
-  width: 13rem;
+  width: 12rem;
 `
 
 const SearchButton = styled(SearchRoundedIcon)`
@@ -98,16 +50,18 @@ const SearchButton = styled(SearchRoundedIcon)`
     margin: 0.5rem;
 `
 
-const Div = styled('div')`
-    padding: 20px;
-`
 
-const ContentsWrapper = styled('div')`
-    @media screen and (max-width: 393px){
-        margin-left: 50px;
-    }
+const H2 = styled('h2')`
+  @media only screen and (max-width: 650px) {
+    display:none;
+  }
 `
-
+const MissionTop = styled('div')`
+margin-left:35px;
+@media only screen and (max-width: 650px) {
+    margin-top:20px;
+  }
+`
 //select Box --- 최신등록 순 이름 순 
 const OPTIONS = [
     { value: "latest", name: "최신 등록순" },
@@ -150,39 +104,34 @@ function InputBox() {
 
 export default function Mission() {
     return (
-        <div>
-
+        <ParentsDiv>
             <Head>
                 <title>참여 중인 임무 | 지구-방위대</title>
             </Head>
+            {/* 모바일 뷰에서 뒤로가기 버튼! */}
+            <Backcomponents name='참여 중인 임무 모아보기'></Backcomponents>
 
-            <NavBar>
-                <Header>
-                    {/* 모바일 뷰에서 뒤로가기 버튼! */}
-                    <BackCompo name='참여 중인 임무 모아보기'></BackCompo>
-                </Header>
-            </NavBar>
 
-            <Div></Div>
+            <MissionTop>
+                <H2>🦸🏻 참여 중인 임무</H2>
+            </MissionTop>
+            <Block style={{ marginBottom: '10px' }}>
+                <Content>
+                    <SelectBox options={OPTIONS} />
+                    <InputBox />
+                    <SearchButton />
+                </Content>
+            </Block>
 
-            <ContentsWrapper>
-                <Block>
-                    <Content>
-                        <SelectBox options={OPTIONS} />
-                        <InputBox />
-                        <SearchButton />
-                    </Content>
-                </Block>
-
-                <MissionBlock>
-                    <ListContent>
-                        {/*components의 NowJoinList와 NowJoinLists는 api joinMission.ts에서
+            {/*components의 NowJoinList와 NowJoinLists는 api joinMission.ts에서
                         //데이터를 받아오는데 api 더미가 없어서 임시로 대원들의 임무리스트에서 확인함.*/}
-                        <NowJoin />
-                    </ListContent>
-                </MissionBlock>
-            </ContentsWrapper>
-        </div>
+            <MissionBlock>
+                <ListContent>
+                    <NowJoin />
+                </ListContent>
+            </MissionBlock>
+
+        </ParentsDiv>
     )
 
 }

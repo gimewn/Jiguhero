@@ -312,16 +312,16 @@ export default function Createmission() {
     <>
       {/* 헤더 */}
       <Head>
-        <title>임무 생성하기 | 지구-방위대</title>
+        <title>임무 수정 | 지구-방위대</title>
       </Head>
 
 
       {/* 모바일 뷰에서 뒤로가기 버튼! */}
-      <Backcomponents name='임무 생성하기'></Backcomponents>
+      <Backcomponents name='임무 수정'></Backcomponents>
 
 
       <MissioWrapper>
-        <H2>🦸🏻 대원들의 임무 생성하기</H2>
+        <H2>🦸🏻 대원들의 임무 수정</H2>
         {/* 미션사진추가 */}
         <Block>
           <Content>
@@ -376,7 +376,7 @@ export default function Createmission() {
               hColor={'#98C064'}
               dColor={'#65ACE2'}
             // onClick={() => router.push("/")}
-            >등록</SubmitBtn>
+            >수정</SubmitBtn>
           </BtnContent>
         </Block>
       </MissioWrapper>

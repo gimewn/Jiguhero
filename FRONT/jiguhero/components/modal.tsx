@@ -1,16 +1,16 @@
 import styled from 'styled-components';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
-import {LocIcon, ConIcon} from 'pages/ecomarket/index';
+import { LocIcon, ConIcon } from 'pages/ecomarket/index';
 import PermPhoneMsgRoundedIcon from '@mui/icons-material/PermPhoneMsgRounded';
 import { useState, useEffect } from "react";
-import {ButtonFull} from 'styles/styled'
+import { ButtonFull } from 'styles/styled'
 import getReview from 'pages/api/place/getReview';
 import postReport from 'pages/api/place/postReport';
 import postReview from 'pages/api/place/postReview';
 import { useQuery } from '@tanstack/react-query';
 // import { Pagination } from "@mui/material";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import {reviewlists} from 'states/place';
+import { reviewlists } from 'states/place';
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
 import { Swiper, SwiperSlide } from "swiper/react"; // basic
 import SwiperCore, { Navigation, Pagination } from "swiper";
@@ -94,7 +94,7 @@ const CallIcon = styled(PermPhoneMsgRoundedIcon)`
 font-size: 1em;
 color:#98c064;   
 `
-const ReportBox = styled('div')<{Color:string}>`
+const ReportBox = styled('div') <{ Color: string }>`
     display:flex;
     width:100%;
     flex-direction: column;
@@ -109,7 +109,7 @@ const ReportBox = styled('div')<{Color:string}>`
         margin: 0;
     }
 `
-const PostReport = styled(ModalBody)<{Color:string}>`
+const PostReport = styled(ModalBody) <{ Color: string }>`
     background-color: ${(props) => props.Color} ;
     padding-bottom:20px;
     border-radius:20px;
@@ -193,7 +193,7 @@ const ReviewBox = styled('div')`
     }
 `
 
-const EmojiSpan = styled('span')<{size:string}>`
+const EmojiSpan = styled('span') <{ size: string }>`
     font-size: ${(props) => props.size};
     margin: auto 5px auto 0;
     `
@@ -249,33 +249,33 @@ const ReportReview = styled(CheckRoundedIcon)`
 `
 const ImageDiv = styled('div')``
 
-export default function Modal(props){
-    const {show, setshow, data, reviews} = props;
+export default function Modal(props) {
+    const { show, setshow, data, reviews } = props;
     const [isReport, setReport] = useState(false);
     const [ReportCategory, setReportCategory] = useState(0);
     const [ReportContent, setReportContent] = useState('');
-    const reviewEmoji = [['', ''], ['😔','실망이에요'], ['😑', '별로예요'], ['😶', '그저 그래요'], ['🤗', '만족해요'], ['🥰', '너무 좋아요']]
+    const reviewEmoji = [['', ''], ['😔', '실망이에요'], ['😑', '별로예요'], ['😶', '그저 그래요'], ['🤗', '만족해요'], ['🥰', '너무 좋아요']]
     const [scoreValue, setsScoreValue] = useState(1);
     const [reviewValue, setReviewValue] = useState('');
     const page = useRecoilValue(reviewlists)
     const setPage = useSetRecoilState(reviewlists)
     const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
-      setPage(value);
+        setPage(value);
     };
     const [fetchReview, setFetchReview] = useState(reviews);
-    useEffect(()=>{
+    useEffect(() => {
         setFetchReview(reviews)
     }, [reviews])
-    function Emoji(prop){
-        if(prop['index'] === 0){
-            return(<EmojiSpan size="20px">{reviewEmoji[prop['score']][prop['index']]}</EmojiSpan>)
-        }else{
-            return(<EmojiSpan size="16px">{reviewEmoji[prop['score']][prop['index']]}</EmojiSpan>)
+    function Emoji(prop) {
+        if (prop['index'] === 0) {
+            return (<EmojiSpan size="20px">{reviewEmoji[prop['score']][prop['index']]}</EmojiSpan>)
+        } else {
+            return (<EmojiSpan size="16px">{reviewEmoji[prop['score']][prop['index']]}</EmojiSpan>)
         }
     }
-    function Star(score){
+    function Star(score) {
         let res = '';
-        for(let i=0; i<score['score']; i++){
+        for (let i = 0; i < score['score']; i++) {
             res += '⭐'
         }
         return <Starspan>{res}</Starspan>
@@ -283,100 +283,104 @@ export default function Modal(props){
     console.log(data)
     const ModalContent = show && (
         <>
-        <ModalDiv>
-            <ModalHeader>
-                <HeaderTitle>{data.name}</HeaderTitle>
-                <CloseBtn onClick={() => setshow(false)}/>
-            </ModalHeader>
-            <ModalBody>
-                {data.roadAddress ? <WithIcons>
-                    <LocIcon /><ModalAddress>{data.roadAddress}</ModalAddress>
-                </WithIcons> : <></>}
-                {data.jibunAddress ? <WithIcons>
-                    <LocIcon /><ModalAddress>{data.jibunAddress}</ModalAddress>
-                </WithIcons> : <></>}
-                {data.phone ? <WithIcons>
-                    <CallIcon /><ModalAddress>{data.phone}</ModalAddress>
-                </WithIcons> : <></>}
-                <ImageDiv>
-                <Swiper
-                    spaceBetween={0}
-                    slidesPerView={5}
-                    scrollbar={{ draggable: true }}
-                    navigation={{
-                    nextEl: '.review-swiper-button-next',
-                    prevEl: '.review-swiper-button-prev',
-                }}>
-                    {data.imageURL.map((item)=>(<SwiperSlide></SwiperSlide>))}
-                </Swiper>
-                </ImageDiv>
-                {data.content ?
-                <WithTitle>
-                    <ConTitle>🍀 이 곳은 어떤 곳?</ConTitle>
-                    <AboutPlace style={{marginLeft:'30px'}}>{data.content}</AboutPlace>
-                </WithTitle>
-                : <></>}
-                <WithTitle>
-                    <ConTitle>🧡 대원들의 리뷰</ConTitle>
-                    <MakeReview>
-                        이 가게의 평점 : ⭐
-                        <Select onChange={(e) => {
-                            setsScoreValue(Number(e.target.value))}}>
-                            {[1, 2, 3, 4, 5].map((item) => (<option value={item} key={item}>{item}</option>))}
-                        </Select>
-                        <div>
-                        <Emoji score={scoreValue} index={0} />
-                        <Emoji score={scoreValue} index={1} /> 
+            <ModalDiv>
+                <ModalHeader>
+                    <HeaderTitle>{data.name}</HeaderTitle>
+                    <CloseBtn onClick={() => setshow(false)} />
+                </ModalHeader>
+                <ModalBody>
+                    {data.roadAddress ? <WithIcons>
+                        <LocIcon /><ModalAddress>{data.roadAddress}</ModalAddress>
+                    </WithIcons> : <></>}
+                    {data.jibunAddress ? <WithIcons>
+                        <LocIcon /><ModalAddress>{data.jibunAddress}</ModalAddress>
+                    </WithIcons> : <></>}
+                    {data.phone ? <WithIcons>
+                        <CallIcon /><ModalAddress>{data.phone}</ModalAddress>
+                    </WithIcons> : <></>}
+                    <ImageDiv>
+                        <Swiper
+                            spaceBetween={0}
+                            slidesPerView={5}
+                            scrollbar={{ draggable: true }}
+                            navigation={{
+                                nextEl: '.review-swiper-button-next',
+                                prevEl: '.review-swiper-button-prev',
+                            }}>
+                            {data.imageURL.map((item) => (<SwiperSlide></SwiperSlide>))}
+                        </Swiper>
+                    </ImageDiv>
+                    {data.content ?
+                        <WithTitle>
+                            <ConTitle>🍀 이 곳은 어떤 곳?</ConTitle>
+                            <AboutPlace style={{ marginLeft: '30px' }}>{data.content}</AboutPlace>
+                        </WithTitle>
+                        : <></>}
+                    <WithTitle>
+                        <ConTitle>🧡 대원들의 리뷰</ConTitle>
+                        <MakeReview>
+                            이 가게의 평점 : ⭐
+                            <Select onChange={(e) => {
+                                setsScoreValue(Number(e.target.value))
+                            }}>
+                                {[1, 2, 3, 4, 5].map((item) => (<option value={item} key={item}>{item}</option>))}
+                            </Select>
+                            <div>
+                                <Emoji score={scoreValue} index={0} />
+                                <Emoji score={scoreValue} index={1} />
+                            </div>
+                            <ReviewWrite>
+                                <ReviewArea placeholder='리뷰를 남겨주세요.' onChange={(e) => {
+                                    setReviewValue(e.target.value)
+                                }} />
+                                <ReportReview onClick={() => {
+                                    postReview(data.placeId, 1, reviewValue, scoreValue).then((res) => {
+                                        getReview(data.placeId).then((res) => {
+                                            setFetchReview(res)
+                                        })
+                                    })
+                                }} />
+                            </ReviewWrite>
+                        </MakeReview>
+                        <div id='reviews'>
+                            {fetchReview?.map((item) => (<ReviewDiv key={item.reviewId}>
+                                <Emoji score={item.score} index={0} />
+                                <ReviewBox key={item.reviewId}>
+                                    <Star score={item.score} />
+                                    <span>{item.content}</span>
+                                </ReviewBox>
+                            </ReviewDiv>
+                            ))}
                         </div>
-                        <ReviewWrite>
-                        <ReviewArea placeholder='리뷰를 남겨주세요.' onChange={(e)=>{setReviewValue(e.target.value)
-                        }}/>
-                        <ReportReview onClick={() => {
-                            postReview(data.placeId, 1, reviewValue, scoreValue).then((res) => {
-                                getReview(data.placeId).then((res) => {setFetchReview(res)
-                                })})
-                        }} />
-                        </ReviewWrite>
-                    </MakeReview>
-                    <div id='reviews'>
-                    {fetchReview?.map((item) => (<ReviewDiv key={item.reviewId}>
-                        <Emoji score={item.score} index={0} />
-                    <ReviewBox key={item.reviewId}>
-                        <Star score={item.score} />
-                        <span>{item.content}</span>
-                    </ReviewBox>
-                    </ReviewDiv>
-                    ))}
-                    </div>
-                </WithTitle>
-            </ModalBody>
-            {isReport ? 
-            <PostReport Color="white">
-            <WithTitle>
-            <ConTitle>🚨 신고 이유를 선택해주세요</ConTitle>
-            <SelectReport onChange={(e) => {setReportCategory(Number(e.target.value))}}>
-                <option value="">--- 신고 사유 ---</option>
-                <option value="1">친환경 관련 가게가 아니에요🧐</option>
-                <option value="2">더 이상 영업을 안 해요😧</option>
-                <option value="3">기타</option>
-            </SelectReport>
-                <Textarea placeholder='해당 가게 신고에 대한 의견을 적어 주세요.' onChange={(e)=>{setReportContent(e.target.value)}}></Textarea>
-            </WithTitle>
-                <RButtonDiv>
-                    <ReportButton dColor='#65ACE2' hColor='#65ACE2' style={{margin:'0 10px 0 0'}} onClick={() => setReport(false)}>취소</ReportButton>
-                    <ReportButton dColor="#FF4848" hColor="#FF4848" onClick={() => {
-                        postReport(data.placeId, 1, ReportCategory, ReportContent).then((res)=>{setReport(false)})
-                    }}>신고하기</ReportButton>
-                </RButtonDiv>
-            </PostReport> : 
-            <ReportBox Color="#65ACE2" onClick={() => setReport(true)}>
-            <ConTitle>신고하기</ConTitle>
-            </ReportBox>
-        }
-            
-        </ModalDiv>
-        <ModalBack onClick={() => setshow(false)}>
-        </ModalBack>
+                    </WithTitle>
+                </ModalBody>
+                {isReport ?
+                    <PostReport Color="white">
+                        <WithTitle>
+                            <ConTitle>🚨 신고 이유를 선택해주세요</ConTitle>
+                            <SelectReport onChange={(e) => { setReportCategory(Number(e.target.value)) }}>
+                                <option value="">--- 신고 사유 ---</option>
+                                <option value="1">친환경 관련 가게가 아니에요🧐</option>
+                                <option value="2">더 이상 영업을 안 해요😧</option>
+                                <option value="3">기타</option>
+                            </SelectReport>
+                            <Textarea placeholder='해당 가게 신고에 대한 의견을 적어 주세요.' onChange={(e) => { setReportContent(e.target.value) }}></Textarea>
+                        </WithTitle>
+                        <RButtonDiv>
+                            <ReportButton dColor='#65ACE2' hColor='#65ACE2' style={{ margin: '0 10px 0 0' }} onClick={() => setReport(false)}>취소</ReportButton>
+                            <ReportButton dColor="#FF4848" hColor="#FF4848" onClick={() => {
+                                postReport(data.placeId, 1, ReportCategory, ReportContent).then((res) => { setReport(false) })
+                            }}>신고하기</ReportButton>
+                        </RButtonDiv>
+                    </PostReport> :
+                    <ReportBox Color="#65ACE2" onClick={() => setReport(true)}>
+                        <ConTitle>신고하기</ConTitle>
+                    </ReportBox>
+                }
+
+            </ModalDiv>
+            <ModalBack onClick={() => setshow(false)}>
+            </ModalBack>
         </>
     )
     return ModalContent
