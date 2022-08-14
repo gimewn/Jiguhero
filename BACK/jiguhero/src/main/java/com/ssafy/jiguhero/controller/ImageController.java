@@ -77,7 +77,7 @@ public class ImageController {
     }
 
     @ApiOperation(value = "파일명에 해당하는 이미지를 불러온다.", response = Resource.class)
-    @GetMapping("/{file_name:.+}")
+    @GetMapping("get/{file_name:.+}")
     public ResponseEntity<Resource> downloadImage(@PathVariable("file_name") String fileName, @RequestParam("target") String target, @RequestParam("date") String date, HttpServletRequest request) {
         Resource resource = null;
         String saveFolder = File.separator + target + File.separator + date;
