@@ -4,11 +4,11 @@ import com.ssafy.jiguhero.data.dto.FeedDto;
 
 public interface FeedService {
 
-    FeedDto getFeedById(Long feedId, Long userId);
+    FeedDto getFeedById(Long imageId, Long userId);
 
-    int insertFeed(FeedDto feedDto, Long missionId, Long userId);
+    int insertFeed(FeedDto feedDto);
 
-    FeedDto updateFeed(FeedDto feedDto, Long userId) throws Exception;
+    FeedDto updateFeed(FeedDto feedDto) throws Exception;
 
     int deleteFeed(Long feedId, Long userId, Long missionId);
 

@@ -56,13 +56,13 @@ public class ImageController {
 
     @ApiOperation(value = "임무 이미지를 업로드한다.(rep가 1이면 임무 대표 이미지, 0이면 임무 인증샷)", response = String.class)
     @PostMapping("/mission")
-    public ResponseEntity<String> uploadMissionImage(@RequestParam("file") MultipartFile file, @RequestParam("userId") Long userId, @RequestParam("missionId") Long missionId, @RequestParam("rep") int rep) {
+    public ResponseEntity<Long> uploadMissionImage(@RequestParam("file") MultipartFile file, @RequestParam("userId") Long userId, @RequestParam("missionId") Long missionId, @RequestParam("rep") int rep) throws Exception {
         if(file.isEmpty()) {
-            return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
+            throw new Exception();
         }
-        imageService.saveMissionImage(file, userId, missionId, rep);
+        Long savedImageId = imageService.saveMissionImage(file, userId, missionId, rep);
 
-        return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
+        return new ResponseEntity<Long>(savedImageId, HttpStatus.OK);
     }
 
     @ApiOperation(value = "소식 이미지를 업로드한다.", response = String.class)

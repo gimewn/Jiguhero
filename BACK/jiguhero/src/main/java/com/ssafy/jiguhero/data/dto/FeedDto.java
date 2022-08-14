@@ -2,10 +2,7 @@ package com.ssafy.jiguhero.data.dto;
 
 import com.ssafy.jiguhero.data.entity.Feed;
 import com.ssafy.jiguhero.util.ModelMapperUtils;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDate;
 
@@ -13,6 +10,7 @@ import java.time.LocalDate;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class FeedDto {
 
     private long feedId;
@@ -22,6 +20,7 @@ public class FeedDto {
     private boolean likeCheck;
     private long missionId;
     private long userId;
+    private long imageId;
 
     public static FeedDto of(Feed feedEntity) {
         FeedDto feedDto = ModelMapperUtils.getModelMapper().map(feedEntity, FeedDto.class);

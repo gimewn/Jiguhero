@@ -38,6 +38,10 @@ public class Feed {
     @JoinColumn(name = "userId")
     private User user;
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "imageId")
+    private Image_Mission imageMission;
+
     @OneToMany(mappedBy = "feed")
     List<Like_Feed> like_feed = new ArrayList<>();
 

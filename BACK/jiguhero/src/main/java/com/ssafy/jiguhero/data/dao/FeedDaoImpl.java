@@ -1,10 +1,7 @@
 package com.ssafy.jiguhero.data.dao;
 
 import com.ssafy.jiguhero.data.dto.FeedDto;
-import com.ssafy.jiguhero.data.entity.Feed;
-import com.ssafy.jiguhero.data.entity.Like_Feed;
-import com.ssafy.jiguhero.data.entity.Mission;
-import com.ssafy.jiguhero.data.entity.User;
+import com.ssafy.jiguhero.data.entity.*;
 import com.ssafy.jiguhero.data.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -21,18 +18,28 @@ public class FeedDaoImpl implements FeedDao{
     private final FeedRepository feedRepository;
     private final LikeFeedRepository likeFeedRepository;
 
+    private final ImageMissionRepository imageMissionRepository;
+
     @Autowired
-    public FeedDaoImpl(MissionRepository missionRepository, LikeMissionRepository likeMissionRepository, ConnMissionRepository connMissionRepository, FeedRepository feedRepository, LikeFeedRepository likeFeedRepository) {
+    public FeedDaoImpl(MissionRepository missionRepository, LikeMissionRepository likeMissionRepository, ConnMissionRepository connMissionRepository, FeedRepository feedRepository, LikeFeedRepository likeFeedRepository, ImageMissionRepository imageMissionRepository) {
         this.missionRepository = missionRepository;
         this.likeMissionRepository = likeMissionRepository;
         this.connMissionRepository = connMissionRepository;
         this.feedRepository = feedRepository;
         this.likeFeedRepository = likeFeedRepository;
+        this.imageMissionRepository = imageMissionRepository;
     }
 
     @Override
     public Feed selectFeedById(Long feedId){
         Feed selectedFeed = feedRepository.findByFeedId(feedId);
+
+        return selectedFeed;
+    }
+
+    @Override
+    public Feed selectFeedByImageMission(Image_Mission imageMission) {
+        Feed selectedFeed = feedRepository.findByImageMission(imageMission);
 
         return selectedFeed;
     }
@@ -52,9 +59,9 @@ public class FeedDaoImpl implements FeedDao{
     }
 
     @Override
-    public void insertFeed(Feed feed){
-        feedRepository.save(feed);
-
+    public Feed insertFeed(Feed feed){
+        Feed savedFeed = feedRepository.save(feed);
+        return savedFeed;
     }
 
     @Override
@@ -67,13 +74,20 @@ public class FeedDaoImpl implements FeedDao{
 
     @Override
     public Feed updateFeed(FeedDto feedDto) throws Exception{
+        System.out.println(feedDto.toString());
         Optional<Feed> selectedFeed = feedRepository.findById(feedDto.getFeedId());
         Feed updatedFeed;
+        Long imageId = feedDto.getImageId();
+        Image_Mission imageMission = null;
+
+        if (imageId != 0) {
+            imageMission = imageMissionRepository.getById(feedDto.getImageId());
+        }
 
         if(selectedFeed.isPresent()) {
             Feed feed = selectedFeed.get();
             feed.setContent(feedDto.getContent());
-
+            if (imageMission != null) feed.setImageMission(imageMission);
             updatedFeed = feedRepository.save(feed);
         }
         else {

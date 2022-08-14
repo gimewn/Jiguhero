@@ -1,10 +1,7 @@
 package com.ssafy.jiguhero.data.dao;
 
 import com.ssafy.jiguhero.data.dto.FeedDto;
-import com.ssafy.jiguhero.data.entity.Feed;
-import com.ssafy.jiguhero.data.entity.Like_Feed;
-import com.ssafy.jiguhero.data.entity.Mission;
-import com.ssafy.jiguhero.data.entity.User;
+import com.ssafy.jiguhero.data.entity.*;
 
 import java.util.Optional;
 
@@ -12,11 +9,13 @@ public interface FeedDao {
 
     Feed selectFeedById(Long missionId);
 
+    Feed selectFeedByImageMission(Image_Mission imageMission);
+
     Like_Feed selectLikeFeedByUser(Feed feed, User user);
 
     int countByFeed(Feed feed);
 
-    void insertFeed(Feed feed);
+    Feed insertFeed(Feed feed);
 
     Optional<Feed> selectFeed(Long feedId, User user);
 

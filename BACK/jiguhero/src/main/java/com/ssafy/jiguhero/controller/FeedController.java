@@ -24,9 +24,9 @@ public class FeedController {
     }
 
     @ApiOperation(value = "인증샷을 등록한다")
-    @PostMapping("/")
-    public ResponseEntity<String> insertFeed(@RequestParam("missionId") Long missionId, @RequestBody FeedDto feedDto, @RequestParam("userId") Long userId){
-        int result = feedService.insertFeed(feedDto, missionId, userId);
+    @PostMapping
+    public ResponseEntity<String> insertFeed(@RequestBody FeedDto feedDto){
+        int result = feedService.insertFeed(feedDto);
         if(result==1) {
             return new ResponseEntity<String>("success", HttpStatus.OK); // 성공적으로 인증샷 등록이 완료된 경우
         }
@@ -36,11 +36,11 @@ public class FeedController {
     }
 
     @ApiOperation(value = "인증샷을 수정한다")
-    @PutMapping("/{feed_id}")
-    public ResponseEntity<FeedDto> updateFeed(@RequestBody FeedDto feedDto, @RequestParam("userId") Long userId){
+    @PutMapping
+    public ResponseEntity<FeedDto> updateFeed(@RequestBody FeedDto feedDto){
         FeedDto feedDtoResult = null;
         try {
-            feedDtoResult = feedService.updateFeed(feedDto, userId);
+            feedDtoResult = feedService.updateFeed(feedDto);
         }
         catch (Exception e) {
             throw new RuntimeException(e);
@@ -63,9 +63,9 @@ public class FeedController {
     }
 
     @ApiOperation(value = "인증샷(1개)의 정보를 가져온다")
-    @GetMapping("/{feed_id}")
-    public ResponseEntity<FeedDto> getFeed(@PathVariable("feed_id") Long feedId, @RequestParam("userId") Long userId){
-        FeedDto result = feedService.getFeedById(feedId, userId);
+    @GetMapping("/{image_id}")
+    public ResponseEntity<FeedDto> getFeed(@PathVariable("image_id") Long imageId, @RequestParam("userId") Long userId){
+        FeedDto result = feedService.getFeedById(imageId, userId);
 
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }

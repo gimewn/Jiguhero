@@ -5,10 +5,7 @@ import com.ssafy.jiguhero.data.dao.ImageDao;
 import com.ssafy.jiguhero.data.dao.MissionDao;
 import com.ssafy.jiguhero.data.dao.UserDao;
 import com.ssafy.jiguhero.data.dto.FeedDto;
-import com.ssafy.jiguhero.data.entity.Conn_Mission;
-import com.ssafy.jiguhero.data.entity.Feed;
-import com.ssafy.jiguhero.data.entity.Mission;
-import com.ssafy.jiguhero.data.entity.User;
+import com.ssafy.jiguhero.data.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,9 +30,11 @@ public class FeedServiceImpl implements FeedService {
     }
 
     @Override
-    public FeedDto getFeedById(Long feedId, Long userId){
+    public FeedDto getFeedById(Long imageId, Long userId){
         User userEntity = userDao.selectUserById(userId);
-        Feed feedEntity = feedDao.selectFeedById(feedId);
+        Image_Mission imageMission = imageDao.selectImageMissionById(imageId);
+        Feed feedEntity = feedDao.selectFeedByImageMission(imageMission);
+//        Feed feedEntity = feedDao.selectFeedById(feedId);
         FeedDto dto = FeedDto.of(feedEntity);
 
         int cnt = feedDao.countByFeed(feedEntity);
@@ -50,16 +49,18 @@ public class FeedServiceImpl implements FeedService {
 
     @Transactional
     @Override
-    public int insertFeed(FeedDto feedDto,Long missionId, Long userId){
+    public int insertFeed(FeedDto feedDto){
         Feed feed = new Feed();
-        Mission missionEntity = missionDao.selectMissionById(missionId);
-        User userEntity = userDao.selectUserById(userId);
+        Mission missionEntity = missionDao.selectMissionById(feedDto.getMissionId());
+        User userEntity = userDao.selectUserById(feedDto.getUserId());
+        Image_Mission imageMission = imageDao.selectImageMissionById(feedDto.getImageId());
 
         if(feedDao.searchFeed(userEntity)==null) {
             feed.setContent(feedDto.getContent());
             feed.setRegtime(LocalDate.now());
             feed.setUser(userEntity);
             feed.setMission(missionEntity);
+            feed.setImageMission(imageMission);
             feedDao.insertFeed(feed);
 
             ///////////////////////////////////////////////////// 달성률 계산
@@ -80,17 +81,11 @@ public class FeedServiceImpl implements FeedService {
 
     @Transactional
     @Override
-    public FeedDto updateFeed(FeedDto feedDto, Long userId) throws Exception{
-        User userEntity = userDao.selectUserById(userId);
+    public FeedDto updateFeed(FeedDto feedDto) throws Exception{
+        Feed feed = feedDao.updateFeed(feedDto);
+        FeedDto dto = FeedDto.of(feed);
 
-        if(feedDao.selectFeed(feedDto.getFeedId(), userEntity)!=null) {
-            Feed feed = feedDao.updateFeed(feedDto);
-            FeedDto dto = FeedDto.of(feed);
-            return dto;
-        }
-        else {
-            throw new Exception();
-        }
+        return dto;
     }
 
     @Transactional

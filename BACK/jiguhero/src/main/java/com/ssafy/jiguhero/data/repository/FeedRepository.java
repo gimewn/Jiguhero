@@ -1,6 +1,7 @@
 package com.ssafy.jiguhero.data.repository;
 
 import com.ssafy.jiguhero.data.entity.Feed;
+import com.ssafy.jiguhero.data.entity.Image_Mission;
 import com.ssafy.jiguhero.data.entity.Mission;
 import com.ssafy.jiguhero.data.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -13,6 +14,8 @@ import java.util.Optional;
 public interface FeedRepository extends JpaRepository<Feed, Long> {
 
     Feed findByFeedId(Long feedId);
+
+    Feed findByImageMission(Image_Mission imageMission);
 
     Optional<Feed> findByFeedIdAndUserAndRegtime(Long feedId, User user, LocalDate regtime);
 

@@ -17,7 +17,7 @@ public interface ImageService {
 
     String savePlaceImage(MultipartFile file, Long userId, String placeId);
 
-    String saveMissionImage(MultipartFile file, Long userId, Long missionId, int rep);
+    Long saveMissionImage(MultipartFile file, Long userId, Long missionId, int rep);
 
     String savePromotionImage(MultipartFile file, Long promotionId, HttpServletRequest request);
 
