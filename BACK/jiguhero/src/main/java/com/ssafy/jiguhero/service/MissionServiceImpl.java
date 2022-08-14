@@ -258,8 +258,11 @@ public class MissionServiceImpl implements MissionService {
             String date = saveFolder.split(sep)[2];
             String url = request.getRequestURL().toString().replace(request.getRequestURI(),"") + "/image/" + saveFile + "?target=" + target + "&date=" + date;
 
+            String userId = String.valueOf(imageMission.getUser().getUserId());
+
             data.add(imageId.toString());
             data.add(url);
+            data.add(userId);
             urlList.add(data);
         }
 
