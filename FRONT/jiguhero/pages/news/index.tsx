@@ -69,10 +69,33 @@ interface NewsProps {
     category: number,
     title: string,
     content: string,
-    key: number
+    key: number,
+    proId: number,
+    idx: number,
 }
 
-const NewsDiv = styled('div')`
+const NewsDiv1 = styled('div')`
+    position:relative;
+    height: 150px;
+    margin: 10px 0;
+    border:1px solid #98C064;
+    border-radius: 20px;
+    :hover{
+        background:#98C064;
+        .newsTitle{
+            color:white;
+        }
+        .newsContent{
+            color:white;
+        }
+        .category{
+            background-color: white;
+            color:#98C064;
+        }
+    }
+`
+
+const NewsDiv2 = styled('div')`
     position:relative;
     height: 150px;
     margin: 10px 0;
@@ -93,7 +116,22 @@ const NewsDiv = styled('div')`
     }
 `
 
-const Title = styled('div')`
+const Title1 = styled('div')`
+    .newsTitle{
+        font-size:20px;
+        font-weight:bold;
+        color:#98C064;
+        margin-bottom: 10px;
+    }
+    .newsContent{
+        font-size: 16px;
+        margin: 5px auto;
+        color:#252525;
+    }
+    position: absolute;
+    left:25px;
+`
+const Title2 = styled('div')`
     .newsTitle{
         font-size:20px;
         font-weight:bold;
@@ -108,7 +146,6 @@ const Title = styled('div')`
     position: absolute;
     left:25px;
 `
-
 const Item = styled('div')`
     display:flex;
     justify-content: flex-end;
@@ -127,7 +164,19 @@ const Item = styled('div')`
     }
 `
 
-const Category = styled('p')`
+const Category1 = styled('p')`
+    background-color:#98C064;
+    color:white;
+    padding: 10px;
+    border: 0px;
+    border-radius: 10px;
+    position: relative;
+    display:inline-block;
+    top:75px;
+    right:1px;
+    margin: 15px;
+`
+const Category2 = styled('p')`
     background-color:#65ACE2;
     color:white;
     padding: 10px;
@@ -136,6 +185,7 @@ const Category = styled('p')`
     position: relative;
     display:inline-block;
     top:75px;
+    right:1px;
     margin: 15px;
 `
 //헤더! (새소식 등록하기 버튼, 탭전환...)
@@ -147,11 +197,12 @@ function HeaderTab() {
     return (
         <>
             <TabRow>
-                <TextN>뉴스</TextN>
-                <TextP>프로모션</TextP>
+                <TextN onClick={() => { setTab(true) }}>뉴스</TextN>
+                <TextP onClick={() => { setTab(false) }}>프로모션</TextP>
                 <NewBtn dColor={'#65ACE2'} hColor={'#98C064'}>새소식 등록하기</NewBtn>
             </TabRow>
             <HR />
+            {tab ? <NewsLists /> : <PromotionLists />}
         </>
     )
 }
@@ -159,7 +210,46 @@ function HeaderTab() {
 
 //뉴스 탭
 function NewsLists() {
+    const { data: promotion } = useQuery(['promotions'], getNews)
+    console.log(promotion)
 
+    return (
+        <TabDiv>
+            {promotion?.filter((item) => item.category === 2).map((item, index) => (<NewsList key={index} idx={index} proId={item.promotionId} title={item.title} category={item.category} content={item.content} />))}
+        </TabDiv>
+    )
+}
+
+function NewsList(props: NewsProps) {
+    const router = useRouter();
+    console.log(props.idx)
+    return (
+        <>
+            {props.idx / 2 === 0 ?
+                <NewsDiv1 onClick={() => { router.push(`news/${props.proId}`) }}>
+                    <Title1>
+                        <p className="newsTitle">{props.title}</p>
+                        <p className="newsContent">{props.content}</p>
+                    </Title1>
+
+                    <Item>
+                        {props.category === 1 ? <Category1 className="category">#프로모션</Category1> : <Category1 className="category">#뉴스</Category1>}
+                    </Item>
+                </NewsDiv1>
+                :
+                <NewsDiv2 onClick={() => { router.push(`news/${props.proId}`) }}>
+                    <Title2>
+                        <p className="newsTitle">{props.title}</p>
+                        <p className="newsContent">{props.content}</p>
+                    </Title2>
+
+                    <Item>
+                        {props.category === 1 ? <Category2 className="category">#프로모션</Category2> : <Category2 className="category">#뉴스</Category2>}
+                    </Item>
+                </NewsDiv2>
+            }
+        </>
+    )
 }
 
 //프로모션 탭
@@ -169,26 +259,40 @@ function PromotionLists() {
 
     return (
         <TabDiv>
-
-
-            {promotion?.map((item) => (<PromotionList key={item.promotionId} title={item.title} category={item.category} content={item.content} />))}
+            {promotion?.filter(item => item.category === 1).map((item, index) => (<PromotionList key={index} idx={index} proId={item.promotionId} title={item.title} category={item.category} content={item.content} />))}
         </TabDiv>
     )
 }
 
 function PromotionList(props: NewsProps) {
     const router = useRouter();
+    console.log(props.idx)
     return (
-        <NewsDiv onClick={() => { router.push(`news/${props.key}`) }}>
-            <Title>
-                <p className="newsTitle">{props.title}</p>
-                <p className="newsContent">{props.content}</p>
-            </Title>
+        <>
+            {props.idx / 2 === 0 ?
+                <NewsDiv1 onClick={() => { router.push(`news/${props.proId}`) }}>
+                    <Title1>
+                        <p className="newsTitle">{props.title}</p>
+                        <p className="newsContent">{props.content}</p>
+                    </Title1>
 
-            <Item>
-                {props.category === 1 ? <Category className="category">#프로모션</Category> : <Category className="category">#뉴스</Category>}
-            </Item>
-        </NewsDiv>
+                    <Item>
+                        {props.category === 1 ? <Category1 className="category">#프로모션</Category1> : <Category1 className="category">#뉴스</Category1>}
+                    </Item>
+                </NewsDiv1>
+                :
+                <NewsDiv2 onClick={() => { router.push(`news/${props.proId}`) }}>
+                    <Title2>
+                        <p className="newsTitle">{props.title}</p>
+                        <p className="newsContent">{props.content}</p>
+                    </Title2>
+
+                    <Item>
+                        {props.category === 1 ? <Category2 className="category">#프로모션</Category2> : <Category2 className="category">#뉴스</Category2>}
+                    </Item>
+                </NewsDiv2>
+            }
+        </>
     )
 }
 
@@ -207,9 +311,6 @@ export default function News() {
                 <H2>🦸🏻 지구 - 방위대 소식</H2>
             </NewsTop>
             <HeaderTab />
-            <PromotionLists />
-
-
         </ParentsDiv>
     )
 }
