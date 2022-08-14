@@ -44,7 +44,7 @@ public interface MissionService {
     List<List<String>> getMissionImageURL(Long missionId, HttpServletRequest request);
 
     // 검색어를 만족하는 임무 목록
-    List<MissionDto> searchMission(String search, String array);
+    List<MissionDto> searchMission(String search, String array, HttpServletRequest request);
 
     int searchSuccessRate(Long missionId, Long userId);
 }

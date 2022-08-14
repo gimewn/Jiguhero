@@ -267,10 +267,14 @@ public class MissionServiceImpl implements MissionService {
     }
 
     @Override
-    public List<MissionDto> searchMission(String search, String array) {
+    public List<MissionDto> searchMission(String search, String array, HttpServletRequest request) {
         List<Mission> entityList = missionDao.searchMission(search, array);
-
         List<MissionDto> dtoList = entityList.stream().map(entity -> MissionDto.of(entity)).collect(Collectors.toList());
+
+        for (MissionDto dto : dtoList) {
+            String url = getRepMissionImageURL(dto.getMissionId(), request);
+            dto.setRepImageURL(url);
+        }
 
         return dtoList;
     }
