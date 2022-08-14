@@ -50,6 +50,7 @@ public class UserDaoImpl implements UserDao {
         if (selectedUser.isPresent()) {
             User user = selectedUser.get();
             user.setNickname(nickname);
+            user.setRole(Role.USER);
             updatedUser = userRepository.save(user);
         }
         else {
