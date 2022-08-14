@@ -157,7 +157,7 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
-    public String savePromotionImage(MultipartFile file, Long promotionId) {
+    public String savePromotionImage(MultipartFile file, Long promotionId, HttpServletRequest request) {
         // 이미 이미지가 등록되어 있는지 확인
         Promotion promotion = promotionDao.selectPromotion(promotionId);
         Image_Promotion imagePromotion = imageDao.selectImagePromotion(promotion);
@@ -178,7 +178,9 @@ public class ImageServiceImpl implements ImageService {
         newImagePromotion.setPromotion(promotion);
         imageDao.insertImagePromotion(newImagePromotion);
 
-        return map.get("save_file");
+        String url = request.getRequestURL().toString().replace(request.getRequestURI(),"") + "/image/" + map.get("save_file") + "?target=promotion&date=" + map.get("date");
+
+        return url;
     }
 
     @Override

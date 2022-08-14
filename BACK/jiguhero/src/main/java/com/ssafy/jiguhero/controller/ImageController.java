@@ -65,6 +65,17 @@ public class ImageController {
         return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
     }
 
+    @ApiOperation(value = "소식 이미지를 업로드한다.", response = String.class)
+    @PostMapping("/promotion")
+    public ResponseEntity<String> uploadPromotionImage(@RequestParam("file") MultipartFile file, @RequestParam("promotionId") Long promotionId, HttpServletRequest request) {
+        if(file.isEmpty()) {
+            return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
+        }
+        String url = imageService.savePromotionImage(file, promotionId, request);
+
+        return new ResponseEntity<String>(url, HttpStatus.OK);
+    }
+
     @ApiOperation(value = "파일명에 해당하는 이미지를 불러온다.", response = Resource.class)
     @GetMapping("/{file_name:.+}")
     public ResponseEntity<Resource> downloadImage(@PathVariable("file_name") String fileName, @RequestParam("target") String target, @RequestParam("date") String date, HttpServletRequest request) {
