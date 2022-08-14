@@ -1,5 +1,4 @@
 import styled from "styled-components";
-<<<<<<< HEAD
 import { ButtonFull, ButtonBorder } from 'styles/styled';
 import Backcomponents from 'components/back';
 import Head from 'next/head';
@@ -8,11 +7,8 @@ import { tabpage } from "states/mypage";
 import { RecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import React, { useState } from 'react';
 import ProgressBar from "@ramonak/react-progress-bar";
-<<<<<<< HEAD
-=======
 import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
->>>>>>> c6fd418499a98888cdcdabe4c0d5596a9e51ce3c
 
 const NavBar = styled('div')`
   z-index: 999;
@@ -42,7 +38,7 @@ const BackCompo = styled(Backcomponents)`
   margin-top: 10px;
   margin-bottom: 10px;
 `
-=======
+
 import { ButtonFull, ButtonBorder, ParentsDiv } from 'styles/styled';
 import Backcomponents from 'components/back';
 import MissionModal from 'components/MissionModal';
@@ -55,7 +51,6 @@ import ProgressBar from "@ramonak/react-progress-bar";
 import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
 
->>>>>>> f77d0a544892c403360790cc1333dd3dd946b22a
 const Div = styled('div')`
     padding: 18px;
 `
@@ -63,46 +58,27 @@ const Div = styled('div')`
 const List = styled('div')`
   border: 1px solid #98C064;
   border-radius: 15px;
-<<<<<<< HEAD
-  height: 150px;
-  display:flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-=======
   width: auto;
   height: auto;
   display:flex;
   /* flex-direction: row; */
   /* align-items: center;
   justify-content: center; */
->>>>>>> f77d0a544892c403360790cc1333dd3dd946b22a
   overflow: hidden;
   margin: 5px;
   :hover{
     cursor: pointer;
   }
 
-<<<<<<< HEAD
-  @media screen and (min-width: 360px){
-      width:350px;
-
-=======
   /* @media screen and (min-width: 360px){
       width:350px;
->>>>>>> f77d0a544892c403360790cc1333dd3dd946b22a
   }
   @media screen and (min-width:450px){
       width: 350px;
   }
   @media screen and (min-width: 700px) and (max-width:1400){
-<<<<<<< HEAD
-      width:500px;
-  }
-=======
       width:800px;
   } */
->>>>>>> f77d0a544892c403360790cc1333dd3dd946b22a
 `
 /* const ListImg = styled('div') <{ image: string }>` * /
 /* background-image: url('${(props) => props.image}'); */
@@ -119,11 +95,7 @@ const ListContent = styled('div')`
   width: 200px;
   height: 150px;
   border: 1px solid none;
-<<<<<<< HEAD
-  float: left;
-=======
   /* float: left; */
->>>>>>> f77d0a544892c403360790cc1333dd3dd946b22a
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -132,17 +104,6 @@ const ListContent = styled('div')`
 `
 
 const TextWrapper = styled('div')`
-<<<<<<< HEAD
-  margin: 4px;
-`
-
-const TitleName = styled('a')`
-  font-size: 1rem;
-  font-weight: bolder;
-`
-const Name = styled('a')`
-  font-size: 0.75rem;
-=======
   margin-left: 15px;
   margin-right: auto;
 `
@@ -156,7 +117,6 @@ const Name = styled('p')`
   font-size: 0.75rem;
   margin-top: 5px;
   margin-bottom: 0;
->>>>>>> f77d0a544892c403360790cc1333dd3dd946b22a
 `
 const Date = styled(Name)`
   `
