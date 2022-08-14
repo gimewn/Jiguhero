@@ -23,6 +23,7 @@ export default function User() {
   const [isCheck, setIsCheck] = useState(0);
   const [checkWord, setCheckword] = useState("");
   const userId = router.query.id;
+	const token = router.query.token
 
   const changeHandler = (e) => {
     const file = e.target.files[0];
@@ -120,6 +121,7 @@ export default function User() {
               signinUserImg(userImg, userId);
               const data = await signinUserNickname(nickInput, userId);
               setUserName(data.nickname)
+							localStorage.setItem('access-token',token.toString())
               router.push("/");
             }}
           >

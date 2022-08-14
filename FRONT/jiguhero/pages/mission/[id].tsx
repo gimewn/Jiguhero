@@ -14,7 +14,9 @@ import RoomRoundedIcon from '@mui/icons-material/RoomRounded';
 import { useState } from 'react';
 import FavoriteRoundedIcon from '@mui/icons-material/FavoriteRounded';
 import FavoriteBorderRoundedIcon from '@mui/icons-material/FavoriteBorderRounded';
-
+import ArrowBackIosRoundedIcon from '@mui/icons-material/ArrowBackIosRounded';
+import { useRecoilState, useRecoilValueLoadable } from 'recoil';
+import { UserId, UserName } from 'states/user';
 
 const NavBar = styled('header')`
   z-index: 999;
@@ -270,7 +272,7 @@ const MissionExplanation = styled('div')`
     display: flex;
 `
 //네브바 
-import ArrowBackIosRoundedIcon from '@mui/icons-material/ArrowBackIosRounded';
+
 const Title = styled('div')`
     display:flex;
     align-items: center;
@@ -361,7 +363,11 @@ function MobileLikeAndJoin() {
 
 export default function MissionDetail() {
     const router = useRouter()
-    const { data: MissionDetail } = useQuery(['missions'], missionUserData)
+    const [userId, setUserId] = useRecoilState(UserId);
+    
+    const missionId = router.query.id
+    console.log(userId)
+    const { data: MissionDetail } = useQuery(['missions'], ()=>{missionUserData(missionId, userId)})
     console.log(MissionDetail)
 
     const [ModalAuth, setModalAuth] = useState(false)
@@ -505,20 +511,22 @@ export default function MissionDetail() {
 
 
 
-// export async function getServerSideProps(context) {
-//     const missiondetail = new QueryClient()
+export async function getServerSideProps(context) {
 
-//     await missiondetail.prefetchQuery(['missions'], () => { missionUserData() })
+    const missiondetail = new QueryClient()
+    // const [id, setId]= useRecoilValueLoadable(userId)
+    // console.log(userId)
+    await missiondetail.prefetchQuery(['missions'], () => { missionUserData() })
 
-//     return {
-//         props: {
-//             data: {
-//              
-//                 dehydratedState: dehydrate(missiondetail)
-//             },
-//         },
-//     };
+    return {
+        props: {
+            data: {
+             
+                dehydratedState: dehydrate(missiondetail)
+            },
+        },
+    };
 
-// }
+}
 
 

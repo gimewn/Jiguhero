@@ -27,6 +27,8 @@ import getSido from "pages/api/ecomarket/getSido";
 import getGugun from "pages/api/ecomarket/getGugun";
 import getDong from "pages/api/ecomarket/getDong";
 import PostNewMission from "pages/api/mission/postNewMission";
+import { useRecoilState } from "recoil";
+import { UserId } from "states/user";
 
 const MissioWrapper = styled("div")`
   display: flex;
@@ -172,9 +174,10 @@ const BottomDiv = styled('div')`
 
 
 export default function Createmission() {
+  const [userId, setUserId] = useRecoilState(UserId);
   // 지울거
 
-  const userId = 1;
+  
   // 지울거
 
   const [createImg, setCreateimg] = useState<File>(null); // 이미지 파일
