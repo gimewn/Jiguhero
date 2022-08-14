@@ -13,11 +13,8 @@ import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import PersonPinRoundedIcon from '@mui/icons-material/PersonPinRounded';
 import getReview from "pages/api/place/getReview";
 import { dehydrate, Query, QueryClient, QueryClientProvider, useQuery } from "@tanstack/react-query";
-<<<<<<< HEAD
-=======
 import { getSession} from "next-auth/react";
 import { InfoBtn } from "pages/ground/[id]";
->>>>>>> f77d0a544892c403360790cc1333dd3dd946b22a
 
 const Div = styled("div")`
   position: relative;
@@ -207,11 +204,7 @@ const SelectBox = styled('select')`
   }
 `
 
-<<<<<<< HEAD
 export default function FullMap(props:any) {
-=======
-export default function FullMap(props: any) {
->>>>>>> f77d0a544892c403360790cc1333dd3dd946b22a
 
   const router = useRouter();
   const [show, setShow] = useState(false);
@@ -228,17 +221,9 @@ export default function FullMap(props: any) {
   })
   const [ChoiceDong, setChoiceDong] = useState(['00', '']);
   const [reviews, setReviews] = useState([]);
-<<<<<<< HEAD
-  
-
 
   useEffect(()=>{
     window.kakao.maps.load(function(){moveMyGps()})
-=======
-
-  useEffect(() => {
-    window.kakao.maps.load(function () { moveMyGps() })
->>>>>>> f77d0a544892c403360790cc1333dd3dd946b22a
   }, [])
   useEffect(() => {
     getReview(choiceP['placeId']).then((res) => {
@@ -399,7 +384,6 @@ export default function FullMap(props: any) {
 
 export async function getServerSideProps(context) {
   const queryClient = new QueryClient()
-<<<<<<< HEAD
   await queryClient .prefetchQuery(['sido'], ()=>{getSido()})
   await queryClient .prefetchQuery(['gugun'], ()=>{getGugun(context)})
   await queryClient .prefetchQuery(['dong'], ()=>{getDong(context)})
@@ -408,18 +392,6 @@ export async function getServerSideProps(context) {
         data: {
           dehydratedState: dehydrate(queryClient )
         },
-=======
-  const session = await getSession(context)
-  await queryClient.prefetchQuery(['sido'], () => { getSido() })
-  await queryClient.prefetchQuery(['gugun'], () => { getGugun(context) })
-  await queryClient.prefetchQuery(['dong'], () => { getDong(context) })
-  return {
-    props: {
-      data: {
-        session,
-        dehydratedState: dehydrate(queryClient)
->>>>>>> f77d0a544892c403360790cc1333dd3dd946b22a
       },
-    },
-  };
-}
+    } 
+    }

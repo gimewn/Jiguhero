@@ -1,4 +1,4 @@
-import renewAccess from "../auth/renewAccess";
+
 import {BASE_URL, Token} from 'pages/api/fetch';
 
 export default async function getImgList(placeId){
@@ -8,8 +8,6 @@ export default async function getImgList(placeId){
             "Authorization" : Token
         }
     });
-    const data = await response.json().catch(() => {
-        renewAccess;
-    })
+    const data = await response.json()
     return data
 }

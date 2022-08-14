@@ -7,8 +7,6 @@ export default async function getReview(placeId){
             "Authorization" : Token
         }
     });
-    const data = await response.json().catch(() => {
-
-    })
+    const data = await response.json()
     return data
 }

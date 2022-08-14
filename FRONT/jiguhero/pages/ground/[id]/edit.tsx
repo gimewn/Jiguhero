@@ -20,6 +20,10 @@ import getPlaceList from 'pages/api/ground/getPlaceList';
 import { CloseBtn } from 'components/modal';
 import deletePlace from 'pages/api/ground/deletePlace';
 
+const NewPickerDiv = styled(PickerDiv)`
+    width:100%;
+`
+
 const IsActiveDiv = styled('div')`
     .active{
         display:flex !important;
@@ -124,7 +128,7 @@ export default function EditGround(){
                 <Input placeholder={groundContent} onChange={(e) => {setGroundContent(e.target.value)}}  />
                 <Title style={{marginBottom:'0px'}}>대표 아이콘</Title>
                 {/* <p style={{margin:'5px 0 10px 0'}}></p> */}
-                <PickerDiv>
+                <NewPickerDiv>
                 <EmojiDiv onClick={isActive}>
                     {groundEmoji?(
                         <Emoji>{groundEmoji}</Emoji>
@@ -137,7 +141,7 @@ export default function EditGround(){
                     <Picker onEmojiClick={onEmojiClick} pickerStyle={{width:'100%', margin:'10px 0'}} />
                     </div>
                 </IsActiveDiv>
-                </PickerDiv>
+                </NewPickerDiv>
                 <Title>장소 목록</Title>
                 <GridEdit>
                     {placeList?.map((item, i) => (

@@ -46,19 +46,14 @@ const Body = styled("div")`
   margin-top:80px;
 `;
 const Container = styled("div")`
-  display: flex;
+display: flex;
   position:absolute;
   /* top:80px; */
   justify-content: center;
   flex-direction: column;
   width:inherit;
-<<<<<<< HEAD
-  /* padding:0 20px;
-  max-width: 700px; */
-=======
   /* padding:0 20px; */
   /* max-width: 700px; */
->>>>>>> f77d0a544892c403360790cc1333dd3dd946b22a
   span, p {
     align-items: flex-start;
   }
@@ -68,7 +63,6 @@ const Container = styled("div")`
   }
   @media only screen and (max-width: 650px) {
     margin-bottom:80px;
-    margin-top: 20px;
   }
 `
 

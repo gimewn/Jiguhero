@@ -1,4 +1,4 @@
-import renewAccess from "../auth/renewAccess";
+
 import {BASE_URL, Token} from 'pages/api/fetch';
 
 export default async function deleteReview(reviewId){
@@ -8,8 +8,6 @@ export default async function deleteReview(reviewId){
             "Authorization" : Token
         }
     });
-    const data = await response.json().catch(() => {
-        renewAccess;
-    })
+    const data = await response
     return data
 }

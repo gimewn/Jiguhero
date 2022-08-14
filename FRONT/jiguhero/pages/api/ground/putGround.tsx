@@ -1,4 +1,4 @@
-import renewAccess from "../auth/renewAccess";
+
 import {BASE_URL, Token} from 'pages/api/fetch';
 
 
@@ -18,9 +18,7 @@ export default async function putGround(userId, groundId, emoji, title, content)
             "userId":userId
         })
     });
-    const data = await response.json().catch(() => {
-        renewAccess;
-    })
+    const data = await response.json()
     console.log(data)
     return data
 }
