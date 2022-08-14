@@ -8,7 +8,6 @@ import { getSession, SessionProvider, useSession } from "next-auth/react";
 import { dehydrate, Query, QueryClient, QueryClientProvider, useQuery } from "@tanstack/react-query";
 
 const H2 = styled('h2')`
-    margin-left:20px;
   @media only screen and (max-width: 650px) {
     display:none;
   }
@@ -59,34 +58,34 @@ const BtnContent = styled("div")`
   }
 `;
 export default function NewsDetail() {
-    return (
-        <ParentsDiv>
-            {/* 헤더 */}
-            <Head>
-                <title>지구-방위대 소식 | 지구-방위대</title>
-            </Head>
-            {/* 방위대 소식 back버튼 */}
-            <Backcomponents name='지구-방위대 소식'></Backcomponents>
-            <NewsTop>
-                <H2>🦸🏻 지구-방위대 소식</H2>
-                {/* 이미지 및 내용 api 연동 필요 */}
-                <NewsImg className='newsimage' src='https://cdn.pixabay.com/photo/2016/11/18/07/45/mark-1833559_960_720.jpg' />
-                <NewsContent>안녕하세요안녕하세요안뇽하세요안녕하세여안녕하세요</NewsContent>
+  return (
+    <ParentsDiv>
+      {/* 헤더 */}
+      <Head>
+        <title>지구-방위대 소식 | 지구-방위대</title>
+      </Head>
+      {/* 방위대 소식 back버튼 */}
+      <Backcomponents name='지구-방위대 소식'></Backcomponents>
+      <NewsTop>
+        <H2>🦸🏻 지구-방위대 소식</H2>
+        {/* 이미지 및 내용 api 연동 필요 */}
+        <NewsImg className='newsimage' src='https://cdn.pixabay.com/photo/2016/11/18/07/45/mark-1833559_960_720.jpg' />
+        <NewsContent>안녕하세요안녕하세요안뇽하세요안녕하세여안녕하세요</NewsContent>
 
-                <BtnContent>
-                    {/* 관리자일 때만 보이게....수정 삭제 api 연동 필요 */}
-                    <ModBtn
-                        hColor={'#98C064'} dColor={'#65ACE2'}>
-                        수정</ModBtn>
-                    <DelBtn
-                        dColor={'#98C064'} hColor={'#65ACE2'}>
-                        삭제</DelBtn>
-                </BtnContent>
-            </NewsTop>
+        <BtnContent>
+          {/* 관리자일 때만 보이게....수정 삭제 api 연동 필요 */}
+          <ModBtn
+            hColor={'#98C064'} dColor={'#65ACE2'}>
+            수정</ModBtn>
+          <DelBtn
+            dColor={'#98C064'} hColor={'#65ACE2'}>
+            삭제</DelBtn>
+        </BtnContent>
+      </NewsTop>
 
 
-        </ParentsDiv>
-    )
+    </ParentsDiv>
+  )
 }
 
 // export async function getServerSideProps(context) {
