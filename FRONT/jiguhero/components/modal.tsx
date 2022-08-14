@@ -1,16 +1,16 @@
 import styled from 'styled-components';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
-import {LocIcon, ConIcon} from 'pages/ecomarket/index';
+import { LocIcon, ConIcon } from 'pages/ecomarket/index';
 import PermPhoneMsgRoundedIcon from '@mui/icons-material/PermPhoneMsgRounded';
 import { useState, useEffect } from "react";
-import {ButtonFull} from 'styles/styled'
+import { ButtonFull } from 'styles/styled'
 import getReview from 'pages/api/place/getReview';
 import postReport from 'pages/api/place/postReport';
 import postReview from 'pages/api/place/postReview';
 import { useQuery } from '@tanstack/react-query';
 // import { Pagination } from "@mui/material";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import {reviewlists} from 'states/place';
+import { reviewlists } from 'states/place';
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
 import { Swiper, SwiperSlide } from "swiper/react"; // basic
 import SwiperCore, { Navigation, Pagination } from "swiper";
@@ -99,7 +99,7 @@ const CallIcon = styled(PermPhoneMsgRoundedIcon)`
 font-size: 1em;
 color:#98c064;   
 `
-const ReportBox = styled('div')<{Color:string}>`
+const ReportBox = styled('div') <{ Color: string }>`
     display:flex;
     width:100%;
     flex-direction: column;
@@ -114,7 +114,7 @@ const ReportBox = styled('div')<{Color:string}>`
         margin: 0;
     }
 `
-const PostReport = styled(ModalBody)<{Color:string}>`
+const PostReport = styled(ModalBody) <{ Color: string }>`
     background-color: ${(props) => props.Color} ;
     padding-bottom:20px;
     border-radius:20px;
@@ -198,7 +198,7 @@ const ReviewBox = styled('div')`
     }
 `
 
-const EmojiSpan = styled('span')<{size:string}>`
+const EmojiSpan = styled('span') <{ size: string }>`
     font-size: ${(props) => props.size};
     margin: auto 5px auto 0;
     `
@@ -310,12 +310,12 @@ const DeleteBtn = styled('button')`
     margin: auto 0 auto 10px;
 `
 
-export default function Modal(props){
-    const {show, setshow, data, reviews} = props;
+export default function Modal(props) {
+    const { show, setshow, data, reviews } = props;
     const [isReport, setReport] = useState(false);
     const [ReportCategory, setReportCategory] = useState(0);
     const [ReportContent, setReportContent] = useState('');
-    const reviewEmoji = [['', ''], ['😔','실망이에요'], ['😑', '별로예요'], ['😶', '그저 그래요'], ['🤗', '만족해요'], ['🥰', '너무 좋아요']]
+    const reviewEmoji = [['', ''], ['😔', '실망이에요'], ['😑', '별로예요'], ['😶', '그저 그래요'], ['🤗', '만족해요'], ['🥰', '너무 좋아요']]
     const [scoreValue, setsScoreValue] = useState(1);
     const [reviewValue, setReviewValue] = useState('');
     const [imgList, setImgList] = useState<Array<string>>();
@@ -357,16 +357,16 @@ export default function Modal(props){
     useEffect(()=>{
         setFetchReview(reviews)
     }, [reviews])
-    function Emoji(prop){
-        if(prop['index'] === 0){
-            return(<EmojiSpan size="20px">{reviewEmoji[prop['score']][prop['index']]}</EmojiSpan>)
-        }else{
-            return(<EmojiSpan size="16px">{reviewEmoji[prop['score']][prop['index']]}</EmojiSpan>)
+    function Emoji(prop) {
+        if (prop['index'] === 0) {
+            return (<EmojiSpan size="20px">{reviewEmoji[prop['score']][prop['index']]}</EmojiSpan>)
+        } else {
+            return (<EmojiSpan size="16px">{reviewEmoji[prop['score']][prop['index']]}</EmojiSpan>)
         }
     }
-    function Star(score){
+    function Star(score) {
         let res = '';
-        for(let i=0; i<score['score']; i++){
+        for (let i = 0; i < score['score']; i++) {
             res += '⭐'
         }
         return <Starspan>{res}</Starspan>

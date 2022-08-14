@@ -41,4 +41,9 @@ export const ParentsDiv = styled('div')`
         margin-top:20px;
         margin-bottom: 80px;
   }
+  .feedimage{
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
 `

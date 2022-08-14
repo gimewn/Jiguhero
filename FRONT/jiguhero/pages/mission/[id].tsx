@@ -309,20 +309,37 @@ function Back({ name }: PageName) {
         </Title>
     )
 }
+
+
 //미션 올린 사람 x 모바일 뷰 더보기 모달창
 function MissionUnAuthModal() {
+    const copyURL = () => {
+        let currentUrl = window.document.location.href;
+        let t = document.createElement("textarea");
+        document.body.appendChild(t);
+        t.value = currentUrl;
+        t.select();
+        document.execCommand("copy");
+        document.body.removeChild(t);
+
+        alert("링크가 복사되었습니다.");
+    };
     return (
         <Div>
-            <LinkBtn>링크 복사하기</LinkBtn>
+            {/* 클릭 시 링크 복사하는 기능 추가 */}
+            <LinkBtn onClick={() => { copyURL() }}>링크 복사하기</LinkBtn>
         </Div>
     )
 }
 
 //미션 올린 사람일 경우 모바일 뷰 더보기 모달창
 function MissionAuthModal() {
+
     return (
         <Div>
+            {/* 클릭 시 임무 수정 페이지로 이동하는 기능 추가 */}
             <ModifyBtn>임무 내용 수정하기</ModifyBtn>
+            {/* 클릭 시 임무 삭제하는 기능 추가 */}
             <DeleteBtn>임무 삭제하기</DeleteBtn>
         </Div>
     )
@@ -368,7 +385,6 @@ export default function MissionDetail() {
     const [ModalAuth, setModalAuth] = useState(false)
     const [Auth, setAuth] = useState(false)
     const [unAuth, setUnAuth] = useState(false)
-    console.log(Auth)
 
     return (
         <>
@@ -462,15 +478,11 @@ export default function MissionDetail() {
                     </Block>
 
 
-                    {/* api 추가 생성 후 미션 소개...추가 해주세요... */}
+                    {/* 미션 소개 */}
                     <Block>
                         <Content>
                             <MissionExplanation>
-                                안녕하세요 임시입니다
-                                <br />
-                                여기에 api 추가되면 넣어야 해요!
-                                <br></br>
-                                프로젝트 화이티이이잉!
+                                {MissionDetail?.content}
                             </MissionExplanation>
                         </Content>
                     </Block>
@@ -506,20 +518,20 @@ export default function MissionDetail() {
 
 
 
-// export async function getServerSideProps(context) {
-//     const missiondetail = new QueryClient()
-//     const session = await getSession(context);
-//     await missiondetail.prefetchQuery(['missions'], () => { missionUserData() })
+export async function getServerSideProps(context) {
+    const missiondetail = new QueryClient()
+    const session = await getSession(context);
+    await missiondetail.prefetchQuery(['missions'], () => { missionUserData() })
 
-//     return {
-//         props: {
-//             data: {
-//                 session,
-//                 dehydratedState: dehydrate(missiondetail)
-//             },
-//         },
-//     };
+    return {
+        props: {
+            data: {
+                session,
+                dehydratedState: dehydrate(missiondetail)
+            },
+        },
+    };
 
-// }
+}
 
 

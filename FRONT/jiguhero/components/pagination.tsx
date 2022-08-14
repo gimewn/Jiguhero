@@ -1,11 +1,16 @@
 import Pagination from 'react-js-pagination';
 
-export default function Paigination({ page, count, setPage }){
+interface Props {
+  page: number;
+  totalcount: number;
+  setPage: any;
+}
+export default function Paigination({ page, totalcount, setPage }: Props) {
   return (
     <Pagination
       activePage={page}
-      itemsCountPerPage={2}
-      totalItemsCount={count}
+      itemsCountPerPage={5}
+      totalItemsCount={totalcount}
       pageRangeDisplayed={5}
       prevPageText={'‹'}
       nextPageText={'›'}

@@ -3,7 +3,7 @@ import { BASE_URL, Token } from 'pages/api/fetch';
 
 
 export default async function getMission(){
-    const response = await fetch(BASE_URL+'mission', {
+    const response = await fetch(BASE_URL+'mission?array=time', {
         method:'GET',
         headers:{
             Authorization : Token
@@ -14,4 +14,3 @@ export default async function getMission(){
     })
     return data
 }
-
