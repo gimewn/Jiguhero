@@ -12,6 +12,8 @@ import sameNickname from "pages/api/user/sameNickname";
 import signinUserNickname from "../api/user/signinUserNickname";
 // import ConfirmValidationInput from "../components/validationInput";
 // import regex from "../components/regex";
+import { ParentsDiv } from 'styles/styled'
+import Backcomponents from 'components/back';
 
 export default function User() {
   const router = useRouter();
@@ -48,13 +50,18 @@ export default function User() {
   };
 
   return (
-    <SignUpWrapper>
+    <ParentsDiv>
       {/* header추가 */}
       <Head>
         <title>회원가입 | 지구-방위대</title>
       </Head>
+      {/* 방위대 소식 back버튼 */}
+      <Backcomponents name='회원가입'></Backcomponents>
 
-      <SignUpText>회원가입</SignUpText>
+      <NewsTop>
+        <H2>🦸🏻 회원가입</H2>
+      </NewsTop>
+
 
       {/* 프로필 사진 추가 */}
       <CameraBtn>
@@ -88,8 +95,11 @@ export default function User() {
             e.preventDefault();
             setNickInput(e.target.value);
           }}
+          required={true}
+          maxLength={15}
+          placeholder="대원명을 입력해주세요!"
         />
-        <ButtonFull
+        <NicknameB
           dColor={"#98C064"}
           hColor={"#65ACE2"}
           onClick={async (e) => {
@@ -103,18 +113,20 @@ export default function User() {
           }}
         >
           중복확인
-        </ButtonFull>
+        </NicknameB>
       </Nick>
-
       {/* 유효성 검사 결과 텍스트 */}
-      {checkWord ? checkWord : null}
+      <CheckMessage><a>{checkWord ? checkWord : null}</a></CheckMessage>
+
+
+
 
       {/* 가입완료 버튼 */}
       <ButtonStack>
         {isCheck ? (
-          <ButtonFull
-            hColor={"#98C064"}
-            dColor={"#65ACE2"}
+          <SignUpDone
+            dColor={"#ff7f50"}
+            hColor={"#f86f3d"}
             onClick={() => {
               signinUserImg(userImg, userId);
               signinUserNickname(nickInput, userId);
@@ -123,34 +135,62 @@ export default function User() {
             }}
           >
             가입완료
-          </ButtonFull>
+          </SignUpDone>
         ) : (
-          <ButtonFull hColor={"#949693"} dColor={"#949693"} disabled>
+          <SignUpDone hColor={"#949693"} dColor={"#949693"} disabled>
             가입완료
-          </ButtonFull>
+          </SignUpDone>
         )}
       </ButtonStack>
-    </SignUpWrapper>
+    </ParentsDiv>
   );
 }
 
 //styled-components
+const H2 = styled('h2')`
+  @media only screen and (max-width: 650px) {
+    display:none;
+  }
+`
+const NewsTop = styled('div')`
+    margin-left:35px;
+    @media only screen and (max-width: 650px) {
+        margin-top:20px;
+    }
+`
 
-const Nick = styled("div")``;
-
-const SignUpWrapper = styled("div")`
+const CheckMessage = styled('div')`
   display: flex;
-  flex-direction: column;
+  margin-left: 6rem;
+  @media only screen and (max-width: 650px) {
+        margin-left:2rem;
+    }
+  a{
+  font-size: small;
+  font-weight: bold;
+  color: #65ACE2;
+  }
+`
+
+
+const NicknameB = styled(ButtonFull)`
+    font-size: small;
+    border-radius: 10px;
+    padding: 5px 10px;
+    margin-left: 10px;
+    `
+const Nick = styled("div")`
+  display: flex;
   justify-content: center;
   align-items: center;
+  input{
+  width: 60%;
+  border-radius: 10px;
+  border: 1px solid #65ACE2;
+  padding: 5px;
+  }
 `;
 
-const SignUpText = styled("h1")`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 1.8rem;
-`;
 const CameraBox = styled("div")`
   width: 150px;
   height: 150px;
@@ -174,12 +214,16 @@ const CameraBtn = styled("div")`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 2rem;
+  margin: 4.5rem 2rem 3rem 2rem;
 `;
 
 const ButtonStack = styled("div")`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding-top: 60px;
+  margin-top: 20%;
 `;
+
+const SignUpDone = styled(ButtonFull)`
+  width:60%;
+`
