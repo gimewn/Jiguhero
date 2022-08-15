@@ -16,7 +16,7 @@ import CalendarMonthRoundedIcon from "@mui/icons-material/CalendarMonthRounded";
 import { ButtonFull, ButtonBorder } from "styles/styled";
 import { useRouter } from "next/router";
 import RoomRoundedIcon from "@mui/icons-material/RoomRounded";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import FavoriteRoundedIcon from "@mui/icons-material/FavoriteRounded";
 import FavoriteBorderRoundedIcon from "@mui/icons-material/FavoriteBorderRounded";
 // import ArrowBackIosRoundedIcon from "@mui/icons-material/ArrowBackIosRounded";
@@ -375,22 +375,26 @@ function MobileLikeAndJoin() {
 
 export default function MissionDetail() {
   const router = useRouter();
-  if (typeof window !== 'undefined'){
+
+
+  // const [use, setUserId] = useRecoilState(userId)
+  if (typeof window === "undefined"){
     const userId = JSON.parse(localStorage.getItem('recoil-persist')).userId
-    console.log(userId);
 
   }
 
-  const missionId = router.query.id;
-  const { data: MissionDetail } = useQuery(["missions"], () => {
+
+  const { data: MissionDetail } = useQuery(["missions"],  () => {
     missionUserData(missionId, userId);
   });
-  console.log(MissionDetail);
+
+  const missionId = router.query.id;
+
 
   const [ModalAuth, setModalAuth] = useState(false);
   const [Auth, setAuth] = useState(false);
   const [unAuth, setUnAuth] = useState(false);
-  console.log(Auth);
+  
 
   return (
     <>

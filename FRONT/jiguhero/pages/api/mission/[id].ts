@@ -13,19 +13,6 @@ export default async function missionUserData(missionId, userId) {
   const data = await response.json().catch(() => {
 
   });
- 
+  console.log(data)
   return data;
 }
-
-// export default async function GetMissionDetail(){
-//     const response = await fetch(BASE_URL+'mission/{id}', {
-//         method:'GET',
-//         headers:{
-//             Authorization : Token
-//         }
-//     });
-//     const data = await response.json().catch(() => {
-//         renewAccess;
-//     })
-//     return data
-// }
