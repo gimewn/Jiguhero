@@ -27,6 +27,8 @@ import getSido from "pages/api/ecomarket/getSido";
 import getGugun from "pages/api/ecomarket/getGugun";
 import getDong from "pages/api/ecomarket/getDong";
 import PostNewMission from "pages/api/mission/postNewMission";
+import { useRecoilState } from "recoil";
+import { UserId } from "states/user";
 
 const H2 = styled('h2')`
   @media only screen and (max-width: 650px) {
@@ -187,7 +189,7 @@ const BottomDiv = styled('div')`
 export default function Createmission() {
   // 지울거
 
-  const userId = 1;
+  const [userId, setUserId]=useRecoilState(UserId)
   // 지울거
 
   const [createImg, setCreateimg] = useState<File>(null); // 이미지 파일
@@ -198,7 +200,7 @@ export default function Createmission() {
   const [endDate, setEndDate] = useState(new Date()); // 종료일
   const [astartDate, setAstartDate] = useState(["", ""]); // 시작일 배열 [요일, 월, 일, 년]
   const [aendDate, setAendDate] = useState(["", ""]); // 종료일 배열 [요일, 월, 일, 년]
-  const [point, setPoint] = useState<Number>();
+  const [point, setPoint] = useState<Number>(); // 포인트
   const [people, setPeople] = useState<Number>();
   const [content, setContent] = useState(""); //내용
   const router = useRouter();
@@ -282,15 +284,14 @@ export default function Createmission() {
 
   // 임무명
   function MissionName() {
+    const [titleName,setTitleName] = useState('')
     return (
       <div>
         <Text>임무명</Text>
-        <BoxInput
-          onChange={(event) => {
-            setTitle(event.target.value);
-          }}
-          value={title}
-        />
+        <BoxInput onChange={(e) => {setTitleName(e.target.value)}} onBlur={(e)=>{
+          e.preventDefault()
+          setTitle(titleName)
+        }}  />
       </div>
     );
   }
@@ -336,6 +337,10 @@ export default function Createmission() {
 
   //포인트
   function Point() {
+
+      const [pointNum, setPointNum] = useState('500')
+
+
     return (
       <>
         <Text>포인트</Text>
@@ -345,18 +350,24 @@ export default function Createmission() {
           max={5000}
           step={500}
           defaultValue={500}
+          value={pointNum}
+          onChange={(e)=>{
+            e.preventDefault()
+            setPointNum(e.target.value)
+          }}
+
           onBlur={(e) => {
             e.preventDefault();
-            const tmp = Number(e.target.value);
+            const tmp = Number(pointNum);
             if (tmp < 500) {
-              e.target.value = "500";
+              setPointNum('500')
             } else if (tmp > 5000) {
-              e.target.value = "5000";
-            } else if (Number(e.target.value) % 10) {
-              e.target.value = `${tmp - (tmp % 10)}`;
+              setPointNum('5000')
+            } else if (tmp % 10) {
+              setPointNum(`${tmp-(tmp%10)}`)
             }
-            setPoint(Number(e.target.value));
-            return;
+            setPoint(Number(pointNum));
+            
           }}
         />
       </>
@@ -365,6 +376,7 @@ export default function Createmission() {
 
   //정원
   function JoinPeople() {
+    const [peopleNum, setPeopleNum] = useState('10')
     return (
       <>
         <Text>정원</Text>
@@ -373,16 +385,18 @@ export default function Createmission() {
           step={10}
           defaultValue={10}
           onBlur={(e: FocusEvent<HTMLInputElement>) => {
+            e.preventDefault()
             const num = Number(e.target.value);
             if (num < 10) {
-              e.target.value = "10";
+              setPeopleNum('10')
+              
             } else if (num > 5000) {
-              e.target.value = "5000";
+              setPeopleNum('5000')
             } else if (num % 10) {
-              e.target.value = `${num - (num % 10)}`;
+              setPeopleNum(`${num - (num % 10)}`)
             }
-            setPeople(Number(e.target.value));
-            console.log(e.target.value);
+            setPeople(Number(peopleNum));
+
           }}
         />
       </>
@@ -450,22 +464,6 @@ export default function Createmission() {
     );
   }
 
-  //임무내용
-  function TextArea() {
-    const onChange = (event) => {
-      setContent(event.target.value);
-      console.log(event.target.value);
-    };
-    return (
-      <>
-        <MissionText
-          placeholder="임무 설명을 작성해주세요😎"
-          onChange={onChange}
-          value={content}
-        />
-      </>
-    );
-  }
 
   return (
     <ParentsDiv>
@@ -492,7 +490,11 @@ export default function Createmission() {
         {/* 임무명 */}
         <Block>
           <Content>
+            {/* <Text>임무명</Text> */}
             <MissionName />
+          {/* <BoxInput onChange={(e) => {
+            e.preventDefault()
+            setTitle(e.target.value)}}  /> */}
           </Content>
         </Block>
 
@@ -525,7 +527,13 @@ export default function Createmission() {
         </Block>
 
         {/* 내용쓰기 */}
-        <TextArea />
+        <MissionText
+          placeholder="임무 설명을 작성해주세요😎"
+          onChange={(e) => {
+            setContent(e.target.value);
+          }}
+          value={content}
+        />
 
         {/* 등록버튼 */}
         <Block>
@@ -536,8 +544,8 @@ export default function Createmission() {
               // variant="contained"
               type="submit"
               onClick={async () => {
-                const data = await PostNewMission(postdata);
-                await PostMissionImg(createImg, data, userId);
+                const missionId = await PostNewMission(postdata);
+                await PostMissionImg(createImg, userId, missionId);
                 router.push("/");
               }}
             >

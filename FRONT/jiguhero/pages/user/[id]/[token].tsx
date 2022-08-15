@@ -13,8 +13,6 @@ import signinUserNickname from "../api/user/signinUserNickname";
 import { UserName } from "states/user";
 // import ConfirmValidationInput from "../components/validationInput";
 // import regex from "../components/regex";
-import { ParentsDiv } from 'styles/styled'
-import Backcomponents from 'components/back';
 
 export default function User() {
   const router = useRouter();
@@ -25,6 +23,7 @@ export default function User() {
   const [isCheck, setIsCheck] = useState(0);
   const [checkWord, setCheckword] = useState("");
   const userId = router.query.id;
+	const token = router.query.token
 
   const changeHandler = (e) => {
     const file = e.target.files[0];
@@ -51,18 +50,13 @@ export default function User() {
   };
 
   return (
-    <ParentsDiv>
+    <SignUpWrapper>
       {/* header추가 */}
       <Head>
         <title>회원가입 | 지구-방위대</title>
       </Head>
-      {/* 방위대 소식 back버튼 */}
-      <Backcomponents name='회원가입'></Backcomponents>
 
-      <NewsTop>
-        <H2>🦸🏻 회원가입</H2>
-      </NewsTop>
-
+      <SignUpText>회원가입</SignUpText>
 
       {/* 프로필 사진 추가 */}
       <CameraBtn>
@@ -96,11 +90,8 @@ export default function User() {
             e.preventDefault();
             setNickInput(e.target.value);
           }}
-          required={true}
-          maxLength={15}
-          placeholder="대원명을 입력해주세요!"
         />
-        <NicknameB
+        <ButtonFull
           dColor={"#98C064"}
           hColor={"#65ACE2"}
           onClick={async (e) => {
@@ -114,84 +105,55 @@ export default function User() {
           }}
         >
           중복확인
-        </NicknameB>
+        </ButtonFull>
       </Nick>
+
       {/* 유효성 검사 결과 텍스트 */}
-      <CheckMessage><a>{checkWord ? checkWord : null}</a></CheckMessage>
-
-
-
+      {checkWord ? checkWord : null}
 
       {/* 가입완료 버튼 */}
       <ButtonStack>
         {isCheck ? (
-          <SignUpDone
-            dColor={"#ff7f50"}
-            hColor={"#f86f3d"}
-            onClick={() => {
+          <ButtonFull
+            hColor={"#98C064"}
+            dColor={"#65ACE2"}
+            onClick={async () => {
               signinUserImg(userImg, userId);
               const data = await signinUserNickname(nickInput, userId);
               setUserName(data.nickname)
+							localStorage.setItem('access-token',token.toString())
               router.push("/");
             }}
           >
             가입완료
-          </SignUpDone>
+          </ButtonFull>
         ) : (
-          <SignUpDone hColor={"#949693"} dColor={"#949693"} disabled>
+          <ButtonFull hColor={"#949693"} dColor={"#949693"} disabled>
             가입완료
-          </SignUpDone>
+          </ButtonFull>
         )}
       </ButtonStack>
-    </ParentsDiv>
+    </SignUpWrapper>
   );
 }
 
 //styled-components
-const H2 = styled('h2')`
-  @media only screen and (max-width: 650px) {
-    display:none;
-  }
-`
-const NewsTop = styled('div')`
-    margin-left:35px;
-    @media only screen and (max-width: 650px) {
-        margin-top:20px;
-    }
-`
 
-const CheckMessage = styled('div')`
+const Nick = styled("div")``;
+
+const SignUpWrapper = styled("div")`
   display: flex;
-  margin-left: 6rem;
-  @media only screen and (max-width: 650px) {
-        margin-left:2rem;
-    }
-  a{
-  font-size: small;
-  font-weight: bold;
-  color: #65ACE2;
-  }
-`
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
 
-
-const NicknameB = styled(ButtonFull)`
-    font-size: small;
-    border-radius: 10px;
-    padding: 5px 10px;
-    margin-left: 10px;
-    `
-const Nick = styled("div")`
+const SignUpText = styled("h1")`
   display: flex;
   justify-content: center;
   align-items: center;
-  input{
-  width: 60%;
-  border-radius: 10px;
-  border: 1px solid #65ACE2;
-  padding: 5px;
-  }
+  margin-top: 1.8rem;
 `;
-
 const CameraBox = styled("div")`
   width: 150px;
   height: 150px;
@@ -215,16 +177,12 @@ const CameraBtn = styled("div")`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 4.5rem 2rem 3rem 2rem;
+  margin: 2rem;
 `;
 
 const ButtonStack = styled("div")`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 20%;
+  padding-top: 60px;
 `;
-
-const SignUpDone = styled(ButtonFull)`
-  width:60%;
-`

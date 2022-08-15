@@ -129,15 +129,24 @@ export default function Mission({ data }) {
   const [cate, setCate] = useState<string>("time"); // 카테고리 최신순, 조회순, 이름순
   const [flag, setFlag] = useState(false) // false 검색어 없는 전체 목록, true 검색어 있는 목록
   const [cmd, setCmd] = useState<string>('');
+  const userId = JSON.parse(localStorage.getItem('recoil-persist')).userId
+  
 
-  const { data: Missions, isLoading } = useQuery(
-    ["missions", { cmd, cate }],
-    searchMission
-  );
+  if (flag) {
+    
+    const { data: Missions } =  useQuery(
+      ["missions", { cmd, cate }],
+      searchMission
+    )
+  } else {
+    
+    const { data: Missions, isLoading } =  useQuery(
+      ["missions", {cate}],
+      getMission, 
+    );
+  }
+  // console.log(Missions)
 
-  // useEffect(() => {
-  //   getMission({});
-  // }, [cate]);
 
   //select Box --- 최신등록 순 이름 순
   const OPTIONS = [
@@ -162,20 +171,18 @@ export default function Mission({ data }) {
     );
   }
 
-  function MissionLists({ selector }) {
+  function MissionLists(flag) {
 
 
+    const { data: Missions } = useQuery(
+      ["missions", { cmd, cate }],
+      searchMission
+    )
     if (flag) {
-      const { data: Missions } = useQuery(
-        ["missions", { cmd, cate }],
-        searchMission
-      )
     } else {
       const { data: Missions, isLoading } = useQuery(
-        ["missions", { cate }],
-        getMission, {
-
-      }
+        ["missions"],
+        getMission
       );
     }
 
@@ -230,6 +237,7 @@ export default function Mission({ data }) {
             e.preventDefault();
             // setText(tmp)
             setCmd(tmp);
+            setFlag(true)
           }}
         />
       </>
@@ -272,7 +280,7 @@ export default function Mission({ data }) {
 
       <MissionBlock>
         <ListContent>
-          <MissionLists selector={cate} />
+          <MissionLists flag={flag}  />
         </ListContent>
       </MissionBlock>
 

@@ -14,6 +14,6 @@ export default async function signinUserNickname(nickname, userId) {
 
 	const data = await response.json()
 
-
+	console.log(data)
 	return data
 }
