@@ -68,7 +68,7 @@ public class MissionController {
     }
 
     @ApiOperation(value = "임무에 참여한다.", response = String.class)
-    @PostMapping("/{mission_id}/details")
+    @PostMapping("/join")
     public ResponseEntity<String> joinMission(@RequestParam("userId") Long userId, @RequestParam("missionId") Long missionId) {
         int check = missionService.joinMission(userId, missionId);
 
@@ -136,4 +136,5 @@ public class MissionController {
 
         return ResponseEntity.status(HttpStatus.OK).body(list);
     }
+
 }
