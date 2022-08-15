@@ -40,7 +40,6 @@ export default function Home() {
   const token = router?.query.token;
   const register = router?.query.REGISTER;
 
-  const [userName, setUserName] = useRecoilState(UserName)
   const [userId, setUserId] = useRecoilState(UserId)
   console.log(router.query)
 

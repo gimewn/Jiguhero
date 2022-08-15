@@ -1,36 +1,42 @@
 import styled from "styled-components";
-import { ButtonFull, ButtonBorder, ParentsDiv } from 'styles/styled';
-import Backcomponents from 'components/back';
-import MissionModal from 'components/MissionModal';
-import Head from 'next/head';
-import { useRouter } from 'next/router';
+import { ButtonFull, ButtonBorder, ParentsDiv } from "styles/styled";
+import Backcomponents from "components/back";
+import MissionModal from "components/MissionModal";
+import Head from "next/head";
+import { useRouter } from "next/router";
 import { missionTabpage } from "states/mission";
 import { RecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import ProgressBar from "@ramonak/react-progress-bar";
-import ImageList from '@mui/material/ImageList';
-import ImageListItem from '@mui/material/ImageListItem';
+import ImageList from "@mui/material/ImageList";
+import ImageListItem from "@mui/material/ImageListItem";
 import getDetail from "pages/api/mission/getDetail";
 import getDong from "pages/api/ecomarket/getDong";
-import postImg from 'pages/api/place/postImg';
-import getImgList from 'pages/api/place/getImgList';
+import getPercent from "pages/api/mission/getPercent";
 
-const Div = styled('div')`
-    padding: 18px;
-`
+import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 
-const List = styled('div')`
-  border: 1px solid #98C064;
+import IconButton from "@mui/material/IconButton";
+import PhotoCamera from "@mui/icons-material/PhotoCamera";
+import PostMissionauthImg from "pages/api/mission/postmissionauthImg";
+import PostMissionauthtext from "pages/api/mission/postMissionauthtext";
+
+const Div = styled("div")`
+  padding: 18px;
+`;
+
+const List = styled("div")`
+  border: 1px solid #98c064;
   border-radius: 15px;
   width: auto;
   height: auto;
-  display:flex;
+  display: flex;
   /* flex-direction: row; */
   /* align-items: center;
   justify-content: center; */
   overflow: hidden;
   margin: 5px;
-  :hover{
+  :hover {
     cursor: pointer;
   }
 
@@ -43,8 +49,8 @@ const List = styled('div')`
   @media screen and (min-width: 700px) and (max-width:1400){
       width:800px;
   } */
-`
-const ListImg = styled('div')<{ image: string }>`
+`;
+const ListImg = styled("div")<{ image: string }>`
   background-image: url(${(props) => props.image});
   background-size: cover;
   background-position: center;
@@ -52,8 +58,8 @@ const ListImg = styled('div')<{ image: string }>`
   height: 150px;
   border: 1px solid none;
   float: left;
-`
-const ListContent = styled('div')`
+`;
+const ListContent = styled("div")`
   width: 200px;
   height: 150px;
   border: 1px solid none;
@@ -62,50 +68,46 @@ const ListContent = styled('div')`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+`;
 
-`
-
-const TextWrapper = styled('div')`
+const TextWrapper = styled("div")`
   margin-left: 15px;
   margin-right: auto;
-`
+`;
 
-const TitleName = styled('h2')`
+const TitleName = styled("h2")`
   font-size: 1rem;
   font-weight: bolder;
   margin: 0;
-`
-const Name = styled('p')`
+`;
+const Name = styled("p")`
   font-size: 0.75rem;
   margin-top: 5px;
   margin-bottom: 0;
-`
-const Date = styled(Name)`
-  `
-const JoinPeople = styled(Name)`
-  `
-const PointBtn = styled('div')`
+`;
+const Date = styled(Name)``;
+const JoinPeople = styled(Name)``;
+const PointBtn = styled("div")`
   border-radius: 12.5px;
   padding: 5px;
-  border: 1px solid #98C064;
-  background-color: #98C064;
+  border: 1px solid #98c064;
+  background-color: #98c064;
   color: white;
   font-size: x-small;
   margin-left: auto;
   margin-right: 15px;
-`
-const ListWrapper = styled('div')`
+`;
+const ListWrapper = styled("div")`
   display: flex;
-  justify-content:center;
+  justify-content: center;
   align-items: center;
-  width:100%;
-`
-const ButtonWrapper = styled('div')`
+  width: 100%;
+`;
+const ButtonWrapper = styled("div")`
   display: flex;
   justify-content: center;
   margin: 20px;
-`
-
+`;
 
 const AchieveFullBtn = styled(ButtonFull)`
   font-size: medium;
@@ -113,100 +115,192 @@ const AchieveFullBtn = styled(ButtonFull)`
   padding: 3px 10px;
   margin: 10px;
   /* text-shadow: -1px 0px black, 0px 1px black, 1px 0px black, 0px -1px black; */
-  :hover{
+  :hover {
     cursor: pointer;
   }
-`
+`;
 
-const CertifyFullBtn = styled(AchieveFullBtn)`
-`
+const CertifyFullBtn = styled(AchieveFullBtn)``;
 const AchieveBorderBtn = styled(ButtonBorder)`
   font-size: medium;
   border-radius: 10px;
   padding: 3px 10px;
-    :hover{
+  :hover {
     cursor: pointer;
   }
-`
-const CertifyBorderBtn = styled(AchieveBorderBtn)`
-`
+`;
+const CertifyBorderBtn = styled(AchieveBorderBtn)``;
 
-const AchieveWrapper = styled('div')`
-  display:flex;
+const AchieveWrapper = styled("div")`
+  display: flex;
   justify-content: center;
   /* max-width: 500px; */
-`
-const ProgressWrapper = styled('div')`
+`;
+const ProgressWrapper = styled("div")`
   display: flex;
   justify-content: center;
   align-items: center;
   margin: 10px 0;
-  
-`
-const CertifyWrapper = styled('div')`
+`;
+const CertifyWrapper = styled("div")`
   display: flex;
   justify-content: center;
   align-items: center;
-`
+`;
 const CertifyGoBtn = styled(ButtonFull)`
   padding: 3px 10px;
   border-radius: 10px;
   margin-left: 140px;
   margin-right: 25px;
-`
-const Text = styled('a')`
+`;
+const Text = styled("a")`
   font-size: 15px;
   font-weight: bolder;
   margin-left: 25px;
   margin-right: 25px;
-`
-const Text2 = styled('a')`
+`;
+const Text2 = styled("a")`
   font-size: 13px;
   margin-left: 4rem;
-  margin-right:1rem;
-`
-
-
+  margin-right: 1rem;
+`;
 
 //진행률바 라이브러리 이용
 const Progress = styled(ProgressBar)`
   max-width: 350px;
   width: 90%;
-  
-`
+`;
 
-const CertifyFeed = styled('div')`
+const CertifyFeed = styled("div")`
   display: flex;
   justify-content: center;
   align-items: center;
-`
+`;
 
-const Text3 = styled('a')`
+const Text3 = styled("a")`
   font-size: large;
   font-weight: bolder;
   background-color: #fcfca886;
-`
+`;
 
-const HeroTextWrapper = styled('div')`
+const HeroTextWrapper = styled("div")`
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
-`
+`;
 
-const NoHeroText1 = styled('a')`
+const NoHeroText1 = styled("a")`
   font-family: PyeongChangPeace-Bold;
   font-size: 100px;
   padding: 50px 0 0 0;
-`
-const NoHeroText2 = styled('a')`
+`;
+const NoHeroText2 = styled("a")`
   font-size: medium;
   font-weight: bold;
-`
+`;
 
-const BottomDiv = styled('div')`
+const BottomDiv = styled("div")`
   margin-bottom: 70px;
-`
+`;
+
+const ModalDiv = styled("div")`
+  position: absolute;
+  background-color: white;
+  left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
+  top: 5%;
+  width: 85%;
+  max-width: 500px;
+  border: 0;
+  border-radius: 20px;
+  z-index: 998;
+  max-height: 90%;
+  /* bottom:5%; */
+  overflow: auto;
+  -ms-overflow-style: none; /* for Internet Explorer, Edge */
+  scrollbar-width: none; /* for Firefox */
+  ::-webkit-scrollbar {
+    display: none; /* for Chrome, Safari, and Opera */
+  }
+`;
+const ModalHeader = styled("div")`
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  padding: 20px 20px 0px 25px;
+`;
+const HeaderTitle = styled("span")`
+  font-size: 1.5rem;
+  font-weight: bold;
+  padding: auto;
+`;
+const CloseBtn = styled(CloseRoundedIcon)`
+  color: #65ace2;
+`;
+
+const ModalBody = styled("div")`
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  padding: 5px 20px 0px 25px;
+  @media only screen and (max-width: 650px) {
+    padding: 0 20px 0px 20px;
+  }
+  .inputBtn {
+    margin-left: auto;
+    margin-right: 8px;
+  }
+`;
+
+const CameraBox = styled("div")`
+  width: 250px;
+  height: 200px;
+  background-color: #ffffff;
+  border-radius: 15px;
+  box-shadow: 0px 0px 5px 0px #dadce0 inset;
+  border: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  @media screen and (min-width: 360px) {
+    width: 200px;
+    height: 150px;
+  }
+  img {
+    width: 250px;
+    height: 200px;
+    border-radius: 15px;
+  }
+`;
+
+const MissionText = styled("textarea")`
+  border: #65ace2 solid 2px;
+  background-color: white;
+  border-radius: 15px;
+  width: 300px;
+  height: 100px;
+  margin: 20px;
+`;
+
+const MissionBtn = styled(ButtonFull)`
+  padding: 3px 10px;
+  border-radius: 10px;
+  margin-bottom: 30px;
+`;
+
+const ModalBack = styled("div")`
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 997;
+  backdrop-filter: blur(5px);
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  top: 0%;
+`;
 
 interface MissionProps {
   entryPoint: number;
@@ -219,7 +313,6 @@ interface MissionProps {
   repImageURL: string;
   missionId: number;
 }
-
 
 // interface MissionProps {
 //   entryPoint: number;
@@ -239,6 +332,7 @@ function NowMission() {
   return (
     <List onClick={() => router.push(`1`)}>
       {/* <ListImg image={repImageURL} /> */}
+      <ListImg />
       <ListContent>
         <TextWrapper>
           <TitleName>제목</TitleName>
@@ -250,7 +344,7 @@ function NowMission() {
         <PointBtn>+200</PointBtn>
       </ListContent>
     </List>
-  )
+  );
 }
 
 //달성률 & 인증샷 버튼 그룹
@@ -260,130 +354,206 @@ function ButtonGroup() {
   const setTab = useSetRecoilState(missionTabpage);
 
   //달성률 버튼 클릭하면 연두색 인증샷 버튼 클릭하면 하얀색!
-  const [tabColor, setTabColor] = useState(true)
-  console.log(tabColor)
+  const [tabColor, setTabColor] = useState(true);
+  console.log(tabColor);
   return (
     <>
       {/* 탭 전환을 위한 버튼들 */}
       <ButtonWrapper>
-        {tabColor ?
-          <AchieveFullBtn dColor={'#98C064'} hColor={'98C064'} onClick={() => { setTab(true), setTabColor(!tabColor) }}>달성률</AchieveFullBtn>
-          : <AchieveBorderBtn dColor={'#65ACE2'} onClick={() => { setTab(true), setTabColor(!tabColor) }}>달성률</AchieveBorderBtn>
-        }
-        {tabColor ?
-          <CertifyBorderBtn dColor={' #65ACE2'} onClick={() => { setTab(false), setTabColor(!tabColor) }}>인증샷</CertifyBorderBtn>
-          : <CertifyFullBtn dColor={'#98C064'} hColor={'98C064'} onClick={() => { setTab(false), setTabColor(!tabColor) }}>인증샷</CertifyFullBtn>
-        }
-      </ButtonWrapper >
-      {tab ? 
-      <></>
-      // <Achievement />
-       : 
-       <></>
-      //  <Certification />
-       }
+        {tabColor ? (
+          <AchieveFullBtn
+            dColor={"#98C064"}
+            hColor={"98C064"}
+            onClick={() => {
+              setTab(true), setTabColor(!tabColor);
+            }}
+          >
+            달성률
+          </AchieveFullBtn>
+        ) : (
+          <AchieveBorderBtn
+            dColor={"#65ACE2"}
+            onClick={() => {
+              setTab(true), setTabColor(!tabColor);
+            }}
+          >
+            달성률
+          </AchieveBorderBtn>
+        )}
+        {tabColor ? (
+          <CertifyBorderBtn
+            dColor={" #65ACE2"}
+            onClick={() => {
+              setTab(false), setTabColor(!tabColor);
+            }}
+          >
+            인증샷
+          </CertifyBorderBtn>
+        ) : (
+          <CertifyFullBtn
+            dColor={"#98C064"}
+            hColor={"98C064"}
+            onClick={() => {
+              setTab(false), setTabColor(!tabColor);
+            }}
+          >
+            인증샷
+          </CertifyFullBtn>
+        )}
+      </ButtonWrapper>
+      {tab ? <Achievement /> : <Certification />}
     </>
-  )
+  );
 }
 
 //임시 더미파일들
 const itemData = [
   {
-    img: 'https://images.unsplash.com/photo-1551963831-b3b1ca40c98e',
-    title: 'Breakfast',
+    img: "https://images.unsplash.com/photo-1551963831-b3b1ca40c98e",
+    title: "Breakfast",
   },
   {
-    img: 'https://images.unsplash.com/photo-1551782450-a2132b4ba21d',
-    title: 'Burger',
+    img: "https://images.unsplash.com/photo-1551782450-a2132b4ba21d",
+    title: "Burger",
   },
   {
-    img: 'https://images.unsplash.com/photo-1522770179533-24471fcdba45',
-    title: 'Camera',
+    img: "https://images.unsplash.com/photo-1522770179533-24471fcdba45",
+    title: "Camera",
   },
   {
-    img: 'https://images.unsplash.com/photo-1444418776041-9c7e33cc5a9c',
-    title: 'Coffee',
+    img: "https://images.unsplash.com/photo-1444418776041-9c7e33cc5a9c",
+    title: "Coffee",
   },
   {
-    img: 'https://images.unsplash.com/photo-1533827432537-70133748f5c8',
-    title: 'Hats',
+    img: "https://images.unsplash.com/photo-1533827432537-70133748f5c8",
+    title: "Hats",
   },
   {
-    img: 'https://images.unsplash.com/photo-1558642452-9d2a7deb7f62',
-    title: 'Honey',
+    img: "https://images.unsplash.com/photo-1558642452-9d2a7deb7f62",
+    title: "Honey",
   },
   {
-    img: 'https://images.unsplash.com/photo-1516802273409-68526ee1bdd6',
-    title: 'Basketball',
+    img: "https://images.unsplash.com/photo-1516802273409-68526ee1bdd6",
+    title: "Basketball",
   },
   {
-    img: 'https://images.unsplash.com/photo-1518756131217-31eb79b20e8f',
-    title: 'Fern',
+    img: "https://images.unsplash.com/photo-1518756131217-31eb79b20e8f",
+    title: "Fern",
   },
   {
-    img: 'https://images.unsplash.com/photo-1597645587822-e99fa5d45d25',
-    title: 'Mushrooms',
+    img: "https://images.unsplash.com/photo-1597645587822-e99fa5d45d25",
+    title: "Mushrooms",
   },
   {
-    img: 'https://images.unsplash.com/photo-1567306301408-9b74779a11af',
-    title: 'Tomato basil',
+    img: "https://images.unsplash.com/photo-1567306301408-9b74779a11af",
+    title: "Tomato basil",
   },
   {
-    img: 'https://images.unsplash.com/photo-1471357674240-e1a485acb3e1',
-    title: 'Sea star',
+    img: "https://images.unsplash.com/photo-1471357674240-e1a485acb3e1",
+    title: "Sea star",
   },
   {
-    img: 'https://images.unsplash.com/photo-1589118949245-7d38baf380d6',
-    title: 'Bike',
+    img: "https://images.unsplash.com/photo-1589118949245-7d38baf380d6",
+    title: "Bike",
   },
 ];
 
 export default function MyMissionFeed() {
   const router = useRouter();
+  const missionId = router.query.id;
+
   const tab = useRecoilValue(missionTabpage);
   const setTab = useSetRecoilState(missionTabpage);
-  const [Modal, setModal] = useState(false)
+  const [Modal, setModal] = useState(false);
   const [missionItem, setMissionItem] = useState();
   const [region, setRegion] = useState();
-  const [userId, setUserId] = useState();
-  useEffect(()=>{
-    const usersId = JSON.parse(localStorage.getItem('recoil-persist')).userId
-    setUserId(usersId)
-}, [])
+  const [userId, setUserId] = useState<number>();
+  const [myImg, setMyImg] = useState([]);
+  const [otherImg, setOtherImg] = useState([]);
+  const [percent, setPercent] = useState<number>(0);
+  const [createImg, setCreateimg] = useState<File>(null); // 모달 이미지 파일
+  const [preview, setPreview] = useState<string>(); // 이미지 미리보기 사진
+  const [textarea, setTextarea] = useState<string>() // 모달 텍스트
 
-  useEffect(()=>{
-    if(router.query.id && userId){
-      getDetail(router.query.id, userId).then((res)=>{setMissionItem(res)
-      getDong(res.gugunCode).then((item)=>{
-        const result = item.filter((dong) => {
-          if(dong.dongCode === res.dongCode){
-            setRegion(dong.dongName)
-              return dong
-          }})
-      })
-      })
+  useEffect(() => {
+    if (createImg) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreview(reader.result as string);
+      };
+      reader.readAsDataURL(createImg);
+    } else {
+      setPreview(null);
     }
-  })
+  }, [createImg]);
+
+  useEffect(() => {
+    const usersId = JSON.parse(localStorage.getItem("recoil-persist")).userId;
+    console.log(userId);
+    setUserId(usersId);
+    if (missionId) {
+      getDetail(router.query.id, 1).then((res) => {
+        setMissionItem(res);
+        setMyImg(
+          res.imageURL.filter((data) => {
+            if (data[0] === userId) {
+              return data;
+            }
+          })
+        );
+        setOtherImg(
+          res.imageURL.filter((data) => {
+            if (data[0] !== userId) {
+              return data;
+            }
+          })
+        );
+
+        getDong(res.gugunCode).then((item) => {
+          const result = item.filter((dong) => {
+            if (dong.dongCode === res.dongCode) {
+              setRegion(dong.dongName);
+              return dong;
+            }
+          });
+        });
+      });
+      getPercent(missionId, userId).then((res) => {
+        console.log(res);
+        setPercent(res);
+      });
+    }
+  }, []);
+
   useEffect(() => {
     if (Modal === false) {
-      console.log('hihi', Modal)
+      console.log("hihi", Modal);
     } else {
       document.body.style.cssText = `
       position: fixed; 
       top: -${window.scrollY}px;
       overflow-y: scroll;
       width: 100%;`;
+
       return () => {
         const scrollY = document.body.style.top;
-        document.body.style.cssText = '';
-        window.scrollTo(0, parseInt(scrollY || '0', 10) * -1);
-        console.log('bye', Modal)
+        document.body.style.cssText = "";
+        window.scrollTo(0, parseInt(scrollY || "0", 10) * -1);
+        console.log("bye", Modal);
       };
     }
   }, [Modal]);
+  const changeHandler = (e) => {
+    const file = e.target.files[0];
+    if (file && file.type.substr(0, 5) === "image") {
+      setCreateimg(e.target.files[0]);
+    } else {
+      setCreateimg(null);
+    }
+  };
 
   //달성률 버튼 클릭하면 연두색 인증샷 버튼 클릭하면 하얀색!
-  const [tabColor, setTabColor] = useState(true)
+  const [tabColor, setTabColor] = useState(true);
   return (
     <ParentsDiv>
       {/* 헤더 */}
@@ -391,113 +561,213 @@ export default function MyMissionFeed() {
         <title>나의 임무 | 지구-방위대</title>
       </Head>
       {/* 모바일 뷰에서 뒤로가기 버튼! */}
-      <Backcomponents name='나의 임무'></Backcomponents>
+      <Backcomponents name="나의 임무"></Backcomponents>
 
       <Div></Div>
       {/* 참여중인 미션 보여줌! */}
       <ListWrapper>
-      <List onClick={() => router.push(`/mission/${router.query.id}`)}>
-        {/* <ListImg image={repImageURL} /> */}
-            {missionItem ? <>
-        {/* <ListImg image={missionItem.repImageURL} /> */}
-        <ListContent>
-          <div>
-            <TextWrapper>
-              <TitleName>{missionItem.title}</TitleName>
-            </TextWrapper>
-            {region ? <>
-            <TextWrapper>
-              <Name>{region}</Name>
-            </TextWrapper>
-            </> : <></>}
-            <TextWrapper>
-              <Date>{missionItem.startDate}~{missionItem.endDate}</Date>
-            </TextWrapper>
-            <TextWrapper>
-              <JoinPeople>{missionItem.nowPerson} / {missionItem.maxPerson}명</JoinPeople>
-            </TextWrapper>
-          </div>
-          <PointBtn>+{missionItem.entryPoint}</PointBtn>
-        </ListContent>
-            </> : <></>}
-      </List>
+        <List onClick={() => router.push(`/mission/${router.query.id}`)}>
+          {/* <ListImg image={repImageURL} /> */}
+          {missionItem ? (
+            <>
+              <ListImg image={missionItem.repImageURL} />
+              <ListContent>
+                <div>
+                  <TextWrapper>
+                    <TitleName>{missionItem.title}</TitleName>
+                  </TextWrapper>
+                  {region ? (
+                    <>
+                      <TextWrapper>
+                        <Name>{region}</Name>
+                      </TextWrapper>
+                    </>
+                  ) : (
+                    <></>
+                  )}
+                  <TextWrapper>
+                    <Date>
+                      {missionItem.startDate}~{missionItem.endDate}
+                    </Date>
+                  </TextWrapper>
+                  <TextWrapper>
+                    <JoinPeople>
+                      {missionItem.nowPerson} / {missionItem.maxPerson}명
+                    </JoinPeople>
+                  </TextWrapper>
+                </div>
+                <PointBtn>+{missionItem.entryPoint}</PointBtn>
+              </ListContent>
+            </>
+          ) : (
+            <></>
+          )}
+        </List>
       </ListWrapper>
 
       {/* 달성률 인증샷 탭 */}
-       {/* 탭 전환을 위한 버튼들 */}
-       <ButtonWrapper>
-        {tabColor ?
-          <AchieveFullBtn dColor={'#98C064'} hColor={'98C064'} onClick={() => { setTab(true), setTabColor(!tabColor) }}>달성률</AchieveFullBtn>
-          : <AchieveBorderBtn dColor={'#65ACE2'} onClick={() => { setTab(true), setTabColor(!tabColor) }}>달성률</AchieveBorderBtn>
-        }
-        {tabColor ?
-          <CertifyBorderBtn dColor={' #65ACE2'} onClick={() => { setTab(false), setTabColor(!tabColor) }}>인증샷</CertifyBorderBtn>
-          : <CertifyFullBtn dColor={'#98C064'} hColor={'98C064'} onClick={() => { setTab(false), setTabColor(!tabColor) }}>인증샷</CertifyFullBtn>
-        }
-      </ButtonWrapper >
-      {tab ? 
-      <>
-      <AchieveWrapper>
-        <Text>달성률</Text>
-        <Text2>~일만 더 인증하면 성공이에요!</Text2>
-      </AchieveWrapper>
+      {/* 탭 전환을 위한 버튼들 */}
+      <ButtonWrapper>
+        {tabColor ? (
+          <AchieveFullBtn
+            dColor={"#98C064"}
+            hColor={"98C064"}
+            onClick={() => {
+              setTab(true), setTabColor(!tabColor);
+            }}
+          >
+            달성률
+          </AchieveFullBtn>
+        ) : (
+          <AchieveBorderBtn
+            dColor={"#65ACE2"}
+            onClick={() => {
+              setTab(true), setTabColor(!tabColor);
+            }}
+          >
+            달성률
+          </AchieveBorderBtn>
+        )}
+        {tabColor ? (
+          <CertifyBorderBtn
+            dColor={" #65ACE2"}
+            onClick={() => {
+              setTab(false), setTabColor(!tabColor);
+            }}
+          >
+            인증샷
+          </CertifyBorderBtn>
+        ) : (
+          <CertifyFullBtn
+            dColor={"#98C064"}
+            hColor={"98C064"}
+            onClick={() => {
+              setTab(false), setTabColor(!tabColor);
+            }}
+          >
+            인증샷
+          </CertifyFullBtn>
+        )}
+      </ButtonWrapper>
+      {tab ? (
+        <>
+          <AchieveWrapper>
+            <Text>달성률</Text>
+            <Text2>~일만 더 인증하면 성공이에요!</Text2>
+          </AchieveWrapper>
 
-      <ProgressWrapper>
-        <Progress completed={60} bgColor={'#65ACE2'} />
-      </ProgressWrapper>
+          <ProgressWrapper>
+            <Progress completed={percent} bgColor={"#65ACE2"} />
+          </ProgressWrapper>
+
+          <CertifyWrapper>
+            <Text>나의 인증샷</Text>
+            <CertifyGoBtn
+              hColor={"#65ACE2"}
+              dColor={"#98C064"}
+              onClick={() => setModal(true)}
+            >
+              인증하기
+            </CertifyGoBtn>
+            {Modal && (
+              <>
+                <ModalDiv>
+                  <ModalHeader>
+                    <HeaderTitle>📸인증해보아요</HeaderTitle>
+                    <CloseBtn onClick={() => setModal(false)} />
+                  </ModalHeader>
+                  <ModalBody>
+                    <IconButton aria-label="upload picture" component="label">
+                      <input
+                        hidden
+                        accept="image/*"
+                        type="file"
+                        name="file"
+                        onChange={changeHandler}
+                      />
+                      {createImg ? (
+                        <CameraBox>
+                          <img src={preview} />
+                        </CameraBox>
+                      ) : (
+                        <CameraBox>
+                          <PhotoCamera fontSize="large" />
+
+                        </CameraBox>
+                      )}
+
+                    </IconButton>
+                    
 
 
-      <CertifyWrapper>
-        <Text>나의 인증샷</Text>
-        <CertifyGoBtn hColor={'#65ACE2'} dColor={'#98C064'} onClick={() => setModal(true)}>인증하기</CertifyGoBtn>
-        <MissionModal show={Modal} setShow={setModal} />
-      </CertifyWrapper>
-      <>
-      <CertifyFeed>
-        <ImageList sx={{ width: 350 }} cols={3} rowHeight={130}>
-          {itemData.map((item) => (
-            <ImageListItem key={item.img}>
-              <img
-                src={`${item.img}?w=164&h=164&fit=crop&auto=format`}
-                srcSet={`${item.img}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
-                alt={item.title}
-                loading="lazy"
-              />
-            </ImageListItem>
-          ))}
-        </ImageList>
-      </CertifyFeed>
-    </>
+                    <MissionText onChange={(e)=>{
+                      setTextarea(e.target.value)
+                    }}   placeholder="문구를 입력해 주세요!"></MissionText>
 
-      </>
-       : 
-       <>
-       <HeroTextWrapper>
-         <Text3>📸대원들의 인증샷</Text3>
-       </HeroTextWrapper>
- 
-       {/* 인증샷 없으면 */}
-       <HeroTextWrapper>
-         <NoHeroText1>앗!</NoHeroText1>
-         <NoHeroText2>아직 인증한 대원이 없어요😥</NoHeroText2>
-       </HeroTextWrapper>
-       {/* 인증샷 있으면 */}
-       <CertifyFeed>
-         <ImageList sx={{ width: 350 }} cols={3} rowHeight={130}>
-           {itemData.map((item) => (
-             <ImageListItem key={item.img}>
-               <img
-                 src={`${item.img}?w=164&h=164&fit=crop&auto=format`}
-                 srcSet={`${item.img}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
-                 alt={item.title}
-                 loading="lazy"
-               />
-             </ImageListItem>
-           ))}
-         </ImageList>
-       </CertifyFeed>
-     </>
-       }
-</ParentsDiv>
-  )
+                    <div className="inputBtn">
+                      <MissionBtn dColor="#98C064" hColor="#65ACE2" onClick={async (e)=>{
+                        e.preventDefault()
+                        const imageId= await PostMissionauthImg(createImg,missionId,userId)
+                        PostMissionauthtext(textarea,missionId,userId,imageId)
+                        setPreview('')
+                        setModal(false)
+                      }}>
+                        등록하기
+                      </MissionBtn>
+
+                    </div>
+                  </ModalBody>
+                </ModalDiv>
+                <ModalBack onClick={() => setModal(false)} />
+              </>
+            )}
+          </CertifyWrapper>
+          <>
+            <CertifyFeed>
+              <ImageList sx={{ width: 350 }} cols={3} rowHeight={130}>
+                {myImg.map((item, index) => (
+                  <ImageListItem key={index}>
+                    <img
+
+                      src={`${item[1]}&w=164&h=164&fit=crop&auto=format`}
+                      srcSet={`${item[1]}&w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
+                      loading="lazy"
+                    />
+                  </ImageListItem>
+                ))}
+              </ImageList>
+
+            </CertifyFeed>
+          </>
+        </>
+      ) : (
+        <>
+          <HeroTextWrapper>
+            <Text3>📸대원들의 인증샷</Text3>
+          </HeroTextWrapper>
+
+          {otherImg ? (
+            <CertifyFeed>
+              <ImageList sx={{ width: 350 }} cols={3} rowHeight={130}>
+                {otherImg.map((item, index) => (
+                  <ImageListItem key={index}>
+                    <img
+                      src={`${item[1]}&w=164&h=164&fit=crop&auto=format`}
+                      srcSet={`${item[1]}&w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
+                      loading="lazy"
+                    />
+                  </ImageListItem>
+                ))}
+              </ImageList>
+            </CertifyFeed>
+          ) : (
+            <HeroTextWrapper>
+              <NoHeroText1>앗!</NoHeroText1>
+              <NoHeroText2>아직 인증한 대원이 없어요😥</NoHeroText2>
+            </HeroTextWrapper>
+          )}
+        </>
+      )}
+    </ParentsDiv>
+  );
 }

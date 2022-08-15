@@ -288,8 +288,19 @@ export default function Createmission() {
     );
   }
 
+  
   // 임무명
-
+  function MissionName() {
+    const [titleName,setTitleName] = useState('')
+    return (
+      <div>
+        <Text>임무명</Text>
+        <BoxInput onChange={(e) => {setTitleName(e.target.value)}} onBlur={(e)=>{
+          setTitle(titleName)
+        }}  />
+      </div>
+    );
+  }
 
   //활동기간
   function DatePick() {
@@ -457,7 +468,7 @@ export default function Createmission() {
               min={500}
               max={5000}
               step={500}
-              defaultValue={point}
+              defaultValue={Number(point)}
               onChange={(e)=>{
                 e.preventDefault()
                 setPoint(Number(e.target.value))

@@ -9,6 +9,5 @@ export default async function sameNickname(nickname) {
   });
 
   const data = await response.json().catch(() => {});
-
   return data;
 }

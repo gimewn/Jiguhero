@@ -408,6 +408,14 @@ export default function MissionDetail() {
 
   })
 
+
+  // const [use, setUserId] = useRecoilState(userId)
+  // if (typeof window === "undefined"){
+  //   const userId = JSON.parse(localStorage.getItem('recoil-persist')).userId
+
+  // }
+
+
   const [ModalAuth, setModalAuth] = useState(false);
   const [Auth, setAuth] = useState(false);
   const [unAuth, setUnAuth] = useState(false);

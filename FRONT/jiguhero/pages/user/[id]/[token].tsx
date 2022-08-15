@@ -10,12 +10,13 @@ import { useRecoilState } from "recoil";
 import signinUserImg from "pages/api/user/signinImg";
 import sameNickname from "pages/api/user/sameNickname";
 import signinUserNickname from "pages/api/user/signinUserNickname";
-import { UserName } from "states/user";
+import { UserId, UserName } from "states/user";
 // import ConfirmValidationInput from "../components/validationInput";
 // import regex from "../components/regex";
 
 export default function User() {
   const router = useRouter();
+  const [userIds, setUserIds] = useRecoilState(UserId)
   const [userName, setUserName] = useRecoilState(UserName)
   const [userImg, setUserImg] = useState<File>(); // 이미지 파일
   const [preview, setPreview] = useState<string>(); // 이미지 미리보기 사진
@@ -89,6 +90,7 @@ export default function User() {
           onChange={(e) => {
             e.preventDefault();
             setNickInput(e.target.value);
+            
           }}
         />
         <ButtonFull
@@ -121,6 +123,7 @@ export default function User() {
               signinUserImg(userImg, userId);
               const data = await signinUserNickname(nickInput, userId);
               setUserName(data.nickname)
+              setUserIds(userId)
 							localStorage.setItem('access-token',token.toString())
               router.push("/");
             }}

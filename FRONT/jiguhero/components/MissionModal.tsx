@@ -72,6 +72,7 @@ const CameraBox = styled('form')`
     height: 150px;
   }
 `
+
 const MissionText = styled('textarea')`
 
   border: #65ACE2 solid 2px ;
@@ -87,6 +88,7 @@ const MissionBtn = styled(ButtonFull)`
   border-radius: 10px;
   margin-bottom: 30px;
 `
+
 const ModalBack = styled('div')`
     position:absolute;
     background-color: rgba(0, 0, 0, 0.5);
@@ -97,8 +99,10 @@ const ModalBack = styled('div')`
     overflow:hidden;
     top:0%;
 `
+
 export default function MissionModal(props) {
   const { show, setShow } = props;
+  console.log(props.setShow)
   const MissionModalContent = show && (
     <>
       <ModalDiv>
