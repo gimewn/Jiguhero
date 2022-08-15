@@ -8,6 +8,6 @@ export default async function deleteGround(groundId, userId){
             Authorization : Token
         }
     });
-    const data = await response.json()
+    const data = await response
     return data
 }

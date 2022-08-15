@@ -156,7 +156,7 @@ export default function GroundDetail(){
             })
           }
       }
-      })
+      }, [])
       useEffect(() => {
         getReview(choiceP['placeId']).then((res) => {
           setReviews(res)

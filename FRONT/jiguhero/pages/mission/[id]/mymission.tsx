@@ -12,6 +12,8 @@ import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
 import getDetail from "pages/api/mission/getDetail";
 import getDong from "pages/api/ecomarket/getDong";
+import postImg from 'pages/api/place/postImg';
+import getImgList from 'pages/api/place/getImgList';
 
 const Div = styled('div')`
     padding: 18px;
@@ -237,7 +239,6 @@ function NowMission() {
   return (
     <List onClick={() => router.push(`1`)}>
       {/* <ListImg image={repImageURL} /> */}
-      <ListImg />
       <ListContent>
         <TextWrapper>
           <TitleName>제목</TitleName>
@@ -274,7 +275,13 @@ function ButtonGroup() {
           : <CertifyFullBtn dColor={'#98C064'} hColor={'98C064'} onClick={() => { setTab(false), setTabColor(!tabColor) }}>인증샷</CertifyFullBtn>
         }
       </ButtonWrapper >
-      {tab ? <Achievement /> : <Certification />}
+      {tab ? 
+      <></>
+      // <Achievement />
+       : 
+       <></>
+      //  <Certification />
+       }
     </>
   )
 }
@@ -338,10 +345,15 @@ export default function MyMissionFeed() {
   const [Modal, setModal] = useState(false)
   const [missionItem, setMissionItem] = useState();
   const [region, setRegion] = useState();
+  const [userId, setUserId] = useState();
   useEffect(()=>{
-    if(router.query.id){
-      getDetail(router.query.id, 1).then((res)=>{setMissionItem(res)
-        console.log(res)
+    const usersId = JSON.parse(localStorage.getItem('recoil-persist')).userId
+    setUserId(usersId)
+}, [])
+
+  useEffect(()=>{
+    if(router.query.id && userId){
+      getDetail(router.query.id, userId).then((res)=>{setMissionItem(res)
       getDong(res.gugunCode).then((item)=>{
         const result = item.filter((dong) => {
           if(dong.dongCode === res.dongCode){
@@ -351,7 +363,7 @@ export default function MyMissionFeed() {
       })
       })
     }
-  }, [])
+  })
   useEffect(() => {
     if (Modal === false) {
       console.log('hihi', Modal)
@@ -387,7 +399,7 @@ export default function MyMissionFeed() {
       <List onClick={() => router.push(`/mission/${router.query.id}`)}>
         {/* <ListImg image={repImageURL} /> */}
             {missionItem ? <>
-        <ListImg image={missionItem.repImageURL} />
+        {/* <ListImg image={missionItem.repImageURL} /> */}
         <ListContent>
           <div>
             <TextWrapper>
