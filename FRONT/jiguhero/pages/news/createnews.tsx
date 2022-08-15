@@ -86,31 +86,18 @@ const CameraBtn = styled("div")`
   align-items: center;
   margin: 20px;
 `;
-export default function CreateNews() {
 
+const ContentDiv = styled('div')`
+  margin: 0rem 2rem;
+`
+
+export default function CreateNews() {
   //카테고리 select
   const [cate, setCate] = useState('');
   const OPTIONS = [
     { value: '1', name: "프로모션" },
     { value: '2', name: "뉴스" },
   ];
-  function Category(props) {
-    return (
-      <CategorySelect
-        placeholder='카테고리를 선택해주세요'
-        onChange={(e) => {
-          e.preventDefault()
-          setCate(e.target.value);
-        }}
-      >
-        {props.options.map((option) => (
-          <option key={option.value} value={option.value}>
-            {option.name}
-          </option>
-        ))}
-      </CategorySelect>
-    );
-  }
 
   // 미션 사진 등록
   const [createImg, setCreateimg] = useState<File>(null); // 이미지 파일
@@ -135,6 +122,7 @@ export default function CreateNews() {
         setPreview(null);
       }
     }, [createImg]);
+
     return (
       <CameraBtn>
         <IconButton aria-label="upload picture" component="label">
@@ -160,7 +148,6 @@ export default function CreateNews() {
     );
   }
 
-
   return (
     <ParentsDiv>
       {/* 헤더 */}
@@ -171,16 +158,26 @@ export default function CreateNews() {
       <Backcomponents name='소식 등록'></Backcomponents>
       <NewsTop>
         <H2>🦸🏻 지구-방위대 소식 등록</H2>
-        <Title>제목</Title>
-        <TitleInput></TitleInput>
-        <Title>카테고리</Title>
-        <Category options={OPTIONS} />
-        <Title>내용</Title>
-        <TextInput />
-        <Title>이미지</Title>
-        <MissionPicture />
-        <SubmitBtn dColor='#65ace2' hColor=' #98C064'>등록</SubmitBtn>
+
+        <ContentDiv>
+          <Title>제목</Title>
+          <TitleInput></TitleInput>
+          <Title>카테고리</Title>
+          <CategorySelect
+            onChange={(e) => {
+              e.preventDefault()
+              setCate(e.target.value);
+            }}>{OPTIONS.map((item) => (
+              <option key={item.value} value={item.value}>{item.name}</option>))}</CategorySelect>
+          <Title>내용</Title>
+          <TextInput />
+          <Title>이미지</Title>
+          <MissionPicture />
+          <SubmitBtn dColor='#65ace2' hColor=' #98C064'>등록</SubmitBtn>
+        </ContentDiv>
+
       </NewsTop>
     </ParentsDiv>
   )
 }
+

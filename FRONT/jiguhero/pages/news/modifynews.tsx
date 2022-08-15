@@ -19,7 +19,6 @@ const NewsTop = styled('div')`
     }
     @media screen and (max-width: 650px) {
         margin-top:30px;
-        
     }
 `
 
@@ -87,6 +86,9 @@ const CameraBtn = styled("div")`
   margin: 20px;
 `;
 
+const ContentDiv = styled('div')`
+  margin: 0rem 2rem;
+`
 
 export default function CreateNews() {
 
@@ -172,15 +174,18 @@ export default function CreateNews() {
       <Backcomponents name='소식 수정'></Backcomponents>
       <NewsTop>
         <H2>🦸🏻 지구-방위대 소식 수정</H2>
-        <Title>제목</Title>
-        <TitleInput></TitleInput>
-        <Title>카테고리</Title>
-        <Category options={OPTIONS} />
-        <Title>내용</Title>
-        <TextInput />
-        <Title>이미지</Title>
-        <MissionPicture />
-        <SubmitBtn dColor='#65ace2' hColor=' #98C064'>수정</SubmitBtn>
+
+        <ContentDiv>
+          <Title>제목</Title>
+          <TitleInput></TitleInput>
+          <Title>카테고리</Title>
+          <Category options={OPTIONS} />
+          <Title>내용</Title>
+          <TextInput />
+          <Title>이미지</Title>
+          <MissionPicture />
+          <SubmitBtn dColor='#65ace2' hColor=' #98C064'>수정</SubmitBtn>
+        </ContentDiv>
       </NewsTop>
     </ParentsDiv>
   )

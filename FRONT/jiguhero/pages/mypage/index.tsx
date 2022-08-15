@@ -20,7 +20,6 @@ import missionUserData from "pages/api/mission/[id]";
 import groundUserData from "pages/api/ground/[id]";
 
 
-
 const Profile = styled("div")`
   display: flex;
   h2 {
@@ -140,8 +139,8 @@ interface Idata {
 const Mypage = ({ data }) => {
   // console.log(props.data)
   const router = useRouter()
-  
-  const {data:userInfo} = useQuery(['mission'],()=> {userData()})
+
+  const { data: userInfo } = useQuery(['mission'], () => { userData() })
   console.log(userInfo)
 
 
@@ -157,7 +156,7 @@ const Mypage = ({ data }) => {
         </BgImg>
         <div>
           <p>빨강</p>
-          <h2>{}</h2>
+          <h2>{ }</h2>
         </div>
         <Box margin="14px 0 0 0">
           <ArrowForwardIosRoundedIcon sx={{ color: blue[300] }} />
@@ -304,7 +303,7 @@ const Mypage = ({ data }) => {
       <Box>{tab ? <PlayingArea /> : <Mission />}</Box>
       <ButtonFull
         onClick={() => {
-          
+
         }}
         dColor={"#FF4848"} hColor={"#FF4848"}>
         로그아웃
