@@ -19,6 +19,5 @@ export default async function putGround(userId, groundId, emoji, title, content)
         })
     });
     const data = await response.json()
-    console.log(data)
     return data
 }

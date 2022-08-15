@@ -23,7 +23,7 @@ const List = styled("div")`
 `
 
 const ListImg = styled("div") <{ image: string }>`
-  background-image: url("${(props) => props.image}");
+  background: url(${(props) => props.image});
   background-size: cover;
   background-position: center;
   width: 150px;
@@ -132,7 +132,7 @@ export default function MissionList({
   return (
     <>
       <List onClick={() => router.push(`/mission/${missionId}`)}>
-        <ListImg image={repImageURL} />
+        <ListImg image="https://i7c105.p.ssafy.io:8080/image/0ec4834e-b46c-465e-b482-084af1b3c556.jpg?target=mission&date=220810" />
         <ListContent>
           <TextWrapper>
             <TitleName>{title}</TitleName>

@@ -41,10 +41,16 @@ export default function Home() {
   const router = useRouter();
   const token = router?.query.token;
   const register = router?.query.REGISTER;
-  const [userInfo, setUserInfo] = useRecoilState(UserIn);
+  // const [userName, setUserName] = useRecoilState(UserName)
+  // const [userId, setUserId] = useRecoilState(UserId)
+
   if (register === "REQUIRED") {
     router.push(`/user/${router.query.userid}`)
   }
+  // if(typeof window !== 'undefined'){
+  //   const userId = JSON.parse(localStorage.getItem('recoil-persist'))?.userId
+  //   console.log(userId)
+  // }
   return (
     <ParentsDiv>
       <Block>
