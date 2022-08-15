@@ -38,9 +38,11 @@ public class User {
     private Boolean emailVerified = false;
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = true)
     private Provider provider;
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = true)
     private Role role;
 
     @Column(nullable = true)

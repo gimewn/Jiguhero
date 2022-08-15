@@ -68,7 +68,7 @@ public class UserDaoImpl implements UserDao {
 
         if (selectedUser.isPresent()) {
             User user = selectedUser.get();
-            user.setEmail(null);
+            user.setEmail("deleted");
             user.setEmailVerified(null);
             user.setGrade(0);
             user.setName(null);
