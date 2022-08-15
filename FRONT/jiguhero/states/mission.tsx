@@ -22,3 +22,7 @@ export const searchText = atom({
   key: "searchText",
   default: "",
 })
+export const missionTabpage = atom({
+  key: "missionTabpage",
+  default: true
+})

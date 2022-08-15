@@ -13,6 +13,8 @@ import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import PersonPinRoundedIcon from '@mui/icons-material/PersonPinRounded';
 import getReview from "pages/api/place/getReview";
 import { dehydrate, Query, QueryClient, QueryClientProvider, useQuery } from "@tanstack/react-query";
+import { getSession} from "next-auth/react";
+import { InfoBtn } from "pages/ground/[id]";
 
 const Div = styled("div")`
   position: relative;
@@ -30,7 +32,7 @@ export const WithIcon = styled('div')`
   display:flex;
   align-items: baseline;
 `
-const Content = styled("div")`
+export const Content = styled("div")`
   z-index: 995;
   position: absolute;
   top: 20px;
@@ -38,8 +40,8 @@ const Content = styled("div")`
   display:flex;
   @media only screen and (max-width: 650px) {
     flex-direction: column;
-    left:0;
-    right:0;
+    left:15px;
+    right:15px;
     padding:0 auto;
   }
 `;
@@ -59,7 +61,7 @@ const Content = styled("div")`
 //     background-color: #d1e5f5;
 //   }
 // `;
-const PlaceGroup = styled("div")`
+export const PlaceGroup = styled("div")`
   position: absolute;
   z-index: 996;
   width: inherit;
@@ -83,7 +85,8 @@ const PlaceGroup = styled("div")`
     width: 0;
   }
 `;
-const Place = styled("div")`
+export const Place = styled("div")`
+  position:relative;
   background-color: white;
   box-shadow: 0 0 10px #999999;
   padding: 15px 25px;
@@ -100,6 +103,9 @@ const Place = styled("div")`
       color: #252525;
     }
     .icon{
+      color:white;
+    }
+    .detailBtn{
       color:white;
     }
   }
@@ -138,25 +144,25 @@ const SearchBox = styled('div')`
     margin:0;
   }
   @media only screen and (max-width: 400px) {
-    width:90%;
+    width:100%;
   }
 `
-const PlaceTitle = styled("p")`
+export const PlaceTitle = styled("p")`
   font-size: 18px;
   font-weight: bold;
   color: #65ace2;
 `;
-const PlaceAddress = styled("p")`
+export const PlaceAddress = styled("p")`
   font-size: 15px;
 `;
-const PlaceContent = styled("p")`
+export const PlaceContent = styled("p")`
   font-size: 15px;
   display:block;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 `;
-const Back = styled(ArrowBackIosRoundedIcon)`
+export const Back = styled(ArrowBackIosRoundedIcon)`
   color: #98c064;
 `;
 
@@ -204,19 +210,17 @@ export default function FullMap(props:any) {
   const [show, setShow] = useState(false);
   const [choiceP, setChoiceP] = useState([]);
   const [data, setData] = useState([]);
-  const {data:sido} = useQuery(['sido'], getSido);
+  const { data: sido } = useQuery(['sido'], getSido);
   const [ChoiceSido, setChoiceSido] = useState(['00', '']);
-  const {data:gugun} = useQuery(['gugun', ChoiceSido], () => getGugun(ChoiceSido[0]), {
+  const { data: gugun } = useQuery(['gugun', ChoiceSido], () => getGugun(ChoiceSido[0]), {
     enabled: !!ChoiceSido,
   });
   const [ChoiceGugun, setChoiceGugun] = useState(['00', '']);
-  const {data:dong} = useQuery(['dong', ChoiceGugun], () => getDong(ChoiceGugun[0]), {
+  const { data: dong } = useQuery(['dong', ChoiceGugun], () => getDong(ChoiceGugun[0]), {
     enabled: !!ChoiceGugun
   })
   const [ChoiceDong, setChoiceDong] = useState(['00', '']);
   const [reviews, setReviews] = useState([]);
-  
-
 
   useEffect(()=>{
     window.kakao.maps.load(function(){moveMyGps()})
@@ -229,42 +233,42 @@ export default function FullMap(props:any) {
 
   function getFetch(lat, lon, map) {
     var imageSrc =
-    "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png";
+      "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png";
     fetch(BASE_URL + `map?lat=${lat}&lng=${lon}`, {
-        method: "get",
-        headers: {
-          Authorization: Token,
-        },
-      })
-        .then((res) => res.json())
-        .then((res) => {
-          setData(res)
-          for (var i = 0; i < res?.length; i++) {
-            // 마커 이미지의 이미지 크기 입니다
-            var imageSize = new window.kakao.maps.Size(20, 30);
-      
-            // 마커 이미지를 생성합니다
-            var markerImage = new window.kakao.maps.MarkerImage(imageSrc, imageSize);
-            let item = res[i];
-            let lat = res[i].lat
-            let lng = res[i].lng
-            var latlng = new window.kakao.maps.LatLng(lat, lng);
-            // 마커를 생성합니다
-            var marker = new window.kakao.maps.Marker({
-              map: map, // 마커를 표시할 지도
-              position: latlng, // 마커를 표시할 위치
-              // title: data[i].title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
-              image: markerImage, // 마커 이미지
-            });
-            window.kakao.maps.event.addListener(marker, 'click', () => {
-              setShow(true)
-              setChoiceP(item)
-            });
-          }
+      method: "get",
+      headers: {
+        Authorization: Token,
+      },
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        setData(res)
+        for (var i = 0; i < res?.length; i++) {
+          // 마커 이미지의 이미지 크기 입니다
+          var imageSize = new window.kakao.maps.Size(20, 30);
+
+          // 마커 이미지를 생성합니다
+          var markerImage = new window.kakao.maps.MarkerImage(imageSrc, imageSize);
+          let item = res[i];
+          let lat = res[i].lat
+          let lng = res[i].lng
+          var latlng = new window.kakao.maps.LatLng(lat, lng);
+          // 마커를 생성합니다
+          var marker = new window.kakao.maps.Marker({
+            map: map, // 마커를 표시할 지도
+            position: latlng, // 마커를 표시할 위치
+            // title: data[i].title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
+            image: markerImage, // 마커 이미지
+          });
+          window.kakao.maps.event.addListener(marker, 'click', () => {
+            setShow(true)
+            setChoiceP(item)
+          });
         }
-        );
       }
-  function makeMap(lat, lon){
+      );
+  }
+  function makeMap(lat, lon) {
     let mapContainer = document.getElementById("map"), // 지도를 표시할 div
       mapOption = {
         center: new window.kakao.maps.LatLng(lat, lon), // 지도의 중심좌표
@@ -285,9 +289,9 @@ export default function FullMap(props:any) {
       map.setLevel(level);
       map.setCenter(locPosition);
       getFetch(newLat, newLon, map);
-  })
+    })
   }
-  function moveMyGps(){
+  function moveMyGps() {
     if (navigator.geolocation) {
       // GeoLocation을 이용해서 접속 위치를 얻어옵니다
       navigator.geolocation.getCurrentPosition(function (position) {
@@ -300,21 +304,22 @@ export default function FullMap(props:any) {
     }
   }
 
-  function moveCategory(){
+  function moveCategory() {
     var geocoder = new window.kakao.maps.services.Geocoder();
-      // 주소로 좌표를 검색합니다
-      geocoder.addressSearch(`${ChoiceSido[1]} ${ChoiceGugun[1]} ${ChoiceDong[1]}`, function(result, status) {
-        // 정상적으로 검색이 완료됐으면 
-        if (status === window.kakao.maps.services.Status.OK) {
-          makeMap(result[0].y,  result[0].x);
-       }else{
+    // 주소로 좌표를 검색합니다
+    geocoder.addressSearch(`${ChoiceSido[1]} ${ChoiceGugun[1]} ${ChoiceDong[1]}`, function (result, status) {
+      // 정상적으로 검색이 완료됐으면 
+      if (status === window.kakao.maps.services.Status.OK) {
+        makeMap(result[0].y, result[0].x);
+      } else {
         alert("지역을 선택해주세요.")
         setChoiceSido(['', ''])
         setChoiceGugun(['', ''])
         setChoiceDong(['', ''])
-       }
-      })}
-  
+      }
+    })
+  }
+
 
 
   return (
@@ -326,26 +331,26 @@ export default function FullMap(props:any) {
               router.back();
             }}
           />
-        <SelectBox onChange={(e) => {setChoiceSido(e.target.value.split(","))}}>
-          <option value="">시/도</option>
-          {sido?.map((item) => (
-            <option key={item['sidoCode']} value={[item['sidoCode'],item['sidoName'] ]}>{item['sidoName']}</option>
-          ))}
-        </SelectBox>
-        <SelectBox onChange={(e) => {setChoiceGugun(e.target.value.split(","))}}>
-        <option value="">시/군/구</option>
-          {gugun?.map((item) => (
-            <option key={item['gugunCode']} value={[item['gugunCode'], item['gugunName'].split(" ")[1]]}>{item['gugunName'].split(" ")[1]}</option>
-          ))}
-        </SelectBox>
-        <SelectBox onChange={(e) => {setChoiceDong(e.target.value.split(","))}}>
-        <option value="">읍/면/동</option>
-          {dong?.map((item) => (
-            <option key={item['dongCode']} value={[item['dongCode'], item['dongName'].split(" ")[2]]}>{item['dongName'].split(" ")[2]}</option>
-          ))}
-        </SelectBox>
-        <SearchIcon onClick={moveCategory} />
-        <UserGps onClick={moveMyGps} />
+          <SelectBox onChange={(e) => { setChoiceSido(e.target.value.split(",")) }}>
+            <option value="">시/도</option>
+            {sido?.map((item) => (
+              <option key={item['sidoCode']} value={[item['sidoCode'], item['sidoName']]}>{item['sidoName']}</option>
+            ))}
+          </SelectBox>
+          <SelectBox onChange={(e) => { setChoiceGugun(e.target.value.split(",")) }}>
+            <option value="">시/군/구</option>
+            {gugun?.map((item) => (
+              <option key={item['gugunCode']} value={[item['gugunCode'], item['gugunName'].split(" ")[1]]}>{item['gugunName'].split(" ")[1]}</option>
+            ))}
+          </SelectBox>
+          <SelectBox onChange={(e) => { setChoiceDong(e.target.value.split(",")) }}>
+            <option value="">읍/면/동</option>
+            {dong?.map((item) => (
+              <option key={item['dongCode']} value={[item['dongCode'], item['dongName'].split(" ")[2]]}>{item['dongName'].split(" ")[2]}</option>
+            ))}
+          </SelectBox>
+          <SearchIcon onClick={moveCategory} />
+          <UserGps onClick={moveMyGps} />
         </SearchBox>
       </Content>
       <PlaceGroup>
@@ -353,16 +358,19 @@ export default function FullMap(props:any) {
           <Place
             key={item.placeId}
             onClick={() => {
-              setShow(true);
               setChoiceP(item);
+              makeMap(item.lat, item.lng);
             }}
           >
+            <InfoBtn className='detailBtn'
+            onClick={()=>{setShow(true)}}
+            />
             <PlaceTitle className="placeTitle">{item.name}</PlaceTitle>
             <WithIcon>
-            <LocIcon className="icon" /><PlaceAddress>{item.roadAddress}</PlaceAddress>
+              <LocIcon className="icon" /><PlaceAddress>{item.roadAddress}</PlaceAddress>
             </WithIcon>
             {item.content ? <WithIcon>
-            <ConIcon className="icon" /><PlaceContent>{item.content}</PlaceContent>         
+              <ConIcon className="icon" /><PlaceContent>{item.content}</PlaceContent>
             </WithIcon> : <></>}
           </Place>
         ))}
@@ -385,5 +393,5 @@ export async function getServerSideProps(context) {
           dehydratedState: dehydrate(queryClient )
         },
       },
-    };   
-}
+    } 
+    }

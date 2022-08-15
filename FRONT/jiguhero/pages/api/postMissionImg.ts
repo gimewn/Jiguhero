@@ -6,7 +6,7 @@ const PostMissionImg = async (createImg, userId, missionId) => {
   ImgForm.append("file", createImg);
   // console.log(ImgForm)
 
-  await fetch(`${BASE_URL}image/mission?userId=${userId}&missionId=${missionId}&rep=0`, {
+  await fetch(`${BASE_URL}image/mission?userId=${userId}&missionId=${missionId}&rep=1`, {
     method: "POST",
     headers: {
       Authorization: Token,

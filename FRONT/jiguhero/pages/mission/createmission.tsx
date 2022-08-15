@@ -490,11 +490,11 @@ export default function Createmission() {
         {/* 임무명 */}
         <Block>
           <Content>
-            <Text>임무명</Text>
-            {/* <MissionName /> */}
-          <BoxInput onChange={(e) => {
+            {/* <Text>임무명</Text> */}
+            <MissionName />
+          {/* <BoxInput onChange={(e) => {
             e.preventDefault()
-            setTitle(e.target.value)}}  />
+            setTitle(e.target.value)}}  /> */}
           </Content>
         </Block>
 

@@ -1,10 +1,11 @@
+
 import {BASE_URL, Token} from 'pages/api/fetch';
 
-export default async function getAllGround(){
-    const response = await fetch(`${BASE_URL}ground/list`, {
+export default async function getImgList(placeId){
+    const response = await fetch(`${BASE_URL}place/get/${placeId}`, {
         method:'get',
         headers:{
-            Authorization : Token
+            "Authorization" : Token
         }
     });
     const data = await response.json()

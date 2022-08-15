@@ -16,7 +16,7 @@ import {
   QueryClientProvider,
   useQuery,
 } from "@tanstack/react-query";
-
+import { ParentsDiv } from 'styles/styled'
 interface IPage {
   page: number;
   count: number;
@@ -29,52 +29,25 @@ const PagI = styled(Pagination)`
   margin-top: 20px;
 `;
 
-const NavBar = styled("div")`
-  z-index: 999;
-  position: fixed;
-  left: 0;
-  right: 0;
-  top: 60px;
-  height: 60px;
-  /* padding: 2rem; */
-  color: white;
-  background: white;
-  font-weight: bold;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  @media only screen and (min-width: 650px) {
-    display: none;
+const H2 = styled('h2')`
+  @media only screen and (max-width: 650px) {
+    display:none;
   }
-`;
-const Header = styled("div")`
-  display: flex;
-  justify-content: space-between;
-  margin: 0px 5px 0px 20px;
-`;
+`
 
-const BackCompo = styled(Backcomponents)`
-  margin-top: 10px;
-  margin-bottom: 10px;
-`;
-
+const MissionTop = styled('div')`
+margin-left:35px;
+@media only screen and (max-width: 650px) {
+    margin-top:20px;
+  }
+`
 const Block = styled("div")`
-  margin: 0.5rem;
 `;
 const Content = styled("div")`
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  @media screen and (min-width: 360px) {
-    width: 400px;
-  }
-  @media screen and (min-width: 550px) {
-    width: 500px;
-  }
-  @media screen and (min-width: 700px) {
-    width: 620px;
-  }
 `;
 
 const ListContent = styled("div")`
@@ -82,21 +55,11 @@ const ListContent = styled("div")`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  @media screen and (min-width: 360px) {
-    width: 400px;
-  }
-  @media screen and (min-width: 550px) {
-    width: 500px;
-  }
-  @media screen and (min-width: 700px) {
-    width: 620px;
-  }
+    margin-bottom:10px;
 `;
 
 const MissionBlock = styled("div")`
-  display: flex;
-  justify-content: center;
-  align-items: center;
+
 `;
 
 const BoxSelect = styled("select")`
@@ -111,23 +74,17 @@ const BoxInput = styled("input")`
   background-color: white;
   border-radius: 15px;
   padding: 3px;
-  width: 13rem;
+  width: 12rem;
 `;
 
 const SearchButton = styled(SearchRoundedIcon)`
   color: #65ace2;
   margin: 0.5rem;
-`;
-
-const Div = styled("div")`
-  padding: 20px;
-`;
-
-const ContentsWrapper = styled("div")`
-  @media screen and (max-width: 393px) {
-    margin-left: 50px;
+    :hover {
+    cursor: pointer;
   }
 `;
+
 
 //select Box --- 최신등록 순 이름 순
 const OPTIONS = [
@@ -167,11 +124,11 @@ function InputBox() {
 }
 
 export default function nowJoin() {
-    const userId = 2
+  const userId = 2
 
   function NowJoinLists() {
-    const { data: JoinMissionData } = useQuery(["nowMissions"],()=>{JoinMission(userId)});
-    
+    const { data: JoinMissionData } = useQuery(["nowMissions"], () => { JoinMission(userId) });
+
     const remainder = JoinMissionData?.length % 5;
     const JoinLen = `${JoinMissionData?.length / 5}`;
     const quot = parseInt(JoinLen);
@@ -183,51 +140,47 @@ export default function nowJoin() {
 
     return (
       <>
-      {JoinMissionData?.slice((page - 1) * 5, page * 5).map((item, index) => (
+        {JoinMissionData?.slice((page - 1) * 5, page * 5).map((item, index) => (
           <NowJoinList key={index} {...item} />
         ))}
         {remainder && (
           <PagI
-          count={remainder === 0 ? quot : quot + 1}
-          page={page}
-          onChange={handleChange}
-        />
+            count={remainder === 0 ? quot : quot + 1}
+            page={page}
+            onChange={handleChange}
+          />
         )}
       </>
     );
   }
 
   return (
-    <div>
+    <ParentsDiv>
       <Head>
         <title>참여 중인 임무 | 지구-방위대</title>
       </Head>
 
-      <NavBar>
-        <Header>
-          {/* 모바일 뷰에서 뒤로가기 버튼! */}
-          <BackCompo name="참여 중인 임무 모아보기"></BackCompo>
-        </Header>
-      </NavBar>
 
-      <Div></Div>
+      {/* 모바일 뷰에서 뒤로가기 버튼! */}
+      <Backcomponents name="참여 중인 임무 모아보기"></Backcomponents>
+      <MissionTop>
+        <H2>🦸🏻 참여 중인 임무 모아보기</H2>
+      </MissionTop>
 
-      <ContentsWrapper>
-        <Block>
-          <Content>
-            <SelectBox options={OPTIONS} />
-            <InputBox />
-            <SearchButton />
-          </Content>
-        </Block>
+      <Block style={{ marginBottom: '10px' }}>
+        <Content>
+          <SelectBox options={OPTIONS} />
+          <InputBox />
+          <SearchButton />
+        </Content>
+      </Block>
 
-        <MissionBlock>
-          <ListContent>
-    
-            <NowJoinLists />
-          </ListContent>
-        </MissionBlock>
-      </ContentsWrapper>
-    </div>
+      <MissionBlock>
+        <ListContent>
+          <NowJoinLists />
+        </ListContent>
+      </MissionBlock>
+
+    </ParentsDiv>
   );
 }

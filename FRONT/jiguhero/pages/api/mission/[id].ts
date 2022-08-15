@@ -13,7 +13,7 @@ export default async function missionUserData(missionId, userId) {
   const data = await response.json().catch(() => {
 
   });
-  console.log(data)
+ 
   return data;
 }
 

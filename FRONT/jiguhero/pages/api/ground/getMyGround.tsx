@@ -1,7 +1,8 @@
+
 import {BASE_URL, Token} from 'pages/api/fetch';
 
-export default async function getAllGround(){
-    const response = await fetch(`${BASE_URL}ground/list`, {
+export default async function getMyGround(userId){
+    const response = await fetch(`${BASE_URL}ground/user/${userId}`, {
         method:'get',
         headers:{
             Authorization : Token

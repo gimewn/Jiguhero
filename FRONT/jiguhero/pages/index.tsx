@@ -20,19 +20,20 @@ const Title = styled("p")`
   font-weight: bold;
   font-size: 1.1em;
 `;
-const TitleWithOutMargin = styled("p")`
+const TitleWithOutMargin = styled('p')`
   font-weight: bold;
   font-size: 1.1em;
-  margin-top: 0px;
-`;
-const Block = styled("div")`
-  padding: 0px 10px 10px 10px;
-`;
-const Content = styled("div")`
-  display: flex;
+  margin-top:0px;
+`
+const Block = styled('div')`
+padding: 0px 10px 10px 10px;
+`
+const Content = styled('div')`
+  display:flex;
   flex-direction: column;
   align-items: center;
-`;
+
+  `
 
 export default function Home() {
   const router = useRouter();
@@ -46,9 +47,10 @@ export default function Home() {
     router.push(`/user/${router.query.userid}/${token}`);
   }
   if(register === "DONE"){
-    localStorage.setItem("access-token", token.toString());
+    localStorage.setItem("access-token",JSON.stringify(token));
         setUserId(router.query.userid.toString())
   }
+
   
   // useEffect(() => {
   //   if (token) {
@@ -84,7 +86,8 @@ export default function Home() {
         </Content>
       </Block>
       <Block>
-        <Title>📰 대원들을 위한 친환경 소식</Title>
+        <Title onClick={() => router.push("/news")}>📰 대원들을 위한 친환경 소식</Title>
+
         <Content>
           <News />
         </Content>

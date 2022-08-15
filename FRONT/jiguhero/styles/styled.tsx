@@ -35,14 +35,15 @@ export const ButtonBorder = styled('button') <{ dColor: string }>`
 export const ParentsDiv = styled('div')`
     max-width:700px;
     padding: 0 20px;
-    margin: 0 auto;
-<<<<<<< HEAD
+    margin: 0 auto 20px auto;
     width:100%;
-=======
-    width:100vw;
     @media only screen and (max-width: 650px) {
         margin-top:20px;
         margin-bottom: 80px;
   }
->>>>>>> c6fd418499a98888cdcdabe4c0d5596a9e51ce3c
+  .feedimage{
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
 `

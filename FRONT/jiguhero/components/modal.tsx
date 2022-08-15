@@ -1,16 +1,16 @@
 import styled from 'styled-components';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
-import {LocIcon, ConIcon} from 'pages/ecomarket/index';
+import { LocIcon, ConIcon } from 'pages/ecomarket/index';
 import PermPhoneMsgRoundedIcon from '@mui/icons-material/PermPhoneMsgRounded';
 import { useState, useEffect } from "react";
-import {ButtonFull} from 'styles/styled'
+import { ButtonFull } from 'styles/styled'
 import getReview from 'pages/api/place/getReview';
 import postReport from 'pages/api/place/postReport';
 import postReview from 'pages/api/place/postReview';
 import { useQuery } from '@tanstack/react-query';
 // import { Pagination } from "@mui/material";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import {reviewlists} from 'states/place';
+import { reviewlists } from 'states/place';
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
 import { Swiper, SwiperSlide } from "swiper/react"; // basic
 import SwiperCore, { Navigation, Pagination } from "swiper";
@@ -18,6 +18,11 @@ import "swiper/css"; //basic
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import Image from 'next/image';
+import postImg from 'pages/api/place/postImg';
+import IconButton from "@mui/material/IconButton";
+import PhotoCamera from "@mui/icons-material/PhotoCamera";
+import getImgList from 'pages/api/place/getImgList';
+import deleteReview from 'pages/api/place/deleteReview';
 
 SwiperCore.use([Navigation, Pagination]);
 
@@ -35,7 +40,7 @@ const WithIcons = styled('div')`
     margin-left:0;
     margin-right:auto;
 `
-const ModalDiv = styled('div')`
+export const ModalDiv = styled('div')`
     position:absolute;
     background-color: white;
     left:0;
@@ -57,21 +62,21 @@ const ModalDiv = styled('div')`
     display: none; /* for Chrome, Safari, and Opera */
 }
 `
-const ModalHeader = styled('div')`
+export const ModalHeader = styled('div')`
     display:flex;
     justify-content: space-between;
     flex-direction: row;
     padding:20px 20px 0px 25px;
 `
-const HeaderTitle = styled('span')`
+export const HeaderTitle = styled('span')`
     font-size:1.5rem;
     font-weight:bold;
     padding: auto;
 `
-const CloseBtn = styled(CloseRoundedIcon)`
+export const CloseBtn = styled(CloseRoundedIcon)`
     color:#65ACE2;
 `
-const ModalBody = styled('div')`
+export const ModalBody = styled('div')`
     margin-top:10px;
     display: flex;
     flex-direction: column;
@@ -94,7 +99,7 @@ const CallIcon = styled(PermPhoneMsgRoundedIcon)`
 font-size: 1em;
 color:#98c064;   
 `
-const ReportBox = styled('div')<{Color:string}>`
+const ReportBox = styled('div') <{ Color: string }>`
     display:flex;
     width:100%;
     flex-direction: column;
@@ -109,7 +114,7 @@ const ReportBox = styled('div')<{Color:string}>`
         margin: 0;
     }
 `
-const PostReport = styled(ModalBody)<{Color:string}>`
+const PostReport = styled(ModalBody) <{ Color: string }>`
     background-color: ${(props) => props.Color} ;
     padding-bottom:20px;
     border-radius:20px;
@@ -193,7 +198,7 @@ const ReviewBox = styled('div')`
     }
 `
 
-const EmojiSpan = styled('span')<{size:string}>`
+const EmojiSpan = styled('span') <{ size: string }>`
     font-size: ${(props) => props.size};
     margin: auto 5px auto 0;
     `
@@ -225,6 +230,7 @@ const Select = styled('select')`
 const ReviewArea = styled('textarea')`
     height:45px;
     width:80%;
+    font-size:15px;
     border-radius:10px;
     /* margin: 0px 10px 0px 30px; */
     padding:10px;
@@ -247,40 +253,125 @@ const ReportReview = styled(CheckRoundedIcon)`
     height:35px;
     width:35px;
 `
-const ImageDiv = styled('div')``
 
-export default function Modal(props){
-    const {show, setshow, data, reviews} = props;
+const CameraBox = styled("div")`
+  width: 150px;
+  height: 150px;
+  background-color: #ffffff;
+  border-radius: 100px;
+  /* box-shadow: 0px 0px 5px 0px #dadce0 inset; */
+  border: 1px solid #98c064;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  svg {
+  }
+  img {
+    object-fit: cover;
+    width: 150px;
+    height: 150px;
+    border-radius: 100px;
+  }
+`;
+const CameraBtn = styled("div")`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color:#98c064;
+  margin: 0 0 20px 0;
+  position:relative;
+`;
+const ImgPostBtn = styled('button')`
+    position:absolute;
+    z-index:999;
+    bottom:20px;
+    right:5px;
+    border:0;
+    border-radius: 30px;
+    background-color:#65ACE2;
+    padding:15px;
+    color:white;
+`
+const Img = styled('img')`
+    width:120px;
+    height:120px;
+    object-fit: cover;
+    margin-bottom:20px;
+    border:0;
+    border-radius:10px;
+
+`
+const DeleteBtn = styled('button')`
+    background-color:#FF4848;
+    color:white;
+    border:0;
+    border-radius: 10px;
+    padding:3px 10px;
+    margin: auto 0 auto 10px;
+`
+
+export default function Modal(props) {
+    const { show, setshow, data, reviews } = props;
     const [isReport, setReport] = useState(false);
     const [ReportCategory, setReportCategory] = useState(0);
     const [ReportContent, setReportContent] = useState('');
-    const reviewEmoji = [['', ''], ['😔','실망이에요'], ['😑', '별로예요'], ['😶', '그저 그래요'], ['🤗', '만족해요'], ['🥰', '너무 좋아요']]
+    const reviewEmoji = [['', ''], ['😔', '실망이에요'], ['😑', '별로예요'], ['😶', '그저 그래요'], ['🤗', '만족해요'], ['🥰', '너무 좋아요']]
     const [scoreValue, setsScoreValue] = useState(1);
     const [reviewValue, setReviewValue] = useState('');
-    const page = useRecoilValue(reviewlists)
-    const setPage = useSetRecoilState(reviewlists)
-    const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
-      setPage(value);
-    };
-    const [fetchReview, setFetchReview] = useState(reviews);
+    const [imgList, setImgList] = useState<Array<string>>();
+    const [placeImg, setPlaceImg] = useState<File>();
+    const [preview, setPreview] = useState<string>(); // 이미지 미리보기 사진
+    const changeHandler = (e) => {
+        const file = e.target.files[0];
+        if (file && file.type.substr(0, 5) === "image") {
+          setPlaceImg(file);
+        } else {
+            setPlaceImg(null)
+        }
+      };
+      function getImg(){
+        getImgList(data.placeId).then((result) => setImgList(result.imageURL))
+      }
+
+      const [fetchReview, setFetchReview] = useState(reviews);
+
+      useEffect(() => {
+        if (placeImg) {
+          const reader = new FileReader();
+          reader.onloadend = () => {
+            setPreview(reader.result as string);
+          };
+          reader.readAsDataURL(placeImg);
+        } else {
+          setPreview(null);
+        }
+        if(data.placeId){
+            getImg()
+        }
+      }, [placeImg]);
+      useEffect(()=>{
+        if(data.placeId){
+            getImg()
+        }
+      })
     useEffect(()=>{
         setFetchReview(reviews)
     }, [reviews])
-    function Emoji(prop){
-        if(prop['index'] === 0){
-            return(<EmojiSpan size="20px">{reviewEmoji[prop['score']][prop['index']]}</EmojiSpan>)
-        }else{
-            return(<EmojiSpan size="16px">{reviewEmoji[prop['score']][prop['index']]}</EmojiSpan>)
+    function Emoji(prop) {
+        if (prop['index'] === 0) {
+            return (<EmojiSpan size="20px">{reviewEmoji[prop['score']][prop['index']]}</EmojiSpan>)
+        } else {
+            return (<EmojiSpan size="16px">{reviewEmoji[prop['score']][prop['index']]}</EmojiSpan>)
         }
     }
-    function Star(score){
+    function Star(score) {
         let res = '';
-        for(let i=0; i<score['score']; i++){
+        for (let i = 0; i < score['score']; i++) {
             res += '⭐'
         }
         return <Starspan>{res}</Starspan>
     }
-    console.log(data)
+
     const ModalContent = show && (
         <>
         <ModalDiv>
@@ -289,6 +380,39 @@ export default function Modal(props){
                 <CloseBtn onClick={() => setshow(false)}/>
             </ModalHeader>
             <ModalBody>
+            <CameraBtn>
+            <ImgPostBtn onClick={()=>{postImg(placeImg, data.placeId, 1).then((res)=>{setPlaceImg(null)})}}>OK</ImgPostBtn>
+            <IconButton aria-label="upload picture" component="label">
+                <input
+                    hidden
+                    accept="image/*"
+                    type="file"
+                    name="file"
+                    onChange={changeHandler}
+                />
+                {placeImg ? (
+                    <CameraBox>
+                    <img src={preview} />
+                    </CameraBox>
+                ) : (
+                    <CameraBox>
+                    <PhotoCamera fontSize="large" style={{color:'#98c064'}}/>
+                    </CameraBox>
+                )}
+                </IconButton>
+            </CameraBtn>
+                <Swiper
+                    spaceBetween={0}
+                    slidesPerView="auto"
+                    scrollbar={{ draggable: true }}
+                    navigation={{
+                    nextEl: '.review-swiper-button-next',
+                    prevEl: '.review-swiper-button-prev',
+                }}>
+                    {imgList?.map((item, i)=>(<SwiperSlide key={i}>
+                        <Img src={item} />
+                    </SwiperSlide>))}
+                </Swiper>
                 {data.roadAddress ? <WithIcons>
                     <LocIcon /><ModalAddress>{data.roadAddress}</ModalAddress>
                 </WithIcons> : <></>}
@@ -298,18 +422,6 @@ export default function Modal(props){
                 {data.phone ? <WithIcons>
                     <CallIcon /><ModalAddress>{data.phone}</ModalAddress>
                 </WithIcons> : <></>}
-                <ImageDiv>
-                <Swiper
-                    spaceBetween={0}
-                    slidesPerView={5}
-                    scrollbar={{ draggable: true }}
-                    navigation={{
-                    nextEl: '.review-swiper-button-next',
-                    prevEl: '.review-swiper-button-prev',
-                }}>
-                    {data.imageURL.map((item)=>(<SwiperSlide></SwiperSlide>))}
-                </Swiper>
-                </ImageDiv>
                 {data.content ?
                 <WithTitle>
                     <ConTitle>🍀 이 곳은 어떤 곳?</ConTitle>
@@ -344,6 +456,15 @@ export default function Modal(props){
                     <ReviewBox key={item.reviewId}>
                         <Star score={item.score} />
                         <span>{item.content}</span>
+                    {item.userId === 1 ? <DeleteBtn onClick={()=>{
+                        if(confirm("삭제하시겠습니까?" )=== true){
+                            deleteReview(item.reviewId).then((res) => {
+                                getReview(data.placeId).then((res) => {setFetchReview(res)
+                                })
+                            }
+                            )
+                        }
+                    }}>삭제</DeleteBtn> : <></>}
                     </ReviewBox>
                     </ReviewDiv>
                     ))}
