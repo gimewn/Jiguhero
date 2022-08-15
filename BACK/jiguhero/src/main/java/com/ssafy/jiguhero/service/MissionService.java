@@ -16,7 +16,7 @@ public interface MissionService {
     List<MissionDto> getLikeMissions(Long userId);
 
     // user_id에 해당하는 유저가 좋아요한 임무 목록
-    List<MissionDto> getJoinMissions(Long userId);
+    List<MissionDto> getJoinMissions(Long userId, HttpServletRequest request);
 
     // 전체 임무 목록
     List<MissionDto> getAllMissions(HttpServletRequest request, String array);

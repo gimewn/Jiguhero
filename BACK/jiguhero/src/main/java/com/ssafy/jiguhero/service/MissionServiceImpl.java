@@ -58,7 +58,7 @@ public class MissionServiceImpl implements MissionService {
 
     @Transactional
     @Override
-    public List<MissionDto> getJoinMissions(Long userId) {
+    public List<MissionDto> getJoinMissions(Long userId, HttpServletRequest request) {
         User userEntity = userDao.selectUserById(userId);
         List<Conn_Mission> joinMissionList = missionDao.selectJoinMissionByUser(userEntity);
         List<Mission> entityList = new ArrayList<>();
@@ -68,6 +68,10 @@ public class MissionServiceImpl implements MissionService {
         }
 
         List<MissionDto> dtoList = entityList.stream().map(entity -> MissionDto.of(entity)).collect(Collectors.toList());
+
+        for(MissionDto missionDto : dtoList) {
+            missionDto.setRepImageURL(getRepMissionImageURL(missionDto.getMissionId(), request));
+        }
 
         return dtoList;
     }
