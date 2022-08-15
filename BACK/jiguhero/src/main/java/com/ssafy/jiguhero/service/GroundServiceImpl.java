@@ -207,9 +207,13 @@ public class GroundServiceImpl implements GroundService {
             likeGround.setUser(userEntity);
             likeGround.setGround(groundEntity);
             groundDao.insertLikeGround(likeGround);
+            groundEntity.setLikes(groundEntity.getLikes() + 1);
+            groundDao.insertGround(groundEntity);
             return true;
         } else {
             deleteLikeGround(groundEntity, userEntity);
+            groundEntity.setLikes(groundEntity.getLikes() - 1);
+            groundDao.insertGround(groundEntity);
             return false;
         }
 
