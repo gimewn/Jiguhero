@@ -27,24 +27,16 @@ export default function Login() {
 
           {/* 카카오 로그인*/}
           <SnsLoginKakao>
-            <ul>
-              <li>
-                <a href="http://i7c105.p.ssafy.io:8080/oauth2/authorize/kakao?redirect_uri=http://localhost:3000">
-                  <Image src={KakaoImg} alt="Kakao" />
-                </a>
-              </li>
-            </ul>
+            <a href="http://i7c105.p.ssafy.io:8080/oauth2/authorize/kakao?redirect_uri=http://localhost:3000">
+              <Image src={KakaoImg} alt="Kakao" />
+            </a>
           </SnsLoginKakao>
 
           {/* 구글 로그인*/}
           <SnsLoginGoogle>
-            <ul>
-              <li>
-                <a href="http://i7c105.p.ssafy.io:8080/oauth2/authorize/google?redirect_uri=http://localhost:3000">
-                  <Image src={GoogleImg} alt="Google" />
-                </a>
-              </li>
-            </ul>
+            <a href="http://i7c105.p.ssafy.io:8080/oauth2/authorize/google?redirect_uri=http://localhost:3000">
+              <Image src={GoogleImg} alt="Google" />
+            </a>
           </SnsLoginGoogle>
 
           <SnsLoginNaver>
@@ -52,7 +44,7 @@ export default function Login() {
               <Image src={NaverImg} alt="Naver" />
             </a>
           </SnsLoginNaver>
-          <button onClick={() => {}}>Logout</button>
+          <button onClick={() => { }}>Logout</button>
         </main>
       </LoginWrapper>
     </>

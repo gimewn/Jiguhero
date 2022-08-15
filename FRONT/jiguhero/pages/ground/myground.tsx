@@ -156,12 +156,20 @@ export default function GroundList(){
     const router = useRouter();
     const [searchItem, setSearchItem] = useState('');
     const [groundList, setGroundList] = useState([])
+    const [userId, setUserId] = useState();
+  
     useEffect(()=>{
-        getMyGround(Number(1)).then((res) => setGroundList(res))
+        const usersId = JSON.parse(localStorage.getItem('recoil-persist')).userId
+        setUserId(usersId)
+    }, [])
+    useEffect(()=>{
+        if(userId){
+            getMyGround(Number(userId)).then((res) => setGroundList(res))
+        }
     })
     function Search(keyword){
-        if(keyword === ''){
-            getMyGround(1).then(
+        if(keyword === '' && userId){
+            getMyGround(userId).then(
                 (res) => setGroundList(res)
             )
         }else{
@@ -193,8 +201,8 @@ export default function GroundList(){
                 return a.hits - b.hits
             })
             setGroundList(res)
-        }else if(key==="0"){
-            getMyGround(1).then(
+        }else if(key==="0" && userId){
+            getMyGround(userId).then(
                 (res) => setGroundList(res)
             )
         }
@@ -226,14 +234,14 @@ export default function GroundList(){
                     <p style={{fontSize:'50px'}}>🥲</p>
                     <p style={{fontSize:'20px', fontWeight:'bold'}}>앗!</p>
                     <p style={{fontSize:'15px'}}>활동구역이 존재하지 않아요!</p>
-                    <p style={{fontSize:'15px'}}>다른 키워드를 검색해볼까요?</p>
+                    {/* <p style={{fontSize:'15px'}}>다른 키워드를 검색해볼까요?</p> */}
                 </NoGround>: 
                 <Grid>
                 {groundList?.map((item)=>(<GroundDiv key={item.groundId}>
                     <DeleteB 
                             onClick={()=>{
-                                if(confirm('삭제하시겠습니까?') === true){
-                                    deleteGround(item.groundId, 1)
+                                if(confirm('삭제하시겠습니까?') === true && userId){
+                                    deleteGround(item.groundId, userId)
                                 }
                             }}  />
                     <GroundItem className="groundDefault">

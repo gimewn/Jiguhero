@@ -14,7 +14,9 @@ const signinUserImg = async (userImg, userId) => {
     },
     body: ImgForm,
   })
+
     .then((response) => {
+      
         console.log("Success:", response);
     })
 

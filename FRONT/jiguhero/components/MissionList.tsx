@@ -21,7 +21,6 @@ const List = styled("div")`
   }
 
 `
-
 const ListImg = styled("div") <{ image: string }>`
   background: url(${(props) => props.image});
   background-size: cover;
@@ -30,6 +29,8 @@ const ListImg = styled("div") <{ image: string }>`
   height: 150px;
   border: 1px solid none;
   float: left;
+  img{
+  }
 `;
 const ListContent = styled("div")`
   width: 200px;
@@ -132,7 +133,9 @@ export default function MissionList({
   return (
     <>
       <List onClick={() => router.push(`/mission/${missionId}`)}>
-        <ListImg image="https://i7c105.p.ssafy.io:8080/image/0ec4834e-b46c-465e-b482-084af1b3c556.jpg?target=mission&date=220810" />
+        <ListImg image={repImageURL}>
+          {/* <img src={repImageURL} /> */}
+        </ListImg>
         <ListContent>
           <TextWrapper>
             <TitleName>{title}</TitleName>

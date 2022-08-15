@@ -81,6 +81,14 @@ export default function GroundDetail(){
     const [reviews, setReviews] = useState([]);
     const [groundInfo, setGroundInfo] = useState({});
     const [isLike, setIsLike] = useState<boolean>();
+    const [userId, setUserId] = useState();
+  
+    useEffect(()=>{
+        const usersId = JSON.parse(localStorage.getItem('recoil-persist')).userId
+        setUserId(usersId)
+    }, [])
+    
+  
     function getFetch(map) {
         var imageSrc =
         "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png";
@@ -142,11 +150,13 @@ export default function GroundDetail(){
           getGround(router.query.id).then((res) => {
             setGroundInfo(res)
           })
-          getIsLike(router.query.id, 1).then((res) => {
-            setIsLike(res)
-          })
+          if(userId){
+            getIsLike(router.query.id, userId).then((res) => {
+              setIsLike(res)
+            })
+          }
       }
-      }, [])
+      })
       useEffect(() => {
         getReview(choiceP['placeId']).then((res) => {
           setReviews(res)
@@ -168,11 +178,16 @@ export default function GroundDetail(){
           <GroundTitle>{groundInfo['icon']}</GroundTitle>
           <GroundTitle>{groundInfo['title']}</GroundTitle>
           {isLike ? <YesLikeHeart onClick={()=>{
-            postLike(groundInfo['groundId'], 1).then((res) => setIsLike(!isLike))
-          }} /> : <NoLikeHeart 
+            if (userId){
+              postLike(groundInfo['groundId'], userId).then((res) => {
+                setIsLike(!isLike)})}}
+            }
+             /> : <NoLikeHeart 
           onClick={()=>{
-            postLike(groundInfo['groundId'], 1).then((res) => setIsLike(!isLike))
-          }}
+            if(userId){
+              postLike(groundInfo['groundId'], userId).then((res) => setIsLike(!isLike))
+            }}
+            }
           />}
           </>
           : <></>}

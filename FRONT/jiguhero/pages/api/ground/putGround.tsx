@@ -18,6 +18,6 @@ export default async function putGround(userId, groundId, emoji, title, content)
             "userId":userId
         })
     });
-    const data = await response.json()
+    const data = await response
     return data
 }

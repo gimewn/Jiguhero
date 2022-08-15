@@ -116,7 +116,6 @@ const AchieveFullBtn = styled(ButtonFull)`
   }
 `
 
-
 const CertifyFullBtn = styled(AchieveFullBtn)`
 `
 const AchieveBorderBtn = styled(ButtonBorder)`
@@ -134,7 +133,6 @@ const AchieveWrapper = styled('div')`
   display:flex;
   justify-content: center;
   /* max-width: 500px; */
-
 `
 const ProgressWrapper = styled('div')`
   display: flex;
@@ -154,8 +152,6 @@ const CertifyGoBtn = styled(ButtonFull)`
   margin-left: 140px;
   margin-right: 25px;
 `
-
-
 const Text = styled('a')`
   font-size: 15px;
   font-weight: bolder;
@@ -167,6 +163,7 @@ const Text2 = styled('a')`
   margin-left: 4rem;
   margin-right:1rem;
 `
+
 
 
 //진행률바 라이브러리 이용
@@ -222,6 +219,65 @@ interface MissionProps {
 }
 
 
+// interface MissionProps {
+//   entryPoint: number;
+//   title: string;
+//   startDate: number;
+//   endDate: number;
+//   sidoCode: string;
+//   nowPerson: number;
+//   maxPerson: number;
+//   repImageURL: string;
+//   missionId: number;
+// }
+
+//내가 참여중인 미션 보여주는 함수
+function NowMission() {
+  const router = useRouter();
+  return (
+    <List onClick={() => router.push(`1`)}>
+      {/* <ListImg image={repImageURL} /> */}
+      <ListImg />
+      <ListContent>
+        <TextWrapper>
+          <TitleName>제목</TitleName>
+          <Name>지역</Name>
+          <Date>시작 날짜~끝 날짜</Date>
+          <JoinPeople>1 / 5명</JoinPeople>
+        </TextWrapper>
+        {/* </div> */}
+        <PointBtn>+200</PointBtn>
+      </ListContent>
+    </List>
+  )
+}
+
+//달성률 & 인증샷 버튼 그룹
+function ButtonGroup() {
+  // 탭 전환
+  const tab = useRecoilValue(missionTabpage);
+  const setTab = useSetRecoilState(missionTabpage);
+
+  //달성률 버튼 클릭하면 연두색 인증샷 버튼 클릭하면 하얀색!
+  const [tabColor, setTabColor] = useState(true)
+  console.log(tabColor)
+  return (
+    <>
+      {/* 탭 전환을 위한 버튼들 */}
+      <ButtonWrapper>
+        {tabColor ?
+          <AchieveFullBtn dColor={'#98C064'} hColor={'98C064'} onClick={() => { setTab(true), setTabColor(!tabColor) }}>달성률</AchieveFullBtn>
+          : <AchieveBorderBtn dColor={'#65ACE2'} onClick={() => { setTab(true), setTabColor(!tabColor) }}>달성률</AchieveBorderBtn>
+        }
+        {tabColor ?
+          <CertifyBorderBtn dColor={' #65ACE2'} onClick={() => { setTab(false), setTabColor(!tabColor) }}>인증샷</CertifyBorderBtn>
+          : <CertifyFullBtn dColor={'#98C064'} hColor={'98C064'} onClick={() => { setTab(false), setTabColor(!tabColor) }}>인증샷</CertifyFullBtn>
+        }
+      </ButtonWrapper >
+      {tab ? <Achievement /> : <Certification />}
+    </>
+  )
+}
 
 //임시 더미파일들
 const itemData = [
@@ -274,7 +330,6 @@ const itemData = [
     title: 'Bike',
   },
 ];
-
 
 export default function MyMissionFeed() {
   const router = useRouter();
@@ -401,6 +456,7 @@ export default function MyMissionFeed() {
         </ImageList>
       </CertifyFeed>
     </>
+
       </>
        : 
        <>
@@ -430,7 +486,6 @@ export default function MyMissionFeed() {
        </CertifyFeed>
      </>
        }
-      <BottomDiv></BottomDiv>
-    </ParentsDiv>
+</ParentsDiv>
   )
 }

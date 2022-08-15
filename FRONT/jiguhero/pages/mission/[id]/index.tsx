@@ -19,6 +19,9 @@ import RoomRoundedIcon from "@mui/icons-material/RoomRounded";
 import { useState } from "react";
 import FavoriteRoundedIcon from "@mui/icons-material/FavoriteRounded";
 import FavoriteBorderRoundedIcon from "@mui/icons-material/FavoriteBorderRounded";
+// import ArrowBackIosRoundedIcon from "@mui/icons-material/ArrowBackIosRounded";
+import { useRecoilState, useRecoilValueLoadable } from "recoil";
+import { UserId, UserName } from "states/user";
 
 const NavBar = styled("header")`
   z-index: 999;
@@ -372,12 +375,22 @@ function MobileLikeAndJoin() {
 
 export default function MissionDetail() {
   const router = useRouter();
-  const { data: MissionDetail } = useQuery(["missions"], missionUserData);
+  if (typeof window !== 'undefined'){
+    const userId = JSON.parse(localStorage.getItem('recoil-persist')).userId
+    console.log(userId);
+
+  }
+
+  const missionId = router.query.id;
+  const { data: MissionDetail } = useQuery(["missions"], () => {
+    missionUserData(missionId, userId);
+  });
   console.log(MissionDetail);
 
   const [ModalAuth, setModalAuth] = useState(false);
   const [Auth, setAuth] = useState(false);
   const [unAuth, setUnAuth] = useState(false);
+  console.log(Auth);
 
   return (
     <>
@@ -468,10 +481,16 @@ export default function MissionDetail() {
             </Content>
           </Block>
 
-          {/* 미션 소개 */}
+          {/* api 추가 생성 후 미션 소개...추가 해주세요... */}
           <Block>
             <Content>
-              <MissionExplanation>{MissionDetail?.content}</MissionExplanation>
+              <MissionExplanation>
+                안녕하세요 임시입니다
+                <br />
+                여기에 api 추가되면 넣어야 해요!
+                <br></br>
+                프로젝트 화이티이이잉!
+              </MissionExplanation>
             </Content>
           </Block>
 
@@ -507,14 +526,16 @@ export default function MissionDetail() {
 }
 
 // export async function getServerSideProps(context) {
-//     const missiondetail = new QueryClient()
 
+//     const missiondetail = new QueryClient()
+//     // const [id, setId]= useRecoilValueLoadable(userId)
+//     // console.log(userId)
 //     await missiondetail.prefetchQuery(['missions'], () => { missionUserData() })
 
 //     return {
 //         props: {
 //             data: {
-//
+
 //                 dehydratedState: dehydrate(missiondetail)
 //             },
 //         },

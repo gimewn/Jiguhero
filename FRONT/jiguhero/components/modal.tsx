@@ -54,7 +54,6 @@ export const ModalDiv = styled('div')`
     border-radius: 20px;
     z-index:999;
     max-height:90%;
-    /* bottom:5%; */
     overflow:auto;
     -ms-overflow-style: none; /* for Internet Explorer, Edge */
     scrollbar-width: none; /* for Firefox */
@@ -321,6 +320,13 @@ export default function Modal(props) {
     const [imgList, setImgList] = useState<Array<string>>();
     const [placeImg, setPlaceImg] = useState<File>();
     const [preview, setPreview] = useState<string>(); // 이미지 미리보기 사진
+    const [userId, setUserId] = useState();
+  
+    useEffect(()=>{
+        const usersId = JSON.parse(localStorage.getItem('recoil-persist')).userId
+        setUserId(usersId)
+    }, [])
+
     const changeHandler = (e) => {
         const file = e.target.files[0];
         if (file && file.type.substr(0, 5) === "image") {
@@ -356,6 +362,7 @@ export default function Modal(props) {
       })
     useEffect(()=>{
         setFetchReview(reviews)
+        console.log(reviews)
     }, [reviews])
     function Emoji(prop) {
         if (prop['index'] === 0) {
@@ -381,7 +388,9 @@ export default function Modal(props) {
             </ModalHeader>
             <ModalBody>
             <CameraBtn>
-            <ImgPostBtn onClick={()=>{postImg(placeImg, data.placeId, 1).then((res)=>{setPlaceImg(null)})}}>OK</ImgPostBtn>
+                {userId ? 
+                    <ImgPostBtn onClick={()=>{postImg(placeImg, data.placeId, userId).then((res)=>{setPlaceImg(null)})}}>OK</ImgPostBtn>
+                : <></>}
             <IconButton aria-label="upload picture" component="label">
                 <input
                     hidden
@@ -444,19 +453,22 @@ export default function Modal(props) {
                         <ReviewArea placeholder='리뷰를 남겨주세요.' onChange={(e)=>{setReviewValue(e.target.value)
                         }}/>
                         <ReportReview onClick={() => {
-                            postReview(data.placeId, 1, reviewValue, scoreValue).then((res) => {
-                                getReview(data.placeId).then((res) => {setFetchReview(res)
-                                })})
+                            if(userId){
+                                postReview(data.placeId, userId, reviewValue, scoreValue).then((res) => {
+                                    getReview(data.placeId).then((res) => {setFetchReview(res)
+                                    })})
+                            }
                         }} />
                         </ReviewWrite>
                     </MakeReview>
                     <div id='reviews'>
                     {fetchReview?.map((item) => (<ReviewDiv key={item.reviewId}>
-                        <Emoji score={item.score} index={0} />
+                        <Emoji score={item.score} index={0}/>
                     <ReviewBox key={item.reviewId}>
                         <Star score={item.score} />
                         <span>{item.content}</span>
-                    {item.userId === 1 ? <DeleteBtn onClick={()=>{
+                    {userId == item.userId ? <DeleteBtn onClick={()=>{
+                        console.log(true)
                         if(confirm("삭제하시겠습니까?" )=== true){
                             deleteReview(item.reviewId).then((res) => {
                                 getReview(data.placeId).then((res) => {setFetchReview(res)
@@ -486,7 +498,9 @@ export default function Modal(props) {
                 <RButtonDiv>
                     <ReportButton dColor='#65ACE2' hColor='#65ACE2' style={{margin:'0 10px 0 0'}} onClick={() => setReport(false)}>취소</ReportButton>
                     <ReportButton dColor="#FF4848" hColor="#FF4848" onClick={() => {
-                        postReport(data.placeId, 1, ReportCategory, ReportContent).then((res)=>{setReport(false)})
+                        if(userId){
+                            postReport(data.placeId, userId, ReportCategory, ReportContent).then((res)=>{setReport(false)})
+                        }
                     }}>신고하기</ReportButton>
                 </RButtonDiv>
             </PostReport> : 
