@@ -199,6 +199,15 @@ public class MissionServiceImpl implements MissionService {
         Conn_Mission connMission = missionDao.selectConnMission(missionEntity, userEntity);
         
         if((connMission != null) && (connMission.getRole() == 1)) {
+            List<Image_Mission> list = imageDao.selectImageMissions(missionEntity);
+            for(Image_Mission imageMission : list){
+                try {
+                    imageDao.deleteImageMission(imageMission);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
+
             missionDao.deleteConnMission(missionEntity);
             missionDao.deleteLikeMission(missionEntity);
             missionDao.deleteMissionById(missionId);
