@@ -3,9 +3,9 @@ import NowJoin from "components/NowJoinLists";
 import Head from "next/head";
 import Backcomponents from "components/back";
 import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
-import React, { useState } from "react";
-import NowJoinList from "components/NowJoinList";
-import { Pagination } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import MissionList from "components/MissionList";
+import Pagination from 'components/pagination';
 import { nowjoinlist } from "states/mission";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import JoinMission from "pages/api/mission/joinMission";
@@ -66,14 +66,16 @@ const BoxSelect = styled("select")`
   border: #65ace2 solid 1px;
   background-color: white;
   border-radius: 15px;
-  padding: 3px;
+  padding: 10px;
+  font-size:15px;
   margin: 0.5rem;
 `;
 const BoxInput = styled("input")`
   border: #65ace2 solid 1px;
   background-color: white;
   border-radius: 15px;
-  padding: 3px;
+  padding: 10px;
+  font-size: 15px;
   width: 12rem;
 `;
 
@@ -86,74 +88,72 @@ const SearchButton = styled(SearchRoundedIcon)`
 `;
 
 
-//select Box --- 최신등록 순 이름 순
-const OPTIONS = [
-  { value: "latest", name: "최신 등록순" },
-  { value: "name", name: "이름순" },
-  { value: "hits", name: "조회순" },
-];
-function SelectBox(props) {
-  return (
-    <BoxSelect>
-      {props.options.map((option) => (
-        <option key={option.value} value={option.value}>
-          {option.name}
-        </option>
-      ))}
-    </BoxSelect>
-  );
-}
-
-//input Box
-function InputBox() {
-  const [text, setText] = useState("");
-  const onChange = (event) => {
-    setText(event.target.value);
-    // console.log(event.target.value)
-  };
-  return (
-    <div>
-      <BoxInput
-        type="text"
-        placeholder="검색어를 입력해주세요."
-        onChange={onChange}
-        value={text}
-      />
-    </div>
-  );
-}
-
 export default function nowJoin() {
-  const userId = 2
-
-  function NowJoinLists() {
-    const { data: JoinMissionData } = useQuery(["nowMissions"], () => { JoinMission(userId) });
-
-    const remainder = JoinMissionData?.length % 5;
-    const JoinLen = `${JoinMissionData?.length / 5}`;
-    const quot = parseInt(JoinLen);
-    const page = useRecoilValue(nowjoinlist);
-    const setPage = useSetRecoilState(nowjoinlist);
-    const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
-      setPage(value);
-    };
-
-    return (
-      <>
-        {JoinMissionData?.slice((page - 1) * 5, page * 5).map((item, index) => (
-          <NowJoinList key={index} {...item} />
-        ))}
-        {remainder && (
-          <PagI
-            count={remainder === 0 ? quot : quot + 1}
-            page={page}
-            onChange={handleChange}
-          />
-        )}
-      </>
-    );
+  const [JoinMissionData, setJoinMissionData] = useState([]);
+  const [userId, setUserId] = useState();
+  const [tmp, setTmp] = useState<string>();
+  const [page, setPage] = useState(1);
+  const OPTIONS = [
+    { value: "time", name: "최신등록순" },
+    { value: "likes", name: "좋아요순" },
+    { value: "person", name: "참여자순" },
+  ];
+  const count: number = JoinMissionData?.length
+  useEffect(()=>{
+    const usersId = JSON.parse(localStorage.getItem('recoil-persist')).userId
+    setUserId(usersId)
+}, [])
+useEffect(()=>{
+  if(userId && JoinMissionData.length === 0){
+    JoinMission(userId).then((res)=>{
+      setJoinMissionData(res)
+  })
   }
-
+})
+  // const remainder = JoinMissionData?.length % 5;
+  // const JoinLen = `${JoinMissionData?.length / 5}`;
+  // const quot = parseInt(JoinLen);
+  const handlePageChange = (page) => {
+    setPage(page)
+  }
+  function Filter(key){
+    if(JoinMissionData){
+      if(key === 'time'){
+        let res = [...JoinMissionData];
+              res.sort((a, b)=>{
+                  return b.missionId - a.missionId
+              })
+              setJoinMissionData(res)
+      }else if(key === 'likes'){
+        let res = [...JoinMissionData];
+              res.sort((a, b)=>{
+                return b.likes - a.likes
+              })
+              setJoinMissionData(res)
+      }else if(key === 'person'){
+        let res = [...JoinMissionData];
+              res.sort((a, b)=>{
+                  return b.nowPerson - a.nowPerson
+              })
+              console.log(res)
+              setJoinMissionData(res)
+      }
+    }
+  }
+  function Search(keyword){
+    if(keyword === ''){
+      JoinMission(userId).then(
+            (res) => setJoinMissionData(res)
+        )
+    }else{
+        const result = JoinMissionData.filter((ground) => {
+            if(ground['title'].includes(keyword)){
+                return ground
+            }})
+            setJoinMissionData(result)
+        setTmp("")
+    }
+}
   return (
     <ParentsDiv>
       <Head>
@@ -169,15 +169,47 @@ export default function nowJoin() {
 
       <Block style={{ marginBottom: '10px' }}>
         <Content>
-          <SelectBox options={OPTIONS} />
-          <InputBox />
-          <SearchButton />
+        <BoxSelect
+        onChange={(e) => {
+          e.preventDefault()
+          Filter(e.target.value);
+        }}
+      >
+        {OPTIONS.map((option, index) => (
+          <option key={index} value={option.value}>
+            {option.name}
+          </option>
+        ))}
+      </BoxSelect>
+      <div>
+          <BoxInput
+            type="text"
+            id="search"
+            placeholder="검색어를 입력해주세요."
+            onChange={(e) => {
+              e.preventDefault();
+              setTmp(e.target.value);
+            }}
+            value={tmp}
+          />
+        </div>
+        <SearchButton
+          onClick={()=>{Search(tmp)}}
+        />
         </Content>
       </Block>
 
       <MissionBlock>
         <ListContent>
-          <NowJoinLists />
+        
+        {count !== undefined ? 
+      <>
+        {JoinMissionData?.slice((page - 1) * 5, page * 5).map((item, index) => (
+          <MissionList key={index} {...item} />))}
+        <Pagination page={page} totalcount={count} setPage={handlePageChange} />
+      </> 
+        :
+        <></>}
         </ListContent>
       </MissionBlock>
 

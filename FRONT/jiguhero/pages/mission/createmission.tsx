@@ -97,18 +97,18 @@ const BoxInput = styled("input")`
   border: #65ace2 solid 1px;
   background-color: white;
   border-radius: 15px;
-  padding: 3px;
+  padding: 10px;
   width: 13rem;
   margin-left: 10px;
-  padding: 5px;
+  font-size:15px;
 `;
 const DateInput = styled(DatePicker)`
   border: #65ace2 solid 1px;
   background-color: white;
   border-radius: 15px;
-  width: 100px;
+  width: 110px;
   box-sizing: border-box;
-  padding: 5px;
+  padding: 10px;
   margin-right: 9px;
   margin-left: 9px;
 `;
@@ -120,17 +120,18 @@ const SelectSido = styled("select")`
   border: #65ace2 solid 1px;
   background-color: white;
   border-radius: 15px;
-  padding: 3px;
+  padding: 10px;
   margin: 0.5rem;
-
-`;
+  font-size:13px;
+  width:auto;
+`
 
 const SelectGugun = styled(SelectSido)``;
 const SelectDong = styled(SelectSido)``;
 
 const CameraBox = styled("form")`
-  width: 250px;
-  height: 200px;
+  width: 300px;
+  height: 250px;
   background-color: #ffffff;
   border-radius: 15px;
   box-shadow: 0px 0px 5px 0px #dadce0 inset;
@@ -139,9 +140,10 @@ const CameraBox = styled("form")`
   justify-content: center;
   align-items: center;
   @media screen and (min-width: 360px) {
-    width: 200px;
-    height: 150px;
+    width: 300px;
+    height: 250px;
   }
+  margin-bottom:20px;
   img {
     object-fit: cover;
     width: 250px;
@@ -159,10 +161,10 @@ const PointInput = styled("input")`
   border: #65ace2 solid 1px;
   background-color: white;
   border-radius: 15px;
-  padding: 3px;
+  padding: 10px;
   width: 13rem;
   margin-left: 10px;
-  padding: 5px;
+  font-size:15px;
 `;
 const PeopleInput = styled(PointInput)``;
 
@@ -170,9 +172,11 @@ const MissionText = styled("textarea")`
   border: #65ace2 solid 1px;
   background-color: white;
   border-radius: 15px;
-  width: 300px;
-  height: 100px;
+  width: 60%;
+  height: 150px;
   margin-top: 10px;
+  padding:10px;
+  font-size:15px;
 `;
 
 const SubmitBtn = styled(ButtonFull)`
@@ -200,12 +204,14 @@ export default function Createmission() {
   const [endDate, setEndDate] = useState(new Date()); // 종료일
   const [astartDate, setAstartDate] = useState(["", ""]); // 시작일 배열 [요일, 월, 일, 년]
   const [aendDate, setAendDate] = useState(["", ""]); // 종료일 배열 [요일, 월, 일, 년]
-  const [point, setPoint] = useState<Number>(); // 포인트
+  const [point, setPoint] = useState<Number>(500); // 포인트
   const [people, setPeople] = useState<Number>();
   const [content, setContent] = useState(""); //내용
   const router = useRouter();
   const { data: sido } = useQuery(["sido"], getSido);
   const [ChoiceSido, setChoiceSido] = useState(["00", ""]);
+  const [titleName,setTitleName] = useState('');
+  const [peopleNum, setPeopleNum] = useState('10');
   const { data: gugun } = useQuery(
     ["gugun", ChoiceSido],
     () => getGugun(ChoiceSido[0]),
@@ -334,79 +340,13 @@ export default function Createmission() {
       </>
     );
   }
-
-  //포인트
-  function Point() {
-
-      const [pointNum, setPointNum] = useState('500')
-
-
-    return (
-      <>
-        <Text>포인트</Text>
-        <PointInput
-          type="number"
-          min={500}
-          max={5000}
-          step={500}
-          defaultValue={500}
-          value={pointNum}
-          onChange={(e)=>{
-            e.preventDefault()
-            setPointNum(e.target.value)
-          }}
-
-          onBlur={(e) => {
-            e.preventDefault();
-            const tmp = Number(pointNum);
-            if (tmp < 500) {
-              setPointNum('500')
-            } else if (tmp > 5000) {
-              setPointNum('5000')
-            } else if (tmp % 10) {
-              setPointNum(`${tmp-(tmp%10)}`)
-            }
-            setPoint(Number(pointNum));
-            
-          }}
-        />
-      </>
-    );
-  }
-
   //정원
-  function JoinPeople() {
-    const [peopleNum, setPeopleNum] = useState('10')
-    return (
-      <>
-        <Text>정원</Text>
-        <PeopleInput
-          type="number"
-          step={10}
-          defaultValue={10}
-          onBlur={(e: FocusEvent<HTMLInputElement>) => {
-            e.preventDefault()
-            const num = Number(e.target.value);
-            if (num < 10) {
-              setPeopleNum('10')
-              
-            } else if (num > 5000) {
-              setPeopleNum('5000')
-            } else if (num % 10) {
-              setPeopleNum(`${num - (num % 10)}`)
-            }
-            setPeople(Number(peopleNum));
-
-          }}
-        />
-      </>
-    );
-  }
 
   //지역 설정 ---
   function MissionLocation() {
     return (
       <>
+      <div>
         <Text>지역</Text>
         {/* 시도 선택 */}
         <SelectSido
@@ -460,6 +400,7 @@ export default function Createmission() {
             </option>
           ))}
         </SelectDong>
+      </div>
       </>
     );
   }
@@ -491,7 +432,13 @@ export default function Createmission() {
         <Block>
           <Content>
             {/* <Text>임무명</Text> */}
-            <MissionName />
+            <div>
+              <Text>임무명</Text>
+              <BoxInput onChange={(e) => {setTitleName(e.target.value)}} onBlur={(e)=>{
+                e.preventDefault()
+                setTitle(titleName)
+              }}  />
+            </div>
           {/* <BoxInput onChange={(e) => {
             e.preventDefault()
             setTitle(e.target.value)}}  /> */}
@@ -515,14 +462,58 @@ export default function Createmission() {
         {/* 포인트 */}
         <Block>
           <Content>
-            <Point />
+          <Text>포인트</Text>
+            <PointInput
+              type="number"
+              min={500}
+              max={5000}
+              step={500}
+              defaultValue={Number(point)}
+              onChange={(e)=>{
+                e.preventDefault()
+                setPoint(Number(e.target.value))
+              }}
+
+              onBlur={(e) => {
+                e.preventDefault();
+                const tmp = Number(point);
+                if (tmp < 500) {
+                  setPoint(500)
+                } else if (tmp > 5000) {
+                  setPoint(5000)
+                } else if (tmp % 10) {
+                  setPoint(Number(tmp)-(Number(tmp)%10))
+                }
+                setPoint(Number(point));
+                
+              }}
+            />
           </Content>
         </Block>
 
         {/* 정원 */}
         <Block>
           <Content>
-            <JoinPeople />
+          <Text>정원</Text>
+        <PeopleInput
+          type="number"
+          step={10}
+          defaultValue={peopleNum}
+          onBlur={(e: FocusEvent<HTMLInputElement>) => {
+            e.preventDefault()
+            const num = Number(e.target.value);
+            if (num < 10) {
+              setPeopleNum('10')
+              
+            } else if (num > 5000) {
+              setPeopleNum('5000')
+            } else if (num % 10) {
+              setPeopleNum(`${num - (num % 10)}`)
+            }
+            setPeople(Number(peopleNum));
+
+          }}
+        />
           </Content>
         </Block>
 

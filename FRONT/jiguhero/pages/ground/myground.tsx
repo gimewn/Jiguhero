@@ -163,7 +163,7 @@ export default function GroundList(){
         setUserId(usersId)
     }, [])
     useEffect(()=>{
-        if(userId){
+        if(userId && groundList.length === 0){
             getMyGround(Number(userId)).then((res) => setGroundList(res))
         }
     })

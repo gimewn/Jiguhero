@@ -1,6 +1,5 @@
 import Pagination from 'react-js-pagination';
 
-
 interface Props {
   page: number;
   totalcount: number;

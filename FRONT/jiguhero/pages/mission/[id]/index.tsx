@@ -16,13 +16,15 @@ import CalendarMonthRoundedIcon from "@mui/icons-material/CalendarMonthRounded";
 import { ButtonFull, ButtonBorder } from "styles/styled";
 import { useRouter } from "next/router";
 import RoomRoundedIcon from "@mui/icons-material/RoomRounded";
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import FavoriteRoundedIcon from "@mui/icons-material/FavoriteRounded";
 import FavoriteBorderRoundedIcon from "@mui/icons-material/FavoriteBorderRounded";
 // import ArrowBackIosRoundedIcon from "@mui/icons-material/ArrowBackIosRounded";
 import { useRecoilState, useRecoilValueLoadable } from "recoil";
 import { UserId, UserName } from "states/user";
-
+import getDong from "pages/api/ecomarket/getDong";
+import getDetail from "pages/api/mission/getDetail";
+import postJoin from 'pages/api/mission/postJoin';
 const NavBar = styled("header")`
   z-index: 999;
   position: fixed;
@@ -51,7 +53,7 @@ const Header = styled("div")`
 const DetailWrapper = styled("div")`
   margin-top: 20px;
   margin-bottom: 160px;
-  max-width: 500px;
+  max-width: 700px;
 `;
 const MobileMore = styled(MoreVertRoundedIcon)`
   color: #98c064;
@@ -85,15 +87,21 @@ const ImageBlock = styled("div")`
   justify-content: center;
   @media screen and (min-width: 360px) {
     width: 415px;
+    height: 415px;
   }
   @media screen and (min-width: 500px) {
     width: 450px;
+    height: 450px;
   }
   @media screen and (min-width: 700px) {
     width: 450px;
+    height: 450px;
   }
   img {
-    max-width: 100%;
+    width:inherit;
+    height:inherit;
+    object-fit: cover;
+    
     @media screen and (min-width: 700px) {
       margin-top: 15px;
     }
@@ -129,9 +137,9 @@ const LocalIcon = styled(RoomRoundedIcon)`
 `;
 const WebBtn = styled(ButtonFull)`
   border-radius: 12.5px;
-  padding: 5px;
+  padding: 10px;
   color: white;
-  font-size: x-small;
+  font-size: 15px;
   margin: 3px;
 `;
 const BtnContent = styled("div")`
@@ -267,6 +275,8 @@ const MissionExplanation = styled("div")`
 `;
 //네브바
 import ArrowBackIosRoundedIcon from "@mui/icons-material/ArrowBackIosRounded";
+import deleteMission from "pages/api/mission/deleteMission";
+import postMissionLike from "pages/api/mission/postLike";
 const Title = styled("div")`
   display: flex;
   align-items: center;
@@ -347,34 +357,56 @@ function MissionAuthModal() {
   );
 }
 
-//좋아요 참여중 표시
-function MobileLikeAndJoin() {
-  const [join, setJoin] = useState(false);
-  const [like, setLike] = useState(false);
-  return (
-    <>
-      <LikeAndJoinWrapper>
-        <LikeDiv>
-          <LikeBtn onClick={() => setLike(!like)}>
-            {like === false ? <BorderHeart /> : <FullHeart />}
-          </LikeBtn>
-        </LikeDiv>
-        <JoinDiv onClick={() => setJoin(!join)}>
-          {join === false ? (
-            <JoinFullBtn hColor={"#98C064"} dColor={"#65ACE2"}>
-              참여중인 임무입니다
-            </JoinFullBtn>
-          ) : (
-            <JoinBorderBtn dColor={"#65ACE2"}>임무에 참여하기</JoinBorderBtn>
-          )}
-        </JoinDiv>
-      </LikeAndJoinWrapper>
-    </>
-  );
-}
 
 export default function MissionDetail() {
   const router = useRouter();
+  const [userId, setUserId] = useState();
+  const [join, setJoin] = useState(false);
+  const [like, setLike] = useState(false);
+  const [MissionDetail, setMissionDetail] = useState({
+    content: "",
+    dongCode: "",
+    endDate: "",
+    entryPoint: 0,
+    failedPerson: 0,
+    gugunCode: "",
+    hits: 0,
+    imageURL: [],
+    joinCheck: false,
+    likeCheck: false,
+    likes: 0,
+    maxPerson: 0,
+    missionId: 0,
+    nowPerson: 0,
+    regtime: [],
+    repImageURL: "",
+    sidoCode: "",
+    startDate: "",
+    title: "",
+    userId: 0
+  });
+  const [region, setRegion] = useState();
+  
+  useEffect(()=>{
+      const usersId = JSON.parse(localStorage.getItem('recoil-persist')).userId
+      setUserId(usersId)
+  }, [])
+
+  const missionId = router.query.id;
+  useEffect(()=>{
+    if(router.query.id && userId){
+      getDetail(router.query.id, userId).then((res)=>{setMissionDetail(res)
+      getDong(res.gugunCode).then((item)=>{
+        const result = item.filter((dong) => {
+          if(dong.dongCode === res.dongCode){
+            setRegion(dong.dongName)
+              return dong
+          }})
+      })
+      })
+    }
+
+  })
 
 
   // const [use, setUserId] = useRecoilState(userId)
@@ -384,17 +416,9 @@ export default function MissionDetail() {
   // }
 
 
-  const { data: MissionDetail } = useQuery(["missions"],  () => {
-    missionUserData(missionId, userId);
-  });
-
-  const missionId = router.query.id;
-
-
   const [ModalAuth, setModalAuth] = useState(false);
   const [Auth, setAuth] = useState(false);
   const [unAuth, setUnAuth] = useState(false);
-  
 
   return (
     <>
@@ -473,9 +497,11 @@ export default function MissionDetail() {
           <Block>
             <Content>
               <LocalIcon />
-              <ContentText>
-                {MissionDetail?.sidoCode} {MissionDetail?.gugunCode}
+                {region ?               <ContentText>
+                {region}
               </ContentText>
+              : <></>}
+
             </Content>
           </Block>
 
@@ -489,23 +515,20 @@ export default function MissionDetail() {
           <Block>
             <Content>
               <MissionExplanation>
-                안녕하세요 임시입니다
-                <br />
-                여기에 api 추가되면 넣어야 해요!
-                <br></br>
-                프로젝트 화이티이이잉!
+                {MissionDetail.content}
               </MissionExplanation>
             </Content>
           </Block>
 
           {/* 로그인 시 웹 뷰에서 수정 삭제 버튼 */}
+          {userId == MissionDetail.userId ? 
           <Block>
             <BtnContent>
               <WebBtn
                 dColor={"#98C064"}
                 hColor={"#65ACE2"}
                 //임시 라우터
-                onClick={() => router.push("/mission/createmission")}
+                onClick={() => router.push(`${missionId}/modifymission`)}
               >
                 수정
               </WebBtn>
@@ -514,16 +537,42 @@ export default function MissionDetail() {
                 hColor={"#98C064"}
                 dColor={"#65ACE2"}
                 //임시 라우터
-                onClick={() => router.push("/mission/createmission")}
+                onClick={() => {
+                  if(confirm("삭제하시겠습니까?") === true){
+                    deleteMission(missionId, userId).then((res) => router.push("/mission"))
+                  }
+                }}
               >
                 삭제
               </WebBtn>
             </BtnContent>
           </Block>
+        : 
+        <></>}
         </DetailWrapper>
 
         {/* 모바일뷰 좋아요 참여하기 참여중 표시 */}
-        <MobileLikeAndJoin />
+        <LikeAndJoinWrapper>
+        <LikeDiv>
+          <LikeBtn onClick={() => setLike(!like)}>
+            {MissionDetail?.likeCheck === false ? <BorderHeart onClick={
+              ()=>{postMissionLike(MissionDetail.missionId, userId)}
+            } /> : <FullHeart onClick={
+              ()=>{postMissionLike(MissionDetail.missionId, userId)}
+            }/>}
+          </LikeBtn>
+        </LikeDiv>
+        <JoinDiv onClick={() => setJoin(!join)}>
+          {MissionDetail.joinCheck ? (
+            <JoinFullBtn hColor={"#98C064"} dColor={"#65ACE2"}
+            onClick={()=>{alert("이미 참여 중인 임무입니다!")}}>
+              참여 중인 임무입니다
+            </JoinFullBtn>
+          ) : (
+            <JoinBorderBtn dColor={"#65ACE2"} onClick={()=>{postJoin(MissionDetail.missionId, userId)}}>임무에 참여하기</JoinBorderBtn>
+          )}
+        </JoinDiv>
+      </LikeAndJoinWrapper>
       </HiDetail>
     </>
   );

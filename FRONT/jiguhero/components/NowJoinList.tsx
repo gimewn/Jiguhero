@@ -4,9 +4,9 @@ import { useRouter } from 'next/router';
 
 
 const List = styled('div')`
-  border: 1px solid #98C064;
+ border: 1px solid #98C064;
   border-radius: 15px;
-  height: 150px;
+  height: 180px;
   display:flex;
   /* flex-direction: row;
   align-items: center;
@@ -33,21 +33,34 @@ const ListImg = styled('div') <{ image: string }>`
   background-image: url('${(props) => props.image}');
   background-size: cover;
   background-position: center;
-  width: 150px;
-  height: 150px;
+  width: 200px;
+  @media only screen and (max-width: 650px) {
+      width:150px;
+  }
+  @media only screen and (max-width: 450px) {
+      width:150px;
+  }
+  height: 180px;
   border: 1px solid none;
   float: left;
 `
 const ListContent = styled('div')`
-  width: 200px;
-  height: 150px;
+min-width:200px;
+  width:300px;
+  position:relative;
+  @media only screen and (max-width: 650px) {
+      width:200px;
+  }
+  @media only screen and (max-width: 450px) {
+      width:150px;
+  }
+  height: 180px;
   border: 1px solid none;
   /* float: left; */
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  
 `
 
 const TextWrapper = styled('div')`
