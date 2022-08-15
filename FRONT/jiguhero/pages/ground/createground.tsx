@@ -2,7 +2,7 @@ import {ButtonFull, ParentsDiv} from 'styles/styled';
 import BackTitle from 'components/back';
 import { H2 } from './index';
 // import Picker from 'emoji-picker-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import dynamic from 'next/dynamic';
 import postGround from 'pages/api/ground/postGround';
@@ -62,6 +62,13 @@ export default function MakeGround(){
     const [groundEmoji, setgroundEmoji] = useState<string>();
     const [groundTitle, setGroundTitle] = useState<string>();
     const [groundContent, setGroundContent] = useState<string>();
+    const [userId, setUserId] = useState();
+  
+    useEffect(()=>{
+        const usersId = JSON.parse(localStorage.getItem('recoil-persist')).userId
+        setUserId(usersId)
+    }, [])
+
     const onEmojiClick = (event, emojiObject) => {
         setgroundEmoji(emojiObject.emoji);
     }
@@ -87,10 +94,12 @@ export default function MakeGround(){
                 <Picker onEmojiClick={onEmojiClick} pickerStyle={{width:'100%', margin:'10px 0'}} />
                 </PickerDiv>
                 <PostButton dColor="#65ace2" hColor='#98c064' onClick={()=>{
-                    postGround(1, groundEmoji, groundTitle, groundContent).then((res) => {
-                        router.push(`myground`)
+                    if(userId){
+                        postGround(userId, groundEmoji, groundTitle, groundContent).then((res) => {
+                            router.push(`myground`)
+                        }
+                        )
                     }
-                    )
                 }}> 활동구역 등록 </PostButton>
             </ContentDiv>
         </ParentsDiv>

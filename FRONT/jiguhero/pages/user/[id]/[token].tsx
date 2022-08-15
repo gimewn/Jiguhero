@@ -9,7 +9,7 @@ import { useRecoilState } from "recoil";
 
 import signinUserImg from "pages/api/user/signinImg";
 import sameNickname from "pages/api/user/sameNickname";
-import signinUserNickname from "../api/user/signinUserNickname";
+import signinUserNickname from "pages/api/user/signinUserNickname";
 import { UserName } from "states/user";
 // import ConfirmValidationInput from "../components/validationInput";
 // import regex from "../components/regex";

@@ -1,11 +1,8 @@
 
 import { BASE_URL, Token } from 'pages/api/fetch';
 
-
-export default async function getMission(cate){
-
-   
-    const response = await fetch(`${BASE_URL}mission?array=${cate.queryKey[1].cate}`, {
+export default async function getMission(ctx){
+    const response = await fetch(`${BASE_URL}mission?array=title}`, {
         method:'GET',
         headers:{
             Authorization : Token

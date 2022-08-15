@@ -71,6 +71,13 @@ export default function EditGround(){
     const [placeList, setPlaceList] = useState([]);
     const [show, setShow] = useState<Boolean>(false);
     const [groundId, setGroundId] = useState();
+    const [userId, setUserId] = useState();
+  
+    useEffect(()=>{
+        const usersId = JSON.parse(localStorage.getItem('recoil-persist')).userId
+        setUserId(usersId)
+    }, [])
+    
     const onEmojiClick = (event, emojiObject) => {
         setGroundEmoji(emojiObject.emoji);
         console.log(groundEmoji);
@@ -148,8 +155,8 @@ export default function EditGround(){
                         <PlaceDiv key={i}>
                             <DeleteBtn 
                             onClick={()=>{
-                                if(confirm("삭제하시겠습니까?") == true){
-                                    deletePlace(groundId, item.placeId, 1).then((res) => {
+                                if(confirm("삭제하시겠습니까?") == true && userId){
+                                    deletePlace(groundId, item.placeId, userId).then((res) => {
                                         if(router.query.id && groundId){
                                             getPlaceList(groundId).then(
                                                 (res) => {setPlaceList(res)}
@@ -166,10 +173,12 @@ export default function EditGround(){
                         </PlaceDiv>
                 </GridEdit>
                 <PostButton dColor="#65ace2" hColor='#98c064' onClick={()=>{
-                    putGround(1, groundId, groundEmoji, groundTitle, groundContent).then((res)=>{
-                        router.push(`/ground/myground`)
+                    if (userId){
+                        putGround(userId, groundId, groundEmoji, groundTitle, groundContent).then((res)=>{
+                            router.push(`/ground/myground`)
+                        }
+                        )
                     }
-                    )
                 }}> 수정하기 </PostButton>
             </ContentDiv>
         </ParentsDiv>

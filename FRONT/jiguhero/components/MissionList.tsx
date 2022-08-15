@@ -22,8 +22,7 @@ const List = styled("div")`
 
 `
 const ListImg = styled("div") <{ image: string }>`
-
-  background-image: url('${(props) => props.image}');
+  background: url(${(props) => props.image});
   background-size: cover;
   background-position: center;
   width: 150px;

@@ -10,6 +10,8 @@ import React, { useState, useEffect } from 'react';
 import ProgressBar from "@ramonak/react-progress-bar";
 import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
+import getDetail from "pages/api/mission/getDetail";
+import getDong from "pages/api/ecomarket/getDong";
 
 const Div = styled('div')`
     padding: 18px;
@@ -40,10 +42,8 @@ const List = styled('div')`
       width:800px;
   } */
 `
-/* const ListImg = styled('div') <{ image: string }>` * /
-/* background-image: url('${(props) => props.image}'); */
-const ListImg = styled('div')`
-  background-image: url('https://cdn.pixabay.com/photo/2019/08/19/07/45/corgi-4415649_960_720.jpg');
+const ListImg = styled('div')<{ image: string }>`
+  background-image: url(${(props) => props.image});
   background-size: cover;
   background-position: center;
   width: 150px;
@@ -96,6 +96,7 @@ const ListWrapper = styled('div')`
   display: flex;
   justify-content:center;
   align-items: center;
+  width:100%;
 `
 const ButtonWrapper = styled('div')`
   display: flex;
@@ -108,6 +109,7 @@ const AchieveFullBtn = styled(ButtonFull)`
   font-size: medium;
   border-radius: 10px;
   padding: 3px 10px;
+  margin: 10px;
   /* text-shadow: -1px 0px black, 0px 1px black, 1px 0px black, 0px -1px black; */
   :hover{
     cursor: pointer;
@@ -203,6 +205,19 @@ const NoHeroText2 = styled('a')`
 const BottomDiv = styled('div')`
   margin-bottom: 70px;
 `
+
+interface MissionProps {
+  entryPoint: number;
+  title: string;
+  startDate: number;
+  endDate: number;
+  sidoCode: string;
+  nowPerson: number;
+  maxPerson: number;
+  repImageURL: string;
+  missionId: number;
+}
+
 
 // interface MissionProps {
 //   entryPoint: number;
@@ -315,34 +330,28 @@ const itemData = [
     title: 'Bike',
   },
 ];
-function MyMobileView() {
 
-}
-//나의 인증샷 (mui 사용함!)
-function MyCertificationLists() {
-  return (
-    <>
-      <CertifyFeed>
-        <ImageList sx={{ width: 350 }} cols={3} rowHeight={130}>
-          {itemData.map((item) => (
-            <ImageListItem key={item.img}>
-              <img
-                src={`${item.img}?w=164&h=164&fit=crop&auto=format`}
-                srcSet={`${item.img}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
-                alt={item.title}
-                loading="lazy"
-              />
-            </ImageListItem>
-          ))}
-        </ImageList>
-      </CertifyFeed>
-    </>
-  );
-}
-
-//달성률과 나의 인증샷 보여주는 탭
-function Achievement() {
+export default function MyMissionFeed() {
+  const router = useRouter();
+  const tab = useRecoilValue(missionTabpage);
+  const setTab = useSetRecoilState(missionTabpage);
   const [Modal, setModal] = useState(false)
+  const [missionItem, setMissionItem] = useState();
+  const [region, setRegion] = useState();
+  useEffect(()=>{
+    if(router.query.id){
+      getDetail(router.query.id, 1).then((res)=>{setMissionItem(res)
+        console.log(res)
+      getDong(res.gugunCode).then((item)=>{
+        const result = item.filter((dong) => {
+          if(dong.dongCode === res.dongCode){
+            setRegion(dong.dongName)
+              return dong
+          }})
+      })
+      })
+    }
+  }, [])
   useEffect(() => {
     if (Modal === false) {
       console.log('hihi', Modal)
@@ -361,10 +370,61 @@ function Achievement() {
     }
   }, [Modal]);
 
+  //달성률 버튼 클릭하면 연두색 인증샷 버튼 클릭하면 하얀색!
+  const [tabColor, setTabColor] = useState(true)
   return (
-    <>
+    <ParentsDiv>
+      {/* 헤더 */}
+      <Head>
+        <title>나의 임무 | 지구-방위대</title>
+      </Head>
+      {/* 모바일 뷰에서 뒤로가기 버튼! */}
+      <Backcomponents name='나의 임무'></Backcomponents>
 
-      {/* 달성률 바 */}
+      <Div></Div>
+      {/* 참여중인 미션 보여줌! */}
+      <ListWrapper>
+      <List onClick={() => router.push(`/mission/${router.query.id}`)}>
+        {/* <ListImg image={repImageURL} /> */}
+            {missionItem ? <>
+        <ListImg image={missionItem.repImageURL} />
+        <ListContent>
+          <div>
+            <TextWrapper>
+              <TitleName>{missionItem.title}</TitleName>
+            </TextWrapper>
+            {region ? <>
+            <TextWrapper>
+              <Name>{region}</Name>
+            </TextWrapper>
+            </> : <></>}
+            <TextWrapper>
+              <Date>{missionItem.startDate}~{missionItem.endDate}</Date>
+            </TextWrapper>
+            <TextWrapper>
+              <JoinPeople>{missionItem.nowPerson} / {missionItem.maxPerson}명</JoinPeople>
+            </TextWrapper>
+          </div>
+          <PointBtn>+{missionItem.entryPoint}</PointBtn>
+        </ListContent>
+            </> : <></>}
+      </List>
+      </ListWrapper>
+
+      {/* 달성률 인증샷 탭 */}
+       {/* 탭 전환을 위한 버튼들 */}
+       <ButtonWrapper>
+        {tabColor ?
+          <AchieveFullBtn dColor={'#98C064'} hColor={'98C064'} onClick={() => { setTab(true), setTabColor(!tabColor) }}>달성률</AchieveFullBtn>
+          : <AchieveBorderBtn dColor={'#65ACE2'} onClick={() => { setTab(true), setTabColor(!tabColor) }}>달성률</AchieveBorderBtn>
+        }
+        {tabColor ?
+          <CertifyBorderBtn dColor={' #65ACE2'} onClick={() => { setTab(false), setTabColor(!tabColor) }}>인증샷</CertifyBorderBtn>
+          : <CertifyFullBtn dColor={'#98C064'} hColor={'98C064'} onClick={() => { setTab(false), setTabColor(!tabColor) }}>인증샷</CertifyFullBtn>
+        }
+      </ButtonWrapper >
+      {tab ? 
+      <>
       <AchieveWrapper>
         <Text>달성률</Text>
         <Text2>~일만 더 인증하면 성공이에요!</Text2>
@@ -375,23 +435,12 @@ function Achievement() {
       </ProgressWrapper>
 
 
-      {/* 내 인증샷 모아보기 */}
-
       <CertifyWrapper>
         <Text>나의 인증샷</Text>
         <CertifyGoBtn hColor={'#65ACE2'} dColor={'#98C064'} onClick={() => setModal(true)}>인증하기</CertifyGoBtn>
         <MissionModal show={Modal} setShow={setModal} />
       </CertifyWrapper>
-      <MyCertificationLists />
-    </>
-  )
-}
-
-
-//대원들의 인증샷 (mui 사용함!)
-function HeroCertificationLists() {
-  return (
-    <>
+      <>
       <CertifyFeed>
         <ImageList sx={{ width: 350 }} cols={3} rowHeight={130}>
           {itemData.map((item) => (
@@ -407,49 +456,36 @@ function HeroCertificationLists() {
         </ImageList>
       </CertifyFeed>
     </>
-  )
-}
-//다른 사람들의 인증샷을 보여주는 탭
-function Certification() {
-  return (
-    <>
-      <HeroTextWrapper>
-        <Text3>📸대원들의 인증샷</Text3>
-      </HeroTextWrapper>
 
-      {/* 인증샷 없으면 */}
-      <HeroTextWrapper>
-        <NoHeroText1>앗!</NoHeroText1>
-        <NoHeroText2>아직 인증한 대원이 없어요😥</NoHeroText2>
-      </HeroTextWrapper>
-      {/* 인증샷 있으면 */}
-      <HeroCertificationLists />
-
-    </>
-  )
-}
-
-export default function MyMissionFeed() {
-  return (
-    <>
-      {/* 헤더 */}
-      <Head>
-        <title>나의 임무 | 지구-방위대</title>
-      </Head>
-      {/* 모바일 뷰에서 뒤로가기 버튼! */}
-      <Backcomponents name='나의 임무'></Backcomponents>
-
-
-
-      <Div></Div>
-      {/* 참여중인 미션 보여줌! */}
-      <ListWrapper>
-        <NowMission />
-      </ListWrapper>
-
-      {/* 달성률 인증샷 탭 */}
-      <ButtonGroup />
-      <BottomDiv></BottomDiv>
-    </>
+      </>
+       : 
+       <>
+       <HeroTextWrapper>
+         <Text3>📸대원들의 인증샷</Text3>
+       </HeroTextWrapper>
+ 
+       {/* 인증샷 없으면 */}
+       <HeroTextWrapper>
+         <NoHeroText1>앗!</NoHeroText1>
+         <NoHeroText2>아직 인증한 대원이 없어요😥</NoHeroText2>
+       </HeroTextWrapper>
+       {/* 인증샷 있으면 */}
+       <CertifyFeed>
+         <ImageList sx={{ width: 350 }} cols={3} rowHeight={130}>
+           {itemData.map((item) => (
+             <ImageListItem key={item.img}>
+               <img
+                 src={`${item.img}?w=164&h=164&fit=crop&auto=format`}
+                 srcSet={`${item.img}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
+                 alt={item.title}
+                 loading="lazy"
+               />
+             </ImageListItem>
+           ))}
+         </ImageList>
+       </CertifyFeed>
+     </>
+       }
+</ParentsDiv>
   )
 }

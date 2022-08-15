@@ -9,46 +9,46 @@ import Pagination from 'components/pagination';
 
 
 
-
-
-
 export default function MissionLists() {
 
-  const { data: MISSION } = useQuery(['missions'], getMission)
-  console.log(MISSION)
+  // const { data: MISSION } = useQuery(['missions'], ()=>{getMission('title')})
+  // console.log(MISSION)
+  const [MISSION, setMission] = useState();
   const [page, setPage] = useState(1);
   const handlePageChange = (page) => {
     setPage(page)
-    console.log(page)
   }
   const count: number = MISSION?.length
   useEffect(() => {
     console.log(count)
   }, [count])
+  useEffect(()=>{
+    getMission('title').then((res) => console.log(res))
+  }, [])
 
   const AllMissionList = count !== undefined && (
     <>
       {MISSION?.map((item, index) => (
-        <MissionList key={index} {...item} />))}
-      <Pagination page={page} totalcount={count} setPage={handlePageChange} />
+        <MissionList key={index} {...item} onClick={console.log(typeof item.repImageURL)} />))}
+      <Pagination page={page} count={count} setPage={handlePageChange} />
     </>
   )
   return AllMissionList
 }
 
 
-export async function getServerSideProps(context) {
-  const missionList = new QueryClient()
-  const session = await getSession(context);
-  await missionList.prefetchQuery(['missions'], () => { getMission(context) })
+// export async function getServerSideProps(context) {
+//   const missionList = new QueryClient()
+//   const session = await getSession(context);
+//   await missionList.prefetchQuery(['missions'], () => { getMission(context) })
 
-  return {
-    props: {
-      data: {
-        session,
-        dehydratedState: dehydrate(missionList)
-      },
-    },
-  }
-}
+//   return {
+//     props: {
+//       data: {
+//         session,
+//         dehydratedState: dehydrate(missionList)
+//       },
+//     },
+//   }
+// }
 

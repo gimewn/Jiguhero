@@ -13,13 +13,11 @@ export async function middleware( req: NextRequest, ev: NextFetchEvent) {
 	// // const cookie = req.cookies[]
 	// if(userId){
 
-
 	// 	return NextResponse.rewrite(req.nextUrl)
 	// }else{
 	// 	return NextResponse.redirect('/login')
 	// }
 	return NextResponse.rewrite(req.nextUrl)
-	
 }
 
 
