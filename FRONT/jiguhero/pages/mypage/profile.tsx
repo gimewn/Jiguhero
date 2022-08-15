@@ -15,46 +15,12 @@ import updateNickname from "pages/api/user/updateNickname";
 import deleteNickname from "pages/api/user/deleteAccount";
 import IconButton from "@mui/material/IconButton";
 import PhotoCamera from "@mui/icons-material/PhotoCamera";
+import { ParentsDiv } from "styles/styled";
+import Backcomponents from "components/back";
+import Head from "next/head";
+import UpdateUserImg from "pages/api/user/UpdateUserImg";
+import { useRouter } from "next/router";
 
-const BgImg = styled("div")`
-  img {
-    display: flex;
-    align-items: center;
-    left: 3.5px;
-    top: 3.5px;
-    justify-content: center;
-    position: relative;
-    width: 56px;
-    height: 56px;
-    border-radius: 50%;
-  }
-`;
-
-const EntireContainer = styled("div")`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  max-width: sm;
-`;
-
-const UploadButton = styled("div")<{ dColor: string }>`
-  border: ${(props) => props.dColor} solid 1px;
-  background-color: white;
-  border-radius: 15px;
-  padding: 10px;
-  color: ${(props) => props.dColor};
-  :hover,
-  .active {
-    color: white;
-    background-color: ${(props) => props.dColor};
-    cursor: pointer;
-  }
-`;
-
-const Filename = styled("input")`
-  display: none;
-`;
 const CameraBtn = styled("div")`
   display: flex;
   justify-content: center;
@@ -81,8 +47,83 @@ const CameraBox = styled("div")`
     border-radius: 100px;
   }
 `;
-const PfForm = styled("form")``;
+const PfDiv = styled("div")`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+`;
+const NicknameB = styled(ButtonFull)`
+  font-size: small;
+  border-radius: 10px;
+  padding: 3px 10px;
+  margin-left: 10px;
+`;
+const ResignB = styled(NicknameB)`
+  @media only screen and (max-width: 650px) {
+    margin-top: 10px;
+    margin-left: 0px;
+  }
+`;
 
+const H2 = styled("h2")`
+  @media only screen and (max-width: 650px) {
+    display: none;
+  }
+`;
+const NewsTop = styled("div")`
+  margin-left: 35px;
+  @media only screen and (max-width: 650px) {
+    margin-top: 20px;
+  }
+`;
+
+const NickNmaeInput = styled("input")`
+  width: 50%;
+  border-radius: 10px;
+  border: 1px solid #65ace2;
+  padding: 3px;
+`;
+
+const ErrorMessage = styled("a")`
+  font-size: x-small;
+  font-weight: bold;
+  color: coral;
+  @media only screen and (min-width: 650px) {
+    font-size: small;
+  }
+`;
+
+const SuccessMessage = styled("a")`
+  font-size: x-small;
+  font-weight: bold;
+  color: green;
+  @media only screen and (min-width: 650px) {
+    font-size: small;
+  }
+`;
+
+const Div = styled("div")`
+  display: flex;
+  justify-content: center;
+  margin-right: 25%;
+  @media only screen and (min-width: 650px) {
+    margin-right: 10%;
+  }
+`;
+
+const ResignMessage = styled("p")`
+  margin: 35px;
+  @media only screen and (max-width: 650px) {
+    font-size: small;
+  }
+`;
+
+const ResignDiv = styled("div")`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
 interface Update {
   username: string;
 }
@@ -90,37 +131,58 @@ interface Update {
 export default function Profile({ data }) {
   const [userImg, setUserImg] = useState<File>(); // 이미지 파일
   const [preview, setPreview] = useState<string>(); // 이미지 미리보기 사진
-  const {
-    register,
-    watch,
-    handleSubmit,
-    formState: { errors },
-    setValue,
-  } = useForm<Update>({
-    mode: "onBlur",
-  });
+  const [nickInput, setNickInput] = useState('');
+  const [errormsg, setErrormsg] = useState<string>();
+  const [successmsg, setSuccessmsg] = useState<string>();
+  const [userId, setUserId] = useState();
+  const [errorImg, setErrorImg] = useState<string>();
+  const [successImg, setSuccessImg] = useState<string>();
+  const router = useRouter()
+
+  useEffect(() => {
+    const usersId = JSON.parse(localStorage.getItem("recoil-persist")).userId;
+    setUserId(usersId);
+  }, []);
+
   const changeHandler = (e) => {
+    setErrorImg('')
+    setSuccessmsg('')
     const file = e.target.files[0];
     if (file && file.type.substr(0, 5) === "image") {
       setUserImg(e.target.files[0]);
+      UpdateUserImg(userImg, userId);
+      setSuccessImg('이미지가 성공적으로 변경되었습니다')
+
     } else {
       setUserImg(null);
+      setErrorImg('이미지가 잘못되었습니다')
     }
-  };
-  const onValid = (data: Update) => {
-    console.log(data);
-    // updateNickname(data.username, data.session.user.userId)
-  };
-  const onInvalid = (errors: FieldErrors) => {
-    console.log("실패");
   };
 
   useEffect(() => {
-    // setPfimg(data.session.user.image);
-  }, []);
-
+    if (userImg) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreview(reader.result as string);
+      };
+      reader.readAsDataURL(userImg);
+    } else {
+      setPreview(null);
+    }
+  }, [userImg]);
   return (
-    <EntireContainer>
+    <ParentsDiv>
+      {/* 헤더 */}
+      <Head>
+        <title>내 정보 변경 | 지구-방위대</title>
+      </Head>
+      {/* 방위대 소식 back버튼 */}
+      <Backcomponents name="내 정보 변경"></Backcomponents>
+
+      <NewsTop>
+        <H2>🦸🏻 내 정보 변경</H2>
+      </NewsTop>
+
       {/*  사진  */}
       <CameraBtn>
         <IconButton aria-label="upload picture" component="label">
@@ -141,63 +203,72 @@ export default function Profile({ data }) {
             </CameraBox>
           )}
         </IconButton>
+          {/* {errorImg ? <ErrorMessage>{errorImg}</ErrorMessage>: null }
+          {successImg ? <SuccessMessage>{successImg}</SuccessMessage>: null} */}
       </CameraBtn>
-      <label htmlFor="image">
-        {/* 프로필 사진 변경 버튼 */}
-        <UploadButton dColor={"#65ACE2"}>프로필 사진 변경</UploadButton>
-      </label>
-      {/* 사진 업로드 인풋 */}
-      <Filename
-        type="file"
-        accept="image/*"
-        name="file"
-        id="image"
-        onChange={changeHandler}
-      />
 
-      <PfForm onSubmit={handleSubmit(onValid, onInvalid)}>
-        {/* 닉네임 작성 인풋 */}
-        <input
-          {...register("username", {
-            required: "닉네임을 작성해주세요",
-            maxLength: {
-              message: "최대 15자 이내로 작성해주세요.",
-              value: 15,
-            },
-            validate: {
-              Nickname: (value) => {
-                return sameNickname(value);
-              },
-            },
-          })}
+      {/* 닉네임 작성 인풋 */}
+      <PfDiv>
+        <NickNmaeInput
           type="text"
-          placeholder={data}
+          value={nickInput}
+          onChange={(e) => {
+            e.preventDefault();
+            setNickInput(e.target.value);
+          }}
         />
         {/* 닉네임 변경 버튼 */}
-        <ButtonFull dColor={"#98C064"} hColor={"#65ACE2"} type="submit">
+        <NicknameB
+          dColor={"#98C064"}
+          hColor={"#65ACE2"}
+          type="button"
+          onClick={(e) => {
+            setSuccessmsg("");
+            setErrormsg("");
+            if (nickInput.length > 15) {
+              setErrormsg("닉네임이 15자를 넘을 수 없습니다");
+            } else if (nickInput === "") {
+              setErrormsg("닉네임을 작성해주세요");
+            } else {
+              updateNickname(nickInput,userId)
+              setSuccessmsg("성공적으로 변경되었습니다");
+            }
+          }}
+          >
           닉네임 변경
-        </ButtonFull>
-      </PfForm>
+        </NicknameB>
+      </PfDiv>
+      <Div>
+          {errormsg ? <ErrorMessage>{errormsg}</ErrorMessage> : null}
+          {successmsg ? <SuccessMessage>{successmsg}</SuccessMessage> : null}
+      </Div>
       {/* 닉네임 유효성 검사 오류 시 메세지 */}
-      <p>{errors.username?.message}</p>
       {/* 나머지 메세지 */}
       {/* <h4>{data.session.user.name}님, 저희와 함께 지구를 지켜주세요! </h4> */}
-      <p>
-        친환경, 혼자 실천하기 힘들지 않으셨나요? 다른 대원들과 함께라면 친환경
-        실천이 훨씬 더 재밌고 쉬워질 거예요! 그래도 정말 떠나셔야 한다면...🥲
-      </p>
-      {/* 회원탈퇴 버튼 */}
-      <ButtonFull
-        dColor={"#FF4F4F"}
-        hColor={"#FF4F4F"}
-        onClick={(event) => {
-          event.preventDefault();
-          deleteNickname(data.session.user.userId);
-        }}
-      >
-        방위대 탈퇴하기
-      </ButtonFull>
-    </EntireContainer>
+      <ResignDiv>
+        <ResignMessage>
+          친환경, 혼자 실천하기 힘들지 않으셨나요?
+          <br />
+          다른 대원들과 함께라면 친환경 실천이 훨씬 더 재밌고 쉬워질 거예요!
+          <br />
+          그래도 정말 떠나셔야 한다면...🥲
+          {/* 회원탈퇴 버튼 */}
+          <ResignB
+            dColor={"#FF4F4F"}
+            hColor={"#FF4F4F"}
+            onClick={(event) => {
+              event.preventDefault();
+              deleteNickname(userId);
+              localStorage.removeItem('recoil-persist')
+              localStorage.removeItem('access-token')
+              router.push('/')
+            }}
+          >
+            방위대 탈퇴하기
+          </ResignB>
+        </ResignMessage>
+      </ResignDiv>
+    </ParentsDiv>
   );
 }
 

@@ -11,6 +11,6 @@ export default async function postGround(groundId, userId){
             "Content-Type": "application/json"
         }
     });
-    const data = await response.json()
+    const data = await response
     return data
 }

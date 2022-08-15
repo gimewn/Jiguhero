@@ -378,10 +378,10 @@ export default function MissionDetail() {
 
 
   // const [use, setUserId] = useRecoilState(userId)
-  if (typeof window === "undefined"){
-    const userId = JSON.parse(localStorage.getItem('recoil-persist')).userId
+  // if (typeof window === "undefined"){
+  //   const userId = JSON.parse(localStorage.getItem('recoil-persist')).userId
 
-  }
+  // }
 
 
   const { data: MissionDetail } = useQuery(["missions"],  () => {

@@ -10,7 +10,7 @@ import { theme } from "components/theme";
 import { blue } from "@mui/material/colors";
 import { Pagination } from "@mui/material";
 import { userInfo } from "os";
-import { RecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { RecoilState, useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { missionPage, playedAreaPage, tabpage } from "states/mypage";
 import {
   dehydrate,
@@ -26,6 +26,7 @@ import missionUserData from "pages/api/mission/[id]";
 import groundUserData from "pages/api/ground/[id]";
 import userGround from "pages/api/user/userGround";
 import userMission from "pages/api/user/userMission";
+import { UserId } from "states/user";
 
 const Profile = styled("div")<{ color1: string }>`
   display: flex;
@@ -150,22 +151,24 @@ interface Idata {
 
 const Mypage = ({ data }) => {
   const router = useRouter();
+  const [recoiluser, setRecoiluser ] = useRecoilState(UserId)
   const [userId, setUserId] = useState();
   const [gradeName, setGradeName] = useState("");
   const [color1, setColor1] = useState("");
   const [color2, setColor2] = useState("");
   const [userIn, setUserIn] = useState<Object>();
-  const [userGroundData, setUserGroundData] = useState();
-  const [userMissionData, setUserMissionData] = useState();
-  const [grade, setGrade] = useState(0)
+  const [userGroundData, setUserGroundData] = useState([]);
+  const [userMissionData, setUserMissionData] = useState([]);
+  const [grade, setGrade] = useState(0);
+
   useEffect(() => {
     const usersId = JSON.parse(localStorage.getItem("recoil-persist")).userId;
     setUserId(usersId);
     userData(usersId).then((data) => setUserIn(data));
     userGround(usersId).then((data) => setUserGroundData(data));
     userMission(usersId).then((data) => setUserMissionData(data));
-    setGrade(userIn?.grade)
-
+    setGrade(userIn?.grade);
+  
   }, []);
 
   // 리액트쿼리 정보 받기
@@ -229,9 +232,9 @@ const Mypage = ({ data }) => {
 
   // 임무
   function Mission() {
-    const MissionList = ["하나", "둘", "셋", "넷", "다섯", "여섯"];
-    const remainder = MissionList.length % 5;
-    const lenMission = `${MissionList.length / 5}`;
+    
+    const remainder = userMissionData?.length % 5;
+    const lenMission = `${userMissionData?.length / 5}`;
     const quot = parseInt(lenMission);
     const page = useRecoilValue(missionPage);
     const setPage = useSetRecoilState(missionPage);
@@ -242,7 +245,7 @@ const Mypage = ({ data }) => {
     return (
       <>
         {userMissionData?.slice((page - 1) * 5, page * 5).map((num) => (
-          <Link href="/" key={num}>
+          <Link href={`/`} key={num}>
             <a>
               <Mis>{num}</Mis>
             </a>
@@ -259,27 +262,20 @@ const Mypage = ({ data }) => {
 
   // 활동구역
   function PlayingArea() {
-    const PlayedArea = [
-      { icon: "❤️", title: "내가 애정하는 친환경 카페" },
-      { icon: "🏝", title: "제주도의 제로웨이스트 샵" },
-      { icon: "🍽", title: "광주광역시의 비건식당" },
-      { icon: "🍡", title: "재활용품 사용가게" },
-      { icon: "🍘", title: "친환경 생활용품점" },
-      { icon: "🍨", title: "유기농 디저트 맛집" },
-    ];
-    const remainder = PlayedArea.length % 5;
-    const lenPlay = `${PlayedArea.length / 5}`;
+    
+    const remainder = userGroundData?.length % 5;
+    const lenPlay = `${userGroundData?.length / 5}`;
     const quot = parseInt(lenPlay);
     const page = useRecoilValue(playedAreaPage);
     const setPage = useSetRecoilState(playedAreaPage);
     const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
       setPage(value);
     };
-
+    console.log(userGroundData)
     return (
       <>
         {userGroundData?.slice((page - 1) * 5, page * 5).map((dic) => (
-          <Link href="/" key={dic.title}>
+          <Link href={`/ground/${dic.groundId}`} key={dic.title}>
             <a>
               <Play key={dic.title}>
                 <p>{dic.icon}</p>
@@ -315,7 +311,6 @@ const Mypage = ({ data }) => {
         <h3>현재 보유 포인트: {userIn?.point}</h3>
         <p>👀내가 좋아요한 활동구역 & 임무</p>
       </TextGroup>
-
       <ButtonGroup>
         {tab ? (
           <ButtonFull
@@ -360,14 +355,19 @@ const Mypage = ({ data }) => {
         )}
       </ButtonGroup>
       <Box>{tab ? <PlayingArea /> : <Mission />}</Box>
-      <ButtonFull onClick={(e) => {
-        e.preventDefault()
-        localStorage.removeItem('access-token')
-        localStorage.removeItem("recoil-persist")
-        router.push('/')
-      }} dColor={"#FF4848"} hColor={"#FF4848"}>
+      <ButtonFull
+        onClick={(e) => {
+          e.preventDefault();
+          localStorage.removeItem("access-token");
+          localStorage.removeItem("recoil-persist");
+          router.push("/");
+        }}
+        dColor={"#FF4848"}
+        hColor={"#FF4848"}
+      >
         로그아웃
-      </ButtonFull>    </EntireContainer>
+      </ButtonFull>{" "}
+    </EntireContainer>
   );
 };
 

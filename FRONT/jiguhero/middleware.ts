@@ -3,23 +3,25 @@ import type { NextRequest } from 'next/server'
 
 import withAuth from "next-auth/middleware"
 import { getToken } from "next-auth/jwt"
-import { useRecoilState } from "recoil"
+import { useRecoilState, useRecoilValue } from "recoil"
 import { UserId, UserName } from "states/user"
+import { useEffect, useState } from "react"
 
 export { default } from "next-auth/middleware"
 
 export async function middleware( req: NextRequest, ev: NextFetchEvent) {
-	// const [userId,setUserId]= useRecoilState(UserId)
-	// // const cookie = req.cookies[]
-	// if(userId){
+	
 
+
+	// const cookie = req.cookies["refreshToken"]
+
+	// if(userId){
 
 	// 	return NextResponse.rewrite(req.nextUrl)
 	// }else{
 	// 	return NextResponse.redirect('/login')
 	// }
 	return NextResponse.rewrite(req.nextUrl)
-	
 }
 
 

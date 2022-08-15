@@ -39,19 +39,20 @@ export default function Home() {
   const router = useRouter();
   const token = router?.query.token;
   const register = router?.query.REGISTER;
-  const [userName, setUserName] = useRecoilState(UserName)
+
   const [userId, setUserId] = useRecoilState(UserId)
   console.log(router.query)
 
   if (register === "REQUIRED") {
     router.push(`/user/${router.query.userid}/${token}`);
   }
+
   if(register === "DONE"){
     localStorage.setItem("access-token",JSON.stringify(token));
         setUserId(router.query.userid.toString())
   }
 
-  
+
   // useEffect(() => {
   //   if (token) {
   //     if (register !== "REQUIRED"){
@@ -61,6 +62,7 @@ export default function Home() {
   //   }
   //   }, []);
  
+
   return (
     <ParentsDiv>
       <Block>

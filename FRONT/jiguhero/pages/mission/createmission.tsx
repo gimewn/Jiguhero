@@ -282,6 +282,7 @@ export default function Createmission() {
     );
   }
 
+  
   // 임무명
   function MissionName() {
     const [titleName,setTitleName] = useState('')
@@ -289,7 +290,6 @@ export default function Createmission() {
       <div>
         <Text>임무명</Text>
         <BoxInput onChange={(e) => {setTitleName(e.target.value)}} onBlur={(e)=>{
-          e.preventDefault()
           setTitle(titleName)
         }}  />
       </div>

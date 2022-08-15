@@ -21,15 +21,16 @@ const List = styled("div")`
   }
 
 `
-
 const ListImg = styled("div") <{ image: string }>`
-  background-image: url("${(props) => props.image}");
+  background: url(${(props) => props.image});
   background-size: cover;
   background-position: center;
   width: 150px;
   height: 150px;
   border: 1px solid none;
   float: left;
+  img{
+  }
 `;
 const ListContent = styled("div")`
   width: 200px;
@@ -132,7 +133,9 @@ export default function MissionList({
   return (
     <>
       <List onClick={() => router.push(`/mission/${missionId}`)}>
-        <ListImg image={repImageURL} />
+        <ListImg image={repImageURL}>
+          {/* <img src={repImageURL} /> */}
+        </ListImg>
         <ListContent>
           <TextWrapper>
             <TitleName>{title}</TitleName>

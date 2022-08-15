@@ -22,6 +22,6 @@ export default async function postPlace(PlaceProps){
             "url": PlaceProps.place_url
         })
     });
-    const data = await response.json()
+    const data = await response
     return data
 }

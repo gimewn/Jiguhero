@@ -14,7 +14,6 @@ margin-left:20px;
   }
 `
 
-
 const BgImg = styled("div")`
   position: relative;
   width: 60px;

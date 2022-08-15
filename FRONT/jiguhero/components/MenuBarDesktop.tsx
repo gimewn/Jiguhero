@@ -3,6 +3,8 @@ import * as React from 'react';
 import Link from 'next/link';
 import styled from 'styled-components';
 import { useRouter } from 'next/router';
+import { useRecoilValue } from 'recoil';
+import { UserId } from 'states/user';
 
 const Menu = styled('div')`
   display: flex;
@@ -24,7 +26,15 @@ const Menu = styled('div')`
 
 export default function UnderlineLink() {
   const router = useRouter();
-  const token = router?.query.token
+  const [flag, setFlag] = React.useState(0)
+  React.useEffect(()=>{
+    if (localStorage.getItem('access-token')){
+      setFlag(1)
+    }else{
+      setFlag(0)
+    }
+  },[])
+  
   return (
     <Menu id="NavBar">
       <Link href="/" className="navMenu">
@@ -39,11 +49,12 @@ export default function UnderlineLink() {
       <Link href="/mission/nowjoin" className="navMenu">
         <a className={router.pathname == "/mission/nowjoin" ? "active" : ""}>임무 인증</a>
       </Link>
-      <Link href="/mypage" className="navMenu">
-        {token ? (
+      {flag ? <Link href="/mypage" className="navMenu">
           <a className={router.pathname == "/mypage" ? "active" : ""}>마이페이지</a>
-        ) : (<a className={router.pathname == "/login" ? "active" : ""}>로그인</a>)}
-      </Link>
+      </Link> : <Link href="/login" className="navMenu">
+          <a className={router.pathname == "/login" ? "active" : ""}>로그인</a>
+      </Link>}
+      
     </Menu>
   );
 }

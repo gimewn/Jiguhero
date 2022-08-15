@@ -176,6 +176,14 @@ export default function PlaceModal(prop){
     });
     const [showResultList, setShowResultList] = useState(true);
 
+    const [userId, setUserId] = useState();
+  
+    useEffect(()=>{
+        const usersId = JSON.parse(localStorage.getItem('recoil-persist')).userId
+        setUserId(usersId)
+    }, [])
+
+
      const onChange = (e) => {
         setInputText(e.target.value)
       }
@@ -288,10 +296,12 @@ export default function PlaceModal(prop){
                 <ButtonFull dColor='#98c064' hColor='#98c064' style={{marginRight:'10px'}} onClick={()=>{setShowResultList(true)}}>취소</ButtonFull>
                 <ButtonFull dColor='#65ACE2' hColor='#65ACE2' 
                 onClick={()=>{
-                  postPlace(choicePlace).then( (res) => {postGroundPlace(choicePlace['id'], groundId, 1).then((res)=>{
-                    setShowResultList(true)
-                  })}
-                  )
+                  if(userId){
+                    postPlace(choicePlace).then( (res) => {postGroundPlace(choicePlace['id'], groundId, userId).then((res)=>{
+                      setShowResultList(true)
+                    })}
+                    )
+                  }
                 }}
                 >등록</ButtonFull>
               </ButtonDiv>
