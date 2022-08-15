@@ -64,9 +64,9 @@ public class FeedServiceImpl implements FeedService {
             feedDao.insertFeed(feed);
 
             ///////////////////////////////////////////////////// 달성률 계산
-            int days = (int) ChronoUnit.DAYS.between(missionEntity.getStartDate(), LocalDate.now()) + 1;
-            int feeds = feedDao.countByFeed(missionEntity, userEntity);
-            int successRate = (feeds/days)*100;
+            float days = (int) ChronoUnit.DAYS.between(missionEntity.getStartDate(), LocalDate.now()) + 1;
+            float feeds = feedDao.countByFeed(missionEntity, userEntity);
+            int successRate = (int)((feeds/days)*100);
 
             Conn_Mission connMission = missionDao.selectConnMission(missionEntity, userEntity);
             connMission.setSuccessRate(successRate);
@@ -100,9 +100,9 @@ public class FeedServiceImpl implements FeedService {
             feedDao.deleteFeed(feedId);
 
             ///////////////////////////////////////////////////// 달성률 계산
-            int days = (int) ChronoUnit.DAYS.between(missionEntity.getStartDate(), LocalDate.now()) + 1;
-            int feeds = feedDao.countByFeed(missionEntity, userEntity);
-            int successRate = (feeds/days)*100;
+            float days = (int) ChronoUnit.DAYS.between(missionEntity.getStartDate(), LocalDate.now()) + 1;
+            float feeds = feedDao.countByFeed(missionEntity, userEntity);
+            int successRate = (int)((feeds/days)*100);
 
             Conn_Mission connMission = missionDao.selectConnMission(missionEntity, userEntity);
             connMission.setSuccessRate(successRate);
