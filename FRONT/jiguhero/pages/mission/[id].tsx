@@ -375,10 +375,13 @@ function MobileLikeAndJoin() {
 
 export default function MissionDetail() {
   const router = useRouter();
-  const [userId, setUserId] = useRecoilState(UserId);
+  if (typeof window !== 'undefined'){
+    const userId = JSON.parse(localStorage.getItem('recoil-persist')).userId
+    console.log(userId);
+
+  }
 
   const missionId = router.query.id;
-  console.log(userId);
   const { data: MissionDetail } = useQuery(["missions"], () => {
     missionUserData(missionId, userId);
   });

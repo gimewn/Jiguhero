@@ -140,7 +140,7 @@ interface Idata {
 const Mypage = ({ data }) => {
   // console.log(props.data)
   const router = useRouter()
-  
+  const userId = JSON.parse(localStorage.getItem('recoil-persist')).userId
   const {data:userInfo} = useQuery(['mission'],()=> {userData()})
   console.log(userInfo)
 
