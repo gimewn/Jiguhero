@@ -22,6 +22,8 @@ import getSido from "pages/api/ecomarket/getSido";
 import getGugun from "pages/api/ecomarket/getGugun";
 import getDong from "pages/api/ecomarket/getDong";
 import putMission from 'pages/api/mission/editMission'
+import { useRecoilState } from "recoil";
+import { missionDetail } from "states/mission";
 
 
 const MissioWrapper = styled('div')`
@@ -73,23 +75,24 @@ const Text = styled('a')`
 `
 
 const BoxInput = styled('input')`
-  border: #65ACE2 solid 1px ;
+  border: #65ace2 solid 1px;
   background-color: white;
   border-radius: 15px;
-  padding:3px;
+  padding: 10px;
   width: 13rem;
   margin-left: 10px;
-  padding: 5px;
+  font-size:15px;
+  margin:10px;
 `
 const DateInput = styled(DatePicker)`
-  border: #65ACE2 solid 1px ;
+  border: #65ace2 solid 1px;
   background-color: white;
   border-radius: 15px;
-  width: 100px;
+  width: 110px;
   box-sizing: border-box;
-  padding: 5px;
-  margin-right:9px;
-  margin-left:9px;
+  padding: 10px;
+  margin-right: 9px;
+  margin-left: 9px;
 `
 const DateWrapper = styled('div')`
   display: inline-flex;
@@ -97,12 +100,16 @@ const DateWrapper = styled('div')`
 `
 
 const SelectSido = styled('select')`
-    border: #65ACE2 solid 1px;
-    background-color: white;
-    border-radius: 15px;
-    padding:3px;
-    margin: 0.5rem;
-     
+  border: #65ace2 solid 1px;
+  background-color: white;
+  border-radius: 15px;
+  padding: 10px;
+  margin: 0.5rem;
+  font-size:13px;
+  @media screen and (max-width: 450px) {
+    font-size:11px;
+  }
+  width:auto;
 `
 
 const SelectGugun = styled(SelectSido)`
@@ -112,46 +119,57 @@ const SelectDong = styled(SelectSido)`
 
 `
 const CameraBox = styled('form')`
-  width: 250px;
-  height: 200px;
-  background-color: #FFffff;
+width: 300px;
+  height: 250px;
+  background-color: #ffffff;
   border-radius: 15px;
   box-shadow: 0px 0px 5px 0px #dadce0 inset;
   border: 0;
-  display:flex;
+  display: flex;
   justify-content: center;
   align-items: center;
-  @media screen and (min-width: 360px){
-    width: 200px;
-    height: 150px;
+  @media screen and (min-width: 360px) {
+    width: 300px;
+    height: 250px;
+  }
+  margin-bottom:10px;
+  img {
+    object-fit: cover;
+    width: 250px;
+    height: 180px;
+    border-radius: 15px;
   }
 `
 const CameraBtn = styled('div')`
   display: flex;
   justify-content: center;
   align-items: center;
-  
 `
 
 const PointInput = styled('input')`
-  border: #65ACE2 solid 1px ;
+  border: #65ace2 solid 1px;
   background-color: white;
   border-radius: 15px;
-  padding:3px;
+  padding: 10px;
   width: 13rem;
-  margin-left: 10px;
-  padding: 5px;
+  font-size:15px;
+  margin: 5px 10px 5px 10px;
 `
 const PeopleInput = styled(PointInput)`
 `
 
 const MissionText = styled('textarea')`
-  border: #65ACE2 solid 1px ;
+ border: #65ace2 solid 1px;
   background-color: white;
   border-radius: 15px;
-  width: 300px;
-  height: 100px;
-  margin-top: 10px;
+  width: 30%;
+  @media screen and (max-width: 450px) {
+    width: 90%;
+  }
+  height: 150px;
+  margin:10px;
+  padding:10px;
+  font-size:15px;
 `
 
 const SubmitBtn = styled(ButtonFull)`
@@ -171,32 +189,31 @@ const H2 = styled('h2')`
 export default function Createmission() {
   const router = useRouter();
   const [point, setPoint] = useState<Number>(); // 포인트
-  const [MissionDetail, setMissionDetail] = useState({
-    maxPerson:0,
-    entryPoint:"",
-    content:"",
-    title:"",
-    startDate:[],
-    endDate:[]
-  });
+  const [detailMission, setDetailMission] = useRecoilState(missionDetail);
   const [userId, setUserId] = useState("");
-  const [missionId, setMissionId] = useState("");
-  const [region, setRegion] = useState();
-  const [imgList, setImgList] = useState<Array<string>>();
+  const [missionId, setMissionId] = useState(detailMission.missionId);
+  useEffect(()=>{
+    if(router.query.id){
+      setMissionId(router.query.id)
+      const usersId = JSON.parse(localStorage.getItem('recoil-persist')).userId
+      setUserId(usersId)
+      if(userId){
+        getDetail(router.query.id, userId).then((res)=>{
+          setDetailMission(res)})
+      }
+    }}, [])
+
   const [missionImg, setMissionImg] = useState<File>();
   const [preview, setPreview] = useState<string>(); // 이미지 미리보기 사진
-  const [title, setTitle] = useState("")
-  const nowTime = moment().format('YYYY-MM-DD')
+  const [title, setTitle] = useState(detailMission.title)
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
-  const [pointNum, setPointNum] = useState('500')
-  const [people, setPeople] = useState(0)
-  const [content, setContent] = useState("");
-  const [text, setText] = useState('')
+  const [pointNum, setPointNum] = useState(detailMission.entryPoint)
+  const [people, setPeople] = useState(detailMission.maxPerson)
+  const [text, setText] = useState(detailMission.content)
   const [astartDate, setAstartDate] = useState(["", ""]); // 시작일 배열 [요일, 월, 일, 년]
   const [aendDate, setAendDate] = useState(["", ""]); // 종료일 배열 [요일, 월, 일, 년]
-
-
+  
   const onPeopleChange = (event) => {
     setPeople(event.target.value)
   }
@@ -222,13 +239,7 @@ export default function Createmission() {
       setPreview(null);
     }
   }, [missionImg]);
-  useEffect(()=>{
-    if(router.query.id){
-      setMissionId(String(router.query.id));
-    }
-    const usersId = JSON.parse(localStorage.getItem('recoil-persist')).userId
-    setUserId(usersId)
-}, [])
+
 const { data: sido } = useQuery(["sido"], getSido);
 const [ChoiceSido, setChoiceSido] = useState(["00", ""]);
 const { data: gugun } = useQuery(
@@ -247,25 +258,6 @@ const { data: dong } = useQuery(
   }
 );
 const [ChoiceDong, setChoiceDong] = useState(["00", ""]);
-useEffect(()=>{
-  if(router.query.id && userId){
-    getDetail(router.query.id, userId).then((res)=>{setMissionDetail(res)
-      setPeople(MissionDetail.maxPerson)
-      setPointNum(MissionDetail.entryPoint)
-      setText(MissionDetail.content)
-      setTitle(MissionDetail.title)
-      setAstartDate(MissionDetail.startDate)
-      setAendDate(MissionDetail.endDate)
-    getDong(res.gugunCode).then((item)=>{
-      const result = item.filter((dong) => {
-        if(dong.dongCode === res.dongCode){
-          setRegion(dong.dongName)
-            return dong
-        }})
-    })
-    })
-  }
-})
 const postdata = {
   title,
   missionId,
@@ -320,7 +312,7 @@ const postdata = {
           </Content>
           {userId ? 
                     <ButtonFull hColor={'#98C064'}
-                    dColor={'#65ACE2'} style={{margin:'10px'}} onClick={()=>{postImg(missionImg, userId, missionId, 1)}}>OK</ButtonFull>
+                    dColor={'#65ACE2'} style={{margin:'10px'}} onClick={()=>{postImg(missionImg, userId, missionId, 1)}}>대표 사진 변경</ButtonFull>
                 : <></>}
         </Block>
 

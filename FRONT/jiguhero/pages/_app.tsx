@@ -9,8 +9,7 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import {
   QueryClient,
-  QueryClientProvider,
-  Hydrate,
+  QueryClientProvider
 } from "@tanstack/react-query";
 import Script from "next/script";
 import Head from 'next/head';
@@ -119,13 +118,11 @@ function MyApp({ Component, pageProps }: AppProps) {
       <Body>
         <Container>
           <QueryClientProvider client={queryClient}>
-            <Hydrate state={pageProps?.dehydratedState} >
                 <Script
                   src={`//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAOMAP_APPKEY}&libraries=services&autoload=false`}
                   strategy="beforeInteractive"
                 />
                 <Component {...pageProps} />
-            </Hydrate>
           </QueryClientProvider>
         </Container>
       </Body>

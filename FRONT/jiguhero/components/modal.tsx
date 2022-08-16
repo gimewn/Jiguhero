@@ -359,7 +359,7 @@ export default function Modal(props) {
         if(data.placeId){
             getImg()
         }
-      })
+      }, [])
     useEffect(()=>{
         setFetchReview(reviews)
         console.log(reviews)

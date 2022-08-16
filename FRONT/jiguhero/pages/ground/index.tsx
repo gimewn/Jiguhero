@@ -9,6 +9,7 @@ import Paigination from 'components/pagination';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import {ButtonFull, ParentsDiv} from 'styles/styled';
 import { ConIcon } from 'pages/ecomarket';
+import Head from 'next/head';
 
 const Grid = styled('div')`
     display:grid;
@@ -195,6 +196,9 @@ export default function GroundList(){
 
     return(
         <ParentsDiv>
+                <Head>
+      <title>대원들의 활동구역 | 지구-방위대</title>
+    </Head>
             <BackTitle name={'대원들의 활동구역'}/>
             <GroundTop>
             <H2>🦸🏻 대원들의 활동구역</H2>
@@ -211,8 +215,8 @@ export default function GroundList(){
                     <option value="3">조회순</option>
                 </SelectBox>
                 <Topbutton>
-                    <ButtonFull dColor='#65ace2' hColor='#98c064' style={{marginRight:'10px', fontSize:'15px'}} onClick={() => {router.push(`ground/createground`)}}>활동구역 생성</ButtonFull>
-                    <ButtonFull dColor='#98c064' hColor='#65ace2' style={{fontSize:'15px'}} onClick={() => {router.push(`ground/myground`)}}>나의 활동구역</ButtonFull>
+                    <ButtonFull dColor='#98c064' hColor='#65ace2' style={{marginRight:'5px', fontSize:'15px'}} onClick={() => {router.push(`ground/myground`)}}>나의 활동구역</ButtonFull>
+                    <ButtonFull dColor='#65ace2' hColor='#98c064' style={{fontSize:'15px'}} onClick={() => {router.push(`ground/createground`)}}>활동구역 생성</ButtonFull>
                 </Topbutton>
             </ButtonSelect>
             </GroundTop>

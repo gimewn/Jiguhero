@@ -7,6 +7,7 @@ import styled from 'styled-components';
 import dynamic from 'next/dynamic';
 import postGround from 'pages/api/ground/postGround';
 import { useRouter } from 'next/router';
+import Head from 'next/head';
 
 export const Picker = dynamic(() => import('emoji-picker-react'), { ssr: false });
 
@@ -74,6 +75,9 @@ export default function MakeGround(){
     }
     return(
         <ParentsDiv>
+            <Head>
+            <title>활동구역 생성 | 지구-방위대</title>
+            </Head>
             <BackTitle name={'활동구역 생성'} />
             <H2>🍀 활동구역 생성</H2>
             <ContentDiv>

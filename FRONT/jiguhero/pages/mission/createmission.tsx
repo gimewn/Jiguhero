@@ -101,6 +101,7 @@ const BoxInput = styled("input")`
   width: 13rem;
   margin-left: 10px;
   font-size:15px;
+  margin:10px;
 `;
 const DateInput = styled(DatePicker)`
   border: #65ace2 solid 1px;
@@ -114,6 +115,7 @@ const DateInput = styled(DatePicker)`
 `;
 const DateWrapper = styled("div")`
   display: inline-flex;
+  margin:5px;
 `;
 
 const SelectSido = styled("select")`
@@ -123,6 +125,9 @@ const SelectSido = styled("select")`
   padding: 10px;
   margin: 0.5rem;
   font-size:13px;
+  @media screen and (max-width: 450px) {
+    font-size:11px;
+  }
   width:auto;
 `
 
@@ -143,7 +148,7 @@ const CameraBox = styled("form")`
     width: 300px;
     height: 250px;
   }
-  margin-bottom:20px;
+  margin-bottom:10px;
   img {
     object-fit: cover;
     width: 250px;
@@ -163,8 +168,8 @@ const PointInput = styled("input")`
   border-radius: 15px;
   padding: 10px;
   width: 13rem;
-  margin-left: 10px;
   font-size:15px;
+  margin: 5px 10px 5px 10px;
 `;
 const PeopleInput = styled(PointInput)``;
 
@@ -173,8 +178,11 @@ const MissionText = styled("textarea")`
   background-color: white;
   border-radius: 15px;
   width: 60%;
+  @media screen and (max-width: 450px) {
+    width: 90%;
+  }
   height: 150px;
-  margin-top: 10px;
+  margin:10px;
   padding:10px;
   font-size:15px;
 `;
@@ -434,7 +442,9 @@ export default function Createmission() {
             {/* <Text>임무명</Text> */}
             <div>
               <Text>임무명</Text>
-              <BoxInput onChange={(e) => {setTitleName(e.target.value)}} onBlur={(e)=>{
+              <BoxInput 
+              placeholder="임무의 제목을 입력해주세요!"
+              onChange={(e) => {setTitleName(e.target.value)}} onBlur={(e)=>{
                 e.preventDefault()
                 setTitle(titleName)
               }}  />

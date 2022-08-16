@@ -62,3 +62,20 @@ export const feedImgList = atom({
   effects_UNSTABLE : [persistAtom]
 })
 
+export const missionDetail = atom({
+  key:"missionDetail",
+  default: {},
+  effects : [persistAtom]
+})
+
+export const nowJoinList = atom({
+  key:"nowJoinList",
+  default: [],
+  effects : [persistAtom]
+})
+
+export const missionRegion = atom({
+  key:"missionRegion",
+  default: "",
+  effects : [persistAtom]
+})

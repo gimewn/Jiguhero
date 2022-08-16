@@ -15,7 +15,7 @@ import getReview from "pages/api/place/getReview";
 import { dehydrate, Query, QueryClient, QueryClientProvider, useQuery } from "@tanstack/react-query";
 import { getSession} from "next-auth/react";
 import { InfoBtn } from "pages/ground/[id]";
-
+import Head from 'next/head';
 const Div = styled("div")`
   position: relative;
 `;
@@ -324,6 +324,9 @@ export default function FullMap(props:any) {
 
   return (
     <Div>
+    <Head>
+      <title>친환경 가게 찾기 | 지구-방위대</title>
+    </Head>
       <Content>
         <SearchBox>
           <Back
