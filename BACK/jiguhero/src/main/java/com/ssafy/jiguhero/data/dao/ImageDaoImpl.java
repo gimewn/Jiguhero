@@ -98,6 +98,13 @@ public class ImageDaoImpl implements ImageDao{
     }
 
     @Override
+    public List<Image_Mission> selectFeedImageMissions(Mission mission) {
+        List<Image_Mission> selectedImageMissions = imageMissionRepository.findAllByMissionAndRep(mission, false);
+
+        return selectedImageMissions;
+    }
+
+    @Override
     public void deleteImageMission(Image_Mission imageMission) throws Exception {
         imageMissionRepository.delete(imageMission);
     }

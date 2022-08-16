@@ -25,6 +25,9 @@ public interface ImageDao {
 
     List<Image_Mission> selectImageMissions(Mission mission);
 
+    // 인증샷 이미지 반환
+    List<Image_Mission> selectFeedImageMissions(Mission mission);
+
     void deleteImageMission(Image_Mission imageMission) throws Exception;
 
     Image_Promotion insertImagePromotion(Image_Promotion imagePromotion);

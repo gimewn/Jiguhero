@@ -259,7 +259,7 @@ public class MissionServiceImpl implements MissionService {
 
     @Override
     public List<List<String>> getMissionImageURL(Long missionId, HttpServletRequest request) {
-        List<Image_Mission> imageMissions = imageDao.selectImageMissions(missionDao.selectMissionById(missionId));
+        List<Image_Mission> imageMissions = imageDao.selectFeedImageMissions(missionDao.selectMissionById(missionId));
         List<List<String>> urlList = new ArrayList<>();
 
         for (Image_Mission imageMission : imageMissions) {

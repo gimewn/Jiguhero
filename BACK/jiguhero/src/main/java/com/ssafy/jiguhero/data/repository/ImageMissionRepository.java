@@ -13,6 +13,8 @@ public interface ImageMissionRepository extends JpaRepository<Image_Mission, Lon
 
     List<Image_Mission> findAllByMission(Mission mission);
 
+    List<Image_Mission> findAllByMissionAndRep(Mission mission, boolean rep);
+
     // 임무의 대표 이미지 정보 반환
     Optional<Image_Mission> findByMissionAndRep(Mission mission, Boolean rep);
 
