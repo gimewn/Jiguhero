@@ -4,8 +4,8 @@ import Backcomponents from "components/back";
 import MissionModal from "components/MissionModal";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { missionTabpage } from "states/mission";
-import { RecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { allauthImgList, missionTabpage, myauthImgList, otherauthImgList } from "states/mission";
+import { RecoilState, useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import React, { useState, useEffect } from "react";
 import ProgressBar from "@ramonak/react-progress-bar";
 import ImageList from "@mui/material/ImageList";
@@ -20,6 +20,7 @@ import IconButton from "@mui/material/IconButton";
 import PhotoCamera from "@mui/icons-material/PhotoCamera";
 import PostMissionauthImg from "pages/api/mission/postmissionauthImg";
 import PostMissionauthtext from "pages/api/mission/postMissionauthtext";
+import { UserId } from "states/user";
 
 const Div = styled("div")`
   padding: 18px;
@@ -291,6 +292,7 @@ const MissionBtn = styled(ButtonFull)`
   margin-bottom: 30px;
 `;
 
+
 const ModalBack = styled("div")`
   position: absolute;
   background-color: rgba(0, 0, 0, 0.5);
@@ -355,7 +357,7 @@ function ButtonGroup() {
 
   //달성률 버튼 클릭하면 연두색 인증샷 버튼 클릭하면 하얀색!
   const [tabColor, setTabColor] = useState(true);
-  console.log(tabColor);
+
   return (
     <>
       {/* 탭 전환을 위한 버튼들 */}
@@ -406,74 +408,30 @@ function ButtonGroup() {
   );
 }
 
-//임시 더미파일들
-const itemData = [
-  {
-    img: "https://images.unsplash.com/photo-1551963831-b3b1ca40c98e",
-    title: "Breakfast",
-  },
-  {
-    img: "https://images.unsplash.com/photo-1551782450-a2132b4ba21d",
-    title: "Burger",
-  },
-  {
-    img: "https://images.unsplash.com/photo-1522770179533-24471fcdba45",
-    title: "Camera",
-  },
-  {
-    img: "https://images.unsplash.com/photo-1444418776041-9c7e33cc5a9c",
-    title: "Coffee",
-  },
-  {
-    img: "https://images.unsplash.com/photo-1533827432537-70133748f5c8",
-    title: "Hats",
-  },
-  {
-    img: "https://images.unsplash.com/photo-1558642452-9d2a7deb7f62",
-    title: "Honey",
-  },
-  {
-    img: "https://images.unsplash.com/photo-1516802273409-68526ee1bdd6",
-    title: "Basketball",
-  },
-  {
-    img: "https://images.unsplash.com/photo-1518756131217-31eb79b20e8f",
-    title: "Fern",
-  },
-  {
-    img: "https://images.unsplash.com/photo-1597645587822-e99fa5d45d25",
-    title: "Mushrooms",
-  },
-  {
-    img: "https://images.unsplash.com/photo-1567306301408-9b74779a11af",
-    title: "Tomato basil",
-  },
-  {
-    img: "https://images.unsplash.com/photo-1471357674240-e1a485acb3e1",
-    title: "Sea star",
-  },
-  {
-    img: "https://images.unsplash.com/photo-1589118949245-7d38baf380d6",
-    title: "Bike",
-  },
-];
+
 
 export default function MyMissionFeed() {
   const router = useRouter();
   const missionId = router.query.id;
-
   const tab = useRecoilValue(missionTabpage);
   const setTab = useSetRecoilState(missionTabpage);
   const [Modal, setModal] = useState(false);
-  const [missionItem, setMissionItem] = useState();
+  // const [missionItem, setMissionItem] = useState();
   const [region, setRegion] = useState();
-  const [userId, setUserId] = useState<number>();
-  const [myImg, setMyImg] = useState([]);
-  const [otherImg, setOtherImg] = useState([]);
+  // const [userId, setUserId] = useState<number>();
+  // const [myImg, setMyImg] = useState([]);
+  // const [otherImg, setOtherImg] = useState([]);
   const [percent, setPercent] = useState<number>(0);
   const [createImg, setCreateimg] = useState<File>(null); // 모달 이미지 파일
   const [preview, setPreview] = useState<string>(); // 이미지 미리보기 사진
   const [textarea, setTextarea] = useState<string>() // 모달 텍스트
+  const [userId, setUserId] = useRecoilState(UserId)
+  const [missionItem, setMissionItem] = useRecoilState(allauthImgList)
+  const [myImg, setMyImg] = useRecoilState(myauthImgList)
+  const [otherImg, setOtherImg] = useRecoilState(otherauthImgList)
+
+
+
 
   useEffect(() => {
     if (createImg) {
@@ -488,22 +446,22 @@ export default function MyMissionFeed() {
   }, [createImg]);
 
   useEffect(() => {
-    const usersId = JSON.parse(localStorage.getItem("recoil-persist")).userId;
-    console.log(userId);
-    setUserId(usersId);
+
+    setUserId(userId);
     if (missionId) {
       getDetail(router.query.id, 1).then((res) => {
         setMissionItem(res);
+        // setTestList(res)
         setMyImg(
           res.imageURL.filter((data) => {
-            if (data[0] === userId) {
+            if (data[2] === userId) {
               return data;
             }
           })
         );
         setOtherImg(
           res.imageURL.filter((data) => {
-            if (data[0] !== userId) {
+            if (data[2] !== userId) {
               return data;
             }
           })
@@ -515,19 +473,23 @@ export default function MyMissionFeed() {
               setRegion(dong.dongName);
               return dong;
             }
+
           });
         });
       });
       getPercent(missionId, userId).then((res) => {
-        console.log(res);
+ 
         setPercent(res);
       });
     }
   }, []);
-
+  // console.log(percent)
+  // console.log(missionItem)
+  // console.log(myImg)
+  // console.log(otherImg)
   useEffect(() => {
     if (Modal === false) {
-      console.log("hihi", Modal);
+
     } else {
       document.body.style.cssText = `
       position: fixed; 
@@ -539,7 +501,6 @@ export default function MyMissionFeed() {
         const scrollY = document.body.style.top;
         document.body.style.cssText = "";
         window.scrollTo(0, parseInt(scrollY || "0", 10) * -1);
-        console.log("bye", Modal);
       };
     }
   }, [Modal]);
@@ -552,6 +513,7 @@ export default function MyMissionFeed() {
     }
   };
 
+  console.log(percent)
   //달성률 버튼 클릭하면 연두색 인증샷 버튼 클릭하면 하얀색!
   const [tabColor, setTabColor] = useState(true);
   return (
@@ -658,6 +620,7 @@ export default function MyMissionFeed() {
 
           <ProgressWrapper>
             <Progress completed={percent} bgColor={"#65ACE2"} />
+
           </ProgressWrapper>
 
           <CertifyWrapper>
@@ -723,21 +686,27 @@ export default function MyMissionFeed() {
             )}
           </CertifyWrapper>
           <>
+          {myImg ? (
             <CertifyFeed>
-              <ImageList sx={{ width: 350 }} cols={3} rowHeight={130}>
+            <ImageList sx={{ width: 350 }} cols={3} rowHeight={130}>
                 {myImg.map((item, index) => (
-                  <ImageListItem key={index}>
-                    <img
+                <ImageListItem key={index} >
+                  <img
+                    src={`${item[1]}&w=164&h=164&fit=crop&auto=format`}
+                    srcSet={`${item[1]}&w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
+                    loading="lazy"
+                    onClick={()=>{
+                      router.push(`/mission/${missionId}/missionfeed`)
+                    }}
+                  />
+                </ImageListItem>
+              ))}
+                
+            </ImageList>
+          </CertifyFeed>
 
-                      src={`${item[1]}&w=164&h=164&fit=crop&auto=format`}
-                      srcSet={`${item[1]}&w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
-                      loading="lazy"
-                    />
-                  </ImageListItem>
-                ))}
-              </ImageList>
-
-            </CertifyFeed>
+          ): null }
+            
           </>
         </>
       ) : (
@@ -755,6 +724,9 @@ export default function MyMissionFeed() {
                       src={`${item[1]}&w=164&h=164&fit=crop&auto=format`}
                       srcSet={`${item[1]}&w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
                       loading="lazy"
+                      onClick={()=>{
+                        router.push(`/mission/${missionId}/missionfeed`)
+                      }}
                     />
                   </ImageListItem>
                 ))}

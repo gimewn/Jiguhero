@@ -2,6 +2,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 
 
 export default async function userData(userId) {
+  console.log(userId)
  
     const token = await JSON.stringify(localStorage.getItem('access-token'))
 

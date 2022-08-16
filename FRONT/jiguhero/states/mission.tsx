@@ -1,5 +1,7 @@
 import { atom } from "recoil";
+import { recoilPersist } from "recoil-persist";
 
+const {persistAtom} = recoilPersist()
 
 
 export const missionLists = atom({
@@ -26,3 +28,37 @@ export const missionTabpage = atom({
   key: "missionTabpage",
   default: true
 })
+
+export const myauthImgList = atom({
+  key:"myauthImgList",
+  default: [],
+  effects_UNSTABLE : [persistAtom]
+})
+export const allauthImgList = atom({
+  key:"allauthImgList",
+  default: [],
+  effects_UNSTABLE : [persistAtom]
+})
+export const otherauthImgList = atom({
+  key:"otherauthImgList",
+  default: [],
+  effects_UNSTABLE : [persistAtom]
+})
+
+
+export const feedList = atom({
+  key:"feedList",
+  default: [],
+  effects_UNSTABLE : [persistAtom]
+})
+export const feedUserInfoList = atom({
+  key:"feedUserInfoList",
+  default: null,
+  effects_UNSTABLE : [persistAtom]
+})
+export const feedImgList = atom({
+  key:"feedImgList",
+  default: null,
+  effects_UNSTABLE : [persistAtom]
+})
+
