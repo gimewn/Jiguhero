@@ -48,7 +48,7 @@ SSAFY 7기 2학기 공통 프로젝트
 ### FrontEnd
 - Visual Studio Code IDE
 - Typescript 4.7.4
-- React 18.2.0
+- React 17.0.2
 - Next 12.2.2
 - Recoil 0.7.4
 - React-Query 4.0.0
