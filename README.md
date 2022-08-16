@@ -77,4 +77,4 @@ SSAFY 7기 2학기 공통 프로젝트
     - 이슈 발생 시 공유
 
 ### 팀원 소개
-![팀원소개](https://user-images.githubusercontent.com/97578425/183292315-e1565a0c-de96-4d84-aa73-b5cfdd796c7a.png)
+![팀원소개](https://user-images.githubusercontent.com/97578425/184811182-5f4be0d0-58c2-4f0c-a359-bc9f3077fb71.png)
