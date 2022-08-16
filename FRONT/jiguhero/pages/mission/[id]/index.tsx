@@ -20,11 +20,14 @@ import { useState, useEffect } from "react";
 import FavoriteRoundedIcon from "@mui/icons-material/FavoriteRounded";
 import FavoriteBorderRoundedIcon from "@mui/icons-material/FavoriteBorderRounded";
 // import ArrowBackIosRoundedIcon from "@mui/icons-material/ArrowBackIosRounded";
-import { useRecoilState, useRecoilValueLoadable } from "recoil";
 import { UserId, UserName } from "states/user";
 import getDong from "pages/api/ecomarket/getDong";
 import getDetail from "pages/api/mission/getDetail";
 import postJoin from 'pages/api/mission/postJoin';
+import { useRecoilState } from "recoil";
+import { missionDetail } from "states/mission";
+import { missionRegion } from 'states/mission';
+
 const NavBar = styled("header")`
   z-index: 999;
   position: fixed;
@@ -360,53 +363,28 @@ function MissionAuthModal() {
 
 export default function MissionDetail() {
   const router = useRouter();
+  const [region, setRegion] = useRecoilState(missionRegion);
   const [userId, setUserId] = useState();
   const [join, setJoin] = useState(false);
   const [like, setLike] = useState(false);
-  const [MissionDetail, setMissionDetail] = useState({
-    content: "",
-    dongCode: "",
-    endDate: "",
-    entryPoint: 0,
-    failedPerson: 0,
-    gugunCode: "",
-    hits: 0,
-    imageURL: [],
-    joinCheck: false,
-    likeCheck: false,
-    likes: 0,
-    maxPerson: 0,
-    missionId: 0,
-    nowPerson: 0,
-    regtime: [],
-    repImageURL: "",
-    sidoCode: "",
-    startDate: "",
-    title: "",
-    userId: 0
-  });
-  const [region, setRegion] = useState();
-  
-  useEffect(()=>{
-      const usersId = JSON.parse(localStorage.getItem('recoil-persist')).userId
-      setUserId(usersId)
-  }, [])
-
+  const [ModalAuth, setModalAuth] = useState(false);
+  const [Auth, setAuth] = useState(false);
+  const [unAuth, setUnAuth] = useState(false);
   const missionId = router.query.id;
-  useEffect(()=>{
-    if(router.query.id && userId){
-      getDetail(router.query.id, userId).then((res)=>{setMissionDetail(res)
-      getDong(res.gugunCode).then((item)=>{
-        const result = item.filter((dong) => {
-          if(dong.dongCode === res.dongCode){
-            setRegion(dong.dongName)
-              return dong
-          }})
-      })
-      })
-    }
+  const [MissionDetail, setMissionDetail] = useRecoilState(missionDetail);
+  const date = new Date();
+  const today = `${date.getFullYear()}-${('0' + (date.getMonth() + 1)).slice(-2)}-${date.getDate()}`
 
-  })
+  useEffect(()=>{
+      setUserId(JSON.parse(localStorage.getItem('recoil-persist')).userId)
+      if(router.query.id && JSON.parse(localStorage.getItem('recoil-persist')).userId){
+        getDetail(router.query.id, JSON.parse(localStorage.getItem('recoil-persist')).userId).then((res)=>{setMissionDetail(res)
+        getDong(res.gugunCode).then((item)=>{
+          item.filter((dong) => {
+            if(dong.dongCode === res.dongCode){
+              setRegion(dong.dongName)
+            }})})})}
+  }, [])
 
 
   // const [use, setUserId] = useRecoilState(userId)
@@ -416,9 +394,7 @@ export default function MissionDetail() {
   // }
 
 
-  const [ModalAuth, setModalAuth] = useState(false);
-  const [Auth, setAuth] = useState(false);
-  const [unAuth, setUnAuth] = useState(false);
+
 
   return (
     <>
@@ -436,7 +412,7 @@ export default function MissionDetail() {
 
             {/* Modal창을 열기 위한 땡땡이*/}
             {/* 게시글 작성자 판별  */}
-            {ModalAuth === true ? (
+            {MissionDetail.userId == userId ? (
               <MobileMore onClick={() => setAuth(!Auth)} />
             ) : (
               <MobileMore onClick={() => setUnAuth(!unAuth)} />
@@ -455,13 +431,13 @@ export default function MissionDetail() {
         <DetailWrapper>
           {/* 미션이미지 */}
           <ImageBlock>
-            <img src={MissionDetail?.repImageURL} />
+            <img src={MissionDetail.repImageURL} />
           </ImageBlock>
 
           {/* 임무타이틀 */}
           <Block>
             <TtitleContent>
-              <TitleText>{MissionDetail?.title}</TitleText>
+              <TitleText suppressHydrationWarning>{MissionDetail.title}</TitleText>
             </TtitleContent>
           </Block>
 
@@ -469,8 +445,8 @@ export default function MissionDetail() {
           <Block>
             <Content>
               <PeopleIcon />
-              <ContentText>
-                {MissionDetail?.nowPerson} / {MissionDetail?.maxPerson} 명
+              <ContentText suppressHydrationWarning>
+                {MissionDetail?.nowPerson} / {MissionDetail.maxPerson} 명
               </ContentText>
             </Content>
           </Block>
@@ -479,7 +455,7 @@ export default function MissionDetail() {
           <Block>
             <Content>
               <PointIcon />
-              <ContentText>+{MissionDetail?.entryPoint}P</ContentText>
+              <ContentText suppressHydrationWarning>+{MissionDetail.entryPoint}P</ContentText>
             </Content>
           </Block>
 
@@ -487,8 +463,8 @@ export default function MissionDetail() {
           <Block>
             <Content>
               <CalendarIcon />
-              <ContentText>
-                {MissionDetail?.startDate}~ {MissionDetail?.endDate}
+              <ContentText suppressHydrationWarning>
+                {MissionDetail.startDate}~ {MissionDetail.endDate}
               </ContentText>
             </Content>
           </Block>
@@ -497,7 +473,7 @@ export default function MissionDetail() {
           <Block>
             <Content>
               <LocalIcon />
-                {region ?               <ContentText>
+                {region ?  <ContentText>
                 {region}
               </ContentText>
               : <></>}
@@ -562,7 +538,11 @@ export default function MissionDetail() {
             }/>}
           </LikeBtn>
         </LikeDiv>
-        <JoinDiv onClick={() => setJoin(!join)}>
+        <JoinDiv onClick={() => setJoin(!join)}>  
+        {MissionDetail.endDate < today ? <>
+          <JoinBorderBtn dColor={"#65ACE2"}>종료된 임무입니다</JoinBorderBtn>
+        </> : <>
+        {MissionDetail.startDate > today ? <>
           {MissionDetail.joinCheck ? (
             <JoinFullBtn hColor={"#98C064"} dColor={"#65ACE2"}
             onClick={()=>{alert("이미 참여 중인 임무입니다!")}}>
@@ -571,6 +551,8 @@ export default function MissionDetail() {
           ) : (
             <JoinBorderBtn dColor={"#65ACE2"} onClick={()=>{postJoin(MissionDetail.missionId, userId)}}>임무에 참여하기</JoinBorderBtn>
           )}
+        </> : <><JoinBorderBtn dColor={"#888888"} onClick={()=>{alert("진행 중인 임무에는 참여할 수 없습니다.")}}>진행 중인 임무입니다</JoinBorderBtn></>}
+        </>}
         </JoinDiv>
       </LikeAndJoinWrapper>
       </HiDetail>

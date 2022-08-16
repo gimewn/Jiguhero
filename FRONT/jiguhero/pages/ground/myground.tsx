@@ -7,6 +7,11 @@ import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import {ButtonFull, ParentsDiv} from 'styles/styled';
 import { DeleteBtn } from './[id]/edit';
 import deleteGround from 'pages/api/ground/deleteGround';
+import { useRecoilState } from "recoil";
+import {myGroundList} from 'states/ground';
+import Head from 'next/head';
+import getUser from 'pages/api/user/[id]';
+import {userName} from 'states/user'
 
 export const Grid = styled('div')`
     display:grid;
@@ -154,19 +159,15 @@ z-index:999;
 
 export default function GroundList(){
     const router = useRouter();
+    const [groundList, setGroundList] = useRecoilState(myGroundList);
     const [searchItem, setSearchItem] = useState('');
-    const [groundList, setGroundList] = useState([])
     const [userId, setUserId] = useState();
   
     useEffect(()=>{
         const usersId = JSON.parse(localStorage.getItem('recoil-persist')).userId
         setUserId(usersId)
+        getMyGround(Number(JSON.parse(localStorage.getItem('recoil-persist')).userId)).then((res) => setGroundList(res))
     }, [])
-    useEffect(()=>{
-        if(userId && groundList.length === 0){
-            getMyGround(Number(userId)).then((res) => setGroundList(res))
-        }
-    })
     function Search(keyword){
         if(keyword === '' && userId){
             getMyGround(userId).then(
@@ -210,10 +211,13 @@ export default function GroundList(){
 
     return(
         <ParentsDiv>
-            <BackTitle name={'닉네임 대원의 활동구역'}/>
+            <Head>
+            <title>나의 활동구역 | 지구-방위대</title>
+            </Head>
+            <BackTitle name={'나의 활동구역'}/>
             <GroundTop>
-            <H2>🦸🏻 닉네임 대원의 활동구역</H2>
-            <p style={{fontSize:'15px'}}>닉네임님의 활동구역을 보여드려요 🔍</p>
+            <H2>🦸🏻 나의 활동구역</H2>
+            <p style={{fontSize:'15px'}}>대원님의 활동구역을 보여드려요 🔍</p>
             <div style={{display:'flex', alignContent:'center'}}>
             <Input placeholder='활동구역 검색하기' value={searchItem} onChange={(e) => {setSearchItem(e.target.value)}} onClick={()=>{Search('')}} />
             <SearchIcon onClick={()=>{Search(searchItem)}} />
@@ -226,7 +230,8 @@ export default function GroundList(){
                     <option value="3">조회순</option>
                 </SelectBox>
                 <Topbutton>
-                    <ButtonFull dColor='#65ace2' hColor='#98c064' style={{marginRight:'10px', fontSize:'15px'}} onClick={() => {router.push(`createground`)}}>활동구역 생성</ButtonFull>
+                <ButtonFull dColor='#98c064' hColor='#65ace2' style={{marginRight:'5px',fontSize:'15px'}} onClick={() => {router.push(`/ground`)}}>전체 보기</ButtonFull>
+                <ButtonFull dColor='#65ace2' hColor='#98c064' style={{ fontSize:'15px'}} onClick={() => {router.push(`createground`)}}>활동구역 생성</ButtonFull>
                 </Topbutton>
             </ButtonSelect>
             </GroundTop>

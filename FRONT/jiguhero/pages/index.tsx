@@ -11,9 +11,9 @@ import { UserId, UserName } from "states/user";
 
 const Mapping = styled("div")`
   width: 100%;
-  height: 270px;
+  height: 450px;
   @media screen and (min-width: 600px) {
-    height: 400px;
+    height: 500px;
   }
 `;
 const Title = styled("p")`
@@ -87,13 +87,13 @@ export default function Home() {
           <MissionTop3 />
         </Content>
       </Block>
-      <Block>
+      {/* <Block>
         <Title onClick={() => router.push("/news")}>📰 대원들을 위한 친환경 소식</Title>
 
         <Content>
           <News />
         </Content>
-      </Block>
+      </Block> */}
     </ParentsDiv>
   );
 }

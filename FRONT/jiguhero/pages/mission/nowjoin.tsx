@@ -1,33 +1,18 @@
 import styled from "styled-components";
 import NowJoin from "components/NowJoinLists";
 import Head from "next/head";
+import { ButtonFull, ButtonBorder } from "styles/styled";
 import Backcomponents from "components/back";
 import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
 import React, { useEffect, useState } from "react";
 import MissionList from "components/MissionList";
 import Pagination from 'components/pagination';
-import { nowjoinlist } from "states/mission";
-import { useRecoilValue, useSetRecoilState } from "recoil";
 import JoinMission from "pages/api/mission/joinMission";
-import {
-  dehydrate,
-  Query,
-  QueryClient,
-  QueryClientProvider,
-  useQuery,
-} from "@tanstack/react-query";
+import { useRouter } from "next/router";
+import { useRecoilState } from "recoil";
+import {nowJoinList} from 'states/mission'
 import { ParentsDiv } from 'styles/styled'
-interface IPage {
-  page: number;
-  count: number;
-}
 
-const PagI = styled(Pagination)`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 20px;
-`;
 
 const H2 = styled('h2')`
   @media only screen and (max-width: 650px) {
@@ -61,6 +46,13 @@ const ListContent = styled("div")`
 const MissionBlock = styled("div")`
 
 `;
+const ButtonContent = styled("div")`
+  display:flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+
+`;
 
 const BoxSelect = styled("select")`
   border: #65ace2 solid 1px;
@@ -86,10 +78,15 @@ const SearchButton = styled(SearchRoundedIcon)`
     cursor: pointer;
   }
 `;
+const ButtonGroup = styled("div")`
+  button {
+    margin: 5px;
+  }
+`;
 
 
 export default function nowJoin() {
-  const [JoinMissionData, setJoinMissionData] = useState([]);
+  const [JoinMissionData, setJoinMissionData] = useRecoilState(nowJoinList);
   const [userId, setUserId] = useState();
   const [tmp, setTmp] = useState<string>();
   const [page, setPage] = useState(1);
@@ -102,17 +99,35 @@ export default function nowJoin() {
   useEffect(()=>{
     const usersId = JSON.parse(localStorage.getItem('recoil-persist')).userId
     setUserId(usersId)
-}, [])
-useEffect(()=>{
-  if(userId && JoinMissionData.length === 0){
-    JoinMission(userId).then((res)=>{
+    JoinMission(JSON.parse(localStorage.getItem('recoil-persist')).userId).then((res)=>{
       setJoinMissionData(res)
   })
-  }
-})
-  // const remainder = JoinMissionData?.length % 5;
-  // const JoinLen = `${JoinMissionData?.length / 5}`;
-  // const quot = parseInt(JoinLen);
+}, [])
+function ButtonBox() {
+  const router = useRouter();
+  return (
+    <>
+      <ButtonGroup>
+        <ButtonFull
+          hColor={"#98C064"}
+          dColor={"#65ACE2"}
+          onClick={() => router.push("/mission")}
+          style={{fontSize:'15px'}}
+        >
+          모든 임무 보기
+        </ButtonFull>
+        <ButtonFull
+          dColor={"#98C064"}
+          hColor={"#65ACE2"}
+          onClick={() => router.push("/mission/createmission")}
+          style={{fontSize:'15px'}}
+        >
+          임무생성
+        </ButtonFull>
+      </ButtonGroup>
+    </>
+  );
+}
   const handlePageChange = (page) => {
     setPage(page)
   }
@@ -135,17 +150,12 @@ useEffect(()=>{
               res.sort((a, b)=>{
                   return b.nowPerson - a.nowPerson
               })
-              console.log(res)
               setJoinMissionData(res)
       }
     }
   }
   function Search(keyword){
-    if(keyword === ''){
-      JoinMission(userId).then(
-            (res) => setJoinMissionData(res)
-        )
-    }else{
+    if(keyword !== ''){
         const result = JoinMissionData.filter((ground) => {
             if(ground['title'].includes(keyword)){
                 return ground
@@ -156,17 +166,29 @@ useEffect(()=>{
 }
   return (
     <ParentsDiv>
+      {/* 헤더 */}
       <Head>
-        <title>참여 중인 임무 | 지구-방위대</title>
+      <title>참여 중인 임무 | 지구-방위대</title>
       </Head>
 
 
       {/* 모바일 뷰에서 뒤로가기 버튼! */}
-      <Backcomponents name="참여 중인 임무 모아보기"></Backcomponents>
+      <Backcomponents name="대원들의 임무"></Backcomponents>
       <MissionTop>
-        <H2>🦸🏻 참여 중인 임무 모아보기</H2>
+      <H2>🦸🏻 참여 중인 임무 모아보기</H2>
       </MissionTop>
 
+
+
+      {/* contents! */}
+      {/* 임무 버튼 그룹 */}
+      <Block style={{ marginBottom: '10px', marginTop: '20px' }}>
+        <ButtonContent>
+          <ButtonBox />
+        </ButtonContent>
+      </Block>
+
+      {/* search Bar */}
       <Block style={{ marginBottom: '10px' }}>
         <Content>
         <BoxSelect
@@ -175,8 +197,8 @@ useEffect(()=>{
           Filter(e.target.value);
         }}
       >
-        {OPTIONS.map((option, index) => (
-          <option key={index} value={option.value}>
+        {OPTIONS.map((option) => (
+          <option key={option.value} value={option.value}>
             {option.name}
           </option>
         ))}
@@ -199,10 +221,11 @@ useEffect(()=>{
         </Content>
       </Block>
 
+      {/* 임무 목록들 */}
+
       <MissionBlock>
         <ListContent>
-        
-        {count !== undefined ? 
+          {count !== undefined ? 
       <>
         {JoinMissionData?.slice((page - 1) * 5, page * 5).map((item, index) => (
           <MissionList key={index} {...item} />))}
