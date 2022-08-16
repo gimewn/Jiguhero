@@ -113,4 +113,24 @@ public class FeedServiceImpl implements FeedService {
         }
         else return 2; // <해당 날짜, 미션, 유저>로 등록된 인증샷이 없는 경우 인증샷 삭제 불가
     }
+
+    @Override
+    public int likeFeed(Long feedId, Long userId) {
+        Like_Feed likeFeed = new Like_Feed();
+        User userEntity = userDao.selectUserById(userId);
+        Feed feedEntity = feedDao.selectFeedById(feedId);
+
+        if (feedDao.selectLikeFeedByUser(feedEntity, userEntity) == null) {
+            likeFeed.setUser(userEntity);
+            likeFeed.setFeed(feedEntity);
+            feedDao.insertLikeFeed(likeFeed);
+
+            return 1;
+        }
+        else {
+            feedDao.deleteLikeFeedByUser(feedEntity, userEntity);
+
+            return 2;
+        }
+    }
 }

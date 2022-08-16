@@ -11,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/feed")
 @Api("인증샷 관련 REST V1")
@@ -68,5 +70,18 @@ public class FeedController {
         FeedDto result = feedService.getFeedById(imageId, userId);
 
         return ResponseEntity.status(HttpStatus.OK).body(result);
+    }
+
+    @ApiOperation(value = "인증샷의 '좋아요'를 클릭한다.", response = String.class)
+    @PostMapping("/{feed_id}/hearts")
+    public ResponseEntity<String> saveLikeFeed(@PathVariable("feed_id") Long feedId, @RequestParam("userId") Long userId) {
+        int check = feedService.likeFeed(feedId, userId);
+
+        if(check == 1) {
+            return new ResponseEntity<String>("success", HttpStatus.OK);
+        }
+        else {
+            return new ResponseEntity<String>("deletesuccess", HttpStatus.OK);
+        }
     }
 }

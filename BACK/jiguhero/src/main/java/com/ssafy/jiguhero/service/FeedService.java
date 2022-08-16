@@ -12,4 +12,6 @@ public interface FeedService {
 
     int deleteFeed(Long feedId, Long userId, Long missionId);
 
+    int likeFeed(Long feedId, Long userId);
+
 }

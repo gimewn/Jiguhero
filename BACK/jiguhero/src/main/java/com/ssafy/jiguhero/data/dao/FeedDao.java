@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface FeedDao {
 
-    Feed selectFeedById(Long missionId);
+    Feed selectFeedById(Long feedId);
 
     Feed selectFeedByImageMission(Image_Mission imageMission);
 
@@ -16,6 +16,8 @@ public interface FeedDao {
     int countByFeed(Feed feed);
 
     Feed insertFeed(Feed feed);
+
+    void insertLikeFeed(Like_Feed likeFeed);
 
     Optional<Feed> selectFeed(Long feedId, User user);
 
@@ -26,6 +28,8 @@ public interface FeedDao {
     Optional<Feed> selectFeed(Mission mission, User user);
 
     void deleteLikeFeed(Feed feed);
+
+    void deleteLikeFeedByUser(Feed feed, User user);
 
     void deleteFeed(Long feedId);
 

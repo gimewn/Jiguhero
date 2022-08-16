@@ -5,6 +5,7 @@ import com.ssafy.jiguhero.data.entity.*;
 import com.ssafy.jiguhero.data.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.Optional;
@@ -32,7 +33,7 @@ public class FeedDaoImpl implements FeedDao{
 
     @Override
     public Feed selectFeedById(Long feedId){
-        Feed selectedFeed = feedRepository.findByFeedId(feedId);
+        Feed selectedFeed = feedRepository.getById(feedId);
 
         return selectedFeed;
     }
@@ -46,9 +47,10 @@ public class FeedDaoImpl implements FeedDao{
 
     @Override
     public Like_Feed selectLikeFeedByUser(Feed feed, User user){
-        Like_Feed selectedFeed = likeFeedRepository.findByFeedAndUser(feed, user);
+        Optional<Like_Feed> selectedFeed = likeFeedRepository.findByFeedAndUser(feed, user);
 
-        return selectedFeed;
+        if (selectedFeed.isPresent()) return selectedFeed.get();
+        else return null;
     }
 
     @Override
@@ -62,6 +64,11 @@ public class FeedDaoImpl implements FeedDao{
     public Feed insertFeed(Feed feed){
         Feed savedFeed = feedRepository.save(feed);
         return savedFeed;
+    }
+
+    @Override
+    public void insertLikeFeed(Like_Feed likeFeed) {
+        likeFeedRepository.save(likeFeed);
     }
 
     @Override
@@ -116,6 +123,12 @@ public class FeedDaoImpl implements FeedDao{
     @Override
     public void deleteLikeFeed(Feed feed){
         likeFeedRepository.deleteAllByFeed(feed);
+    }
+
+    @Override
+    @Transactional
+    public void deleteLikeFeedByUser(Feed feed, User user) {
+        likeFeedRepository.deleteByFeedAndUser(feed, user);
     }
 
     @Override
