@@ -11,6 +11,9 @@ import FavoriteBorderRoundedIcon from '@mui/icons-material/FavoriteBorderRounded
 import FavoriteRoundedIcon from '@mui/icons-material/FavoriteRounded';
 import getIsLike from 'pages/api/ground/getIsLike';
 import postLike from 'pages/api/ground/postLike';
+import Head from 'next/head';
+import { useRecoilState } from 'recoil';
+import {groundDetail, groundPlaceList, isLikeGround} from 'states/ground';
 
 const Div = styled("div")`
   position: relative;
@@ -75,17 +78,33 @@ const GroundTitle = styled('p')`
 export default function GroundDetail(){
     const router = useRouter();
     // const [groundId, setGroundId] = useState();
-    const [placeList, setPlaceList] = useState([]);
+    const [placeList, setPlaceList] = useRecoilState(groundPlaceList)
     const [show, setShow] = useState(false);
     const [choiceP, setChoiceP] = useState([]);
     const [reviews, setReviews] = useState([]);
-    const [groundInfo, setGroundInfo] = useState({});
-    const [isLike, setIsLike] = useState<boolean>();
+    const [groundInfo, setGroundInfo] = useRecoilState(groundDetail);
+    const [isLike, setIsLike] = useRecoilState(isLikeGround);
     const [userId, setUserId] = useState();
   
     useEffect(()=>{
         const usersId = JSON.parse(localStorage.getItem('recoil-persist')).userId
         setUserId(usersId)
+    }, [])
+
+    useEffect(()=>{
+      if(router.query.id){
+        getPlaceList(router.query.id).then((res) => {
+            setPlaceList(res);
+        })
+        getGround(router.query.id).then((res) => {
+          setGroundInfo(res)
+        })
+        if(userId){
+          getIsLike(router.query.id, userId).then((res) => {
+            setIsLike(res)
+          })
+        }
+    }
     }, [])
     
   
@@ -142,29 +161,18 @@ export default function GroundDetail(){
     useEffect(()=>{
         window.kakao.maps.load(function(){moveMyGps()})
       }, [])
-      useEffect(()=>{
-        if(router.query.id){
-          getPlaceList(router.query.id).then((res) => {
-              setPlaceList(res);
-          })
-          getGround(router.query.id).then((res) => {
-            setGroundInfo(res)
-          })
-          if(userId){
-            getIsLike(router.query.id, userId).then((res) => {
-              setIsLike(res)
-            })
-          }
-      }
-      }, [])
-      useEffect(() => {
-        getReview(choiceP['placeId']).then((res) => {
-          setReviews(res)
-        })
-      }, [choiceP])
+      
+    useEffect(() => {
+      getReview(choiceP['placeId']).then((res) => {
+        setReviews(res)
+      })
+    }, [choiceP])
 
     return(
         <Div>
+            <Head>
+            <title>활동구역 상세 보기 | 지구-방위대</title>
+            </Head>
           <Content>
           <SearchBox>
           <Back
