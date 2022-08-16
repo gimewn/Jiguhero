@@ -12,6 +12,7 @@ import { useRouter } from "next/router";
 import { useRecoilState } from "recoil";
 import {nowJoinList} from 'states/mission'
 import { ParentsDiv } from 'styles/styled'
+import NMissionList from "components/nowjoinMissionList";
 
 
 const H2 = styled('h2')`
@@ -90,6 +91,9 @@ export default function nowJoin() {
   const [userId, setUserId] = useState();
   const [tmp, setTmp] = useState<string>();
   const [page, setPage] = useState(1);
+  const date = new Date();
+  const today = `${date.getFullYear()}-${('0' + (date.getMonth() + 1)).slice(-2)}-${date.getDate()}`
+  
   const OPTIONS = [
     { value: "time", name: "최신등록순" },
     { value: "likes", name: "좋아요순" },
@@ -228,7 +232,7 @@ function ButtonBox() {
           {count !== undefined ? 
       <>
         {JoinMissionData?.slice((page - 1) * 5, page * 5).map((item, index) => (
-          <MissionList key={index} {...item} />))}
+          <NMissionList key={index} {...item} />))}
         <Pagination page={page} totalcount={count} setPage={handlePageChange} />
       </> 
         :

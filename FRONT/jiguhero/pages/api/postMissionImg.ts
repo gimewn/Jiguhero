@@ -1,7 +1,10 @@
-import { BASE_URL, Token } from "pages/api/fetch";
+import { BASE_URL } from "pages/api/fetch";
 
 
 const PostMissionImg = async (createImg, userId, missionId) => {
+  const t =localStorage.getItem('access-token')
+  const token = t.substring(1,t.length-1)
+  const Token = `Bearer ${localStorage.getItem('access-token')}`
   const ImgForm = new FormData();
   ImgForm.append("file", createImg);
   // console.log(ImgForm)

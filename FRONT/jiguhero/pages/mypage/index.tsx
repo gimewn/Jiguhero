@@ -210,7 +210,7 @@ const Mypage = ({ data }) => {
   // 탭 전환
   const tab = useRecoilValue(tabpage);
   const setTab = useSetRecoilState(tabpage);
-
+  console.log(userGround)
   // 프로필
   function ProfileDiv() {
     return (
@@ -244,10 +244,10 @@ const Mypage = ({ data }) => {
 
     return (
       <>
-        {userMissionData?.slice((page - 1) * 5, page * 5).map((num) => (
-          <Link href={`/`} key={num}>
+        {userMissionData?.slice((page - 1) * 5, page * 5).map((item,index) => (
+          <Link href={`/mission/${item.missionId}`} key={index}>
             <a>
-              <Mis>{num}</Mis>
+              <Mis>{item.title}</Mis>
             </a>
           </Link>
         ))}
@@ -273,6 +273,7 @@ const Mypage = ({ data }) => {
     };
     console.log(userGroundData)
     return (
+      
       <>
         {userGroundData?.slice((page - 1) * 5, page * 5).map((dic) => (
           <Link href={`/ground/${dic.groundId}`} key={dic.title}>
@@ -290,6 +291,7 @@ const Mypage = ({ data }) => {
           onChange={handleChange}
         />
       </>
+      
     );
   }
 
@@ -377,20 +379,20 @@ export async function getServerSideProps(context) {
   const missionInfo2 = new QueryClient();
   const groundInfo2 = new QueryClient();
 
-  await userInfo2.prefetchQuery(["userInfo"], () => {
-    userData();
-  });
-  await missionInfo2.prefetchQuery(["missionUserInfo"], () => {
-    missionUserData();
-  });
-  await groundInfo2.prefetchQuery(["groundUserInfo"], () => {
-    groundUserData(context);
-  });
+  // await userInfo2.prefetchQuery(["userInfo"], () => {
+  //   userData();
+  // });
+  // await missionInfo2.prefetchQuery(["missionUserInfo"], () => {
+  //   missionUserData();
+  // });
+  // await groundInfo2.prefetchQuery(["groundUserInfo"], () => {
+  //   groundUserData(context);
+  // });
 
   return {
     props: {
       data: {
-        dehydratedState: dehydrate(userInfo2),
+        // dehydratedState: dehydrate(userInfo2),
       },
     },
   };

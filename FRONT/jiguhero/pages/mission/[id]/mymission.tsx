@@ -451,6 +451,7 @@ export default function MyMissionFeed() {
     if (missionId) {
       getDetail(router.query.id, 1).then((res) => {
         setMissionItem(res);
+        console.log(res)
         // setTestList(res)
         setMyImg(
           res.imageURL.filter((data) => {
@@ -467,6 +468,7 @@ export default function MyMissionFeed() {
           })
         );
 
+        
         getDong(res.gugunCode).then((item) => {
           const result = item.filter((dong) => {
             if (dong.dongCode === res.dongCode) {
@@ -497,10 +499,12 @@ export default function MyMissionFeed() {
       overflow-y: scroll;
       width: 100%;`;
 
+
       return () => {
         const scrollY = document.body.style.top;
         document.body.style.cssText = "";
         window.scrollTo(0, parseInt(scrollY || "0", 10) * -1);
+
       };
     }
   }, [Modal]);

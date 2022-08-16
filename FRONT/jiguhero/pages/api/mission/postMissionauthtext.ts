@@ -1,8 +1,11 @@
-import { BASE_URL, Token } from "pages/api/fetch";
+import { BASE_URL } from "pages/api/fetch";
 
 
 const PostMissionauthtext = async (content,missionId,userId,imageId) => {
-  console.log(imageId)
+  const t =localStorage.getItem('access-token')
+  const token = t.substring(1,t.length-1)
+  const Token = `Bearer ${localStorage.getItem('access-token')}`
+
   let Form = new FormData();
 
   Form["content"]= content

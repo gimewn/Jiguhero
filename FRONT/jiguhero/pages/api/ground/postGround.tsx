@@ -1,8 +1,11 @@
 
-import {BASE_URL, Token} from 'pages/api/fetch';
+import {BASE_URL} from 'pages/api/fetch';
 
 
 export default async function postGround(userId, emoji, title, content){
+    const t =localStorage.getItem('access-token')
+    const token = t.substring(1,t.length-1)
+    const Token = `Bearer ${localStorage.getItem('access-token')}`
     var today = new Date();
     var year = today.getFullYear();
     var month = ('0' + (today.getMonth() + 1)).slice(-2);

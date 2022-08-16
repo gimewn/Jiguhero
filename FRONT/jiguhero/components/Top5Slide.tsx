@@ -6,7 +6,7 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import getGround from 'pages/api/main/ground';
 import { dehydrate, Query, QueryClient, QueryClientProvider, useQuery } from "@tanstack/react-query";
-import { getSession, SessionProvider, useSession } from "next-auth/react";
+
 
 SwiperCore.use([Navigation, Pagination]);
   
@@ -46,13 +46,13 @@ export default function ShowGround5(){
 }
 export async function getServerSideProps(context) {
     const ground2 = new QueryClient()
-    const session = await getSession(context);
+
     await ground2.prefetchQuery(['ground'], ()=>{getGround()})
   
       return {
         props: {
           data: {
-            session,
+
             dehydratedState: dehydrate(ground2)
           },
         },

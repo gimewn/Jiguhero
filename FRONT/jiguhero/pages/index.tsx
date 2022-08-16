@@ -39,11 +39,13 @@ export default function Home() {
   const router = useRouter();
   const token = router?.query.token;
   const register = router?.query.REGISTER;
+  
 
   const [userId, setUserId] = useRecoilState(UserId)
   console.log(router.query)
 
   if (register === "REQUIRED") {
+    localStorage.setItem("access-token",JSON.stringify(token));
     router.push(`/user/${router.query.userid}/${token}`);
   }
 

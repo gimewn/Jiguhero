@@ -4,7 +4,7 @@ export default async function getMission() {
   const response = await fetch(BASE_URL + "home/mission", {
     method: "get",
     headers: {
-      Authorization: Token,
+
     },
   });
   const data = await response.json().catch(() => {});

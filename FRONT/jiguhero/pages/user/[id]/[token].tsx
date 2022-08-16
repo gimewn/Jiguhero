@@ -26,6 +26,13 @@ export default function User() {
   const userId = router.query.id;
 	const token = router.query.token
 
+  
+  useEffect(()=>{
+    console.log(token)
+    localStorage.setItem('access-token',token)
+
+  }, [])
+
   const changeHandler = (e) => {
     const file = e.target.files[0];
     if (file && file.type.substr(0, 5) === "image") {
@@ -124,7 +131,7 @@ export default function User() {
               const data = await signinUserNickname(nickInput, userId);
               setUserName(data.nickname)
               setUserIds(userId)
-							localStorage.setItem('access-token',token.toString())
+							
               router.push("/");
             }}
           >

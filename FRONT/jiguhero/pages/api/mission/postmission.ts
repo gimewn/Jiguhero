@@ -1,10 +1,13 @@
-import { BASE_URL, Token } from "../fetch";
+import { BASE_URL} from "../fetch";
 
 
 
 
 const PostNewMission = async (postdata) => {
-  console.log(postdata)
+  const t =localStorage.getItem('access-token')
+  const token = t.substring(1,t.length-1)
+  const Token = `Bearer ${localStorage.getItem('access-token')}`
+
   const Form = new FormData();
   
   Form.append("title", postdata.title);

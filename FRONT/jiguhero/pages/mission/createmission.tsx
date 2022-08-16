@@ -220,6 +220,7 @@ export default function Createmission() {
   const [ChoiceSido, setChoiceSido] = useState(["00", ""]);
   const [titleName,setTitleName] = useState('');
   const [peopleNum, setPeopleNum] = useState('10');
+  
   const { data: gugun } = useQuery(
     ["gugun", ChoiceSido],
     () => getGugun(ChoiceSido[0]),
@@ -235,6 +236,7 @@ export default function Createmission() {
       enabled: !!ChoiceGugun,
     }
   );
+
   const [ChoiceDong, setChoiceDong] = useState(["00", ""]);
 
   const postdata = {
@@ -321,7 +323,9 @@ export default function Createmission() {
             onChange={(date) => {
               console.log(date.toISOString());
               setStartDate(date);
-              setAstartDate(startDate.toISOString().split("T"));
+
+              setAstartDate(date.toISOString().split("T"));
+              console.log(astartDate)
             }}
             selectsStart
             locale={locale}

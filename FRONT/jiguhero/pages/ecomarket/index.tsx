@@ -325,7 +325,7 @@ export default function FullMap(props:any) {
   return (
     <Div>
     <Head>
-      <title>친환경 가게 찾기 | 지구-방위대</title>
+      <title>친환경 가게 지도 | 지구-방위대</title>
     </Head>
       <Content>
         <SearchBox>
