@@ -1,0 +1,151 @@
+@font-face {
+  font-family: 'PyeongChangPeace-Bold';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2206-02@1.0/PyeongChangPeace-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'PyeongChang-Regular';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2206-02@1.0/PyeongChang-Regular.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'PyeongChang-Bold';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2206-02@1.0/PyeongChang-Bold.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+
+* { 
+font-family: 'PyeongChang-Regular', 'PyeongChang-Bold', 'PyeongChangPeace-Bold', Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', sans-serif;
+}
+
+html,
+body {
+  margin: 0;
+  font-family: 'PyeongChang-Regular', 'PyeongChang-Bold', 'PyeongChangPeace-Bold', 'Pretendard', -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+}
+body{
+  justify-content: center;
+  overflow: auto;
+  position: relative;
+  height:100%;
+  width:100%;
+}
+body span, h3, p, h2, h1, h4, h5 {
+  color:#252525;
+}
+body::-webkit-scrollbar {
+  width: 0;
+}
+/* @media screen and (max-width: 650px){
+    padding-bottom:80px;
+  }
+} */
+
+#wrap {
+  min-height: 100%;
+  position: relative;
+  padding-bottom:80px;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* * :hover{
+  cursor: pointer;
+} */
+
+@media screen and (min-width: 375px){
+  .swiper{
+    width:300px;
+  }
+}
+@media screen and (min-width:450px){
+  .swiper{
+    width: 400px;
+  }
+}
+@media screen and (min-width: 550px){
+  .swiper{
+    width:500px;
+  }
+}
+@media screen and (min-width:700px){
+  .swiper{
+    width:650px;
+  }
+  .swiper-wrapper{
+    justify-content: center;
+  }
+}
+
+.swiper-slide{
+  width:120px !important;
+  margin: 5px;
+}
+
+.gr {
+  color: #808080;
+}
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 15px;
+}
+ul {
+  list-style: none;
+  padding: 0;
+}
+ul.pagination li {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1rem;
+}
+
+ul.pagination li a {
+  text-decoration: none;
+  color: #808080;
+  font-size: 1rem;
+}
+ul.pagination li.active a {
+  font-weight: 800;
+}
+ul.pagination li.active {
+  font-weight: 800;
+}
+ul.pagination li a:hover,
+ul.pagination li a.active {
+  color: #808080;
+}
+.page-selection {
+  /* width: 48px;
+  height: 30px;
+  color: #808080;
+*/
+  height: 60rem;
+  width: 100%;
+}
+
+#__next {
+  overflow: hidden;
+  /* height: 60rem; */
+  width: 100%;
+}
