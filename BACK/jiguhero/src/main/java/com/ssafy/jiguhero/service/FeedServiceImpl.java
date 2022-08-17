@@ -55,7 +55,7 @@ public class FeedServiceImpl implements FeedService {
         User userEntity = userDao.selectUserById(feedDto.getUserId());
         Image_Mission imageMission = imageDao.selectImageMissionById(feedDto.getImageId());
 
-        if(feedDao.searchFeed(userEntity)==null && LocalDate.now().compareTo(missionEntity.getStartDate()) >= 0) {
+        if(feedDao.selectFeed(missionEntity, userEntity)==null && LocalDate.now().compareTo(missionEntity.getStartDate()) >= 0) {
             feed.setContent(feedDto.getContent());
             feed.setRegtime(LocalDate.now());
             feed.setUser(userEntity);

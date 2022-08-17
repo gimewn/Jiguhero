@@ -150,7 +150,7 @@ public class MissionServiceImpl implements MissionService {
         Mission missionEntity = missionDao.selectMissionById(missionId);
         User userEntity = userDao.selectUserById(userId);
 
-        if(missionEntity.getStartDate().isAfter(LocalDate.now()) && missionEntity.getMaxPerson() > missionEntity.getNowPerson()) {
+        if(missionEntity.getStartDate().isAfter(LocalDate.now()) && missionEntity.getMaxPerson() > missionEntity.getNowPerson() && missionDao.selectConnMission(missionEntity, userEntity)==null) {
             connMission.setState("BEFORE");
             connMission.setRole(2);
             connMission.setSuccessRate(0);
