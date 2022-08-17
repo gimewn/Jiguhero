@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.PostConstruct;
@@ -21,10 +22,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class ImageServiceImpl implements ImageService {
@@ -128,6 +126,7 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
+    @Transactional
     public Long saveMissionImage(MultipartFile file, Long userId, Long missionId, int rep) {
         if (rep == 1) { // 대표 이미지 등록일 경우
             Image_Mission imageMission = imageDao.selectRepImageMission(missionDao.selectMissionById(missionId));
@@ -150,7 +149,18 @@ public class ImageServiceImpl implements ImageService {
         newImageMission.setUser(userDao.selectUserById(userId));
         newImageMission.setRegtime(LocalDateTime.now());
         if (rep == 1) newImageMission.setRep(true);
-        else newImageMission.setRep(false);
+        else {
+            List<Optional<Image_Mission>> imageMissions = imageDao.selectImageMissionByUserAndMission(userDao.selectUserById(userId), missionDao.selectMissionById(missionId));
+            for(Optional<Image_Mission> imageMission : imageMissions){
+                if(imageMission.isPresent()){
+                    if(imageMission.get().getRegtime().toString().substring(0, 10).equals(LocalDateTime.now().toString().substring(0, 10))){
+                        return (long)-1;
+                    }
+                }
+            }
+
+            newImageMission.setRep(false);
+        }
         Image_Mission insertedImageMission = imageDao.insertImageMission(newImageMission);
 
         return insertedImageMission.getImageId();

@@ -3,6 +3,7 @@ package com.ssafy.jiguhero.data.dao;
 import com.ssafy.jiguhero.data.entity.*;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ImageDao {
 
@@ -35,4 +36,6 @@ public interface ImageDao {
     Image_Promotion selectImagePromotion(Promotion promotion);
 
     void deleteImagePromotion(Image_Promotion imagePromotion) throws Exception;
+
+    List<Optional<Image_Mission>> selectImageMissionByUserAndMission(User selectUserById, Mission selectMissionById);
 }
