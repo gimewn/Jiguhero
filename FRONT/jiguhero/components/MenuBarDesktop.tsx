@@ -33,7 +33,7 @@ export default function UnderlineLink() {
     }else{
       setFlag(0)
     }
-  },[])
+  })
   
   return (
     <Menu id="NavBar">

@@ -101,8 +101,8 @@ interface MissionProps {
 
   entryPoint?: number;
   title?: string;
-  startDate?: number;
-  endDate?: number;
+  startDate?: string;
+  endDate?: string;
   sidoCode?: string;
   nowPerson?: number;
   maxPerson?: number;
@@ -122,10 +122,16 @@ export default function NMissionList({ today, missionId, entryPoint, title, star
       }
     })})
   }, [])
+ 
   return (
     <>
-    {Number(endDate) < Number(today) && (
-      <List onClick={()=>{alert("이미 종료된 임무입니다!")}}>
+  
+    
+
+      <List onClick={() => {
+        
+        router.push(`/mission/${missionId}/mymission`)
+        }}>
       <ListImg image={repImageURL} />
       <ListContent>
         <TextWrapper>
@@ -137,35 +143,7 @@ export default function NMissionList({ today, missionId, entryPoint, title, star
         <PointBtn>+{entryPoint}</PointBtn>
       </ListContent>
     </List>
-    )}
-    {Number(startDate) > Number(today) && (
-      <List onClick={()=>{alert("임무가 아직 시작되지 않았습니다!")}}>
-      <ListImg image={repImageURL} />
-      <ListContent>
-        <TextWrapper>
-          <TitleName>{title}</TitleName>
-          <Name>{sido}</Name>
-          <Date>{startDate}~{endDate}</Date>
-          <JoinPeople>{nowPerson} / {maxPerson}명</JoinPeople>
-        </TextWrapper>
-        <PointBtn>+{entryPoint}</PointBtn>
-      </ListContent>
-    </List>
-    )}
-    {Number(endDate) > Number(today) && Number(startDate)<Number(today) && (
-      <List onClick={() => router.push(`/mission/${missionId}/mymission`)}>
-      <ListImg image={repImageURL} />
-      <ListContent>
-        <TextWrapper>
-          <TitleName>{title}</TitleName>
-          <Name>{sido}</Name>
-          <Date>{startDate}~{endDate}</Date>
-          <JoinPeople>{nowPerson} / {maxPerson}명</JoinPeople>
-        </TextWrapper>
-        <PointBtn>+{entryPoint}</PointBtn>
-      </ListContent>
-    </List>
-    )}
+ 
       
     </>
   )
