@@ -2,9 +2,17 @@ import { BASE_URL } from "pages/api/fetch";
 
 
 const PostMissionauthtext = async (content,missionId,userId,imageId) => {
-  const t =localStorage.getItem('access-token')
-  const token = t.substring(1,t.length-1)
-  const Token = `Bearer ${localStorage.getItem('access-token')}`
+  const t = localStorage.getItem("access-token");
+  let token;
+  if (t.includes('"')){
+    const res = t.substring(1, t.length - 1);
+    token = `Bearer ${res}`
+  }else{
+    token = `Bearer ${localStorage.getItem('access-token')}`
+  }
+  // const token = t.substring(1, t.length - 1);
+  // const Token = `Bearer ${localStorage.getItem('access-token')}`
+
 
   let Form = new FormData();
 
@@ -17,7 +25,7 @@ const PostMissionauthtext = async (content,missionId,userId,imageId) => {
   const response = await fetch(`${BASE_URL}feed`, {
     method: "POST",
     headers: {
-      Authorization: Token,
+      Authorization: token,
       "Content-Type": "application/json",
     },
     body: JSON.stringify(Form),

@@ -108,12 +108,12 @@ interface MissionProps {
   maxPerson?: number;
   repImageURL?: string;
   missionId?: number;
+  today?: string;
 }
 
-export default function NMissionList({ missionId, entryPoint, title, startDate, endDate, sidoCode, nowPerson, maxPerson, repImageURL }: MissionProps) {
+export default function NMissionList({ today, missionId, entryPoint, title, startDate, endDate, sidoCode, nowPerson, maxPerson, repImageURL }: MissionProps) {
   const router = useRouter();
   const [sido, setSido] = useState();
- 
   useEffect(()=>{
     getSido().then((res) => {
       res.filter((item)=>{
@@ -124,7 +124,7 @@ export default function NMissionList({ missionId, entryPoint, title, startDate, 
   }, [])
   return (
     <>
-    {endDate<today && (
+    {Number(endDate) < Number(today) && (
       <List onClick={()=>{alert("이미 종료된 임무입니다!")}}>
       <ListImg image={repImageURL} />
       <ListContent>
@@ -138,7 +138,7 @@ export default function NMissionList({ missionId, entryPoint, title, startDate, 
       </ListContent>
     </List>
     )}
-    {startDate> today && (
+    {Number(startDate) > Number(today) && (
       <List onClick={()=>{alert("임무가 아직 시작되지 않았습니다!")}}>
       <ListImg image={repImageURL} />
       <ListContent>
@@ -152,7 +152,7 @@ export default function NMissionList({ missionId, entryPoint, title, startDate, 
       </ListContent>
     </List>
     )}
-    {endDate> today && startDate<today && (
+    {Number(endDate) > Number(today) && Number(startDate)<Number(today) && (
       <List onClick={() => router.push(`/mission/${missionId}/mymission`)}>
       <ListImg image={repImageURL} />
       <ListContent>

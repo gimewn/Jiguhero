@@ -232,7 +232,7 @@ function ButtonBox() {
           {count !== undefined ? 
       <>
         {JoinMissionData?.slice((page - 1) * 5, page * 5).map((item, index) => (
-          <NMissionList key={index} {...item} />))}
+          <NMissionList key={index} today={today} {...item} />))}
         <Pagination page={page} totalcount={count} setPage={handlePageChange} />
       </> 
         :

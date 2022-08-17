@@ -2,9 +2,17 @@ import { BASE_URL} from "pages/api/fetch";
 
 
 const PostNewMission = async (postdata) => {
-  const t =localStorage.getItem('access-token')
-  const token = t.substring(1,t.length-1)
-  const Token = `Bearer ${localStorage.getItem('access-token')}`
+  const t = localStorage.getItem("access-token");
+  let token;
+  if (t.includes('"')){
+    const res = t.substring(1, t.length - 1);
+    token = `Bearer ${res}`
+  }else{
+    token = `Bearer ${localStorage.getItem('access-token')}`
+  }
+  // const token = t.substring(1, t.length - 1);
+  // const Token = `Bearer ${localStorage.getItem('access-token')}`
+
   console.log(postdata.startDate)
   console.log(postdata.endDate)
   let Form = new FormData();
@@ -23,7 +31,7 @@ const PostNewMission = async (postdata) => {
   const response = await fetch(`${BASE_URL}mission?userId=${postdata.userId}`, {
     method: "POST",
     headers: {
-      Authorization: Token,
+      Authorization: token,
       "Content-Type": "application/json",
     },
     body: JSON.stringify(Form),
