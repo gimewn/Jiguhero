@@ -3,7 +3,7 @@ import ArrowBackIosRoundedIcon from "@mui/icons-material/ArrowBackIosRounded";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import Modal from "components/modal";
-import { Token, BASE_URL } from "pages/api/fetch";
+// import { Token, BASE_URL } from "pages/api/fetch";
 import LocationOnRoundedIcon from '@mui/icons-material/LocationOnRounded';
 import SourceRoundedIcon from '@mui/icons-material/SourceRounded';
 import getSido from 'pages/api/ecomarket/getSido';
@@ -16,6 +16,8 @@ import { dehydrate, Query, QueryClient, QueryClientProvider, useQuery } from "@t
 import { getSession} from "next-auth/react";
 import { InfoBtn } from "pages/ground/[id]";
 import Head from 'next/head';
+import getMyGps from 'pages/api/ecomarket/getMyGps';
+
 const Div = styled("div")`
   position: relative;
 `;
@@ -235,13 +237,7 @@ export default function FullMap(props:any) {
   function getFetch(lat, lon, map) {
     var imageSrc =
       "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png";
-    fetch(BASE_URL + `map?lat=${lat}&lng=${lon}`, {
-      method: "get",
-      headers: {
-        Authorization: Token,
-      },
-    })
-      .then((res) => res.json())
+    getMyGps(lat, lon)
       .then((res) => {
         setData(res)
         for (var i = 0; i < res?.length; i++) {

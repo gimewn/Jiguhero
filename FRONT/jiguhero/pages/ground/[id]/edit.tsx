@@ -6,7 +6,6 @@ import { Title } from '../createground';
 import { Input } from '../createground';
 import { PickerDiv } from '../createground';
 import { EmojiDiv } from '../createground';
-import { Picker } from '../createground';
 import { Emoji } from '../createground';
 import { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
@@ -17,12 +16,14 @@ import { Grid } from '../myground';
 import PlaceModal from 'components/PlaceModal';
 import putGround from 'pages/api/ground/putGround';
 import getPlaceList from 'pages/api/ground/getPlaceList';
+import dynamic from 'next/dynamic';
 import { CloseBtn } from 'components/modal';
 import { useRecoilState } from "recoil";
 import deletePlace from 'pages/api/ground/deletePlace';
 import { groundDetail } from 'states/ground';
 import {groundPlaceList} from 'states/ground';
 import Head from 'next/head';
+export const Picker = dynamic(() => import('emoji-picker-react'), { ssr: false });
 
 const NewPickerDiv = styled(PickerDiv)`
     width:100%;
