@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import NowJoin from "components/NowJoinLists";
 import Head from "next/head";
 import { ButtonFull, ButtonBorder } from "styles/styled";
 import Backcomponents from "components/back";
@@ -86,7 +85,7 @@ const ButtonGroup = styled("div")`
 `;
 
 
-export default function nowJoin() {
+export default function NowJoin() {
   const [JoinMissionData, setJoinMissionData] = useState([]);
   const [userId, setUserId] = useState();
   const [tmp, setTmp] = useState<string>();

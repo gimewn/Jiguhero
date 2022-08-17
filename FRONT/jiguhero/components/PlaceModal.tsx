@@ -290,7 +290,7 @@ export default function PlaceModal(prop){
             {choicePlace.address_name ? <ChoiceContent>지번 : {choicePlace.address_name}</ChoiceContent> : <></>}
             {choicePlace.phone ? <ChoiceContent>전화번호 : {choicePlace.phone}</ChoiceContent> : <></>}
             <ChoiceContent style={{marginBottom:'0'}}>
-              <a href={choicePlace.place_url} target="_blank" style={{color:'#65ace2'}}>🔗 카카오맵 바로 가기</a>
+              <a href={choicePlace.place_url} target="_blank" rel="noreferrer" style={{color:'#65ace2'}}>🔗 카카오맵 바로 가기</a>
               </ChoiceContent>
               <ButtonDiv>
                 <ButtonFull dColor='#98c064' hColor='#98c064' style={{marginRight:'10px'}} onClick={()=>{setShowResultList(true)}}>취소</ButtonFull>

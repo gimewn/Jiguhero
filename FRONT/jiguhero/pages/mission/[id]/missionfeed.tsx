@@ -128,7 +128,7 @@ export default function MissionFeed() {
   const [feedUserInfoLists, setFeedUserInfoLists] =
     useRecoilState(feedUserInfoList);
 
-  const [missionList, setMissionList] = useRecoilState<[][]>(allauthImgList);
+  const [missionList, setMissionList] = useRecoilState(allauthImgList);
 
   const [feedImgLists, setFeedImgLists] = useRecoilState(feedImgList);
   const [grd, setGrd] = useState<number>();

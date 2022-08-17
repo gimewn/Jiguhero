@@ -338,25 +338,25 @@ interface MissionProps {
 // }
 
 //내가 참여중인 미션 보여주는 함수
-function NowMission() {
-  const router = useRouter();
-  return (
-    <List onClick={() => router.push(`1`)}>
-      {/* <ListImg image={repImageURL} /> */}
-      <ListImg />
-      <ListContent>
-        <TextWrapper>
-          <TitleName>제목</TitleName>
-          <Name>지역</Name>
-          <Date>시작 날짜~끝 날짜</Date>
-          <JoinPeople>1 / 5명</JoinPeople>
-        </TextWrapper>
-        {/* </div> */}
-        <PointBtn>+200</PointBtn>
-      </ListContent>
-    </List>
-  );
-}
+// function NowMission() {
+//   const router = useRouter();
+//   return (
+//     <List onClick={() => router.push(`1`)}>
+//       {/* <ListImg image={repImageURL} /> */}
+//       <ListImg />
+//       <ListContent>
+//         <TextWrapper>
+//           <TitleName>제목</TitleName>
+//           <Name>지역</Name>
+//           <Date>시작 날짜~끝 날짜</Date>
+//           <JoinPeople>1 / 5명</JoinPeople>
+//         </TextWrapper>
+//         {/* </div> */}
+//         <PointBtn>+200</PointBtn>
+//       </ListContent>
+//     </List>
+//   );
+// }
 
 //달성률 & 인증샷 버튼 그룹
 function ButtonGroup() {
@@ -681,7 +681,9 @@ export default function MyMissionFeed() {
                             missionId,
                             userId,
                             imageId
-                          );
+                          ).then(res=>{
+                            console.log(res)
+                          })
                           setPreview("");
                           setModal(false);
                           getDetail(router.query.id, 1).then((res) => {

@@ -5,6 +5,8 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import styled from 'styled-components';
 import { ParentsDiv } from "styles/styled";
+import slide from 'public/slide.png';
+import Image from 'next/image';
 
 SwiperCore.use([Navigation, Pagination]);
 
@@ -35,17 +37,17 @@ const Content = styled('div')`
         margin:10px;
     } */
 `
-const Image = styled('img')`
-    max-width: 800px;
-    width:100%;
-`
+// const Image = styled('img')`
+//     max-width: 800px;
+//     width:100%;
+// `
 
 
 export default function Banner(){
     return(
         <BannerDiv>
             <Content>
-                <Image src="슬라이드1.png" />
+                <Image src={slide} />
             </Content>
         </BannerDiv>
     )

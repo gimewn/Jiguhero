@@ -34,6 +34,7 @@ const PostMissionauthtext = async (content,missionId,userId,imageId) => {
   const data = await response.json().catch((error) => {
       console.error("Error:", error);
     });
+  console.log(data)
   return data
 };
 

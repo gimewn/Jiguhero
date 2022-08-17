@@ -147,6 +147,8 @@ interface Idata {
   name: string;
   grade: number;
   point: number;
+  imageURL: string;
+  nickname: string;
 }
 
 const Mypage = ({ data }) => {
@@ -158,10 +160,33 @@ const Mypage = ({ data }) => {
   const [gradeName, setGradeName] = useState("");
   const [color1, setColor1] = useState("");
   const [color2, setColor2] = useState("");
-  const [userIn, setUserIn] = useState<Object>();
+  const [userIn, setUserIn] = useState<Idata>();
   const [userGroundData, setUserGroundData] = useState([]);
   const [userMissionData, setUserMissionData] = useState([]);
   const [grade, setGrade] = useState(0);
+
+  const theme = {
+    Bbalgang: {
+      first: " #FF4848 ",
+      second: " #FFD362"
+    },
+    Parang: {
+      first: "#4B5DFF",
+      second: "#FF4FAE"
+    },
+    Chorok: {
+      first: "#349724",
+      second: " #FF6B6B"
+    },
+    Norang: {
+      first: " #FFC700",
+      second: "#8FAA73"
+    },
+    Bunhong: {
+      first: " #FF9898",
+      second: "#7379AA"
+    }
+  };
 
   useEffect(() => {
     const usersId =  JSON.parse(localStorage.getItem("recoil-persist")).userId;
@@ -175,16 +200,10 @@ const Mypage = ({ data }) => {
   
   }, []);
 
-  // 리액트쿼리 정보 받기
-  // const { data: userIn } = useQuery(["user", { userId }], userData);
-  // const { data: userGroundData } = useQuery(
-  //   ["userGround", { userId }],
-  //   userGround
-  // );
-  // const { data: userMissionData } = useQuery(
-  //   ["userMission", { userId }],
-  //   userMission
-  // );
+
+  console.log(userIn)
+
+
 
   useEffect(() => {
     if (grade === 0) {
@@ -377,29 +396,29 @@ const Mypage = ({ data }) => {
   );
 };
 
-export async function getServerSideProps(context) {
-  const session2 = new QueryClient();
-  const userInfo2 = new QueryClient();
-  const missionInfo2 = new QueryClient();
-  const groundInfo2 = new QueryClient();
+// export async function getServerSideProps(context) {
+//   const session2 = new QueryClient();
+//   const userInfo2 = new QueryClient();
+//   const missionInfo2 = new QueryClient();
+//   const groundInfo2 = new QueryClient();
 
-  // await userInfo2.prefetchQuery(["userInfo"], () => {
-  //   userData();
-  // });
-  // await missionInfo2.prefetchQuery(["missionUserInfo"], () => {
-  //   missionUserData();
-  // });
-  // await groundInfo2.prefetchQuery(["groundUserInfo"], () => {
-  //   groundUserData(context);
-  // });
+//   // await userInfo2.prefetchQuery(["userInfo"], () => {
+//   //   userData();
+//   // });
+//   // await missionInfo2.prefetchQuery(["missionUserInfo"], () => {
+//   //   missionUserData();
+//   // });
+//   // await groundInfo2.prefetchQuery(["groundUserInfo"], () => {
+//   //   groundUserData(context);
+//   // });
 
-  return {
-    props: {
-      data: {
-        // dehydratedState: dehydrate(userInfo2),
-      },
-    },
-  };
-}
+//   return {
+//     props: {
+//       data: {
+//         // dehydratedState: dehydrate(userInfo2),
+//       },
+//     },
+//   };
+// }
 
 export default Mypage;

@@ -35,18 +35,18 @@ export default function NowJoinLists() {
 }
 
 
-export async function getServerSideProps(context) {
-  const joinList = new QueryClient()
-  const session = await getSession(context);
-  await joinList.prefetchQuery(['missions'], () => { JoinMission() })
+// export async function getServerSideProps(context) {
+//   const joinList = new QueryClient()
+//   const session = await getSession(context);
+//   await joinList.prefetchQuery(['missions'], () => { JoinMission() })
 
-  return {
-    props: {
-      data: {
-        session,
-        dehydratedState: dehydrate(joinList)
-      },
-    },
-  };
+//   return {
+//     props: {
+//       data: {
+//         session,
+//         dehydratedState: dehydrate(joinList)
+//       },
+//     },
+//   };
 
-}
+// }

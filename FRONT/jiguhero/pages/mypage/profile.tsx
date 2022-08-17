@@ -333,8 +333,4 @@ export default function Profile({ data }) {
 //       },
 //     },
 //   };
-<<<<<<< HEAD
 // }
-=======
-// }
->>>>>>> e6537df2d0ab48f4db004ff1145a85a7f1dac738

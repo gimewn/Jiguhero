@@ -14,6 +14,61 @@ import { UserId, UserName } from "states/user";
 // import ConfirmValidationInput from "../components/validationInput";
 // import regex from "../components/regex";
 
+
+
+//styled-components
+
+const Nick = styled("div")``;
+
+const SignUpWrapper = styled("div")`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
+
+const SignUpText = styled("h1")`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1.8rem;
+`;
+const CameraBox = styled("div")`
+  width: 150px;
+  height: 150px;
+  background-color: #ffffff;
+  border-radius: 100px;
+  box-shadow: 0px 0px 5px 0px #dadce0 inset;
+  border: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  svg {
+  }
+  img {
+    object-fit: cover;
+    width: 150px;
+    height: 150px;
+    border-radius: 100px;
+  }
+`;
+const CameraBtn = styled("div")`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 2rem;
+`;
+
+const ButtonStack = styled("div")`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 60px;
+`;
+
+
+
+
 export default function User() {
   const router = useRouter();
   const [userIds, setUserIds] = useRecoilState(UserId)
@@ -29,7 +84,7 @@ export default function User() {
   
   useEffect(()=>{
     console.log(token)
-    localStorage.setItem('access-token',token)
+    localStorage.setItem('access-token',token.toString())
 
   }, [])
 
@@ -147,52 +202,3 @@ export default function User() {
   );
 }
 
-//styled-components
-
-const Nick = styled("div")``;
-
-const SignUpWrapper = styled("div")`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-`;
-
-const SignUpText = styled("h1")`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 1.8rem;
-`;
-const CameraBox = styled("div")`
-  width: 150px;
-  height: 150px;
-  background-color: #ffffff;
-  border-radius: 100px;
-  box-shadow: 0px 0px 5px 0px #dadce0 inset;
-  border: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  svg {
-  }
-  img {
-    object-fit: cover;
-    width: 150px;
-    height: 150px;
-    border-radius: 100px;
-  }
-`;
-const CameraBtn = styled("div")`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 2rem;
-`;
-
-const ButtonStack = styled("div")`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding-top: 60px;
-`;

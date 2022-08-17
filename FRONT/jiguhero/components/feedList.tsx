@@ -133,6 +133,28 @@ export default function FeedList( item, index ) {
   const [color1, setColor1] = useState("");
   const [color2, setColor2] = useState("");
 
+  const theme = {
+    Bbalgang: {
+      first: " #FF4848 ",
+      second: " #FFD362"
+    },
+    Parang: {
+      first: "#4B5DFF",
+      second: "#FF4FAE"
+    },
+    Chorok: {
+      first: "#349724",
+      second: " #FF6B6B"
+    },
+    Norang: {
+      first: " #FFC700",
+      second: "#8FAA73"
+    },
+    Bunhong: {
+      first: " #FF9898",
+      second: "#7379AA"
+    }
+  };
 
   useEffect(() => {
     var mama = [];

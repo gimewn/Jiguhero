@@ -8,7 +8,7 @@ export const theme: DefaultTheme = {
 	},
   Parang: {
 		first: "#4B5DFF",
-		second: " #FF4FAE"
+		second: "#FF4FAE"
 	},
 	Chorok: {
 		first: "#349724",
