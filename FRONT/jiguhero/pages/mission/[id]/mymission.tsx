@@ -412,7 +412,7 @@ function ButtonGroup() {
           </CertifyFullBtn>
         )}
       </ButtonWrapper>
-      {tab ? <Achievement /> : <Certification />}
+
     </>
   );
 }

@@ -10,8 +10,7 @@ import deleteGround from 'pages/api/ground/deleteGround';
 import { useRecoilState } from "recoil";
 import {myGroundList} from 'states/ground';
 import Head from 'next/head';
-import getUser from 'pages/api/user/[id]';
-import {userName} from 'states/user'
+
 
 export const Grid = styled('div')`
     display:grid;

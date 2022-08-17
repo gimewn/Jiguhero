@@ -8,10 +8,11 @@ import { useRouter } from "next/router";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { useEffect } from "react";
 import { UserId, UserName } from "states/user";
+import Banner from "components/Banner";
 
 const Mapping = styled("div")`
   width: 100%;
-  height: 450px;
+  height: 300px;
   @media screen and (min-width: 600px) {
     height: 500px;
   }
