@@ -65,18 +65,6 @@ public class CustomSimpleUrlAuthenticationSuccessHandler extends SimpleUrlAuthen
         // add cookie to response
         response.addCookie(cookie);
 
-//        // add sameSite, domain option in cookie
-//        ResponseCookie cookie = ResponseCookie.from("refreshToken", tokenMapping.getRefreshToken())
-//                .domain("i7c105.p.ssafy.io")
-//                .sameSite("None")
-//                .secure(true)
-//                .path("/")
-//                .maxAge(30 * 24 * 60 * 60)
-//                .build();
-//
-//        // add cookie to response
-//        response.setHeader("Set-Cookie", cookie.toString());
-
         getRedirectStrategy().sendRedirect(request, response, targetUrl);
     }
 

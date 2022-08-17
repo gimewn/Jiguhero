@@ -177,7 +177,6 @@ public class GroundServiceImpl implements GroundService {
         }
 
         groundDao.deleteGroundById(groundId);
-
         return "success";
     }
 

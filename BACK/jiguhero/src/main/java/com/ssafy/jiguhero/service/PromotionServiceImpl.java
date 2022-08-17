@@ -100,6 +100,7 @@ public class PromotionServiceImpl implements PromotionService {
     @Override
     public String getPromotionImageURL(Long promotionId, HttpServletRequest request) {
         Image_Promotion imagePromotion = imageDao.selectImagePromotion(promotionDao.selectPromotion(promotionId));
+
         if (imagePromotion == null) return null; // 이미지가 없을 경우 null 반환
 
         String saveFile = imagePromotion.getSaveFile();

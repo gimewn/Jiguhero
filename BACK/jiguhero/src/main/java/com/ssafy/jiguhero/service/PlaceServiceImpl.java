@@ -89,7 +89,6 @@ public class PlaceServiceImpl implements PlaceService{
     public List<ReviewDto> getReviews(String placeId) {
         Place placeEntity = placeDao.selectPlaceById(placeId);
         List<Review> joinReviewList = placeDao.selectJoinReviewByPlace(placeEntity);
-
         List<ReviewDto> dtoList = joinReviewList.stream().map(entity -> ReviewDto.of(entity)).collect(Collectors.toList());
         return dtoList;
     }
