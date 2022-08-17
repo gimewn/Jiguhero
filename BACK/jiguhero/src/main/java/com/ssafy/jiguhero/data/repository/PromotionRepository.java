@@ -12,4 +12,7 @@ public interface PromotionRepository extends JpaRepository<Promotion, Long> {
     // 소식 Top3 최신등록순
     List<Promotion> findTop3ByOrderByRegtimeDesc();
 
+    List<Promotion> findAllByOrderByRegtimeDesc();
+
+    List<Promotion> findByTitleContaining(String keyword);
 }

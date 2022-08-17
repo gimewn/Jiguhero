@@ -1,9 +1,8 @@
 package com.ssafy.jiguhero.data.dao;
 
-import com.ssafy.jiguhero.data.entity.Conn_Mission;
-import com.ssafy.jiguhero.data.entity.Like_Mission;
-import com.ssafy.jiguhero.data.entity.Mission;
-import com.ssafy.jiguhero.data.entity.User;
+import com.ssafy.jiguhero.data.dto.FeedDto;
+import com.ssafy.jiguhero.data.dto.MissionDto;
+import com.ssafy.jiguhero.data.entity.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -25,7 +24,9 @@ public interface MissionDao {
     // 전체 all_mission 인스터스 목록
     List<Mission> selectAllMission();
 
-    void insertMission(Mission mission);
+    List<Mission> selectAllMission(String array);
+
+    Mission insertMission(Mission mission);
 
     void insertConnMission(Conn_Mission connMission);
 
@@ -35,7 +36,7 @@ public interface MissionDao {
 
     void deleteLikeMission(Mission mission, User user);
 
-    Optional<Conn_Mission> selectConnMission(Mission mission, User user);
+    Conn_Mission selectConnMission(Mission mission, User user);
 
     void deleteConnMission(Mission mission);
 
@@ -43,4 +44,18 @@ public interface MissionDao {
 
     void deleteLikeMission(Mission mission);
 
+    Mission updateMission(MissionDto missionDto) throws Exception;
+
+    List<Mission> searchMission(String search, String array);
+
+    List<Conn_Mission> selectAllConnMissionByMission(Mission mission);
+
+    // 임무의 시작 여부 확인
+    void updateConnMissionStart(Conn_Mission connMission);
+
+    // 임무의 종료 여부 확인
+    void updateConnMissionEnd(Conn_Mission connMission);
+
+    // 종료된 임무의 미션에 성공한 유저에게 포인트 지급
+    void providePoint(Conn_Mission connMission);
 }

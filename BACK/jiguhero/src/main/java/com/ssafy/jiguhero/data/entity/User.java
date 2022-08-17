@@ -10,7 +10,6 @@ import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
-import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,23 +31,24 @@ public class User {
     private String password;
 
     @Email
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String email;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private Boolean emailVerified = false;
 
-    @NotNull
     @Enumerated(EnumType.STRING)
+    @Column(nullable = true)
     private Provider provider;
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = true)
     private Role role;
 
     @Column(nullable = true)
     private String nickname;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String name;
 
     @Column(nullable = true)
@@ -65,6 +65,17 @@ public class User {
 
     @OneToOne(mappedBy = "user")
     private Image_User imageUser;
+
+    ///////////////////////////////////////////////////////////////////
+    @OneToMany(mappedBy = "user")
+    List<Feed> feed = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    List<Like_Feed> like_feed = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    List<Mission> mission = new ArrayList<>();
+    ///////////////////////////////////////////////////////////////////
 
     public static User of(UserDto userDto) {
         User userEntity = ModelMapperUtils.getModelMapper().map(userDto, User.class);

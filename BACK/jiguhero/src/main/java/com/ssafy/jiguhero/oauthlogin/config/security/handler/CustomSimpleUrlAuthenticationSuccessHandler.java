@@ -1,5 +1,6 @@
 package com.ssafy.jiguhero.oauthlogin.config.security.handler;
 
+import com.ssafy.jiguhero.data.dto.UserDto;
 import com.ssafy.jiguhero.data.repository.UserRepository;
 import com.ssafy.jiguhero.oauthlogin.advice.assertThat.DefaultAssert;
 import com.ssafy.jiguhero.oauthlogin.config.security.OAuth2Config;
@@ -12,6 +13,7 @@ import com.ssafy.jiguhero.oauthlogin.repository.auth.TokenRepository;
 import com.ssafy.jiguhero.oauthlogin.service.auth.CustomTokenProviderService;
 
 import com.ssafy.jiguhero.service.UserService;
+import org.springframework.http.ResponseCookie;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
@@ -75,23 +77,30 @@ public class CustomSimpleUrlAuthenticationSuccessHandler extends SimpleUrlAuthen
         String targetUrl = redirectUri.orElse(getDefaultTargetUrl());
 
         Token token = Token.builder()
-                            .userEmail(tokenMapping.getUserEmail())
-                            .refreshToken(tokenMapping.getRefreshToken())
-                            .build();
+                .userEmail(tokenMapping.getUserEmail())
+                .refreshToken(tokenMapping.getRefreshToken())
+                .build();
         tokenRepository.save(token);
 
-        // 처음 로그인한 유저라면 quertParam에 key : REGISTER / value : REQUIRED 저장
-        if(userService.getUserByEmail(tokenMapping.getUserEmail()).getRole().equals(Role.REGISTER)){
+        UserDto user = userService.getUserByEmail(tokenMapping.getUserEmail());
+
+        // 처음 로그인한 유저라면 queryParam에 key : REGISTER / value : REQUIRED 저장
+        if(user.getRole().equals("REGISTER")){
             return UriComponentsBuilder.fromUriString(targetUrl)
                     .queryParam("token", tokenMapping.getAccessToken())
                     .queryParam("REGISTER", "REQUIRED")
-                    .build().toUriString();
+                    .queryParam("email", user.getEmail())
+                    .queryParam("userid", user.getUserId())
+                    .build().encode().toUriString();
         }
 
-        // queryParam에 Access Token 저장
+        // 회원가입이 완료된 유저라면 quertParam에 key : REGISTER / value : DONE 저장
         return UriComponentsBuilder.fromUriString(targetUrl)
                 .queryParam("token", tokenMapping.getAccessToken())
-                .build().toUriString();
+                .queryParam("REGISTER", "DONE")
+                .queryParam("email", user.getEmail())
+                .queryParam("userid", user.getUserId())
+                .build().encode().toUriString();
     }
 
     protected void clearAuthenticationAttributes(HttpServletRequest request, HttpServletResponse response) {

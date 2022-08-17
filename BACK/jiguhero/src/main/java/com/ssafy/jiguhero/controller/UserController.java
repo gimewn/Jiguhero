@@ -2,6 +2,7 @@ package com.ssafy.jiguhero.controller;
 
 import com.ssafy.jiguhero.data.dto.GroundDto;
 import com.ssafy.jiguhero.data.dto.UserDto;
+import com.ssafy.jiguhero.service.ImageService;
 import com.ssafy.jiguhero.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -20,16 +22,20 @@ public class UserController {
 
     private final UserService userService;
 
+    private final ImageService imageService;
+
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService, ImageService imageService) {
         this.userService = userService;
+        this.imageService = imageService;
     }
 
     @ApiOperation(value = "user_id로 유저 정보를 조회해 반환한다.", response = UserDto.class)
     @GetMapping("/{user_id}")
-    public ResponseEntity<UserDto> getUserById(@PathVariable("user_id") Long userId) {
+    public ResponseEntity<UserDto> getUserById(@PathVariable("user_id") Long userId, HttpServletRequest request) {
         UserDto result = userService.getUserById(userId);
-
+        String url = userService.getProfileImageURL(userId, request);
+        result.setImageURL(url);
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
@@ -60,6 +66,28 @@ public class UserController {
         }
 
         return ResponseEntity.status(HttpStatus.OK).body(userDto);
+    }
+
+    @ApiOperation(value = "user_id에 해당하는 유저를 삭제한다.(유저 정보 null로 바꾸기)", response = UserDto.class)
+    @DeleteMapping("/{user_id}")
+    public ResponseEntity<UserDto> deleteUser(@PathVariable("user_id") Long userId) {
+        UserDto userDto = userService.getUserById(userId);
+        // 토큰 지우기
+        try {
+            userService.deleteToken(userDto.getEmail());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        UserDto deletedUser = null;
+        // 회원정보 null로 바꾸기
+        try {
+            deletedUser = userService.deleteUser(userId);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(deletedUser);
     }
 
 }

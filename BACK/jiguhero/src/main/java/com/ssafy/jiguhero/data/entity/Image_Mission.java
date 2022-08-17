@@ -44,5 +44,7 @@ public class Image_Mission {
     @JoinColumn(name = "userId")
     private User user;
 
+    @OneToOne(mappedBy = "imageMission")
+    private Feed feed;
 
 }

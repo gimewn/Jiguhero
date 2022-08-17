@@ -3,6 +3,7 @@ package com.ssafy.jiguhero.data.dao;
 import com.ssafy.jiguhero.data.entity.*;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface GroundDao {
 
@@ -20,4 +21,24 @@ public interface GroundDao {
     Ground selectGround(Long groundId);
 
     List<Ground> selectGroundByUser(User userEntity);
+
+    void insertGround(Ground groundEntity);
+
+    void insertConnGround(Conn_Ground connGroundEntity);
+
+    List<Conn_Ground> selectConnGroundByGround(Ground groundEntity);
+
+    void deleteConnGroundById(long connGroundId);
+
+    void deleteGroundById(Long groundId);
+
+    Optional<Like_Ground> selectLikeGround(Ground groundEntity, User userEntity);
+
+    void insertLikeGround(Like_Ground likeGround);
+
+    void deleteLikeGround(Ground groundEntity, User userEntity);
+
+    void modifyGround(Ground groundEntity);
+
+    Optional<Ground> findById(Long groundId);
 }

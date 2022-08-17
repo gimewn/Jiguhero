@@ -1,5 +1,6 @@
 package com.ssafy.jiguhero.controller;
 
+import com.ssafy.jiguhero.data.dto.FeedDto;
 import com.ssafy.jiguhero.data.dto.GroundDto;
 import com.ssafy.jiguhero.data.dto.MissionDto;
 import com.ssafy.jiguhero.service.MissionService;
@@ -36,62 +37,104 @@ public class MissionController {
 
     @ApiOperation(value = "user_id에 해당하는 유저가 참여중인 임무 리스트를 반환한다.", response = List.class)
     @GetMapping("/{user_id}/joins")
-    public ResponseEntity<List<MissionDto>> getJoinMissions(@PathVariable("user_id") Long userId) {
-        List<MissionDto> list = missionService.getJoinMissions(userId);
+    public ResponseEntity<List<MissionDto>> getJoinMissions(@PathVariable("user_id") Long userId, HttpServletRequest request) {
+        List<MissionDto> list = missionService.getJoinMissions(userId, request);
 
         return ResponseEntity.status(HttpStatus.OK).body(list);
     }
 
-    @ApiOperation(value = "전체 임무 리스트를 반환한다.", response = List.class)
-    @GetMapping("/")
-    public ResponseEntity<List<MissionDto>> getAllMissions() {
-        List<MissionDto> list = missionService.getAllMissions();
+    @ApiOperation(value = "전체 임무 리스트를 제목순(title) or 조회순(hits) or 등록순(time)으로 반환한다.", response = List.class)
+    @GetMapping()
+    public ResponseEntity<List<MissionDto>> getAllMissions(HttpServletRequest request, @RequestParam("array") String array) {
+        List<MissionDto> list = missionService.getAllMissions(request, array);
 
         return ResponseEntity.status(HttpStatus.OK).body(list);
     }
 
-    @ApiOperation(value = "해당 임무의 모든 정보를 반환한다.", response = String.class) // 좋아요 클릭 여부/ 기능 추가해야 함 o
+    @ApiOperation(value = "임무를 상세보기 한다.", response = String.class) // 좋아요 클릭 여부/ 기능 추가해야 함 o
     @GetMapping("/{mission_id}/details")
-    public ResponseEntity<MissionDto> getMission(@PathVariable("mission_id") Long missionId, @RequestParam("user_id") Long userId) {
-        MissionDto result = missionService.getMissionById(missionId, userId);
+    public ResponseEntity<MissionDto> getMission(@PathVariable("mission_id") Long missionId, @RequestParam("userId") Long userId, HttpServletRequest request) {
+        MissionDto result = missionService.getMissionById(missionId, userId, request);
 
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
-    @ApiOperation(value = "새로운 임무를 등록한다.", response = String.class) // missionServiceImpl 확인!!! Conn_Mission도 추가해야함(임무 작성한 대원 저장 등)
-    @PostMapping("/")
-    public ResponseEntity<String> saveMission(@RequestBody MissionDto missionDto, @RequestParam("user_id") Long userId) {
+    @ApiOperation(value = "임무를 등록한다.", response = Long.class)
+    @PostMapping
+    public ResponseEntity<Long> saveMission(@RequestBody MissionDto missionDto, @RequestParam("userId") Long userId) {
+        Long savedMissionId = missionService.insertMission(missionDto, userId);
 
-        missionService.saveMission(missionDto, userId);
-
-        return new ResponseEntity<String>("success", HttpStatus.OK);
-        // missionServiceImpl 확인!!! Conn_Mission도 추가해야함(임무 작성한 대원 저장 등)
+        return new ResponseEntity<Long>(savedMissionId, HttpStatus.OK);
     }
 
-    @ApiOperation(value = "해당 임무에 참여한다.", response = String.class)
-    @PostMapping("/{mission_id}/details")
-    public ResponseEntity<String> saveMission(@RequestParam("user_id") Long userId, @RequestParam("mission_id") Long missionId) {
+    @ApiOperation(value = "임무에 참여한다.", response = String.class)
+    @PostMapping("/join")
+    public ResponseEntity<String> joinMission(@RequestParam("userId") Long userId, @RequestParam("missionId") Long missionId) {
+        int check = missionService.joinMission(userId, missionId);
 
-        missionService.joinMission(userId, missionId);
-        return new ResponseEntity<String>("success", HttpStatus.OK);
+        if(check == 1) {
+            return new ResponseEntity<String>("success", HttpStatus.OK);
+        }
+        else {
+            return new ResponseEntity<String>("fail", HttpStatus.OK);
+        }
     }
 
-    @ApiOperation(value = "해당 임무의 '좋아요'를 클릭한다.", response = List.class)
+    @ApiOperation(value = "임무의 '좋아요'를 클릭한다.", response = List.class)
     @PostMapping("/{mission_id}/hearts")
-    public ResponseEntity<String> saveLikeMission(@PathVariable("mission_id") Long missionId, @RequestParam("user_id") Long userId) {
+    public ResponseEntity<String> saveLikeMission(@PathVariable("mission_id") Long missionId, @RequestParam("userId") Long userId) {
         int check = missionService.likeMission(missionId, userId);
 
-        if(check == 1) return new ResponseEntity<String>("success", HttpStatus.OK);
-        else return new ResponseEntity<String>("deletesuccess", HttpStatus.OK);
+        if(check == 1) {
+            return new ResponseEntity<String>("success", HttpStatus.OK);
+        }
+        else {
+            return new ResponseEntity<String>("deletesuccess", HttpStatus.OK);
+        }
     }
 
-    @ApiOperation(value = "해당 임무를 삭제한다.", response = List.class)
+    @ApiOperation(value = "임무를 삭제한다.", response = List.class)
     @DeleteMapping("/{mission_id}/details")
-    public ResponseEntity<String> deleteMission(@PathVariable("mission_id") Long missionId, @RequestParam("user_id") Long userId) {
+    public ResponseEntity<String> deleteMission(@PathVariable("mission_id") Long missionId, @RequestParam("userId") Long userId) {
         int check = missionService.deleteMission(missionId, userId);
 
-        if(check == 1) return new ResponseEntity<String>("success", HttpStatus.OK);
-        else return new ResponseEntity<String>("unauthorized", HttpStatus.OK);
-
+        if(check == 1) {
+            return new ResponseEntity<String>("success", HttpStatus.OK);
+        }
+        else {
+            return new ResponseEntity<String>("fail", HttpStatus.OK);
+        }
     }
+
+    @ApiOperation(value = "임무의 세부 내용을 변경한다", response = String.class)
+    @PutMapping("/{mission_id}/details")
+    public ResponseEntity<MissionDto> updateMission(@PathVariable("mission_id") Long missionId, @RequestBody MissionDto missionDto, @RequestParam("userId") Long userId) {
+        MissionDto missionDtoResult = null;
+        missionDto.setMissionId(missionId);
+        try {
+            missionDtoResult = missionService.updateMission(missionDto, userId);
+        }
+        catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(missionDtoResult);
+    }
+
+    @ApiOperation(value = "검색어로 검색한 임무 리스트 목록을 제목순(title) or 조회순(hits) or 등록순(time)으로 반환한다")
+    @GetMapping("/search")
+    public ResponseEntity<List<MissionDto>> searchMission(@RequestParam("search") String search, @RequestParam("array") String array, HttpServletRequest request){
+        List<MissionDto> list = missionService.searchMission(search, array, request);
+
+        return ResponseEntity.status(HttpStatus.OK).body(list);
+    }
+
+    @ApiOperation(value = "임무의 달성률을 반환한다")
+    @GetMapping("/{mission_id}/rate")
+    public ResponseEntity<Integer> successRateMission(@PathVariable("mission_id") Long missionId, @RequestParam("userId") Long userId){
+        int list = missionService.searchSuccessRate(missionId, userId);
+
+        return ResponseEntity.status(HttpStatus.OK).body(list);
+    }
+
 }

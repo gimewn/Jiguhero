@@ -1,21 +1,17 @@
 package com.ssafy.jiguhero.service;
 
 import com.ssafy.jiguhero.config.FileUploadProperties;
-import com.ssafy.jiguhero.data.dao.ImageDao;
-import com.ssafy.jiguhero.data.dao.MissionDao;
-import com.ssafy.jiguhero.data.dao.PlaceDao;
-import com.ssafy.jiguhero.data.dao.UserDao;
-import com.ssafy.jiguhero.data.entity.Image_Mission;
-import com.ssafy.jiguhero.data.entity.Image_Place;
-import com.ssafy.jiguhero.data.entity.Image_User;
-import com.ssafy.jiguhero.data.entity.User;
+import com.ssafy.jiguhero.data.dao.*;
+import com.ssafy.jiguhero.data.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.PostConstruct;
+import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -26,10 +22,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class ImageServiceImpl implements ImageService {
@@ -39,14 +32,16 @@ public class ImageServiceImpl implements ImageService {
     private final UserDao userDao;
     private final PlaceDao placeDao;
     private final MissionDao missionDao;
+    private final PromotionDao promotionDao;
 
     @Autowired
-    public ImageServiceImpl(FileUploadProperties fileUploadProperties, ImageDao imageDao, UserDao userDao, PlaceDao placeDao, MissionDao missionDao) {
+    public ImageServiceImpl(FileUploadProperties fileUploadProperties, ImageDao imageDao, UserDao userDao, PlaceDao placeDao, MissionDao missionDao, PromotionDao promotionDao) {
         this.dirPath = Paths.get(fileUploadProperties.getPath()).toAbsolutePath().normalize();
         this.imageDao = imageDao;
         this.userDao = userDao;
         this.placeDao = placeDao;
         this.missionDao = missionDao;
+        this.promotionDao = promotionDao;
     }
 
     @Override
@@ -80,12 +75,16 @@ public class ImageServiceImpl implements ImageService {
         map.put("origin_file", originalFileName);
         map.put("save_file", saveFileName);
         map.put("save_folder", File.separator + target + File.separator + today);
+        map.put("date", today);
 
         return map;
     }
 
     @Override
-    public String saveUserImage(MultipartFile file, Long userId) {
+    public String saveUserImage(MultipartFile file, Long userId, HttpServletRequest request) {
+        if(file.isEmpty()){
+            return "failed";
+        }
         // 이미 프로필 이미지가 등록되어 있는지 확인
         User user = userDao.selectUserById(userId);
         Image_User imageUser = imageDao.selectImageUser(user);
@@ -106,7 +105,9 @@ public class ImageServiceImpl implements ImageService {
         newImageUser.setUser(userDao.selectUserById(userId));
         imageDao.insertImageUser(newImageUser);
 
-        return map.get("save_file");
+        String url = request.getRequestURL().toString().replace(request.getRequestURI(),"") + "/image/" + map.get("save_file") + "?target=user&date=" + map.get("date");
+
+        return url;
     }
 
     @Override
@@ -125,7 +126,19 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
-    public String saveMissionImage(MultipartFile file, Long userId, Long missionId) {
+    @Transactional
+    public Long saveMissionImage(MultipartFile file, Long userId, Long missionId, int rep) {
+        if (rep == 1) { // 대표 이미지 등록일 경우
+            Image_Mission imageMission = imageDao.selectRepImageMission(missionDao.selectMissionById(missionId));
+            if (imageMission != null) { // 대표 이미지가 이미 등록되어 있을 경우
+                try {
+                    imageDao.deleteImageMission(imageMission);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+
         Map<String, String> map = saveImage(file, "mission");
 
         Image_Mission newImageMission = new Image_Mission();
@@ -135,10 +148,59 @@ public class ImageServiceImpl implements ImageService {
         newImageMission.setMission(missionDao.selectMissionById(missionId));
         newImageMission.setUser(userDao.selectUserById(userId));
         newImageMission.setRegtime(LocalDateTime.now());
-        newImageMission.setRep(false); // 대표 이미지 X
-        imageDao.insertImageMission(newImageMission);
+        if (rep == 1) newImageMission.setRep(true);
+        else {
+            List<Optional<Image_Mission>> imageMissions = imageDao.selectImageMissionByUserAndMission(userDao.selectUserById(userId), missionDao.selectMissionById(missionId));
+            for(Optional<Image_Mission> imageMission : imageMissions){
+                if(imageMission.isPresent()){
+                    if(imageMission.get().getRegtime().toString().substring(0, 10).equals(LocalDateTime.now().toString().substring(0, 10))){
+                        return (long)-1;
+                    }
+                }
+            }
 
-        return map.get("save_file");
+            newImageMission.setRep(false);
+        }
+        Image_Mission insertedImageMission = imageDao.insertImageMission(newImageMission);
+
+        return insertedImageMission.getImageId();
+    }
+
+    @Override
+    public String savePromotionImage(MultipartFile file, Long promotionId, HttpServletRequest request) {
+        // 이미 이미지가 등록되어 있는지 확인
+        Promotion promotion = promotionDao.selectPromotion(promotionId);
+        Image_Promotion imagePromotion = imageDao.selectImagePromotion(promotion);
+        if (imagePromotion != null) { // 이미지가 이미 등록되어 있을 경우
+            try {
+                imageDao.deleteImagePromotion(imagePromotion);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        Map<String, String> map = saveImage(file, "promotion");
+
+        Image_Promotion newImagePromotion = new Image_Promotion();
+        newImagePromotion.setOriginFile(map.get("origin_file"));
+        newImagePromotion.setSaveFile(map.get("save_file"));
+        newImagePromotion.setSaveFolder(map.get("save_folder"));
+        newImagePromotion.setPromotion(promotion);
+        imageDao.insertImagePromotion(newImagePromotion);
+
+        String url = request.getRequestURL().toString().replace(request.getRequestURI(),"") + "/image/" + map.get("save_file") + "?target=promotion&date=" + map.get("date");
+
+        return url;
+    }
+
+    @Override
+    public void deleteMissionImage(Long imageId) {
+        Image_Mission imageMission = imageDao.selectImageMissionById(imageId);
+        try {
+            imageDao.deleteImageMission(imageMission);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -156,6 +218,7 @@ public class ImageServiceImpl implements ImageService {
             throw new FileNotFoundException("Could not download file");
         }
     }
+
 
 
 }

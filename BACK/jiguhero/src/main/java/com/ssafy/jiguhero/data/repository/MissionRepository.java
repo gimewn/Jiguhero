@@ -18,4 +18,13 @@ public interface MissionRepository extends JpaRepository<Mission, Long> {
     // 임무 Top3 참여자순
     List<Mission> findTop3ByOrderByNowPersonDesc();
 
+    List<Mission> findAllByTitleContainingOrderByTitleAsc(String search);
+
+    List<Mission> findAllByTitleContainingOrderByRegtimeDesc(String search);
+
+    List<Mission> findAllByTitleContainingOrderByHitsDesc(String search);
+
+    List<Mission> findAllByOrderByHitsDesc();
+
+    List<Mission> findAllByOrderByRegtimeDesc();
 }

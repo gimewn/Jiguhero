@@ -9,7 +9,10 @@ import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -22,17 +25,22 @@ public class Mission {
     @Column(name = "mission_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long missionId;
+    
+    private LocalDateTime regtime;
 
     @Column(nullable = false)
     private String title;
 
+    @Column(nullable = true)
+    private String content;
+
     @Column(nullable = false, name = "start_date")
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime startDate;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate startDate;
 
     @Column(nullable = false, name = "end_date")
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime endDate;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate endDate;
 
     @Column(nullable = false, name = "enrty_point")
     private int entryPoint;
@@ -61,6 +69,14 @@ public class Mission {
     @Column(nullable = false)
     private int hits;
 
+    ///////////////////////////////////////////////////////////////////
+    @OneToMany(mappedBy = "mission")
+    List<Feed> feed = new ArrayList<>();
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "userId")
+    private User user;
+    ///////////////////////////////////////////////////////////////////
     public static Mission of(MissionDto missionDto) {
         Mission missionEntity = ModelMapperUtils.getModelMapper().map(missionDto, Mission.class);
 

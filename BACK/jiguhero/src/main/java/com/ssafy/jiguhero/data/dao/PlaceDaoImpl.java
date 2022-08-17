@@ -64,4 +64,9 @@ public class PlaceDaoImpl implements PlaceDao{
     public void deleteReview(Long reviewId) {
         reviewRepository.deleteById(reviewId);
     }
+
+    @Override
+    public void savePlace(Place placeEntity) {
+        placeRepository.save(placeEntity);
+    }
 }

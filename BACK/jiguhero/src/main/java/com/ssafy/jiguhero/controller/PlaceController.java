@@ -34,6 +34,14 @@ public class PlaceController {
         return ResponseEntity.status(HttpStatus.OK).body(list);
     }
 
+    @ApiOperation(value = "장소를 등록한다.")
+    @PostMapping("/")
+    public ResponseEntity<String> savePlace(@RequestBody PlaceDto placeDto){
+        System.out.println(placeDto.toString());
+        placeService.savePlace(placeDto);
+        return new ResponseEntity<String>("success", HttpStatus.OK);
+    }
+
     @ApiOperation(value = "특정 장소에 대한 정보를 반환한다.", response = PlaceDto.class)
     @GetMapping("/get/{place_id}")
     public ResponseEntity<PlaceDto> getPlace(@PathVariable("place_id") String placeId, HttpServletRequest request){
@@ -54,8 +62,8 @@ public class PlaceController {
     @PostMapping("/review")
     public ResponseEntity<String> saveReview(
             @RequestBody ReviewDto review,
-            @RequestParam("place_id") String placeId,
-            @RequestParam("user_id") Long userId){
+            @RequestParam("placeId") String placeId,
+            @RequestParam("userId") Long userId){
         placeService.saveReview(review, placeId, userId);
 
         return new ResponseEntity<String>("success", HttpStatus.OK);
@@ -71,13 +79,11 @@ public class PlaceController {
     @PostMapping("/report")
     public ResponseEntity<String> saveReport(
             @RequestBody ReportDto report,
-            @RequestParam("place_id") String placeId,
-            @RequestParam("user_id") Long userId){
+            @RequestParam("placeId") String placeId,
+            @RequestParam("userId") Long userId){
         placeService.saveReport(report, placeId, userId);
 
         return new ResponseEntity<String>("success", HttpStatus.OK);
     }
-
-
 
 }

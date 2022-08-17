@@ -16,4 +16,8 @@ public interface UserService {
 
     UserDto changeUserNickname(Long userId, String nickname) throws Exception;
 
+    UserDto deleteUser(Long userId) throws Exception;
+
+    void deleteToken(String userEmail) throws Exception;
+
 }

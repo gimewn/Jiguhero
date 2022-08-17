@@ -19,4 +19,6 @@ public interface PlaceDao {
     List<Place> selectAll();
 
     void deleteReview(Long reviewId);
+
+    void savePlace(Place placeEntity);
 }

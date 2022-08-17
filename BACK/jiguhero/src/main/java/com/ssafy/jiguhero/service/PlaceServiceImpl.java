@@ -57,6 +57,7 @@ public class PlaceServiceImpl implements PlaceService{
     }
 
     @Override
+    @Transactional
     public List<String> getPlaceImageURL(String placeId, HttpServletRequest request) {
         List<Image_Place> imagePlaces = imageDao.selectImagePlaces(placeDao.selectPlaceById(placeId));
         List<String> urlList = new ArrayList<>();
@@ -67,7 +68,7 @@ public class PlaceServiceImpl implements PlaceService{
             String sep = saveFolder.substring(0,1);
             if (sep.equals("\\")) sep = "\\\\";
             String target = saveFolder.split(sep)[1];
-            String date = saveFolder.split(sep)[2];
+            String date = saveFolder.   split(sep)[2];
             String url = request.getRequestURL().toString().replace(request.getRequestURI(),"") + "/image/" + saveFile + "?target=" + target + "&date=" + date;
 
             urlList.add(url);
@@ -77,16 +78,23 @@ public class PlaceServiceImpl implements PlaceService{
     }
 
     @Override
+    @Transactional
+    public void savePlace(PlaceDto placeDto) {
+        Place placeEntity = Place.of(placeDto);
+        placeDao.savePlace(placeEntity);
+    }
+
+    @Override
     @Transactional(readOnly = true)
     public List<ReviewDto> getReviews(String placeId) {
         Place placeEntity = placeDao.selectPlaceById(placeId);
         List<Review> joinReviewList = placeDao.selectJoinReviewByPlace(placeEntity);
-
         List<ReviewDto> dtoList = joinReviewList.stream().map(entity -> ReviewDto.of(entity)).collect(Collectors.toList());
         return dtoList;
     }
 
     @Override
+    @Transactional
     public void saveReview(ReviewDto review, String placeId, Long userId) {
         Review reviewEntity = Review.of(review);
         Place placeEntity = placeDao.selectPlaceById(placeId);
@@ -97,6 +105,7 @@ public class PlaceServiceImpl implements PlaceService{
     }
 
     @Override
+    @Transactional
     public void saveReport(ReportDto report, String placeId, Long userId) {
         Report reportEntity = Report.of(report);
         Place placeEntity = placeDao.selectPlaceById(placeId);
@@ -107,6 +116,7 @@ public class PlaceServiceImpl implements PlaceService{
     }
 
     @Override
+    @Transactional
     public void deleteReview(Long reviewId) {
         placeDao.deleteReview(reviewId);
     }
