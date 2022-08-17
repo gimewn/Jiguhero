@@ -87,6 +87,7 @@ export default function GroundDetail(){
     const [userId, setUserId] = useState();
   
     useEffect(()=>{
+
         const usersId = JSON.parse(localStorage.getItem('recoil-persist')).userId
         setUserId(usersId)
     }, [])

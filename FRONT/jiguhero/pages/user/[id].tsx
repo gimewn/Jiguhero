@@ -34,6 +34,8 @@ export default function User() {
       setUserImg(null);
     }
   };
+  
+
   useEffect(() => {
     if (userImg) {
       const reader = new FileReader();

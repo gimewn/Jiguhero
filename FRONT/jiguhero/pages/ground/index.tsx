@@ -131,6 +131,7 @@ export default function GroundList(){
     // const {data:AllGround} = useQuery(['allGround'], getAllGround) //리스트에 나타낼 아이템
     const [groundList, setGroundList] = useState([])
     useEffect(()=>{
+  
         getAllGround().then((res) => {
             console.log(res)
             setGroundList(res)})

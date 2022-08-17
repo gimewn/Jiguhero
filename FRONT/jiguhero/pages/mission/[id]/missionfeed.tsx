@@ -17,6 +17,7 @@ import userData from "pages/api/user/[id]";
 import getFeedInfo from "pages/api/mission/getFeedInfo";
 import { theme } from "components/theme";
 import FeedList from "components/feedList";
+import { useRouter } from "next/router";
 
 const H2 = styled("h2")`
   margin-left: 20px;
@@ -140,7 +141,9 @@ export default function MissionFeed() {
   const [color1, setColor1] = useState("");
   const [color2, setColor2] = useState("");
 
+  const router = useRouter()
 
+ 
 
 
 

@@ -376,6 +376,7 @@ export default function MissionDetail() {
   const today = `${date.getFullYear()}-${('0' + (date.getMonth() + 1)).slice(-2)}-${date.getDate()}`
 
   useEffect(()=>{
+
       setUserId(JSON.parse(localStorage.getItem('recoil-persist')).userId)
       if(router.query.id && JSON.parse(localStorage.getItem('recoil-persist')).userId){
         getDetail(router.query.id, JSON.parse(localStorage.getItem('recoil-persist')).userId).then((res)=>{setMissionDetail(res)

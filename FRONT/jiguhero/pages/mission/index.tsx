@@ -133,6 +133,7 @@ function ButtonBox() {
 export default function Mission({ data }) {
   // const [cate, setCate] = useState<string>("time"); // 카테고리 최신순, 조회순, 이름순
   // const [flag, setFlag] = useState(false) // false 검색어 없는 전체 목록, true 검색어 있는 목록
+  const router = useRouter()
   const [cmd, setCmd] = useState<string>('');
   const [page, setPage] = useState(1);
   const [missions, setMissions] = useState([
@@ -160,6 +161,7 @@ export default function Mission({ data }) {
   //   setMissions(Missions)
   // }
   useEffect(()=>{
+
     getMission().then((res)=>setMissions(res))
   }, [])
   

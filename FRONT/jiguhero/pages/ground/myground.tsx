@@ -164,6 +164,7 @@ export default function GroundList(){
     const [userId, setUserId] = useState();
   
     useEffect(()=>{
+   
         const usersId = JSON.parse(localStorage.getItem('recoil-persist')).userId
         setUserId(usersId)
         getMyGround(Number(JSON.parse(localStorage.getItem('recoil-persist')).userId)).then((res) => setGroundList(res))

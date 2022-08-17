@@ -150,6 +150,8 @@ interface Idata {
 }
 
 const Mypage = ({ data }) => {
+
+  
   const router = useRouter();
   const [recoiluser, setRecoiluser ] = useRecoilState(UserId)
   const [userId, setUserId] = useState();
@@ -162,8 +164,10 @@ const Mypage = ({ data }) => {
   const [grade, setGrade] = useState(0);
 
   useEffect(() => {
-    const usersId = JSON.parse(localStorage.getItem("recoil-persist")).userId;
+    const usersId =  JSON.parse(localStorage.getItem("recoil-persist")).userId;
     setUserId(usersId);
+    
+   
     userData(usersId).then((data) => setUserIn(data));
     userGround(usersId).then((data) => setUserGroundData(data));
     userMission(usersId).then((data) => setUserMissionData(data));

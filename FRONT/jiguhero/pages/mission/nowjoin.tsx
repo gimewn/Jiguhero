@@ -93,15 +93,18 @@ export default function nowJoin() {
   const [page, setPage] = useState(1);
   const date = new Date();
   const today = `${date.getFullYear()}-${('0' + (date.getMonth() + 1)).slice(-2)}-${date.getDate()}`
-  
+  const router = useRouter()
   const OPTIONS = [
     { value: "time", name: "최신등록순" },
     { value: "likes", name: "좋아요순" },
     { value: "person", name: "참여자순" },
   ];
   const count: number = JoinMissionData?.length
+  
+
   useEffect(()=>{
     const usersId = JSON.parse(localStorage.getItem('recoil-persist')).userId
+   
     setUserId(usersId)
     JoinMission(JSON.parse(localStorage.getItem('recoil-persist')).userId).then((res)=>{
       setJoinMissionData(res)
@@ -170,6 +173,7 @@ function ButtonBox() {
 }
   return (
     <ParentsDiv>
+     
       {/* 헤더 */}
       <Head>
       <title>참여 중인 임무 | 지구-방위대</title>

@@ -85,6 +85,7 @@ export default function EditGround(){
     const [userId, setUserId] = useState();
   
     useEffect(()=>{
+
         if(router.query.id){
             const usersId = JSON.parse(localStorage.getItem('recoil-persist')).userId
             setUserId(usersId)

@@ -251,7 +251,9 @@ export default function Createmission() {
     userId,
     content,
   };
+  useEffect(()=>{
 
+  })
   // 미션 사진 등록
   function MissionPicture() {
     const changeHandler = (e) => {

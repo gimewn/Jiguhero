@@ -223,6 +223,7 @@ export default function FullMap(props:any) {
   const [reviews, setReviews] = useState([]);
 
   useEffect(()=>{
+
     window.kakao.maps.load(function(){moveMyGps()})
   }, [])
   useEffect(() => {

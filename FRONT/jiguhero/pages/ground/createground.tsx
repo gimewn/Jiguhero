@@ -66,6 +66,7 @@ export default function MakeGround(){
     const [userId, setUserId] = useState();
   
     useEffect(()=>{
+
         const usersId = JSON.parse(localStorage.getItem('recoil-persist')).userId
         setUserId(usersId)
     }, [])

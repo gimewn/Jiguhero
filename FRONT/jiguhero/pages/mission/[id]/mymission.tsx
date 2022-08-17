@@ -4,8 +4,18 @@ import Backcomponents from "components/back";
 import MissionModal from "components/MissionModal";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { allauthImgList, missionTabpage, myauthImgList, otherauthImgList } from "states/mission";
-import { RecoilState, useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import {
+  allauthImgList,
+  missionTabpage,
+  myauthImgList,
+  otherauthImgList,
+} from "states/mission";
+import {
+  RecoilState,
+  useRecoilState,
+  useRecoilValue,
+  useSetRecoilState,
+} from "recoil";
 import React, { useState, useEffect } from "react";
 import ProgressBar from "@ramonak/react-progress-bar";
 import ImageList from "@mui/material/ImageList";
@@ -292,7 +302,6 @@ const MissionBtn = styled(ButtonFull)`
   margin-bottom: 30px;
 `;
 
-
 const ModalBack = styled("div")`
   position: absolute;
   background-color: rgba(0, 0, 0, 0.5);
@@ -408,8 +417,6 @@ function ButtonGroup() {
   );
 }
 
-
-
 export default function MyMissionFeed() {
   const router = useRouter();
   const missionId = router.query.id;
@@ -424,14 +431,11 @@ export default function MyMissionFeed() {
   const [percent, setPercent] = useState<number>(0);
   const [createImg, setCreateimg] = useState<File>(null); // 모달 이미지 파일
   const [preview, setPreview] = useState<string>(); // 이미지 미리보기 사진
-  const [textarea, setTextarea] = useState<string>() // 모달 텍스트
-  const [userId, setUserId] = useRecoilState(UserId)
-  const [missionItem, setMissionItem] = useRecoilState(allauthImgList)
-  const [myImg, setMyImg] = useRecoilState(myauthImgList)
-  const [otherImg, setOtherImg] = useRecoilState(otherauthImgList)
-
-
-
+  const [textarea, setTextarea] = useState<string>(); // 모달 텍스트
+  const [userId, setUserId] = useRecoilState(UserId);
+  const [missionItem, setMissionItem] = useRecoilState(allauthImgList);
+  const [myImg, setMyImg] = useRecoilState(myauthImgList);
+  const [otherImg, setOtherImg] = useRecoilState(otherauthImgList);
 
   useEffect(() => {
     if (createImg) {
@@ -446,12 +450,12 @@ export default function MyMissionFeed() {
   }, [createImg]);
 
   useEffect(() => {
-
+   
     setUserId(userId);
     if (missionId) {
       getDetail(router.query.id, 1).then((res) => {
         setMissionItem(res);
-        console.log(res)
+        console.log(res);
         // setTestList(res)
         setMyImg(
           res.imageURL.filter((data) => {
@@ -460,6 +464,7 @@ export default function MyMissionFeed() {
             }
           })
         );
+
         setOtherImg(
           res.imageURL.filter((data) => {
             if (data[2] !== userId) {
@@ -468,30 +473,25 @@ export default function MyMissionFeed() {
           })
         );
 
-        
         getDong(res.gugunCode).then((item) => {
           const result = item.filter((dong) => {
             if (dong.dongCode === res.dongCode) {
               setRegion(dong.dongName);
               return dong;
             }
-
           });
         });
       });
       getPercent(missionId, userId).then((res) => {
- 
         setPercent(res);
       });
     }
   }, []);
-  // console.log(percent)
-  // console.log(missionItem)
-  // console.log(myImg)
-  // console.log(otherImg)
+
+
+
   useEffect(() => {
     if (Modal === false) {
-
     } else {
       document.body.style.cssText = `
       position: fixed; 
@@ -499,12 +499,10 @@ export default function MyMissionFeed() {
       overflow-y: scroll;
       width: 100%;`;
 
-
       return () => {
         const scrollY = document.body.style.top;
         document.body.style.cssText = "";
         window.scrollTo(0, parseInt(scrollY || "0", 10) * -1);
-
       };
     }
   }, [Modal]);
@@ -517,7 +515,7 @@ export default function MyMissionFeed() {
     }
   };
 
-  console.log(percent)
+  console.log(percent);
   //달성률 버튼 클릭하면 연두색 인증샷 버튼 클릭하면 하얀색!
   const [tabColor, setTabColor] = useState(true);
   return (
@@ -619,12 +617,10 @@ export default function MyMissionFeed() {
         <>
           <AchieveWrapper>
             <Text>달성률</Text>
-            <Text2>~일만 더 인증하면 성공이에요!</Text2>
           </AchieveWrapper>
 
           <ProgressWrapper>
             <Progress completed={percent} bgColor={"#65ACE2"} />
-
           </ProgressWrapper>
 
           <CertifyWrapper>
@@ -659,29 +655,48 @@ export default function MyMissionFeed() {
                       ) : (
                         <CameraBox>
                           <PhotoCamera fontSize="large" />
-
                         </CameraBox>
                       )}
-
                     </IconButton>
-                    
 
-
-                    <MissionText onChange={(e)=>{
-                      setTextarea(e.target.value)
-                    }}   placeholder="문구를 입력해 주세요!"></MissionText>
+                    <MissionText
+                      onChange={(e) => {
+                        setTextarea(e.target.value);
+                      }}
+                      placeholder="문구를 입력해 주세요!"
+                    ></MissionText>
 
                     <div className="inputBtn">
-                      <MissionBtn dColor="#98C064" hColor="#65ACE2" onClick={async (e)=>{
-                        e.preventDefault()
-                        const imageId= await PostMissionauthImg(createImg,missionId,userId)
-                        PostMissionauthtext(textarea,missionId,userId,imageId)
-                        setPreview('')
-                        setModal(false)
-                      }}>
+                      <MissionBtn
+                        dColor="#98C064"
+                        hColor="#65ACE2"
+                        onClick={async (e) => {
+                          const imageId = await PostMissionauthImg(
+                            createImg,
+                            missionId,
+                            userId
+                          );
+                          PostMissionauthtext(
+                            textarea,
+                            missionId,
+                            userId,
+                            imageId
+                          );
+                          setPreview("");
+                          setModal(false);
+                          getDetail(router.query.id, 1).then((res) => {
+                            setMyImg(
+                              res.imageURL.filter((data) => {
+                                if (data[2] === userId) {
+                                  return data;
+                                }
+                              })
+                            );
+                          });
+                        }}
+                      >
                         등록하기
                       </MissionBtn>
-
                     </div>
                   </ModalBody>
                 </ModalDiv>
@@ -690,27 +705,24 @@ export default function MyMissionFeed() {
             )}
           </CertifyWrapper>
           <>
-          {myImg ? (
-            <CertifyFeed>
-            <ImageList sx={{ width: 350 }} cols={3} rowHeight={130}>
-                {myImg.map((item, index) => (
-                <ImageListItem key={index} >
-                  <img
-                    src={`${item[1]}&w=164&h=164&fit=crop&auto=format`}
-                    srcSet={`${item[1]}&w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
-                    loading="lazy"
-                    onClick={()=>{
-                      router.push(`/mission/${missionId}/missionfeed`)
-                    }}
-                  />
-                </ImageListItem>
-              ))}
-                
-            </ImageList>
-          </CertifyFeed>
-
-          ): null }
-            
+            {myImg ? (
+              <CertifyFeed>
+                <ImageList sx={{ width: 350 }} cols={3} rowHeight={130}>
+                  {myImg.map((item, index) => (
+                    <ImageListItem key={index}>
+                      <img
+                        src={`${item[1]}&w=164&h=164&fit=crop&auto=format`}
+                        srcSet={`${item[1]}&w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
+                        loading="lazy"
+                        onClick={() => {
+                          router.push(`/mission/${missionId}/missionfeed`);
+                        }}
+                      />
+                    </ImageListItem>
+                  ))}
+                </ImageList>
+              </CertifyFeed>
+            ) : null}
           </>
         </>
       ) : (
@@ -728,8 +740,8 @@ export default function MyMissionFeed() {
                       src={`${item[1]}&w=164&h=164&fit=crop&auto=format`}
                       srcSet={`${item[1]}&w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
                       loading="lazy"
-                      onClick={()=>{
-                        router.push(`/mission/${missionId}/missionfeed`)
+                      onClick={() => {
+                        router.push(`/mission/${missionId}/missionfeed`);
                       }}
                     />
                   </ImageListItem>

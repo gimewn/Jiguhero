@@ -44,7 +44,7 @@ export default function Login() {
               <Image src={NaverImg} alt="Naver" />
             </a>
           </SnsLoginNaver>
-          <button onClick={() => { }}>Logout</button>
+        
         </main>
       </LoginWrapper>
     </>

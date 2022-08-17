@@ -28,6 +28,33 @@ const CameraBtn = styled("div")`
   margin: 2rem;
 `;
 
+const DontLeave = styled('div')`
+  p, span{
+    font-family: 'PyeongChangPeace-Bold';
+    font-size: 30px;
+    color:#333333;
+    @media screen and (max-width: 400px){
+      font-size:25px;
+    }
+    margin:5px;
+  }
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+`
+const PleaseStay = styled('div')`
+  display:flex;
+  flex-direction: column;
+  margin:30px;
+  p{
+    font-size:15px;
+    @media screen and (max-width: 400px){
+      font-size:13px;
+    }
+    margin:10px;
+  }
+`
+
 const CameraBox = styled("div")`
   width: 150px;
   height: 150px;
@@ -54,9 +81,9 @@ const PfDiv = styled("div")`
   align-items: center;
 `;
 const NicknameB = styled(ButtonFull)`
-  font-size: small;
+  font-size: 15px;
   border-radius: 10px;
-  padding: 3px 10px;
+  padding: 10px 10px;
   margin-left: 10px;
 `;
 const ResignB = styled(NicknameB)`
@@ -79,10 +106,11 @@ const NewsTop = styled("div")`
 `;
 
 const NickNmaeInput = styled("input")`
-  width: 50%;
+  width: 30%;
   border-radius: 10px;
   border: 1px solid #65ace2;
-  padding: 3px;
+  padding: 10px;
+  font-size:15px;
 `;
 
 const ErrorMessage = styled("a")`
@@ -113,7 +141,7 @@ const Div = styled("div")`
 `;
 
 const ResignMessage = styled("p")`
-  margin: 35px;
+  margin: 50px 0px 0px 0px;
   @media only screen and (max-width: 650px) {
     font-size: small;
   }
@@ -122,8 +150,10 @@ const ResignMessage = styled("p")`
 const ResignDiv = styled("div")`
   display: flex;
   justify-content: center;
+  flex-direction: column;
   align-items: center;
 `;
+
 interface Update {
   username: string;
 }
@@ -141,6 +171,7 @@ export default function Profile({ data }) {
 
   useEffect(() => {
     const usersId = JSON.parse(localStorage.getItem("recoil-persist")).userId;
+    
     setUserId(usersId);
   }, []);
 
@@ -247,15 +278,23 @@ export default function Profile({ data }) {
       {/* <h4>{data.session.user.name}님, 저희와 함께 지구를 지켜주세요! </h4> */}
       <ResignDiv>
         <ResignMessage>
-          친환경, 혼자 실천하기 힘들지 않으셨나요?
-          <br />
-          다른 대원들과 함께라면 친환경 실천이 훨씬 더 재밌고 쉬워질 거예요!
-          <br />
-          그래도 정말 떠나셔야 한다면...🥲
+          <DontLeave>
+            <p>대원님,</p>
+            <p>저희와 함께</p>
+            <div><span style={{color:'#98C064'}}>지구</span><span>를 지켜주세요!</span></div>
+          </DontLeave>
+          <PleaseStay>
+          <p>친환경, 혼자 실천하기 힘들지 않으셨나요?</p>
+          <p>다른 대원들과 함께라면</p>
+          <p>친환경 실천이 훨씬 더 재밌고 쉬워질 거예요!</p>
+          <p>그래도 정말 떠나셔야 한다면...🥺</p>
+          </PleaseStay>
+          </ResignMessage>
           {/* 회원탈퇴 버튼 */}
           <ResignB
             dColor={"#FF4F4F"}
             hColor={"#FF4F4F"}
+            style={{marginBottom:'20px'}}
             onClick={(event) => {
               event.preventDefault();
               deleteNickname(userId);
@@ -266,33 +305,32 @@ export default function Profile({ data }) {
           >
             방위대 탈퇴하기
           </ResignB>
-        </ResignMessage>
       </ResignDiv>
     </ParentsDiv>
   );
 }
 
-export async function getServerSideProps(context) {
-  const session2 = new QueryClient();
-  const userInfo2 = new QueryClient();
-  const missionInfo2 = new QueryClient();
-  const groundInfo2 = new QueryClient();
+// export async function getServerSideProps(context) {
+//   const session2 = new QueryClient();
+//   const userInfo2 = new QueryClient();
+//   const missionInfo2 = new QueryClient();
+//   const groundInfo2 = new QueryClient();
 
-  await userInfo2.prefetchQuery(["userInfo"], () => {
-    userData();
-  });
-  await missionInfo2.prefetchQuery(["missionUserInfo"], () => {
-    missionUserData();
-  });
-  await groundInfo2.prefetchQuery(["groundUserInfo"], () => {
-    groundUserData(context);
-  });
+//   await userInfo2.prefetchQuery(["userInfo"], () => {
+//     userData();
+//   });
+//   await missionInfo2.prefetchQuery(["missionUserInfo"], () => {
+//     missionUserData();
+//   });
+//   await groundInfo2.prefetchQuery(["groundUserInfo"], () => {
+//     groundUserData(context);
+//   });
 
-  return {
-    props: {
-      data: {
-        dehydratedState: dehydrate(userInfo2),
-      },
-    },
-  };
-}
+//   return {
+//     props: {
+//       data: {
+//         dehydratedState: dehydrate(userInfo2),
+//       },
+//     },
+//   };
+// }
