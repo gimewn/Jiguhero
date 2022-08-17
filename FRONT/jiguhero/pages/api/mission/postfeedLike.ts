@@ -17,7 +17,7 @@ export default async function postFeedLike(feedId, userId){
     // const Token = `Bearer ${localStorage.getItem('access-token')}`
   
 
-    const response = await fetch(`${BASE_URL}feed/${feedId}/hearts?feedId=${feedId}&userId=${userId}`, {
+    const response = await fetch(`${BASE_URL}feed/${feedId}/hearts?&userId=${userId}`, {
         method:'POST',
         headers:{
             "Authorization" : token,

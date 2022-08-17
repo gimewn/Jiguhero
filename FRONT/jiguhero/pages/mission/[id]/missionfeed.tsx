@@ -228,7 +228,7 @@ export default function MissionFeed() {
             return (
 
 
-              <FeedList props={item, index} key={index} />
+              <FeedList {...item} key={index} />
               // <FeedDiv>
               //   <NickNameBlock>
               //     <BgImg color1={feedUserInfoLists[index][0]} color2={feedUserInfoLists[index][1]}>
