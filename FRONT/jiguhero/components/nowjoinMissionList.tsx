@@ -129,8 +129,13 @@ export default function NMissionList({ today, missionId, entryPoint, title, star
     
 
       <List onClick={() => {
-        
-        router.push(`/mission/${missionId}/mymission`)
+        if(endDate<today){
+          alert("임무가 종료되었습니다!")
+        }else if(startDate>today){
+          alert("임무가 아직 시작되지 않았습니다!")
+        }else{
+          router.push(`/mission/${missionId}/mymission`)
+        }
         }}>
       <ListImg image={repImageURL} />
       <ListContent>

@@ -531,7 +531,8 @@ export default function MissionDetail() {
         <LikeAndJoinWrapper>
         <LikeDiv>
           <LikeBtn onClick={() => setLike(!like)}>
-            {MissionDetail?.likeCheck === false ? <BorderHeart onClick={
+            {MissionDetail?.likeCheck === false ? 
+            <BorderHeart onClick={
               ()=>{postMissionLike(MissionDetail.missionId, userId)}
             } /> : <FullHeart onClick={
               ()=>{postMissionLike(MissionDetail.missionId, userId)}
