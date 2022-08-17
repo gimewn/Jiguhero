@@ -27,7 +27,7 @@ const PutMission = async (postdata) => {
   Form["maxPerson"]= postdata.people
   Form["content"]= postdata.text
   
-  const response = await fetch(`${BASE_URL}mission/${Number(postdata.missionId)}/details?userId=${Number(4)}`, {
+  const response = await fetch(`${BASE_URL}mission/${Number(postdata.missionId)}/details?userId=${Number(postdata.userId)}`, {
     method: "PUT",
     headers: {
       Authorization: token,

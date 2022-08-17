@@ -122,10 +122,21 @@ export default function NMissionList({ today, missionId, entryPoint, title, star
       }
     })})
   }, [])
+ 
   return (
     <>
-    {endDate < today && (
-      <List onClick={()=>{alert("이미 종료된 임무입니다!")}}>
+  
+    
+
+      <List onClick={() => {
+        if(endDate<today){
+          alert("임무가 종료되었습니다!")
+        }else if(startDate>today){
+          alert("임무가 아직 시작되지 않았습니다!")
+        }else{
+          router.push(`/mission/${missionId}/mymission`)
+        }
+        }}>
       <ListImg image={repImageURL} />
       <ListContent>
         <TextWrapper>
@@ -137,35 +148,7 @@ export default function NMissionList({ today, missionId, entryPoint, title, star
         <PointBtn>+{entryPoint}</PointBtn>
       </ListContent>
     </List>
-    )}
-    {startDate > today && (
-      <List onClick={()=>{alert("임무가 아직 시작되지 않았습니다!")}}>
-      <ListImg image={repImageURL} />
-      <ListContent>
-        <TextWrapper>
-          <TitleName>{title}</TitleName>
-          <Name>{sido}</Name>
-          <Date>{startDate}~{endDate}</Date>
-          <JoinPeople>{nowPerson} / {maxPerson}명</JoinPeople>
-        </TextWrapper>
-        <PointBtn>+{entryPoint}</PointBtn>
-      </ListContent>
-    </List>
-    )}
-    {endDate > today && startDate < today && (
-      <List onClick={() => router.push(`/mission/${missionId}/mymission`)}>
-      <ListImg image={repImageURL} />
-      <ListContent>
-        <TextWrapper>
-          <TitleName>{title}</TitleName>
-          <Name>{sido}</Name>
-          <Date>{startDate}~{endDate}</Date>
-          <JoinPeople>{nowPerson} / {maxPerson}명</JoinPeople>
-        </TextWrapper>
-        <PointBtn>+{entryPoint}</PointBtn>
-      </ListContent>
-    </List>
-    )}
+ 
       
     </>
   )

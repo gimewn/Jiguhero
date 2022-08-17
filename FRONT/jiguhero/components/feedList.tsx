@@ -110,8 +110,8 @@ const BgImg = styled("div")<{ color1: string; color2: string }>`
 //   index?: number;
 // }
 
-export default function FeedList({ item, index }) {
-  console.log(item);
+export default function FeedList( item, index ) {
+
   const [missionList, setMissionList] = useRecoilState<[][]>(allauthImgList);
   const [heart, setHeart] = useState(false);
 
@@ -126,17 +126,20 @@ export default function FeedList({ item, index }) {
   const [feedUserId, setFeedUserId] = useState<number>();
   const [imgUrl, setImgUrl] = useState<string>();
 
+  const [feedId, setFeedId] = useState(0);
   const [content, setContent] = useState("");
   const [likeCheck, setLikeCheck] = useState(false);
   const [likeCnt, setLikeCnt] = useState(0);
   const [color1, setColor1] = useState("");
   const [color2, setColor2] = useState("");
 
+
   useEffect(() => {
     var mama = [];
     if (item) {
       var data = userData(item[2])
         .then((res) => {
+         
           if (res.grade === 0) {
             setColor1(theme.Bunhong.first);
             setColor2(theme.Bunhong.second);
@@ -157,23 +160,27 @@ export default function FeedList({ item, index }) {
           setNick(res.nickname);
           setFeedUserId(res.userId);
           setImgUrl(res.imageURL);
+          // setFeedId(res.)
         })
         .then((res) => {
           // mama.push(res);
           // setList(mama);
         });
     }
+    
     // setFeedUserInfoLists(list);
-  }, []);
+  },[]);
 
   useEffect(() => {
     var ma = [];
     if (item) {
       getFeedInfo(item[0], userId)
         .then((res) => {
+        
           setLikeCheck(res.likeCheck);
           setContent(res.content);
           setLikeCnt(res.likeCnt);
+          setFeedId(res.feedId)
           // var tmpdata = [res.likeCheck, res.content, res.likeCnt];
           // return tmpdata;
         })
@@ -184,7 +191,7 @@ export default function FeedList({ item, index }) {
     }
     // setFeedImgLists(feedInfo);
   }, [heart]);
-
+  
   return (
     <>
       {item && (
@@ -206,7 +213,7 @@ export default function FeedList({ item, index }) {
               onClick={(e) => {
                 e.preventDefault();
                 setHeart(!heart);
-                postFeedLike(item[0],userId)
+                postFeedLike(feedId,userId)
               }}
             >
               {likeCheck ? <FullHeart /> : <BorderHeart />}

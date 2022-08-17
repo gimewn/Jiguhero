@@ -487,7 +487,8 @@ const postdata = {
             <SubmitBtn
               hColor={'#98C064'}
               dColor={'#65ACE2'}
-            onClick={()=>{putMission(postdata).then((res)=>router.push(`/mission/${missionId}`))}}
+            onClick={()=>{
+              putMission(postdata).then((res)=>router.push(`/mission/${missionId}`))}}
             >수정</SubmitBtn>
           </BtnContent>
         </Block>
