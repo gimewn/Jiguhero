@@ -101,8 +101,8 @@ interface MissionProps {
 
   entryPoint?: number;
   title?: string;
-  startDate?: number;
-  endDate?: number;
+  startDate?: string;
+  endDate?: string;
   sidoCode?: string;
   nowPerson?: number;
   maxPerson?: number;
@@ -124,7 +124,7 @@ export default function NMissionList({ today, missionId, entryPoint, title, star
   }, [])
   return (
     <>
-    {Number(endDate) < Number(today) && (
+    {endDate < today && (
       <List onClick={()=>{alert("이미 종료된 임무입니다!")}}>
       <ListImg image={repImageURL} />
       <ListContent>
@@ -138,7 +138,7 @@ export default function NMissionList({ today, missionId, entryPoint, title, star
       </ListContent>
     </List>
     )}
-    {Number(startDate) > Number(today) && (
+    {startDate > today && (
       <List onClick={()=>{alert("임무가 아직 시작되지 않았습니다!")}}>
       <ListImg image={repImageURL} />
       <ListContent>
@@ -152,7 +152,7 @@ export default function NMissionList({ today, missionId, entryPoint, title, star
       </ListContent>
     </List>
     )}
-    {Number(endDate) > Number(today) && Number(startDate)<Number(today) && (
+    {endDate > today && startDate < today && (
       <List onClick={() => router.push(`/mission/${missionId}/mymission`)}>
       <ListImg image={repImageURL} />
       <ListContent>

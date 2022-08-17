@@ -87,7 +87,7 @@ const ButtonGroup = styled("div")`
 
 
 export default function nowJoin() {
-  const [JoinMissionData, setJoinMissionData] = useRecoilState(nowJoinList);
+  const [JoinMissionData, setJoinMissionData] = useState([]);
   const [userId, setUserId] = useState();
   const [tmp, setTmp] = useState<string>();
   const [page, setPage] = useState(1);
@@ -106,7 +106,7 @@ export default function nowJoin() {
     JoinMission(JSON.parse(localStorage.getItem('recoil-persist')).userId).then((res)=>{
       setJoinMissionData(res)
   })
-}, [])
+})
 function ButtonBox() {
   const router = useRouter();
   return (
