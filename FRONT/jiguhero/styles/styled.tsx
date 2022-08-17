@@ -33,7 +33,7 @@ export const ButtonBorder = styled('button') <{ dColor: string }>`
 `
 
 export const ParentsDiv = styled('div')`
-    max-width:700px;
+    max-width:850px;
     padding: 0 20px;
     margin: 0 auto 20px auto;
     width:100%;

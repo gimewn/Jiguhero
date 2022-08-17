@@ -13,6 +13,7 @@ import {
 } from "@tanstack/react-query";
 import Script from "next/script";
 import Head from 'next/head';
+import Banner from "components/Banner";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -43,6 +44,9 @@ const Body = styled("div")`
   width: 100%;
   height: 100%;
   margin-top:80px;
+`;
+const BodyHome = styled(Body)`
+margin-top:30px;
 `;
 const Container = styled("div")`
 display: flex;
@@ -115,6 +119,21 @@ function MyApp({ Component, pageProps }: AppProps) {
           <MenuForDesk />
         </DeskMenu>
       </Header>
+      {router.pathname == '/' ? <>
+      <Banner />
+      <BodyHome>
+        <Container>
+          <QueryClientProvider client={queryClient}>
+                <Script
+                  src={`//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAOMAP_APPKEY}&libraries=services&autoload=false`}
+                  strategy="beforeInteractive"
+                />
+                <Component {...pageProps} />
+          </QueryClientProvider>
+        </Container>
+      </BodyHome>
+      </>
+      : <>
       <Body>
         <Container>
           <QueryClientProvider client={queryClient}>
@@ -126,6 +145,8 @@ function MyApp({ Component, pageProps }: AppProps) {
           </QueryClientProvider>
         </Container>
       </Body>
+      </>}
+      {/* <Banner /> */}
       <Footer>
         <MenuForMobile />
       </Footer>

@@ -379,6 +379,7 @@ export default function MissionDetail() {
       setUserId(JSON.parse(localStorage.getItem('recoil-persist')).userId)
       if(router.query.id && JSON.parse(localStorage.getItem('recoil-persist')).userId){
         getDetail(router.query.id, JSON.parse(localStorage.getItem('recoil-persist')).userId).then((res)=>{setMissionDetail(res)
+          setLike(res.likeCheck)
         getDong(res.gugunCode).then((item)=>{
           item.filter((dong) => {
             if(dong.dongCode === res.dongCode){
@@ -531,7 +532,7 @@ export default function MissionDetail() {
         <LikeAndJoinWrapper>
         <LikeDiv>
           <LikeBtn onClick={() => setLike(!like)}>
-            {MissionDetail?.likeCheck === false ? 
+            {like === false ? 
             <BorderHeart onClick={
               ()=>{postMissionLike(MissionDetail.missionId, userId)}
             } /> : <FullHeart onClick={
