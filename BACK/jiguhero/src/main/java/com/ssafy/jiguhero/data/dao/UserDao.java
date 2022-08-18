@@ -2,6 +2,8 @@ package com.ssafy.jiguhero.data.dao;
 
 import com.ssafy.jiguhero.data.entity.User;
 
+import java.util.List;
+
 public interface UserDao {
 
     // user_id로 유저 정보 가져오기
@@ -22,4 +24,6 @@ public interface UserDao {
     void updatePoint(User user);
 
     void updateUser(User user);
+
+    List<User> selectAllUser();
 }

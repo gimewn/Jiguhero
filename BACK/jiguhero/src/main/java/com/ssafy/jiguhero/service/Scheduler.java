@@ -27,7 +27,7 @@ public class Scheduler {
         this.imageDao = imageDao;
     }
 
-    @Scheduled(cron = "* * * * * *")
+    @Scheduled(cron = "0 0 0 * * *")
     public void missionStartAndEndCheck() {
         List<Mission> missionList = missionDao.selectAllMission();
         for (Mission mission : missionList) {
@@ -60,6 +60,25 @@ public class Scheduler {
                     userDao.updateUser(user);
                 }
             }
+        }
+    }
+
+    @Scheduled(cron = "* * * * * *")
+    public void updateUserGrade() {
+        List<User> userList = userDao.selectAllUser();
+        for(User user : userList){
+            if(user.getPoint() < 3000){
+                user.setGrade(0);
+            } else if(user.getPoint() < 10000 && user.getPoint() >= 3000){
+                user.setGrade(1);
+            } else if(user.getPoint() < 50000 && user.getPoint() >= 10000){
+                user.setGrade(2);
+            } else if(user.getPoint() < 100000 && user.getPoint() >= 50000){
+                user.setGrade(3);
+            } else if(user.getPoint() >= 100000){
+                user.setGrade(4);
+            }
+            userDao.updateUser(user);
         }
     }
 
