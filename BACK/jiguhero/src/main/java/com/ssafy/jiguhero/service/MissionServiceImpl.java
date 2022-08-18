@@ -90,7 +90,7 @@ public class MissionServiceImpl implements MissionService {
     }
 
     @Override
-    @Transactional(readOnly = true)
+    @Transactional
     public MissionDto getMissionById(Long missionId, Long userId, HttpServletRequest request) {
         Mission missionEntity = missionDao.selectMissionById(missionId);
         User userEntity = userDao.selectUserById(userId);
@@ -182,10 +182,16 @@ public class MissionServiceImpl implements MissionService {
             likeMission.setMission(missionEntity);
             missionDao.insertLikeMission(likeMission);
 
+            missionEntity.setLikes(missionEntity.getLikes()+1);
+            missionDao.insertMission(missionEntity);
+
             return 1; // 임무의 좋아요를 클릭한 경우
         }
         else {
             deleteLikeMission(missionEntity, userEntity);
+
+            missionEntity.setLikes(missionEntity.getLikes()-1);
+            missionDao.insertMission(missionEntity);
 
             return 2; // 임무의 좋아요를 취소한 경우
         }
