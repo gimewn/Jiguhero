@@ -144,22 +144,22 @@ export default function GroundDetail(){
     getFetch(map);
     map.setDraggable(true);
   }
-    // function moveMyGps(){
-    // if (navigator.geolocation) {
-    //     // GeoLocation을 이용해서 접속 위치를 얻어옵니다
-    //     navigator.geolocation.getCurrentPosition(function (position) {
-    //     let lat = position.coords.latitude; // 위도
-    //     let lon = position.coords.longitude; // 경도
-    //     let locPosition = new window.kakao.maps.LatLng(lat, lon); // 마커가 표시될 위치를 geolocation으로 얻어온 좌표로 생성합니다
-    //     // 지도 중심좌표를 접속위치로 변경합니다
-    //     makeMap(lat, lon);
-    //     });
-    // }
-    // }
+    function moveMyGps(){
+    if (navigator.geolocation) {
+        // GeoLocation을 이용해서 접속 위치를 얻어옵니다
+        navigator.geolocation.getCurrentPosition(function (position) {
+        let lat = position.coords.latitude; // 위도
+        let lon = position.coords.longitude; // 경도
+        let locPosition = new window.kakao.maps.LatLng(lat, lon); // 마커가 표시될 위치를 geolocation으로 얻어온 좌표로 생성합니다
+        // 지도 중심좌표를 접속위치로 변경합니다
+        makeMap(lat, lon);
+        });
+    }
+    }
 
     useEffect(()=>{
-        window.kakao.maps.load(makeMap(placeList[0]['lat'], placeList[0]['lng']))
-      })
+        window.kakao.maps.load(function(){moveMyGps()})
+      }, [])
       
     useEffect(() => {
       getReview(choiceP['placeId']).then((res) => {
