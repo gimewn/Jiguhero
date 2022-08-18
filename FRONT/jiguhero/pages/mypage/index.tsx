@@ -81,6 +81,9 @@ const EntireContainer = styled("div")`
   justify-content: center;
   align-items: center;
   max-width: sm;
+  @media only screen and (max-width: 650px) {
+    margin-bottom:85px;
+  }
 `;
 
 const TextGroup = styled("div")`

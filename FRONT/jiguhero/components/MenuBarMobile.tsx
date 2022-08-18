@@ -7,6 +7,7 @@ import MapRoundedIcon from '@mui/icons-material/MapRounded';
 import CameraAltRoundedIcon from '@mui/icons-material/CameraAltRounded';
 import PersonRoundedIcon from '@mui/icons-material/PersonRounded';
 import { useRouter } from "next/router";
+import { useEffect } from "react";
 import Link from 'next/link';
 import styled from 'styled-components';
 
@@ -53,6 +54,15 @@ const NavForMobile = styled('div')`
 export default function SimpleBottomNavigation() {
   // const [value, setValue] = React.useState();
   const router = useRouter();
+  const [flag, setFlag] = React.useState(0)
+  React.useEffect(()=>{
+    if (localStorage.getItem('access-token')){
+      setFlag(1)
+    }else{
+      setFlag(0)
+    }
+  })
+  
 
   return (
     <NavForMobile>
@@ -80,12 +90,22 @@ export default function SimpleBottomNavigation() {
           <Label>임무 인증</Label>
         </a>
       </Link>
+      {flag ? <>
       <Link href="/mypage" className="navMenu">
         <a className={router.pathname == "/mypage" ? "active" : ""}>
           <PersonRoundedIcon />
           <Label>마이페이지</Label>
         </a>
       </Link>
+      </> 
+        : <>
+        <Link href="/login" className="navMenu">
+        <a className={router.pathname == "/login" ? "active" : ""}>
+          <PersonRoundedIcon />
+          <Label>로그인</Label>
+        </a>
+      </Link>
+        </>}
     </NavForMobile>
       // <BottomNavigation
       //   showLabels

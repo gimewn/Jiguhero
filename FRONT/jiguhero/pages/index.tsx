@@ -85,7 +85,7 @@ export default function Home() {
         </Content>
       </Block>
       <Block>
-        <Title>🔥 지금 대원들이 가장 많이 도전 중인 임무</Title>
+        <Title>🔥 대원들이 가장 많이 도전 중인 임무</Title>
         <Content>
           <MissionTop3 />
         </Content>

@@ -89,6 +89,7 @@ export default function Login() {
     </>
   );
 }
+// https://i7c105.p.ssafy.io
 
 // export async function getServerSideProps(context: NextPageContext) {
 
