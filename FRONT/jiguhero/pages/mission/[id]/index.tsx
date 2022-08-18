@@ -88,6 +88,7 @@ const ImageBlock = styled("div")`
   display: flex;
   flex-direction: row;
   justify-content: center;
+  margin: 0 auto 30px auto;
   @media screen and (min-width: 360px) {
     width: 415px;
     height: 415px;

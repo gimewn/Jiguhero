@@ -140,7 +140,6 @@ export default function GroundList(){
             router.push('/login')
         }else{
             getAllGround().then((res) => {
-                console.log(res)
                 setGroundList(res)})
         }
     }, [])
@@ -230,6 +229,9 @@ export default function GroundList(){
                 </NoGround>: 
                 <Grid>
                 {groundList?.map((item)=>(<GroundItem key={item.groundId} onClick={() => {
+                    getPlaceList(item.groundId).then((res) => {
+                        setPlaceList(res);
+                    })
                         router.push(`ground/${item.groundId}`)
             }}>
                 <GroundIcon>{item.icon}</GroundIcon>
