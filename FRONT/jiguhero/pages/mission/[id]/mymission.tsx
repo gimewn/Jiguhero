@@ -222,13 +222,13 @@ const ModalDiv = styled("div")`
   right: 0;
   margin-left: auto;
   margin-right: auto;
-  top: 5%;
+  top: 15%;
   width: 85%;
   max-width: 500px;
   border: 0;
   border-radius: 20px;
   z-index: 998;
-  max-height: 90%;
+  max-height: 100%;
   /* bottom:5%; */
   overflow: auto;
   -ms-overflow-style: none; /* for Internet Explorer, Edge */
@@ -307,7 +307,7 @@ const ModalBack = styled("div")`
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 997;
   backdrop-filter: blur(5px);
-  height: 100%;
+  height: 100vh;
   width: 100%;
   overflow: hidden;
   top: 0%;
