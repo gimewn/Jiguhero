@@ -27,7 +27,7 @@ public class Scheduler {
         this.imageDao = imageDao;
     }
 
-    @Scheduled(cron = "2 * * * * ?")
+    @Scheduled(cron = "* * * * * *")
     public void missionStartAndEndCheck() {
         List<Mission> missionList = missionDao.selectAllMission();
         for (Mission mission : missionList) {
