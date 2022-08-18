@@ -17,6 +17,7 @@ import { getSession} from "next-auth/react";
 import { InfoBtn } from "pages/ground/[id]";
 import Head from 'next/head';
 import getMyGps from 'pages/api/ecomarket/getMyGps';
+import getImgList from 'pages/api/place/getImgList';
 
 const Div = styled("div")`
   position: relative;
@@ -223,14 +224,18 @@ export default function FullMap(props:any) {
   })
   const [ChoiceDong, setChoiceDong] = useState(['00', '']);
   const [reviews, setReviews] = useState([]);
+  const [imgList, setImgList] = useState([]);
 
   useEffect(()=>{
-
     window.kakao.maps.load(function(){moveMyGps()})
   }, [])
   useEffect(() => {
+    console.log(choiceP)
     getReview(choiceP['placeId']).then((res) => {
       setReviews(res)
+    })
+    getImgList(choiceP['placeId']).then((res) => {
+      setImgList(res.imageURL)
     })
   }, [choiceP])
 
@@ -375,7 +380,7 @@ export default function FullMap(props:any) {
           </Place>
         ))}
       </PlaceGroup>
-      <Modal show={show} setshow={setShow} data={choiceP} reviews={reviews}>
+      <Modal show={show} setshow={setShow} data={choiceP} reviews={reviews} imgList={imgList}>
       </Modal>
       <Mapping id="map" />
     </Div>

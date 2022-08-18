@@ -14,6 +14,7 @@ import postLike from 'pages/api/ground/postLike';
 import Head from 'next/head';
 import { useRecoilState } from 'recoil';
 import {groundDetail, groundPlaceList, isLikeGround} from 'states/ground';
+import getImgList from 'pages/api/place/getImgList';
 
 const Div = styled("div")`
   position: relative;
@@ -85,6 +86,7 @@ export default function GroundDetail(){
     const [groundInfo, setGroundInfo] = useRecoilState(groundDetail);
     const [isLike, setIsLike] = useRecoilState(isLikeGround);
     const [userId, setUserId] = useState();
+    const [imgList, setImgList] = useState([]);
   
     useEffect(()=>{
         const usersId = JSON.parse(localStorage.getItem('recoil-persist')).userId
@@ -162,6 +164,9 @@ export default function GroundDetail(){
       getReview(choiceP['placeId']).then((res) => {
         setReviews(res)
       })
+      getImgList(choiceP['placeId']).then((res) => {
+        setImgList(res.imageURL)
+      })
     }, [choiceP])
 
     return(
@@ -219,7 +224,7 @@ export default function GroundDetail(){
           </Place>
         ))}
       </PlaceGroup>
-      <Modal show={show} setshow={setShow} data={choiceP} reviews={reviews}>
+      <Modal show={show} setshow={setShow} data={choiceP} reviews={reviews} imgList={imgList}>
       </Modal>
         <Mapping id="map" />
         </Div>

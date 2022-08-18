@@ -312,14 +312,17 @@ const DeleteBtn = styled('button')`
 
 export default function Modal(props) {
     const router = useRouter();
-    const { show, setshow, data, reviews } = props;
+    const { show, setshow, data, reviews, imgList } = props;
+    console.log(imgList)
+    console.log("good", imgList)
+    const [fetchReview, setFetchReview] = useState(reviews);
+    const [fetchImgList, setFetchImgList] = useState(imgList);
     const [isReport, setReport] = useState(false);
     const [ReportCategory, setReportCategory] = useState(0);
     const [ReportContent, setReportContent] = useState('');
     const reviewEmoji = [['', ''], ['😔', '실망이에요'], ['😑', '별로예요'], ['😶', '그저 그래요'], ['🤗', '만족해요'], ['🥰', '너무 좋아요']]
     const [scoreValue, setsScoreValue] = useState(1);
     const [reviewValue, setReviewValue] = useState('');
-    const [imgList, setImgList] = useState<Array<string>>();
     const [placeImg, setPlaceImg] = useState<File>();
     const [preview, setPreview] = useState<string>(); // 이미지 미리보기 사진
     const [userId, setUserId] = useState();
@@ -331,10 +334,15 @@ export default function Modal(props) {
         }else{
             const usersId = JSON.parse(localStorage.getItem('recoil-persist')).userId
             setUserId(usersId)
+            // if(data.placeId){
+            //     getImgList(data.placeId).then((result) => {setImgList(result.imageURL)
+            //     console.log(result)})
+            // }
         }
     }, [])
 
     const changeHandler = (e) => {
+        console.log(e.target.files[0])
         const file = e.target.files[0];
         if (file && file.type.substr(0, 5) === "image") {
           setPlaceImg(file);
@@ -342,39 +350,38 @@ export default function Modal(props) {
             setPlaceImg(null)
         }
       };
-      function getImg(){
-        getImgList(data.placeId).then((result) => setImgList(result.imageURL))
-      }
 
-      const [fetchReview, setFetchReview] = useState(reviews);
 
       useEffect(() => {
         if(!localStorage.getItem('access-token')){
             alert("로그인해주세요")
             router.push('/login')
-        }
-        if (placeImg) {
-          const reader = new FileReader();
-          reader.onloadend = () => {
-            setPreview(reader.result as string);
-          };
-          reader.readAsDataURL(placeImg);
-        } else {
-          setPreview(null);
-        }
-        if(data.placeId){
-            getImg()
+        }else{
+            if (placeImg) {
+              const reader = new FileReader();
+              reader.onloadend = () => {
+                setPreview(reader.result as string);
+              };
+              reader.readAsDataURL(placeImg);
+            } else {
+              setPreview(null);
+            }
+            // if(data.placeId){
+            //     getImgList(data.placeId).then((result) => setImgList(result.imageURL))
+            // }
         }
       }, [placeImg]);
-      useEffect(()=>{
-        if(data.placeId){
-            getImg()
-        }
-      }, [])
+
     useEffect(()=>{
         setFetchReview(reviews)
         console.log(reviews)
     }, [reviews])
+
+    useEffect(()=>{
+        setFetchImgList(imgList)
+        console.log(imgList)
+    }, [imgList])
+
     function Emoji(prop) {
         if (prop['index'] === 0) {
             return (<EmojiSpan size="20px">{reviewEmoji[prop['score']][prop['index']]}</EmojiSpan>)
@@ -400,7 +407,8 @@ export default function Modal(props) {
             <ModalBody>
             <CameraBtn>
                 {userId ? 
-                    <ImgPostBtn onClick={()=>{postImg(placeImg, data.placeId, userId).then((res)=>{setPlaceImg(null)})}}>OK</ImgPostBtn>
+                    <ImgPostBtn onClick={()=>{postImg(placeImg, data.placeId, userId).then((res)=>{setPlaceImg(null)
+                    getImgList(data.placeId).then((res)=>{setFetchImgList(res.imageURL)})})}}>OK</ImgPostBtn>
                 : <></>}
             <IconButton aria-label="upload picture" component="label">
                 <input
@@ -410,7 +418,7 @@ export default function Modal(props) {
                     name="file"
                     onChange={changeHandler}
                 />
-                {placeImg ? (
+                {placeImg? (
                     <CameraBox>
                     <img src={preview} />
                     </CameraBox>
@@ -429,7 +437,7 @@ export default function Modal(props) {
                     nextEl: '.review-swiper-button-next',
                     prevEl: '.review-swiper-button-prev',
                 }}>
-                    {imgList?.map((item, i)=>(<SwiperSlide key={i}>
+                    {fetchImgList.map((item, i)=>(<SwiperSlide key={i}>
                         <Img src={item} />
                     </SwiperSlide>))}
                 </Swiper>
