@@ -244,11 +244,11 @@ export default function FullMap(props:any) {
       "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png";
     getMyGps(lat, lon)
       .then((res) => {
+        console.log(res)
         setData(res)
         for (var i = 0; i < res?.length; i++) {
           // 마커 이미지의 이미지 크기 입니다
           var imageSize = new window.kakao.maps.Size(20, 30);
-
           // 마커 이미지를 생성합니다
           var markerImage = new window.kakao.maps.MarkerImage(imageSrc, imageSize);
           let item = res[i];
@@ -287,7 +287,6 @@ export default function FullMap(props:any) {
       let locPosition = map.getCenter();
       let newLat = locPosition.getLat();
       let newLon = locPosition.getLng();
-      console.log(newLat, newLon)
       map.setLevel(level);
       map.setCenter(locPosition);
       getFetch(newLat, newLon, map);

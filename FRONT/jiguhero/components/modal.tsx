@@ -437,7 +437,7 @@ export default function Modal(props) {
                     nextEl: '.review-swiper-button-next',
                     prevEl: '.review-swiper-button-prev',
                 }}>
-                    {fetchImgList.map((item, i)=>(<SwiperSlide key={i}>
+                    {fetchImgList?.map((item, i)=>(<SwiperSlide key={i}>
                         <Img src={item} />
                     </SwiperSlide>))}
                 </Swiper>

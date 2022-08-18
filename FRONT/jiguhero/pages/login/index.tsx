@@ -67,20 +67,20 @@ export default function Login() {
 
           {/* 카카오 로그인*/}
           <SnsLoginKakao>
-            <a href="https://i7c105.p.ssafy.io:8080/oauth2/authorize/kakao?redirect_uri=https://i7c105.p.ssafy.io">
+            <a href="https://i7c105.p.ssafy.io:8080/oauth2/authorize/kakao?redirect_uri=http://localhost:3000">
               <Image src={KakaoImg} alt="Kakao" />
             </a>
           </SnsLoginKakao>
 
           {/* 구글 로그인*/}
           <SnsLoginGoogle>
-            <a href="https://i7c105.p.ssafy.io:8080/oauth2/authorize/google?redirect_uri=https://i7c105.p.ssafy.io">
+            <a href="https://i7c105.p.ssafy.io:8080/oauth2/authorize/google?redirect_uri=http://localhost:3000">
               <Image src={GoogleImg} alt="Google" />
             </a>
           </SnsLoginGoogle>
 
           <SnsLoginNaver>
-            <a href="https://i7c105.p.ssafy.io:8080/oauth2/authorize/naver?redirect_uri=https://i7c105.p.ssafy.io">
+            <a href="https://i7c105.p.ssafy.io:8080/oauth2/authorize/naver?redirect_uri=http://localhost:3000">
               <Image src={NaverImg} alt="Naver" />
             </a>
           </SnsLoginNaver>
