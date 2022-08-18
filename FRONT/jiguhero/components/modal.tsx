@@ -313,8 +313,6 @@ const DeleteBtn = styled('button')`
 export default function Modal(props) {
     const router = useRouter();
     const { show, setshow, data, reviews, imgList } = props;
-    console.log(imgList)
-    console.log("good", imgList)
     const [fetchReview, setFetchReview] = useState(reviews);
     const [fetchImgList, setFetchImgList] = useState(imgList);
     const [isReport, setReport] = useState(false);

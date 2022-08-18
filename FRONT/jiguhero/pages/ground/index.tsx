@@ -10,6 +10,9 @@ import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import {ButtonFull, ParentsDiv} from 'styles/styled';
 import { ConIcon } from 'pages/ecomarket';
 import Head from 'next/head';
+import { useRecoilState } from 'recoil';
+import getPlaceList from 'pages/api/ground/getPlaceList';
+import {groundDetail, groundPlaceList, isLikeGround} from 'states/ground';
 
 const Grid = styled('div')`
     display:grid;
@@ -130,6 +133,7 @@ export default function GroundList(){
     const [searchItem, setSearchItem] = useState('');
     // const {data:AllGround} = useQuery(['allGround'], getAllGround) //리스트에 나타낼 아이템
     const [groundList, setGroundList] = useState([])
+    const [placeList, setPlaceList] = useRecoilState(groundPlaceList)
     useEffect(()=>{
         if(!localStorage.getItem('access-token')){
             alert("로그인해주세요")
@@ -225,7 +229,9 @@ export default function GroundList(){
                     <p style={{fontSize:'15px'}}>다른 키워드를 검색해볼까요?</p>
                 </NoGround>: 
                 <Grid>
-                {groundList?.map((item)=>(<GroundItem key={item.groundId} onClick={() => {router.push(`ground/${item.groundId}`)}}>
+                {groundList?.map((item)=>(<GroundItem key={item.groundId} onClick={() => {
+                        router.push(`ground/${item.groundId}`)
+            }}>
                 <GroundIcon>{item.icon}</GroundIcon>
                 <GroundTitle>{item.title}</GroundTitle>
                 <GroundPlaceLength>{item.count}개의 장소</GroundPlaceLength>

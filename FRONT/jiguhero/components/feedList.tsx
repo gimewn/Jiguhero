@@ -161,7 +161,7 @@ export default function FeedList( item, index ) {
     if (item) {
       var data = userData(item[2])
         .then((res) => {
-         
+         console.log("userData", res)
           if (res.grade == 0) {
             setColor1(theme.Bunhong.first);
             setColor2(theme.Bunhong.second);
@@ -188,7 +188,15 @@ export default function FeedList( item, index ) {
           // mama.push(res);
           // setList(mama);
         });
-    }
+        getFeedInfo(item[0], userId)
+        .then((res) => {
+          console.log("됐을까?", res)
+          setLikeCnt(res.likeCnt);
+          setLikeCheck(res.likeCheck);
+          setContent(res.content);
+          setFeedId(res.feedId)
+    })
+  }
     
     // setFeedUserInfoLists(list);
   },[]);
@@ -198,7 +206,7 @@ export default function FeedList( item, index ) {
     if (item) {
       getFeedInfo(item[0], userId)
         .then((res) => {
-        
+          console.log(res)
           setLikeCheck(res.likeCheck);
           setContent(res.content);
           setLikeCnt(res.likeCnt);

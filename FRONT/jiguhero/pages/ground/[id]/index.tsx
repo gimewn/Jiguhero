@@ -108,11 +108,11 @@ export default function GroundDetail(){
   
     function getFetch(map) {
         var imageSrc =
-        "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png";
-              for (var i = 0; i < placeList?.length; i++) {
+        "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png";      
+        for (var i = 0; i < placeList?.length; i++) {
+          console.log("placeList", placeList)
                 // 마커 이미지의 이미지 크기 입니다
                 var imageSize = new window.kakao.maps.Size(20, 30);
-          
                 // 마커 이미지를 생성합니다
                 var markerImage = new window.kakao.maps.MarkerImage(imageSrc, imageSize);
                 let item = placeList[i];
@@ -144,21 +144,22 @@ export default function GroundDetail(){
     getFetch(map);
     map.setDraggable(true);
   }
-    function moveMyGps(){
-    if (navigator.geolocation) {
-        // GeoLocation을 이용해서 접속 위치를 얻어옵니다
-        navigator.geolocation.getCurrentPosition(function (position) {
-        let lat = position.coords.latitude; // 위도
-        let lon = position.coords.longitude; // 경도
-        let locPosition = new window.kakao.maps.LatLng(lat, lon); // 마커가 표시될 위치를 geolocation으로 얻어온 좌표로 생성합니다
-        // 지도 중심좌표를 접속위치로 변경합니다
-        makeMap(lat, lon);
-        });
-    }
-    }
+    // function moveMyGps(){
+    // if (navigator.geolocation) {
+    //     // GeoLocation을 이용해서 접속 위치를 얻어옵니다
+    //     navigator.geolocation.getCurrentPosition(function (position) {
+    //     let lat = position.coords.latitude; // 위도
+    //     let lon = position.coords.longitude; // 경도
+    //     let locPosition = new window.kakao.maps.LatLng(lat, lon); // 마커가 표시될 위치를 geolocation으로 얻어온 좌표로 생성합니다
+    //     // 지도 중심좌표를 접속위치로 변경합니다
+    //     makeMap(lat, lon);
+    //     });
+    // }
+    // }
+
     useEffect(()=>{
-        window.kakao.maps.load(function(){moveMyGps()})
-      }, [])
+        window.kakao.maps.load(makeMap(placeList[0]['lat'], placeList[0]['lng']))
+      })
       
     useEffect(() => {
       getReview(choiceP['placeId']).then((res) => {

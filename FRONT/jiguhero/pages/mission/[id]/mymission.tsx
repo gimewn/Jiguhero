@@ -65,19 +65,32 @@ const ListImg = styled("div")<{ image: string }>`
   background-image: url(${(props) => props.image});
   background-size: cover;
   background-position: center;
-  width: 150px;
-  height: 150px;
+  width: 200px;
+  @media only screen and (max-width: 650px) {
+      width:150px;
+  }
+  @media only screen and (max-width: 450px) {
+      width:150px;
+  }
+  height: 180px;
   border: 1px solid none;
   float: left;
 `;
 const ListContent = styled("div")`
-  width: 200px;
-  height: 150px;
+    min-width:200px;
+  width:300px;
+  @media only screen and (max-width: 650px) {
+      width:200px;
+  }
+  @media only screen and (max-width: 450px) {
+      width:150px;
+  }
+  height: 180px;
   border: 1px solid none;
   /* float: left; */
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-content: flex-start;
   justify-content: center;
 `;
 
@@ -87,12 +100,12 @@ const TextWrapper = styled("div")`
 `;
 
 const TitleName = styled("h2")`
-  font-size: 1rem;
+  font-size: 18px;
   font-weight: bolder;
   margin: 0;
 `;
 const Name = styled("p")`
-  font-size: 0.75rem;
+  font-size: 15px;
   margin-top: 5px;
   margin-bottom: 0;
 `;
@@ -104,7 +117,7 @@ const PointBtn = styled("div")`
   border: 1px solid #98c064;
   background-color: #98c064;
   color: white;
-  font-size: x-small;
+  font-size: 13px;
   margin-left: auto;
   margin-right: 15px;
 `;
@@ -180,12 +193,22 @@ const Text2 = styled("a")`
 const Progress = styled(ProgressBar)`
   max-width: 350px;
   width: 90%;
+  span * {
+    color:#252525;
+  }
 `;
 
 const CertifyFeed = styled("div")`
   display: flex;
   justify-content: center;
   align-items: center;
+  /* width: 500px;
+  @media only screen and (max-width: 650px) {
+      width:350px;
+  }
+  @media only screen and (max-width: 450px) {
+      width:300px;
+  } */
 `;
 
 const Text3 = styled("a")`
@@ -536,7 +559,7 @@ export default function MyMissionFeed() {
             <>
               <ListImg image={missionItem.repImageURL} />
               <ListContent>
-                <div>
+                <div style={{marginLeft:'0', marginRight:'auto'}}>
                   <TextWrapper>
                     <TitleName>{missionItem.title}</TitleName>
                   </TextWrapper>
@@ -676,6 +699,7 @@ export default function MyMissionFeed() {
                             missionId,
                             userId
                           );
+                          console.log(imageId);
                           PostMissionauthtext(
                             textarea,
                             missionId,
@@ -709,7 +733,7 @@ export default function MyMissionFeed() {
           <>
             {myImg ? (
               <CertifyFeed>
-                <ImageList sx={{ width: 350 }} cols={3} rowHeight={130}>
+                <ImageList sx={{ width: 500, height:500}} cols={3} rowHeight={130}>
                   {myImg.map((item, index) => (
                     <ImageListItem key={index}>
                       <img
