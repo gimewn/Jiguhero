@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -51,6 +52,7 @@ public class UserDaoImpl implements UserDao {
             User user = selectedUser.get();
             user.setNickname(nickname);
             user.setRole(Role.USER);
+            user.setPoint(2000);
             updatedUser = userRepository.save(user);
         }
         else {
@@ -99,5 +101,10 @@ public class UserDaoImpl implements UserDao {
     @Override
     public void updateUser(User user) {
         userRepository.save(user);
+    }
+
+    @Override
+    public List<User> selectAllUser() {
+        return userRepository.findAll();
     }
 }
