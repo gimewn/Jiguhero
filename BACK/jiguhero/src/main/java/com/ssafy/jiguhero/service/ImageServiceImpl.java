@@ -152,7 +152,7 @@ public class ImageServiceImpl implements ImageService {
         else {
             List<Optional<Image_Mission>> imageMissions = imageDao.selectImageMissionByUserAndMission(userDao.selectUserById(userId), missionDao.selectMissionById(missionId));
             for(Optional<Image_Mission> imageMission : imageMissions){
-                if(imageMission.isPresent()){
+                if(imageMission.isPresent() && !imageMission.get().isRep()){
                     if(imageMission.get().getRegtime().toString().substring(0, 10).equals(LocalDateTime.now().toString().substring(0, 10))){
                         return (long)-1;
                     }

@@ -20,4 +20,6 @@ public interface UserDao {
     void deleteToken(String userEmail) throws Exception;
 
     void updatePoint(User user);
+
+    void updateUser(User user);
 }
