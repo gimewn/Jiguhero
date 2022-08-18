@@ -44,7 +44,6 @@ export default function Login() {
               <Image src={NaverImg} alt="Naver" />
             </a>
           </SnsLoginNaver>
-        
         </main>
       </LoginWrapper>
     </>

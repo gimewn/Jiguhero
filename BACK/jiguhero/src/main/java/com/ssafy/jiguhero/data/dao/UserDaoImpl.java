@@ -95,4 +95,9 @@ public class UserDaoImpl implements UserDao {
     public void updatePoint(User user) {
         userRepository.save(user);
     }
+
+    @Override
+    public void updateUser(User user) {
+        userRepository.save(user);
+    }
 }

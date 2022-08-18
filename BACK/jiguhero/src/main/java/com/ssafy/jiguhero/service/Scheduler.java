@@ -5,6 +5,7 @@ import com.ssafy.jiguhero.data.dao.MissionDao;
 import com.ssafy.jiguhero.data.dao.UserDao;
 import com.ssafy.jiguhero.data.entity.Conn_Mission;
 import com.ssafy.jiguhero.data.entity.Mission;
+import com.ssafy.jiguhero.data.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -26,7 +27,7 @@ public class Scheduler {
         this.imageDao = imageDao;
     }
 
-    @Scheduled(cron = "0 0 0 * * ?")
+    @Scheduled(cron = "* * * * * *")
     public void missionStartAndEndCheck() {
         List<Mission> missionList = missionDao.selectAllMission();
         for (Mission mission : missionList) {
@@ -44,6 +45,19 @@ public class Scheduler {
                 }
                 for (Conn_Mission connMission : connMissionList) { // 미션 성공한 유저 포인트 지급
                     missionDao.providePoint(connMission);
+                    User user = connMission.getUser();
+                    if(user.getPoint() < 3000){
+                        user.setGrade(0);
+                    } else if(user.getPoint() < 10000 && user.getPoint() >= 3000){
+                        user.setGrade(1);
+                    } else if(user.getPoint() < 50000 && user.getPoint() >= 10000){
+                        user.setGrade(2);
+                    } else if(user.getPoint() < 100000 && user.getPoint() >= 50000){
+                        user.setGrade(3);
+                    } else if(user.getPoint() >= 100000){
+                        user.setGrade(4);
+                    }
+                    userDao.updateUser(user);
                 }
             }
         }
