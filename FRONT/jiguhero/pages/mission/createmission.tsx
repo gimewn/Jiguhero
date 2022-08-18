@@ -503,14 +503,16 @@ export default function Createmission() {
             const num = Number(e.target.value);
             if (num < 10) {
               setPeopleNum('10')
-              
+              setPeople(10)
             } else if (num > 5000) {
               setPeopleNum('5000')
+              setPeople(5000)
             } else if (num % 10) {
               setPeopleNum(`${num - (num % 10)}`)
+              setPeople(Number(`${num - (num % 10)}`))
+            }else{
+              setPeople(Number(num))
             }
-            setPeople(Number(peopleNum));
-
           }}
         />
           </Content>
@@ -547,6 +549,7 @@ export default function Createmission() {
                   userId,
                   content,
                 };
+                console.log(postdata)
                 const missionId = await PostNewMission(postdata);
                 await PostMissionImg(createImg, userId, missionId);
                 router.push("/mission");

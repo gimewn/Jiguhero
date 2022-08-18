@@ -10,6 +10,46 @@ import { NextPageContext } from "node_modules/next/dist/shared/lib/utils";
 import loginAccess from "pages/api/login";
 import { NextPage } from "next";
 
+
+const LoginWrapper = styled("div")`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+const LoginText = styled("h1")`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* margin: 3.5rem; */
+  height: 10vh;
+`;
+const SnsLoginText = styled("span")`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 3rem;
+`;
+const SnsLoginKakao = styled("div")`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 20rem;
+`;
+const SnsLoginGoogle = styled("div")`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 20rem;
+`;
+
+const SnsLoginNaver = styled("div")`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 20rem;
+`;
+
+
 export default function Login() {
   const router = useRouter();
   const returnUrl = router.query.returnUrl;
@@ -49,44 +89,6 @@ export default function Login() {
     </>
   );
 }
-
-const LoginWrapper = styled("div")`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-const LoginText = styled("h1")`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  /* margin: 3.5rem; */
-  height: 10vh;
-`;
-const SnsLoginText = styled("span")`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 3rem;
-`;
-const SnsLoginKakao = styled("div")`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 20rem;
-`;
-const SnsLoginGoogle = styled("div")`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 20rem;
-`;
-
-const SnsLoginNaver = styled("div")`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 20rem;
-`;
 
 // export async function getServerSideProps(context: NextPageContext) {
 
