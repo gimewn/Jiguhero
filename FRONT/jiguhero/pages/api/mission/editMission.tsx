@@ -1,7 +1,8 @@
 import { BASE_URL} from "pages/api/fetch";
 
 
-const PutMission = async (postdata) => {
+export default async function PutMission(postdata){
+  console.log("edit", postdata)
   const t = localStorage.getItem("access-token");
   let token;
   if (t.includes('"')){
@@ -12,8 +13,6 @@ const PutMission = async (postdata) => {
   }
   // const token = t.substring(1, t.length - 1);
   // const Token = `Bearer ${localStorage.getItem('access-token')}`
-
-  
   
   let Form = new FormData();
 
@@ -33,17 +32,7 @@ const PutMission = async (postdata) => {
       Authorization: token,
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({
-      "content": postdata.text,
-  "dongCode": postdata.dong,
-  "endDate": postdata.endDate,
-  "entryPoint": postdata.point,
-  "gugunCode": postdata.gugun,
-  "maxPerson": postdata.people,
-  "sidoCode": postdata.sido,
-  "startDate": postdata.startDate,
-  "title": postdata.title,
-    }),
+    body: JSON.stringify(Form)
   }) 
   
   const data = await response.json().catch((error) => {
@@ -51,5 +40,3 @@ const PutMission = async (postdata) => {
     });
   return data
 };
-
-export default PutMission;

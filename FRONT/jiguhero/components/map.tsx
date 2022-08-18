@@ -13,10 +13,14 @@ const MapDiv = styled('div')`
 
 export default function KakaoMap(){
     const router = useRouter();
+    const [userId, setUserId] = useState("");
     const FullMap = (href) => {
         router.push(href);
     }
     useEffect(() => {
+      if(localStorage.getItem('access-token')){
+        setUserId(JSON.parse(localStorage.getItem('recoil-persist')).userId)
+      }
       window.kakao.maps.load(function(){
         let mapContainer = document.getElementById('map'), // 지도를 표시할 div 
         mapOption = { 
@@ -41,7 +45,14 @@ export default function KakaoMap(){
 
   return(
     <>
-    <MapDiv id="map" onClick={() => FullMap("/ecomarket")}>
+    <MapDiv id="map" onClick={() => {
+      if(userId){
+        FullMap("/ecomarket")
+      }else{
+        alert("로그인해주세요")
+        router.push("/login")
+      }
+    }}>
     </MapDiv>
     </>
     )

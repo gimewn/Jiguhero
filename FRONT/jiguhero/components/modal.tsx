@@ -23,6 +23,7 @@ import IconButton from "@mui/material/IconButton";
 import PhotoCamera from "@mui/icons-material/PhotoCamera";
 import getImgList from 'pages/api/place/getImgList';
 import deleteReview from 'pages/api/place/deleteReview';
+import { useRouter } from "next/router";
 
 SwiperCore.use([Navigation, Pagination]);
 
@@ -310,6 +311,7 @@ const DeleteBtn = styled('button')`
 `
 
 export default function Modal(props) {
+    const router = useRouter();
     const { show, setshow, data, reviews } = props;
     const [isReport, setReport] = useState(false);
     const [ReportCategory, setReportCategory] = useState(0);
@@ -323,8 +325,13 @@ export default function Modal(props) {
     const [userId, setUserId] = useState();
   
     useEffect(()=>{
-        const usersId = JSON.parse(localStorage.getItem('recoil-persist')).userId
-        setUserId(usersId)
+        if(!localStorage.getItem('access-token')){
+            alert("로그인해주세요")
+            router.push('/login')
+        }else{
+            const usersId = JSON.parse(localStorage.getItem('recoil-persist')).userId
+            setUserId(usersId)
+        }
     }, [])
 
     const changeHandler = (e) => {
@@ -342,6 +349,10 @@ export default function Modal(props) {
       const [fetchReview, setFetchReview] = useState(reviews);
 
       useEffect(() => {
+        if(!localStorage.getItem('access-token')){
+            alert("로그인해주세요")
+            router.push('/login')
+        }
         if (placeImg) {
           const reader = new FileReader();
           reader.onloadend = () => {

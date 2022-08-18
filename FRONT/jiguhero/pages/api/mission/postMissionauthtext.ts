@@ -31,10 +31,11 @@ const PostMissionauthtext = async (content,missionId,userId,imageId) => {
     body: JSON.stringify(Form),
   }) 
   
-  const data = await response.json().catch((error) => {
-      console.error("Error:", error);
-    });
-  console.log(data)
+  const data = await response
+  // catch((error) => {
+  //     console.error("Error:", error);
+  //   });
+  // console.log(data)
   return data
 };
 

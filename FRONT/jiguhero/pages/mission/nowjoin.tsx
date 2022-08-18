@@ -100,15 +100,19 @@ export default function NowJoin() {
   ];
   const count: number = JoinMissionData?.length
   
-
   useEffect(()=>{
-    const usersId = JSON.parse(localStorage.getItem('recoil-persist')).userId
-   
-    setUserId(usersId)
-    JoinMission(JSON.parse(localStorage.getItem('recoil-persist')).userId).then((res)=>{
-      setJoinMissionData(res)
+    if(!localStorage.getItem('access-token')){
+      alert("로그인해주세요")
+      router.push('/login')
+    }else{
+      const usersId = JSON.parse(localStorage.getItem('recoil-persist')).userId
+      setUserId(usersId)
+      JoinMission(JSON.parse(localStorage.getItem('recoil-persist')).userId).then((res)=>{
+        setJoinMissionData(res)
   })
-})
+  }
+  }, [])
+
 function ButtonBox() {
   const router = useRouter();
   return (

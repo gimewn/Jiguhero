@@ -374,12 +374,13 @@ export default function MissionDetail() {
   const [MissionDetail, setMissionDetail] = useRecoilState(missionDetail);
   const date = new Date();
   const today = `${date.getFullYear()}-${('0' + (date.getMonth() + 1)).slice(-2)}-${date.getDate()}`
-
+  const [isJoin, setIsJoin] = useState(false);
   useEffect(()=>{
 
       setUserId(JSON.parse(localStorage.getItem('recoil-persist')).userId)
       if(router.query.id && JSON.parse(localStorage.getItem('recoil-persist')).userId){
         getDetail(router.query.id, JSON.parse(localStorage.getItem('recoil-persist')).userId).then((res)=>{setMissionDetail(res)
+          setIsJoin(res.joinCheck)
           setLike(res.likeCheck)
         getDong(res.gugunCode).then((item)=>{
           item.filter((dong) => {
@@ -546,13 +547,15 @@ export default function MissionDetail() {
           <JoinBorderBtn dColor={"#65ACE2"}>종료된 임무입니다</JoinBorderBtn>
         </> : <>
         {MissionDetail.startDate > today ? <>
-          {MissionDetail.joinCheck ? (
+          {isJoin ? (
             <JoinFullBtn hColor={"#98C064"} dColor={"#65ACE2"}
             onClick={()=>{alert("이미 참여 중인 임무입니다!")}}>
               참여 중인 임무입니다
             </JoinFullBtn>
           ) : (
-            <JoinBorderBtn dColor={"#65ACE2"} onClick={()=>{postJoin(MissionDetail.missionId, userId)}}>임무에 참여하기</JoinBorderBtn>
+            <JoinBorderBtn dColor={"#65ACE2"} onClick={()=>{
+              setIsJoin(!isJoin)
+              postJoin(MissionDetail.missionId, userId)}}>임무에 참여하기</JoinBorderBtn>
           )}
         </> : <><JoinBorderBtn dColor={"#888888"} onClick={()=>{alert("진행 중인 임무에는 참여할 수 없습니다.")}}>진행 중인 임무입니다</JoinBorderBtn></>}
         </>}

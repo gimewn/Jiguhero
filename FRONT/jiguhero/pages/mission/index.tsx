@@ -161,8 +161,13 @@ export default function Mission({ data }) {
   //   setMissions(Missions)
   // }
   useEffect(()=>{
+    if(!localStorage.getItem('access-token')){
+      alert("로그인해주세요")
+      router.push('/login')
+    }else{
+      getMission().then((res)=>setMissions(res))
+    }
 
-    getMission().then((res)=>setMissions(res))
   }, [])
   
   function Filter(key){

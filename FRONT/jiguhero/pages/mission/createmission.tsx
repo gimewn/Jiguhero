@@ -239,21 +239,7 @@ export default function Createmission() {
 
   const [ChoiceDong, setChoiceDong] = useState(["00", ""]);
 
-  const postdata = {
-    title,
-    startDate: astartDate[0],
-    endDate: aendDate[0],
-    point,
-    people,
-    sido: ChoiceSido[0],
-    gugun: ChoiceGugun[0],
-    dong: ChoiceDong[0],
-    userId,
-    content,
-  };
-  useEffect(()=>{
-
-  })
+  
   // 미션 사진 등록
   function MissionPicture() {
     const changeHandler = (e) => {
@@ -315,45 +301,13 @@ export default function Createmission() {
   }
 
   //활동기간
-  function DatePick() {
-    return (
-      <>
-        <Text>활동기간</Text>
-        <DateWrapper>
-          <DateInput
-            selected={startDate}
-            onChange={(date) => {
-              console.log(date.toISOString());
-              setStartDate(date);
-
-              setAstartDate(date.toISOString().split("T"));
-              console.log(astartDate)
-            }}
-            selectsStart
-            locale={locale}
-            startDate={startDate}
-            endDate={endDate}
-            minDate={new Date()}
-            dateFormat="yyyy-MM-dd"
-          />
-          <a> ~</a>
-          <DateInput
-            selected={endDate}
-            onChange={(date) => {
-              setEndDate(date);
-              setAendDate(endDate.toISOString().split("T"));
-            }}
-            selectsEnd
-            locale={locale}
-            startDate={startDate}
-            endDate={endDate}
-            minDate={startDate}
-            dateFormat="yyyy-MM-dd"
-          />
-        </DateWrapper>
-      </>
-    );
-  }
+  // function DatePick() {
+  //   return (
+  //     <>
+        
+  //     </>
+  //   );
+  // }
   //정원
 
   //지역 설정 ---
@@ -464,7 +418,36 @@ export default function Createmission() {
         {/* 활동기간 */}
         <Block>
           <Content>
-            <DatePick />
+          <Text>활동기간</Text>
+        <DateWrapper>
+          <DateInput
+            selected={startDate}
+            onChange={(date) => {
+              setStartDate(date);
+              setAstartDate(date.toISOString().split("T"));
+            }}
+            selectsStart
+            locale={locale}
+            startDate={startDate}
+            endDate={endDate}
+            minDate={new Date()}
+            dateFormat="yyyy-MM-dd"
+          />
+          <a> ~</a>
+          <DateInput
+            selected={endDate}
+            onChange={(date) => {
+              setEndDate(date);
+              setAendDate(date.toISOString().split("T"));
+            }}
+            selectsEnd
+            locale={locale}
+            startDate={startDate}
+            endDate={endDate}
+            minDate={startDate}
+            dateFormat="yyyy-MM-dd"
+          />
+        </DateWrapper>
           </Content>
         </Block>
 
@@ -551,9 +534,22 @@ export default function Createmission() {
               // variant="contained"
               type="submit"
               onClick={async () => {
+                console.log(astartDate, aendDate)
+                const postdata = {
+                  title,
+                  startDate: astartDate[0],
+                  endDate: aendDate[0],
+                  point,
+                  people,
+                  sido: ChoiceSido[0],
+                  gugun: ChoiceGugun[0],
+                  dong: ChoiceDong[0],
+                  userId,
+                  content,
+                };
                 const missionId = await PostNewMission(postdata);
                 await PostMissionImg(createImg, userId, missionId);
-                router.push("/");
+                router.push("/mission");
               }}
             >
               등록

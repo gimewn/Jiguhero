@@ -14,7 +14,7 @@ const PostNewMission = async (postdata) => {
   }
   // const token = t.substring(1, t.length - 1);
   // const Token = `Bearer ${localStorage.getItem('access-token')}`
-
+  console.log(postdata)
 
   const Form = new FormData();
   

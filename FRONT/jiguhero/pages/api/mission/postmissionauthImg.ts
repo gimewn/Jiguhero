@@ -27,10 +27,11 @@ const PostMissionauthImg = async (createImg, missionId, userId) => {
     body: ImgForm,
   })
 
-  const data = await response.json().catch((error)=>{
-    console.error("Error:", error)
-  })
-  console.log(data)
+  const data = await response
+  // catch((error)=>{
+  //   console.error("Error:", error)
+  // })
+  // console.log(data)
   return data
 };
 

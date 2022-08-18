@@ -12,25 +12,24 @@ import { useEffect, useState } from 'react';
 
 export default function NowJoinLists() {
 
-  const { data: MISSION } = useQuery(['missions'], JoinMission)
-  console.log(MISSION)
-  const [page, setPage] = useState(1);
-  const handlePageChange = (page) => {
-    setPage(page)
-    console.log(page)
-  }
-  const count = MISSION?.length
-  useEffect(() => {
-    console.log(count)
-  }, [count])
+  // const { data: MISSION } = useQuery(['missions'], JoinMission)
+  // console.log(MISSION)
+  // const [page, setPage] = useState(1);
+  // const handlePageChange = (page) => {
+  //   setPage(page)
+  //   console.log(page)
+  // }
+  // const count = MISSION?.length
+  // useEffect(() => {
+  //   console.log(count)
+  // }, [count])
 
-  const JoinMissionList = count !== undefined && (
+  const JoinMissionList = 
     <>
-      {MISSION?.map((item, index) => (
+      {/* {MISSION?.map((item, index) => (
         <NowJoinList key={index} {...item} />))}
-      <Pagination page={page} totalcount={count} setPage={handlePageChange} />
+      <Pagination page={page} totalcount={count} setPage={handlePageChange} /> */}
     </>
-  )
   return JoinMissionList
 }
 

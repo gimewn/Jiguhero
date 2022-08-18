@@ -18,6 +18,7 @@ import getFeedInfo from "pages/api/mission/getFeedInfo";
 import { theme } from "components/theme";
 import FeedList from "components/feedList";
 import { useRouter } from "next/router";
+import getDetail from "pages/api/mission/getDetail";
 
 const H2 = styled("h2")`
   margin-left: 20px;
@@ -143,9 +144,16 @@ export default function MissionFeed() {
 
   const router = useRouter()
 
- 
-
-
+  useEffect(()=>{
+    if(!localStorage.getItem('access-token')){
+      alert("로그인해주세요")
+      router.push('/login')
+  }else{
+    getDetail(router.query.id, JSON.parse(localStorage.getItem('recoil-persist')).userId)
+    .then((res)=>setMissionList(res))
+    console.log(missionList)
+  }
+  }, [])
 
   // useEffect(() => {
   //   if (missionList) {
@@ -224,13 +232,9 @@ export default function MissionFeed() {
 
       {missionList ? (
         <>
-
           {missionList.imageURL?.map((item, index) => {
-            console.log(item)
-            
+            console.log(item)            
             return (
-
-
               <FeedList {...item} key={index} />
               // <FeedDiv>
               //   <NickNameBlock>

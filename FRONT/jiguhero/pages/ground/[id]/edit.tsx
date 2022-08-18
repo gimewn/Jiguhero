@@ -92,13 +92,15 @@ export default function EditGround(){
             setUserId(usersId)
             getGround(router.query.id).then(
             (res) => {setGround(res)
+                setGroundTitle(res.title)
+                setGroundContent(res.content)
+                setGroundEmoji(res.icon)
             })
             if(ground.groundId){
                 getPlaceList(ground.groundId).then(
-                    (res) => {setPlaceLists(res)
-                    setGroundTitle(res.title)
-                    setGroundContent(res.content)
-                setGroundEmoji(res.icon)}
+                    (res) => {
+                        setPlaceLists(res)
+                }
                 )
             }
         }}, [])
@@ -119,7 +121,6 @@ export default function EditGround(){
 
     const onEmojiClick = (event, emojiObject) => {
         setGroundEmoji(emojiObject.emoji);
-        console.log(groundEmoji);
     }
 
     function onModalClick(){
@@ -140,29 +141,6 @@ export default function EditGround(){
             document.getElementById('picker').classList.add("active");
         }
     }
-    function submit(userId){
-        let emoji, title, content;
-        if (groundEmoji == ""){
-            emoji = ground.icon
-        }else{
-            emoji = groundEmoji
-        }
-        if (groundTitle == ""){
-            title = ground.title
-        }else{
-            title = groundTitle
-        }
-        if(groundContent == ""){
-            content = ground.content
-        }else{
-            content = groundContent
-        }
-        console.log(emoji, title, content)
-        putGround(userId, ground.groundId, emoji, title, content).then((res)=>{
-            router.push(`/ground/myground`)
-        }
-        )
-    }
     
     return(
         <>
@@ -174,13 +152,13 @@ export default function EditGround(){
         <H2>⚙️ 활동구역 수정</H2>
         <ContentDiv style={{zIndex:'990'}}>
             <Title>구역 이름</Title>
-            <Input type="text" defaultValue={ground.title} onChange={(e) => {setGroundTitle(e.target.value)}} />
+            <Input type="text" defaultValue={groundTitle} onChange={(e) => {setGroundTitle(e.target.value)}} />
             <Title>구역 설명</Title>
-                <Input type="text" defaultValue={ground.content} onChange={(e) => {setGroundContent(e.target.value)}}  />
+                <Input type="text" defaultValue={groundContent} onChange={(e) => {setGroundContent(e.target.value)}}  />
             <Title style={{marginBottom:'0px'}}>대표 아이콘</Title>
             <NewPickerDiv>
             <EmojiDiv onClick={isActive}>
-                    <Emoji>{ground.icon}</Emoji>
+                    <Emoji>{groundEmoji}</Emoji>
             </EmojiDiv>
             <IsActiveDiv>
                 <div  id="picker" style={{display:'none'}}>
@@ -218,7 +196,10 @@ export default function EditGround(){
             </GridEdit>
             <EditButton dColor="#65ace2" hColor='#98c064' onClick={()=>{
                 if (userId){
-                    submit(userId)
+                    putGround(userId, ground.groundId, groundEmoji, groundTitle, groundContent).then((res)=>{
+                        router.push(`/ground/myground`)
+                    }
+                    )
                 }
             }}> 수정하기 </EditButton>
         </ContentDiv>

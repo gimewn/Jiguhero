@@ -191,39 +191,51 @@ const Mypage = ({ data }) => {
   useEffect(() => {
     const usersId =  JSON.parse(localStorage.getItem("recoil-persist")).userId;
     setUserId(usersId);
-    
-   
-    userData(usersId).then((data) => setUserIn(data));
+    userData(usersId).then((data) =>{setUserIn(data)
+      setGrade(data.grade)
+      if (data.grade == 0) {
+        setColor1(theme.Bunhong.first);
+        setColor2(theme.Bunhong.second);
+        setGradeName("분홍");
+      } else if (data.grade == 1) {
+        setColor1(theme.Norang.first);
+        setColor2(theme.Norang.second);
+        setGradeName("노랑");
+      } else if (data.grade == 2) {
+        setColor1(theme.Chorok.first);
+        setColor2(theme.Chorok.second);
+        setGradeName("초록");
+      } else if (data.grade == 3) {
+        setColor1(theme.Parang.first);
+        setColor2(theme.Parang.second);
+        setGradeName("파랑");
+      } else if (data.grade == 4) {
+        setColor1(theme.Bbalgang.first);
+        setColor2(theme.Bbalgang.second);
+        setGradeName("빨강");
+      }});
     userGround(usersId).then((data) => setUserGroundData(data));
     userMission(usersId).then((data) => setUserMissionData(data));
-    setGrade(userIn?.grade);
-  
   }, []);
 
-
-  console.log(userIn)
-
-
-
   useEffect(() => {
-    if (grade === 0) {
+    if (grade == 0) {
       setColor1(theme.Bunhong.first);
       setColor2(theme.Bunhong.second);
       setGradeName("분홍");
-    } else if (grade === 1) {
+    } else if (grade == 1) {
       setColor1(theme.Norang.first);
       setColor2(theme.Norang.second);
       setGradeName("노랑");
-    } else if (grade === 2) {
+    } else if (grade == 2) {
       setColor1(theme.Chorok.first);
       setColor2(theme.Chorok.second);
       setGradeName("초록");
-    } else if (grade === 3) {
+    } else if (grade == 3) {
       setColor1(theme.Parang.first);
       setColor2(theme.Parang.second);
-
       setGradeName("파랑");
-    } else if (grade === 4) {
+    } else if (grade == 4) {
       setColor1(theme.Bbalgang.first);
       setColor2(theme.Bbalgang.second);
       setGradeName("빨강");

@@ -258,19 +258,6 @@ const { data: dong } = useQuery(
   }
 );
 const [ChoiceDong, setChoiceDong] = useState(["00", ""]);
-const postdata = {
-  title,
-  missionId,
-  startDate: astartDate[0],
-  endDate: aendDate[0],
-  point,
-  people,
-  sido: ChoiceSido[0],
-  gugun: ChoiceGugun[0],
-  dong: ChoiceDong[0],
-  userId,
-  text
-};
 
   return (
     <>
@@ -340,6 +327,7 @@ const postdata = {
         <DateInput
           selected={startDate}
           onChange={(date) => {
+            console.log(date)
             setStartDate(date)
             setAstartDate(date.toISOString().split("T"));
           }}
@@ -354,6 +342,7 @@ const postdata = {
         <DateInput
           selected={endDate}
           onChange={(date) => {
+            console.log(date)
             setEndDate(date)
             setAendDate(date.toISOString().split("T"));
           }}
@@ -488,7 +477,23 @@ const postdata = {
               hColor={'#98C064'}
               dColor={'#65ACE2'}
             onClick={()=>{
-              putMission(postdata).then((res)=>router.push(`/mission/${missionId}`))}}
+              const postdata = {
+                title,
+                missionId,
+                startDate: astartDate[0],
+                endDate: aendDate[0],
+                point,
+                people,
+                sido: ChoiceSido[0],
+                gugun: ChoiceGugun[0],
+                dong: ChoiceDong[0],
+                userId,
+                text
+              };
+              console.log(postdata)
+              putMission(postdata).then((res)=>{
+                console.log(res)
+                router.push(`/mission/${missionId}`)})}}
             >수정</SubmitBtn>
           </BtnContent>
         </Block>
@@ -500,17 +505,17 @@ const postdata = {
   )
 }
 
-export async function getServerSideProps(context) {
-  const createmission = new QueryClient()
-  await createmission.prefetchQuery(['mission'], () => { PostMission() })
+// export async function getServerSideProps(context) {
+//   const createmission = new QueryClient()
+//   await createmission.prefetchQuery(['mission'], () => { PostMission() })
 
-  return {
-    props: {
-      data: {
+//   return {
+//     props: {
+//       data: {
 
-        dehydratedState: dehydrate(createmission)
-      },
-    },
-  };
+//         dehydratedState: dehydrate(createmission)
+//       },
+//     },
+//   };
 
-}
+// }

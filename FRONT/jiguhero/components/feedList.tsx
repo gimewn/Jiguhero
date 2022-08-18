@@ -162,19 +162,19 @@ export default function FeedList( item, index ) {
       var data = userData(item[2])
         .then((res) => {
          
-          if (res.grade === 0) {
+          if (res.grade == 0) {
             setColor1(theme.Bunhong.first);
             setColor2(theme.Bunhong.second);
-          } else if (res.grade === 1) {
+          } else if (res.grade == 1) {
             setColor1(theme.Norang.first);
             setColor2(theme.Norang.second);
-          } else if (res.grade === 2) {
+          } else if (res.grade == 2) {
             setColor1(theme.Chorok.first);
             setColor2(theme.Chorok.second);
-          } else if (res.grade === 3) {
+          } else if (res.grade == 3) {
             setColor1(theme.Parang.first);
             setColor2(theme.Parang.second);
-          } else if (res.grade === 4) {
+          } else if (res.grade == 4) {
             setColor1(theme.Bbalgang.first);
             setColor2(theme.Bbalgang.second);
           }
@@ -238,7 +238,9 @@ export default function FeedList( item, index ) {
                 postFeedLike(feedId,userId)
               }}
             >
-              {likeCheck ? <FullHeart /> : <BorderHeart />}
+              {likeCheck ? <FullHeart onClick={()=>{setLikeCheck(!likeCheck)
+              setLikeCnt(likeCnt-1)}} /> : <BorderHeart onClick={()=>{setLikeCheck(!likeCheck)
+                setLikeCnt(likeCnt+1)}} />}
               <a>{`좋아요 ${likeCnt}개`}</a>
             </HeartDiv>
             <hr />

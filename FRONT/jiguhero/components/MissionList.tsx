@@ -115,12 +115,14 @@ export default function MissionList({ missionId, entryPoint, title, startDate, e
   const [sido, setSido] = useState();
   
   useEffect(()=>{
-    getSido().then((res) => {
-      res.filter((item)=>{
-      if(item.sidoCode == sidoCode){
-        setSido(item.sidoName)
-      }
-    })})
+    if(localStorage.getItem('access-token')){
+      getSido().then((res) => {
+        res.filter((item)=>{
+        if(item.sidoCode == sidoCode){
+          setSido(item.sidoName)
+        }
+      })})
+    }
   }, [])
   return (
     <>

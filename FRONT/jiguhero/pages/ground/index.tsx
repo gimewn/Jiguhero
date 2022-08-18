@@ -131,10 +131,14 @@ export default function GroundList(){
     // const {data:AllGround} = useQuery(['allGround'], getAllGround) //리스트에 나타낼 아이템
     const [groundList, setGroundList] = useState([])
     useEffect(()=>{
-  
-        getAllGround().then((res) => {
-            console.log(res)
-            setGroundList(res)})
+        if(!localStorage.getItem('access-token')){
+            alert("로그인해주세요")
+            router.push('/login')
+        }else{
+            getAllGround().then((res) => {
+                console.log(res)
+                setGroundList(res)})
+        }
     }, [])
     // const [count, setCount] = useState(0); //아이템 총 개수
     // const [currentpage, setCurrentpage] = useState(1); //현재페이지
@@ -179,13 +183,7 @@ export default function GroundList(){
         }else if(key === "2"){
             let res = [...groundList];
             res.sort((a, b)=>{
-                return a.likes - b.likes
-            })
-            setGroundList(res)
-        }else if(key === "3"){
-            let res = [...groundList];
-            res.sort((a, b)=>{
-                return a.hits - b.hits
+                return b.likes - a.likes
             })
             setGroundList(res)
         }else if(key==="0"){
@@ -213,7 +211,6 @@ export default function GroundList(){
                     <option value="0">전체 보기</option>
                     <option value="1">최신등록순</option>
                     <option value="2">좋아요순</option>
-                    <option value="3">조회순</option>
                 </SelectBox>
                 <Topbutton>
                     <ButtonFull dColor='#98c064' hColor='#65ace2' style={{marginRight:'5px', fontSize:'15px'}} onClick={() => {router.push(`ground/myground`)}}>나의 활동구역</ButtonFull>

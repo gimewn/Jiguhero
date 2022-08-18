@@ -23,6 +23,7 @@ import { useRouter } from "next/router";
 
 const CameraBtn = styled("div")`
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   margin: 2rem;
@@ -176,17 +177,11 @@ export default function Profile({ data }) {
   }, []);
 
   const changeHandler = (e) => {
-    setErrorImg('')
-    setSuccessmsg('')
     const file = e.target.files[0];
     if (file && file.type.substr(0, 5) === "image") {
-      setUserImg(e.target.files[0]);
-      UpdateUserImg(userImg, userId);
-      setSuccessImg('이미지가 성공적으로 변경되었습니다')
-
+      setUserImg(e.target.files[0])
     } else {
       setUserImg(null);
-      setErrorImg('이미지가 잘못되었습니다')
     }
   };
 
@@ -234,6 +229,10 @@ export default function Profile({ data }) {
             </CameraBox>
           )}
         </IconButton>
+          {userId ? 
+                    <ButtonFull hColor={'#98C064'}
+                    dColor={'#65ACE2'} style={{margin:'10px'}} onClick={()=>{UpdateUserImg(userImg, userId).then((res)=>{alert("프로필 사진 변경 완료")})}}>프로필 사진 변경</ButtonFull>
+                : <></>}
           {/* {errorImg ? <ErrorMessage>{errorImg}</ErrorMessage>: null }
           {successImg ? <SuccessMessage>{successImg}</SuccessMessage>: null} */}
       </CameraBtn>
@@ -297,10 +296,12 @@ export default function Profile({ data }) {
             style={{marginBottom:'20px'}}
             onClick={(event) => {
               event.preventDefault();
-              deleteNickname(userId);
-              localStorage.removeItem('recoil-persist')
-              localStorage.removeItem('access-token')
-              router.push('/')
+              if(confirm("정말 탈퇴하시겠습니까?") === true){
+                deleteNickname(userId);
+                localStorage.removeItem('recoil-persist')
+                localStorage.removeItem('access-token')
+                router.push('/')
+              }
             }}
           >
             방위대 탈퇴하기

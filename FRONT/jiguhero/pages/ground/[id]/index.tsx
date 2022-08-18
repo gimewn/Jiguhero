@@ -87,26 +87,21 @@ export default function GroundDetail(){
     const [userId, setUserId] = useState();
   
     useEffect(()=>{
-
         const usersId = JSON.parse(localStorage.getItem('recoil-persist')).userId
         setUserId(usersId)
+        if(router.query.id){
+          getPlaceList(router.query.id).then((res) => {
+              setPlaceList(res);
+          })
+          getGround(router.query.id).then((res) => {
+            setGroundInfo(res)
+          })
+            getIsLike(router.query.id, JSON.parse(localStorage.getItem('recoil-persist')).userId).then((res) => {
+              setIsLike(res)
+            })
+      }
     }, [])
 
-    useEffect(()=>{
-      if(router.query.id){
-        getPlaceList(router.query.id).then((res) => {
-            setPlaceList(res);
-        })
-        getGround(router.query.id).then((res) => {
-          setGroundInfo(res)
-        })
-        if(userId){
-          getIsLike(router.query.id, userId).then((res) => {
-            setIsLike(res)
-          })
-        }
-    }
-    }, [])
     
   
     function getFetch(map) {
