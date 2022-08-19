@@ -172,7 +172,7 @@ export default function EditGround(){
                 <>
                 {placeList?.map((item, i) => (
                     <PlaceDiv key={i}>
-                        <DeleteBtn 
+                       <DeleteBtn 
                         onClick={()=>{
                             if(confirm("삭제하시겠습니까?") == true && userId){
                                 deletePlace(ground.groundId, item.placeId, userId).then((res) => {

@@ -3,6 +3,10 @@
 ## 링크
 https://i7c105.p.ssafy.io/
 <br>
+
+## 소개 영상
+https://www.youtube.com/watch?v=IU68xD6ZcUs
+
 ## 프로젝트 진행 기간
 🍀 2022.07.05 ~ 2022.08.19(금)
 SSAFY 7기 2학기 공통 프로젝트
@@ -74,4 +78,4 @@ SSAFY 7기 2학기 공통 프로젝트
     - 이슈 발생 시 공유
 
 ### 팀원 소개
-![팀원소개](https://user-images.githubusercontent.com/97578425/184811182-5f4be0d0-58c2-4f0c-a359-bc9f3077fb71.png)
+![팀원소개](https://user-images.githubusercontent.com/97578425/185524704-61ea4f75-0e84-4bf6-a424-fb0eda224560.png)

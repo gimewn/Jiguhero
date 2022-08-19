@@ -246,7 +246,11 @@ export default function GroundList(){
                     <DeleteB 
                             onClick={()=>{
                                 if(confirm('삭제하시겠습니까?') === true && userId){
-                                    deleteGround(item.groundId, userId)
+                                    deleteGround(item.groundId, userId).then((res) => {
+                                        getMyGround(userId).then(
+                                            (res) => setGroundList(res)
+                                        )
+                                    })
                                 }
                             }}  />
                     <GroundItem className="groundDefault">
