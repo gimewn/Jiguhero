@@ -281,6 +281,7 @@ const MissionExplanation = styled("div")`
 import ArrowBackIosRoundedIcon from "@mui/icons-material/ArrowBackIosRounded";
 import deleteMission from "pages/api/mission/deleteMission";
 import postMissionLike from "pages/api/mission/postLike";
+import userData from "pages/api/user/[id]";
 const Title = styled("div")`
   display: flex;
   align-items: center;
@@ -365,20 +366,30 @@ function MissionAuthModal() {
 export default function MissionDetail() {
   const router = useRouter();
   const [region, setRegion] = useRecoilState(missionRegion);
-  const [userId, setUserId] = useState();
+  // const [userId, setUserId] = useState();
   const [join, setJoin] = useState(false);
   const [like, setLike] = useState(false);
   const [ModalAuth, setModalAuth] = useState(false);
   const [Auth, setAuth] = useState(false);
+  const [userId, setUserId] = useRecoilState(UserId)
   const [unAuth, setUnAuth] = useState(false);
   const missionId = router.query.id;
   const [MissionDetail, setMissionDetail] = useRecoilState(missionDetail);
   const date = new Date();
   const today = `${date.getFullYear()}-${('0' + (date.getMonth() + 1)).slice(-2)}-${date.getDate()}`
   const [isJoin, setIsJoin] = useState(false);
+  const [userPoint, setUserPoint] = useState(0);
   useEffect(()=>{
 
-      setUserId(JSON.parse(localStorage.getItem('recoil-persist')).userId)
+
+      if(userId){
+        userData(userId).then((res)=>{
+ 
+          setUserPoint(res.point)
+          
+          
+        })
+      }
       if(router.query.id && JSON.parse(localStorage.getItem('recoil-persist')).userId){
         getDetail(router.query.id, JSON.parse(localStorage.getItem('recoil-persist')).userId).then((res)=>{setMissionDetail(res)
           setIsJoin(res.joinCheck)
@@ -555,8 +566,15 @@ export default function MissionDetail() {
             </JoinFullBtn>
           ) : (
             <JoinBorderBtn dColor={"#65ACE2"} onClick={()=>{
-              setIsJoin(!isJoin)
-              postJoin(MissionDetail.missionId, userId)}}>임무에 참여하기</JoinBorderBtn>
+              if(MissionDetail.entryPoint>userPoint){
+                alert('포인트가 부족해 임무에 참여할 수 없습니다!')
+                router.push('/mission')
+              }else{
+                setIsJoin(!isJoin)
+                postJoin(MissionDetail.missionId, userId)
+                
+              }
+            }}>임무에 참여하기</JoinBorderBtn>
           )}
         </> : <><JoinBorderBtn dColor={"#888888"} onClick={()=>{alert("진행 중인 임무에는 참여할 수 없습니다.")}}>진행 중인 임무입니다</JoinBorderBtn></>}
         </>}
