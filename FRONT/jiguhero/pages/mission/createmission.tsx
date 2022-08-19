@@ -29,13 +29,13 @@ import getDong from "pages/api/ecomarket/getDong";
 import PostNewMission from "pages/api/mission/postNewMission";
 import { useRecoilState } from "recoil";
 import { UserId } from "states/user";
+import userData from "pages/api/user/[id]";
 
-const H2 = styled('h2')`
+const H2 = styled("h2")`
   @media only screen and (max-width: 650px) {
-    display:none;
+    display: none;
   }
-`
-
+`;
 
 // const MissioWrapper = styled("div")`
 //   display: flex;
@@ -45,12 +45,11 @@ const H2 = styled('h2')`
 //     display: none;
 //   }
 // `;
-const MissioWrapper = styled('div')`
-  display:flex;
+const MissioWrapper = styled("div")`
+  display: flex;
   flex-direction: column;
   margin-top: 30px;
-`
-
+`;
 
 const Block = styled("div")`
   margin: 0.4rem;
@@ -100,8 +99,8 @@ const BoxInput = styled("input")`
   padding: 10px;
   width: 13rem;
   margin-left: 10px;
-  font-size:15px;
-  margin:10px;
+  font-size: 15px;
+  margin: 10px;
 `;
 const DateInput = styled(DatePicker)`
   border: #65ace2 solid 1px;
@@ -115,7 +114,7 @@ const DateInput = styled(DatePicker)`
 `;
 const DateWrapper = styled("div")`
   display: inline-flex;
-  margin:5px;
+  margin: 5px;
 `;
 
 const SelectSido = styled("select")`
@@ -124,12 +123,12 @@ const SelectSido = styled("select")`
   border-radius: 15px;
   padding: 10px;
   margin: 0.5rem;
-  font-size:13px;
+  font-size: 13px;
   @media screen and (max-width: 450px) {
-    font-size:11px;
+    font-size: 11px;
   }
-  width:auto;
-`
+  width: auto;
+`;
 
 const SelectGugun = styled(SelectSido)``;
 const SelectDong = styled(SelectSido)``;
@@ -148,7 +147,7 @@ const CameraBox = styled("form")`
     width: 300px;
     height: 250px;
   }
-  margin-bottom:10px;
+  margin-bottom: 10px;
   img {
     object-fit: cover;
     width: 250px;
@@ -168,7 +167,7 @@ const PointInput = styled("input")`
   border-radius: 15px;
   padding: 10px;
   width: 13rem;
-  font-size:15px;
+  font-size: 15px;
   margin: 5px 10px 5px 10px;
 `;
 const PeopleInput = styled(PointInput)``;
@@ -182,26 +181,22 @@ const MissionText = styled("textarea")`
     width: 90%;
   }
   height: 150px;
-  margin:10px;
-  padding:10px;
-  font-size:15px;
+  margin: 10px;
+  padding: 10px;
+  font-size: 15px;
 `;
 
 const SubmitBtn = styled(ButtonFull)`
   width: 300px;
-  
-`
-const BottomDiv = styled('div')`
+`;
+const BottomDiv = styled("div")`
   margin-bottom: 80px;
-`
-
-
-
+`;
 
 export default function Createmission() {
   // 지울거
 
-  const [userId, setUserId]=useRecoilState(UserId)
+  const [userId, setUserId] = useRecoilState(UserId);
   // 지울거
 
   const [createImg, setCreateimg] = useState<File>(null); // 이미지 파일
@@ -218,9 +213,9 @@ export default function Createmission() {
   const router = useRouter();
   const { data: sido } = useQuery(["sido"], getSido);
   const [ChoiceSido, setChoiceSido] = useState(["00", ""]);
-  const [titleName,setTitleName] = useState('');
-  const [peopleNum, setPeopleNum] = useState('10');
-  
+  const [titleName, setTitleName] = useState("");
+  const [peopleNum, setPeopleNum] = useState("10");
+  const [userPoint, setUserPoint] = useState(0);
   const { data: gugun } = useQuery(
     ["gugun", ChoiceSido],
     () => getGugun(ChoiceSido[0]),
@@ -239,7 +234,14 @@ export default function Createmission() {
 
   const [ChoiceDong, setChoiceDong] = useState(["00", ""]);
 
-  
+  useEffect(() => {
+    if (userId) {
+      userData(userId).then((res) => {
+        setUserPoint(res.point);
+      });
+    }
+  }, []);
+
   // 미션 사진 등록
   function MissionPicture() {
     const changeHandler = (e) => {
@@ -286,16 +288,20 @@ export default function Createmission() {
     );
   }
 
-  
   // 임무명
   function MissionName() {
-    const [titleName,setTitleName] = useState('')
+    const [titleName, setTitleName] = useState("");
     return (
       <div>
         <Text>임무명</Text>
-        <BoxInput onChange={(e) => {setTitleName(e.target.value)}} onBlur={(e)=>{
-          setTitle(titleName)
-        }}  />
+        <BoxInput
+          onChange={(e) => {
+            setTitleName(e.target.value);
+          }}
+          onBlur={(e) => {
+            setTitle(titleName);
+          }}
+        />
       </div>
     );
   }
@@ -304,7 +310,7 @@ export default function Createmission() {
   // function DatePick() {
   //   return (
   //     <>
-        
+
   //     </>
   //   );
   // }
@@ -314,65 +320,66 @@ export default function Createmission() {
   function MissionLocation() {
     return (
       <>
-      <div>
-        <Text>지역</Text>
-        {/* 시도 선택 */}
-        <SelectSido
-          onChange={(e) => {
-            setChoiceSido(e.target.value.split(","));
-          }}
-        >
-          <option value="">{ChoiceSido[1] ? ChoiceSido[1] : "시/도"}</option>
-          {sido?.map((item) => (
-            <option
-              key={item["sidoCode"]}
-              value={[item["sidoCode"], item["sidoName"]]}
-            >
-              {item["sidoName"]}
-            </option>
-          ))}
-        </SelectSido>
+        <div>
+          <Text>지역</Text>
+          {/* 시도 선택 */}
+          <SelectSido
+            onChange={(e) => {
+              setChoiceSido(e.target.value.split(","));
+            }}
+          >
+            <option value="">{ChoiceSido[1] ? ChoiceSido[1] : "시/도"}</option>
+            {sido?.map((item) => (
+              <option
+                key={item["sidoCode"]}
+                value={[item["sidoCode"], item["sidoName"]]}
+              >
+                {item["sidoName"]}
+              </option>
+            ))}
+          </SelectSido>
 
-        {/* 구군 선택 */}
-        <SelectGugun
-          onChange={(e) => {
-            setChoiceGugun(e.target.value.split(","));
-          }}
-        >
-          <option value="">
-            {ChoiceGugun[1] ? ChoiceGugun[1] : "시/군/구"}
-          </option>
-          {gugun?.map((item) => (
-            <option
-              key={item["gugunCode"]}
-              value={[item["gugunCode"], item["gugunName"].split(" ")[1]]}
-            >
-              {item["gugunName"].split(" ")[1]}
+          {/* 구군 선택 */}
+          <SelectGugun
+            onChange={(e) => {
+              setChoiceGugun(e.target.value.split(","));
+            }}
+          >
+            <option value="">
+              {ChoiceGugun[1] ? ChoiceGugun[1] : "시/군/구"}
             </option>
-          ))}
-        </SelectGugun>
+            {gugun?.map((item) => (
+              <option
+                key={item["gugunCode"]}
+                value={[item["gugunCode"], item["gugunName"].split(" ")[1]]}
+              >
+                {item["gugunName"].split(" ")[1]}
+              </option>
+            ))}
+          </SelectGugun>
 
-        {/* 동 선택 */}
-        <SelectDong
-          onChange={(e) => {
-            setChoiceDong(e.target.value.split(","));
-          }}
-        >
-          <option value="">{ChoiceDong[1] ? ChoiceDong[1] : "읍/면/동"}</option>
-          {dong?.map((item) => (
-            <option
-              key={item["dongCode"]}
-              value={[item["dongCode"], item["dongName"].split(" ")[2]]}
-            >
-              {item["dongName"].split(" ")[2]}
+          {/* 동 선택 */}
+          <SelectDong
+            onChange={(e) => {
+              setChoiceDong(e.target.value.split(","));
+            }}
+          >
+            <option value="">
+              {ChoiceDong[1] ? ChoiceDong[1] : "읍/면/동"}
             </option>
-          ))}
-        </SelectDong>
-      </div>
+            {dong?.map((item) => (
+              <option
+                key={item["dongCode"]}
+                value={[item["dongCode"], item["dongName"].split(" ")[2]]}
+              >
+                {item["dongName"].split(" ")[2]}
+              </option>
+            ))}
+          </SelectDong>
+        </div>
       </>
     );
   }
-
 
   return (
     <ParentsDiv>
@@ -381,10 +388,8 @@ export default function Createmission() {
         <title>임무 생성하기 | 지구-방위대</title>
       </Head>
 
-
       {/* 모바일 뷰에서 뒤로가기 버튼! */}
-      <Backcomponents name='임무 생성하기'></Backcomponents>
-
+      <Backcomponents name="임무 생성하기"></Backcomponents>
 
       <MissioWrapper>
         <H2>🦸🏻 대원들의 임무 생성하기</H2>
@@ -402,14 +407,18 @@ export default function Createmission() {
             {/* <Text>임무명</Text> */}
             <div>
               <Text>임무명</Text>
-              <BoxInput 
-              placeholder="임무의 제목을 입력해주세요!"
-              onChange={(e) => {setTitleName(e.target.value)}} onBlur={(e)=>{
-                e.preventDefault()
-                setTitle(titleName)
-              }}  />
+              <BoxInput
+                placeholder="임무의 제목을 입력해주세요!"
+                onChange={(e) => {
+                  setTitleName(e.target.value);
+                }}
+                onBlur={(e) => {
+                  e.preventDefault();
+                  setTitle(titleName);
+                }}
+              />
             </div>
-          {/* <BoxInput onChange={(e) => {
+            {/* <BoxInput onChange={(e) => {
             e.preventDefault()
             setTitle(e.target.value)}}  /> */}
           </Content>
@@ -418,36 +427,36 @@ export default function Createmission() {
         {/* 활동기간 */}
         <Block>
           <Content>
-          <Text>활동기간</Text>
-        <DateWrapper>
-          <DateInput
-            selected={startDate}
-            onChange={(date) => {
-              setStartDate(date);
-              setAstartDate(date.toISOString().split("T"));
-            }}
-            selectsStart
-            locale={locale}
-            startDate={startDate}
-            endDate={endDate}
-            minDate={new Date()}
-            dateFormat="yyyy-MM-dd"
-          />
-          <a> ~</a>
-          <DateInput
-            selected={endDate}
-            onChange={(date) => {
-              setEndDate(date);
-              setAendDate(date.toISOString().split("T"));
-            }}
-            selectsEnd
-            locale={locale}
-            startDate={startDate}
-            endDate={endDate}
-            minDate={startDate}
-            dateFormat="yyyy-MM-dd"
-          />
-        </DateWrapper>
+            <Text>활동기간</Text>
+            <DateWrapper>
+              <DateInput
+                selected={startDate}
+                onChange={(date) => {
+                  setStartDate(date);
+                  setAstartDate(date.toISOString().split("T"));
+                }}
+                selectsStart
+                locale={locale}
+                startDate={startDate}
+                endDate={endDate}
+                minDate={new Date()}
+                dateFormat="yyyy-MM-dd"
+              />
+              <a> ~</a>
+              <DateInput
+                selected={endDate}
+                onChange={(date) => {
+                  setEndDate(date);
+                  setAendDate(date.toISOString().split("T"));
+                }}
+                selectsEnd
+                locale={locale}
+                startDate={startDate}
+                endDate={endDate}
+                minDate={startDate}
+                dateFormat="yyyy-MM-dd"
+              />
+            </DateWrapper>
           </Content>
         </Block>
 
@@ -461,30 +470,29 @@ export default function Createmission() {
         {/* 포인트 */}
         <Block>
           <Content>
-          <Text>포인트</Text>
+            <Text>포인트</Text>
             <PointInput
               type="number"
               min={500}
               max={5000}
               step={500}
               defaultValue={Number(point)}
-              onChange={(e)=>{
-                e.preventDefault()
-                setPoint(Number(e.target.value))
-              }}
+              onChange={(e) => {
+                e.preventDefault();
 
+                setPoint(Number(e.target.value));
+              }}
               onBlur={(e) => {
                 e.preventDefault();
                 const tmp = Number(point);
                 if (tmp < 500) {
-                  setPoint(500)
+                  setPoint(500);
                 } else if (tmp > 5000) {
-                  setPoint(5000)
+                  setPoint(5000);
                 } else if (tmp % 10) {
-                  setPoint(Number(tmp)-(Number(tmp)%10))
+                  setPoint(Number(tmp) - (Number(tmp) % 10));
                 }
                 setPoint(Number(point));
-                
               }}
             />
           </Content>
@@ -493,28 +501,28 @@ export default function Createmission() {
         {/* 정원 */}
         <Block>
           <Content>
-          <Text>정원</Text>
-        <PeopleInput
-          type="number"
-          step={10}
-          defaultValue={peopleNum}
-          onBlur={(e: FocusEvent<HTMLInputElement>) => {
-            e.preventDefault()
-            const num = Number(e.target.value);
-            if (num < 10) {
-              setPeopleNum('10')
-              setPeople(10)
-            } else if (num > 5000) {
-              setPeopleNum('5000')
-              setPeople(5000)
-            } else if (num % 10) {
-              setPeopleNum(`${num - (num % 10)}`)
-              setPeople(Number(`${num - (num % 10)}`))
-            }else{
-              setPeople(Number(num))
-            }
-          }}
-        />
+            <Text>정원</Text>
+            <PeopleInput
+              type="number"
+              step={10}
+              defaultValue={peopleNum}
+              onBlur={(e: FocusEvent<HTMLInputElement>) => {
+                e.preventDefault();
+                const num = Number(e.target.value);
+                if (num < 10) {
+                  setPeopleNum("10");
+                  setPeople(10);
+                } else if (num > 5000) {
+                  setPeopleNum("5000");
+                  setPeople(5000);
+                } else if (num % 10) {
+                  setPeopleNum(`${num - (num % 10)}`);
+                  setPeople(Number(`${num - (num % 10)}`));
+                } else {
+                  setPeople(Number(num));
+                }
+              }}
+            />
           </Content>
         </Block>
 
@@ -536,44 +544,45 @@ export default function Createmission() {
               // variant="contained"
               type="submit"
               onClick={async () => {
-                console.log(astartDate, aendDate)
-                const postdata = {
-                  title,
-                  startDate: astartDate[0],
-                  endDate: aendDate[0],
-                  point,
-                  people,
-                  sido: ChoiceSido[0],
-                  gugun: ChoiceGugun[0],
-                  dong: ChoiceDong[0],
-                  userId,
-                  content,
-                };
-                console.log(postdata)
-                const missionId = await PostNewMission(postdata);
-                await PostMissionImg(createImg, userId, missionId);
-                router.push("/mission");
+                if(point> userPoint){
+                  alert('포인트가 부족합니다!')
+                  router.push('/mission')
+                }else{
+                  const postdata = {
+                    title,
+                    startDate: astartDate[0],
+                    endDate: aendDate[0],
+                    point,
+                    people,
+                    sido: ChoiceSido[0],
+                    gugun: ChoiceGugun[0],
+                    dong: ChoiceDong[0],
+                    userId,
+                    content,
+                  };
+                  console.log(postdata);
+                  const missionId = await PostNewMission(postdata);
+                  await PostMissionImg(createImg, userId, missionId);
+                  router.push("/mission");
+                }
+        
+                
               }}
             >
               등록
             </SubmitBtn>
           </BtnContent>
         </Block>
-
       </MissioWrapper>
       <BottomDiv></BottomDiv>
-
     </ParentsDiv>
   );
 }
 
 export async function getServerSideProps() {
-
   const createmission = new QueryClient();
 
-  await createmission.prefetchQuery(["mission"], () => {
-
-  });
+  await createmission.prefetchQuery(["mission"], () => {});
 
   return {
     props: {

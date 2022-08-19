@@ -41,4 +41,8 @@ public interface GroundDao {
     void modifyGround(Ground groundEntity);
 
     Optional<Ground> findById(Long groundId);
+
+    List<Like_Ground> selectLikeGroundByGround(Ground groundEntity);
+
+    void deleteLikeGroundById(long likeId);
 }

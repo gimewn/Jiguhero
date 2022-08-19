@@ -176,6 +176,12 @@ public class GroundServiceImpl implements GroundService {
             groundDao.deleteConnGroundById(connGround.getConnGroundId());
         }
 
+        List<Like_Ground> likeGroundList = groundDao.selectLikeGroundByGround(groundEntity);
+
+        for(Like_Ground likeGround : likeGroundList){
+            groundDao.deleteLikeGroundById(likeGround.getLikeId());
+        }
+
         groundDao.deleteGroundById(groundId);
         return "success";
     }
@@ -246,6 +252,7 @@ public class GroundServiceImpl implements GroundService {
 
     }
 
+    @Transactional
     public void deleteLikeGround(Ground groundEntity, User userEntity){
         groundDao.deleteLikeGround(groundEntity, userEntity);
     }

@@ -18,4 +18,6 @@ public interface LikeGroundRepository extends JpaRepository<Like_Ground, Long> {
     Optional<Like_Ground> findByGroundAndUser(Ground groundEntity, User userEntity);
 
     void deleteByGroundAndUser(Ground groundEntity, User userEntity);
+
+    List<Like_Ground> findAllByGround(Ground groundEntity);
 }

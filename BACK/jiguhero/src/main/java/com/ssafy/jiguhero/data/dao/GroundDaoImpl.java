@@ -122,4 +122,14 @@ public class GroundDaoImpl implements GroundDao {
         return groundRepository.findById(groundId);
     }
 
+    @Override
+    public List<Like_Ground> selectLikeGroundByGround(Ground groundEntity) {
+        return likeGroundRepository.findAllByGround(groundEntity);
+    }
+
+    @Override
+    public void deleteLikeGroundById(long likeId) {
+        likeGroundRepository.deleteById(likeId);
+    }
+
 }
