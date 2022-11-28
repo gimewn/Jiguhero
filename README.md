@@ -1,7 +1,5 @@
 # 지구방위대
 ![image](https://user-images.githubusercontent.com/82570138/183026532-157a391f-ac62-4446-8f09-be5598213113.png)
-## 링크
-https://i7c105.p.ssafy.io/
 <br>
 
 ## 소개 영상
